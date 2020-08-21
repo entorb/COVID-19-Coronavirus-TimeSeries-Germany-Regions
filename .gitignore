@@ -1,20 +1,17 @@
 # dirs
 __pycache__/
-backup/
+.vscode/
 cache/
-data/old/
 plots-gnuplot/
-plots-python/
 maps/out/
 maps/*.gif
 test/
-.vscode/
 
 # files
-**/.~lock.*.xlsx#
+.vstags
 .DS_Store
+.~lock.*.xlsx#
 ~$*.xlsx
 index-*.html
-.vstags
 index2.html
 eCharts/myHelper2.js
