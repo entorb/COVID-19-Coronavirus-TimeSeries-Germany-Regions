@@ -38,6 +38,7 @@ __status__ = "Dev"
 __version__ = "0.1"
 
 os.makedirs('cache/int/', exist_ok=True)
+os.makedirs('plots-gnuplot/int/', exist_ok=True)
 
 args = helper.read_command_line_parameters()
 file_cache = 'cache/download-countries-timeseries.json'

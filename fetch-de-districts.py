@@ -89,6 +89,7 @@ from tqdm import tqdm
 import helper
 
 os.makedirs('cache/de-districts/', exist_ok=True)
+os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
 
 args = helper.read_command_line_parameters()
 

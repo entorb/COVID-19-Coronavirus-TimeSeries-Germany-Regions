@@ -30,6 +30,7 @@ import csv
 import helper
 
 os.makedirs('cache/de-states/', exist_ok=True)
+os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
 
 args = helper.read_command_line_parameters()
 download_file = 'cache/download-de-federalstates-timeseries.csv'

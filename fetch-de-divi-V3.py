@@ -17,6 +17,7 @@ lk_id sind https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
 """
 
 os.makedirs('cache/de-divi/', exist_ok=True)
+os.makedirs('plots-gnuplot/de-divi/', exist_ok=True)
 
 
 def extractLinkList(cont: str) -> list:
