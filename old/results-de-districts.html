@@ -1,0 +1,489 @@
+<!doctype html>
+    <html lang="de">
+    <head>
+        <title>Landkreisprognose</title>
+        <meta charset="utf-8">
+        
+    <style>
+        #myInput {
+        width: 400px;
+        font-size: 16px;      /* Increase font-size */
+        padding: 12px 20px 12px 10px;      /* Add some padding */
+        border: 1px solid #ddd;       /* Add a grey border */
+        margin-bottom: 12px;       /* Add some space below the input */
+        }
+
+    #myTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+    }
+
+    #myTable th, #myTable td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+    }
+
+    #myTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd;
+    }
+
+    #myTable tr.header, #myTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+    }
+    </style>
+
+    <script>
+        function mySortFunction() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    </head>
+
+    <body>
+    <p>
+    <a href="index.html">zurück zur Auswertung</a>
+    </p>
+    <h1>Landkreisprognose</h1>
+    <p>Basierend auf Daten des
+    <a href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_0/" target="_blank">Robert Koch-Institut COVID-19-Dashboards</a>
+    </p>
+        <input type="text" id="myInput" onkeyup="mySortFunction()" placeholder="Landkreissuche">
+        <table id="myTable">        
+            <tr><th>Landkreis</th><th>Bundesland</th><th>Einwohner</th><th>Fälle</th><th>Tode</th><th>Fälle pro 1 Millionen Einwohner</th><th>Tote pro 1 Millionen Einwohner</th><th>Prognose Fälle Morgen (%)</th></tr>
+<tr><td>Flensburg (Kreisfreie Stadt)</td><td>Schleswig-Holstein</td><td>89504</td><td>33</td><td>1</td><td>369</td><td>11</td><td>4.3</td></tr>
+<tr><td>Kiel (Kreisfreie Stadt)</td><td>Schleswig-Holstein</td><td>247548</td><td>198</td><td>6</td><td>800</td><td>24</td><td>4.2</td></tr>
+<tr><td>Lübeck (Kreisfreie Stadt)</td><td>Schleswig-Holstein</td><td>217198</td><td>147</td><td>1</td><td>677</td><td>5</td><td>3.5</td></tr>
+<tr><td>Neumünster (Kreisfreie Stadt)</td><td>Schleswig-Holstein</td><td>79487</td><td>42</td><td>1</td><td>528</td><td>13</td><td>13.1</td></tr>
+<tr><td>Dithmarschen (Kreis)</td><td>Schleswig-Holstein</td><td>133210</td><td>53</td><td>1</td><td>398</td><td>8</td><td>9.0</td></tr>
+<tr><td>Herzogtum Lauenburg (Kreis)</td><td>Schleswig-Holstein</td><td>197264</td><td>204</td><td>5</td><td>1034</td><td>25</td><td>3.4</td></tr>
+<tr><td>Nordfriesland (Kreis)</td><td>Schleswig-Holstein</td><td>165507</td><td>66</td><td>1</td><td>399</td><td>6</td><td>7.4</td></tr>
+<tr><td>Ostholstein (Kreis)</td><td>Schleswig-Holstein</td><td>200581</td><td>58</td><td>0</td><td>289</td><td>0</td><td>6.1</td></tr>
+<tr><td>Pinneberg (Kreis)</td><td>Schleswig-Holstein</td><td>314391</td><td>465</td><td>12</td><td>1479</td><td>38</td><td>5.5</td></tr>
+<tr><td>Plön (Kreis)</td><td>Schleswig-Holstein</td><td>128647</td><td>101</td><td>3</td><td>785</td><td>23</td><td>8.7</td></tr>
+<tr><td>Rendsburg-Eckernförde (Kreis)</td><td>Schleswig-Holstein</td><td>272775</td><td>197</td><td>8</td><td>722</td><td>29</td><td>5.5</td></tr>
+<tr><td>Schleswig-Flensburg (Kreis)</td><td>Schleswig-Holstein</td><td>200025</td><td>111</td><td>3</td><td>555</td><td>15</td><td>4.4</td></tr>
+<tr><td>Segeberg (Kreis)</td><td>Schleswig-Holstein</td><td>276032</td><td>193</td><td>2</td><td>699</td><td>7</td><td>2.9</td></tr>
+<tr><td>Steinburg (Kreis)</td><td>Schleswig-Holstein</td><td>131347</td><td>74</td><td>2</td><td>563</td><td>15</td><td>6.5</td></tr>
+<tr><td>Stormarn (Kreis)</td><td>Schleswig-Holstein</td><td>243196</td><td>222</td><td>3</td><td>913</td><td>12</td><td>6.2</td></tr>
+<tr><td>Regionalverband Saarbrücken (Landkreis)</td><td>Saarland</td><td>329708</td><td>988</td><td>36</td><td>2997</td><td>109</td><td>8.0</td></tr>
+<tr><td>Merzig-Wadern (Landkreis)</td><td>Saarland</td><td>103366</td><td>167</td><td>1</td><td>1616</td><td>10</td><td>11.5</td></tr>
+<tr><td>Neunkirchen (Landkreis)</td><td>Saarland</td><td>132206</td><td>197</td><td>3</td><td>1490</td><td>23</td><td>3.5</td></tr>
+<tr><td>Saarlouis (Landkreis)</td><td>Saarland</td><td>195201</td><td>390</td><td>6</td><td>1998</td><td>31</td><td>6.9</td></tr>
+<tr><td>Saarpfalz-Kreis (Landkreis)</td><td>Saarland</td><td>142631</td><td>245</td><td>4</td><td>1718</td><td>28</td><td>4.2</td></tr>
+<tr><td>St. Wendel (Landkreis)</td><td>Saarland</td><td>87397</td><td>125</td><td>2</td><td>1430</td><td>23</td><td>5.9</td></tr>
+<tr><td>Berlin Reinickendorf (Kreisfreie Stadt)</td><td>Berlin</td><td>265225</td><td>369</td><td>15</td><td>1391</td><td>57</td><td>4.9</td></tr>
+<tr><td>Berlin Charlottenburg-Wilmersdorf (Kreisfreie Stadt)</td><td>Berlin</td><td>342332</td><td>567</td><td>6</td><td>1656</td><td>18</td><td>2.5</td></tr>
+<tr><td>Berlin Treptow-Köpenick (Kreisfreie Stadt)</td><td>Berlin</td><td>271153</td><td>239</td><td>1</td><td>881</td><td>4</td><td>3.6</td></tr>
+<tr><td>Berlin Pankow (Kreisfreie Stadt)</td><td>Berlin</td><td>407765</td><td>469</td><td>3</td><td>1150</td><td>7</td><td>4.2</td></tr>
+<tr><td>Berlin Neukölln (Kreisfreie Stadt)</td><td>Berlin</td><td>329691</td><td>478</td><td>10</td><td>1450</td><td>30</td><td>3.3</td></tr>
+<tr><td>Berlin Lichtenberg (Kreisfreie Stadt)</td><td>Berlin</td><td>291452</td><td>178</td><td>2</td><td>611</td><td>7</td><td>6.9</td></tr>
+<tr><td>Berlin Marzahn-Hellersdorf (Kreisfreie Stadt)</td><td>Berlin</td><td>268548</td><td>178</td><td>0</td><td>663</td><td>0</td><td>3.8</td></tr>
+<tr><td>Berlin Spandau (Kreisfreie Stadt)</td><td>Berlin</td><td>243977</td><td>177</td><td>4</td><td>725</td><td>16</td><td>4.2</td></tr>
+<tr><td>Berlin Steglitz-Zehlendorf (Kreisfreie Stadt)</td><td>Berlin</td><td>308697</td><td>410</td><td>2</td><td>1328</td><td>6</td><td>4.0</td></tr>
+<tr><td>Berlin Mitte (Kreisfreie Stadt)</td><td>Berlin</td><td>384172</td><td>723</td><td>1</td><td>1882</td><td>3</td><td>4.2</td></tr>
+<tr><td>Berlin Friedrichshain-Kreuzberg (Kreisfreie Stadt)</td><td>Berlin</td><td>289762</td><td>398</td><td>4</td><td>1374</td><td>14</td><td>2.9</td></tr>
+<tr><td>Berlin Tempelhof-Schöneberg (Kreisfreie Stadt)</td><td>Berlin</td><td>351644</td><td>482</td><td>8</td><td>1371</td><td>23</td><td>3.8</td></tr>
+<tr><td>Brandenburg an der Havel (Kreisfreie Stadt)</td><td>Brandenburg</td><td>72124</td><td>43</td><td>0</td><td>596</td><td>0</td><td>7.8</td></tr>
+<tr><td>Cottbus (Kreisfreie Stadt)</td><td>Brandenburg</td><td>100219</td><td>35</td><td>0</td><td>349</td><td>0</td><td>2.0</td></tr>
+<tr><td>Frankfurt (Oder) (Kreisfreie Stadt)</td><td>Brandenburg</td><td>57873</td><td>22</td><td>0</td><td>380</td><td>0</td><td>0.0</td></tr>
+<tr><td>Potsdam (Kreisfreie Stadt)</td><td>Brandenburg</td><td>178089</td><td>396</td><td>14</td><td>2224</td><td>79</td><td>19.7</td></tr>
+<tr><td>Barnim (Landkreis)</td><td>Brandenburg</td><td>182760</td><td>229</td><td>4</td><td>1253</td><td>22</td><td>27.9</td></tr>
+<tr><td>Dahme-Spreewald (Landkreis)</td><td>Brandenburg</td><td>169067</td><td>142</td><td>3</td><td>840</td><td>18</td><td>5.8</td></tr>
+<tr><td>Elbe-Elster (Landkreis)</td><td>Brandenburg</td><td>102638</td><td>69</td><td>2</td><td>672</td><td>19</td><td>2.6</td></tr>
+<tr><td>Havelland (Landkreis)</td><td>Brandenburg</td><td>161909</td><td>129</td><td>4</td><td>797</td><td>25</td><td>6.1</td></tr>
+<tr><td>Märkisch-Oderland (Landkreis)</td><td>Brandenburg</td><td>194328</td><td>167</td><td>0</td><td>859</td><td>0</td><td>6.5</td></tr>
+<tr><td>Oberhavel (Landkreis)</td><td>Brandenburg</td><td>211249</td><td>153</td><td>2</td><td>724</td><td>9</td><td>1.7</td></tr>
+<tr><td>Oberspreewald-Lausitz (Landkreis)</td><td>Brandenburg</td><td>110476</td><td>36</td><td>1</td><td>326</td><td>9</td><td>4.1</td></tr>
+<tr><td>Oder-Spree (Landkreis)</td><td>Brandenburg</td><td>178658</td><td>96</td><td>0</td><td>537</td><td>0</td><td>3.5</td></tr>
+<tr><td>Ostprignitz-Ruppin (Landkreis)</td><td>Brandenburg</td><td>99078</td><td>35</td><td>0</td><td>353</td><td>0</td><td>15.3</td></tr>
+<tr><td>Potsdam-Mittelmark (Landkreis)</td><td>Brandenburg</td><td>214664</td><td>182</td><td>7</td><td>848</td><td>33</td><td>3.9</td></tr>
+<tr><td>Prignitz (Landkreis)</td><td>Brandenburg</td><td>76508</td><td>19</td><td>0</td><td>248</td><td>0</td><td>6.3</td></tr>
+<tr><td>Spree-Neiße (Landkreis)</td><td>Brandenburg</td><td>114429</td><td>50</td><td>0</td><td>437</td><td>0</td><td>0.0</td></tr>
+<tr><td>Teltow-Fläming (Landkreis)</td><td>Brandenburg</td><td>168296</td><td>91</td><td>2</td><td>541</td><td>12</td><td>5.0</td></tr>
+<tr><td>Uckermark (Landkreis)</td><td>Brandenburg</td><td>119552</td><td>22</td><td>1</td><td>184</td><td>8</td><td>0.0</td></tr>
+<tr><td>Rostock (Kreisfreie Stadt)</td><td>Mecklenburg-Vorpommern</td><td>208886</td><td>73</td><td>1</td><td>349</td><td>5</td><td>1.0</td></tr>
+<tr><td>Schwerin (Kreisfreie Stadt)</td><td>Mecklenburg-Vorpommern</td><td>95818</td><td>86</td><td>0</td><td>898</td><td>0</td><td>1.6</td></tr>
+<tr><td>Mecklenburgische Seenplatte (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>259130</td><td>102</td><td>3</td><td>394</td><td>12</td><td>3.0</td></tr>
+<tr><td>Rostock (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>215113</td><td>54</td><td>2</td><td>251</td><td>9</td><td>7.9</td></tr>
+<tr><td>Vorpommern-Rügen (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>224684</td><td>74</td><td>2</td><td>329</td><td>9</td><td>8.4</td></tr>
+<tr><td>Nordwestmecklenburg (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>156729</td><td>63</td><td>1</td><td>402</td><td>6</td><td>6.0</td></tr>
+<tr><td>Vorpommern-Greifswald (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>236697</td><td>109</td><td>1</td><td>461</td><td>4</td><td>5.0</td></tr>
+<tr><td>Ludwigslust-Parchim (Landkreis)</td><td>Mecklenburg-Vorpommern</td><td>212618</td><td>58</td><td>1</td><td>273</td><td>5</td><td>1.2</td></tr>
+<tr><td>Chemnitz (Kreisfreie Stadt)</td><td>Sachsen</td><td>247237</td><td>180</td><td>3</td><td>728</td><td>12</td><td>2.4</td></tr>
+<tr><td>Erzgebirgskreis (Landkreis)</td><td>Sachsen</td><td>337696</td><td>397</td><td>17</td><td>1176</td><td>50</td><td>11.0</td></tr>
+<tr><td>Mittelsachsen (Landkreis)</td><td>Sachsen</td><td>306185</td><td>218</td><td>1</td><td>712</td><td>3</td><td>9.8</td></tr>
+<tr><td>Vogtlandkreis (Landkreis)</td><td>Sachsen</td><td>227796</td><td>256</td><td>1</td><td>1124</td><td>4</td><td>6.8</td></tr>
+<tr><td>Zwickau (Landkreis)</td><td>Sachsen</td><td>317531</td><td>624</td><td>18</td><td>1965</td><td>57</td><td>4.1</td></tr>
+<tr><td>Dresden (Kreisfreie Stadt)</td><td>Sachsen</td><td>554649</td><td>442</td><td>4</td><td>797</td><td>7</td><td>2.6</td></tr>
+<tr><td>Bautzen (Landkreis)</td><td>Sachsen</td><td>300880</td><td>193</td><td>3</td><td>641</td><td>10</td><td>4.5</td></tr>
+<tr><td>Görlitz (Landkreis)</td><td>Sachsen</td><td>254894</td><td>215</td><td>9</td><td>843</td><td>35</td><td>4.9</td></tr>
+<tr><td>Meißen (Landkreis)</td><td>Sachsen</td><td>242165</td><td>173</td><td>8</td><td>714</td><td>33</td><td>9.5</td></tr>
+<tr><td>Sächsische Schweiz-Osterzgebirge (Landkreis)</td><td>Sachsen</td><td>245611</td><td>299</td><td>1</td><td>1217</td><td>4</td><td>2.2</td></tr>
+<tr><td>Leipzig (Kreisfreie Stadt)</td><td>Sachsen</td><td>587857</td><td>486</td><td>1</td><td>827</td><td>2</td><td>2.5</td></tr>
+<tr><td>Leipzig (Landkreis)</td><td>Sachsen</td><td>257763</td><td>177</td><td>4</td><td>687</td><td>16</td><td>12.4</td></tr>
+<tr><td>Nordsachsen (Landkreis)</td><td>Sachsen</td><td>197673</td><td>91</td><td>0</td><td>460</td><td>0</td><td>1.6</td></tr>
+<tr><td>Dessau-Roßlau (Kreisfreie Stadt)</td><td>Sachsen-Anhalt</td><td>81237</td><td>53</td><td>1</td><td>652</td><td>12</td><td>11.2</td></tr>
+<tr><td>Halle (Saale) (Kreisfreie Stadt)</td><td>Sachsen-Anhalt</td><td>239257</td><td>259</td><td>9</td><td>1083</td><td>38</td><td>3.1</td></tr>
+<tr><td>Magdeburg (Kreisfreie Stadt)</td><td>Sachsen-Anhalt</td><td>238697</td><td>95</td><td>1</td><td>398</td><td>4</td><td>0.7</td></tr>
+<tr><td>Altmarkkreis Salzwedel (Landkreis)</td><td>Sachsen-Anhalt</td><td>83765</td><td>28</td><td>0</td><td>334</td><td>0</td><td>11.5</td></tr>
+<tr><td>Anhalt-Bitterfeld (Landkreis)</td><td>Sachsen-Anhalt</td><td>159854</td><td>49</td><td>0</td><td>307</td><td>0</td><td>1.0</td></tr>
+<tr><td>Börde (Landkreis)</td><td>Sachsen-Anhalt</td><td>171734</td><td>90</td><td>1</td><td>524</td><td>6</td><td>4.0</td></tr>
+<tr><td>Burgenlandkreis (Landkreis)</td><td>Sachsen-Anhalt</td><td>180190</td><td>56</td><td>0</td><td>311</td><td>0</td><td>12.8</td></tr>
+<tr><td>Harz (Landkreis)</td><td>Sachsen-Anhalt</td><td>214446</td><td>142</td><td>1</td><td>662</td><td>5</td><td>14.0</td></tr>
+<tr><td>Jerichower Land (Landkreis)</td><td>Sachsen-Anhalt</td><td>89928</td><td>28</td><td>1</td><td>311</td><td>11</td><td>1.7</td></tr>
+<tr><td>Mansfeld-Südharz (Landkreis)</td><td>Sachsen-Anhalt</td><td>136249</td><td>34</td><td>1</td><td>250</td><td>7</td><td>8.5</td></tr>
+<tr><td>Saalekreis (Landkreis)</td><td>Sachsen-Anhalt</td><td>184582</td><td>97</td><td>3</td><td>526</td><td>16</td><td>6.3</td></tr>
+<tr><td>Salzlandkreis (Landkreis)</td><td>Sachsen-Anhalt</td><td>190560</td><td>60</td><td>0</td><td>315</td><td>0</td><td>0.5</td></tr>
+<tr><td>Stendal (Landkreis)</td><td>Sachsen-Anhalt</td><td>111982</td><td>75</td><td>4</td><td>670</td><td>36</td><td>6.1</td></tr>
+<tr><td>Wittenberg (Landkreis)</td><td>Sachsen-Anhalt</td><td>125840</td><td>141</td><td>3</td><td>1120</td><td>24</td><td>3.5</td></tr>
+<tr><td>Erfurt (Kreisfreie Stadt)</td><td>Thüringen</td><td>213699</td><td>113</td><td>1</td><td>529</td><td>5</td><td>1.9</td></tr>
+<tr><td>Gera (Kreisfreie Stadt)</td><td>Thüringen</td><td>94152</td><td>55</td><td>0</td><td>584</td><td>0</td><td>16.8</td></tr>
+<tr><td>Jena (Kreisfreie Stadt)</td><td>Thüringen</td><td>111407</td><td>155</td><td>2</td><td>1391</td><td>18</td><td>2.5</td></tr>
+<tr><td>Suhl (Kreisfreie Stadt)</td><td>Thüringen</td><td>34835</td><td>11</td><td>1</td><td>316</td><td>29</td><td>0.0</td></tr>
+<tr><td>Weimar (Kreisfreie Stadt)</td><td>Thüringen</td><td>65090</td><td>58</td><td>0</td><td>891</td><td>0</td><td>3.9</td></tr>
+<tr><td>Eisenach (Kreisfreie Stadt)</td><td>Thüringen</td><td>42370</td><td>12</td><td>1</td><td>283</td><td>24</td><td>16.8</td></tr>
+<tr><td>Eichsfeld (Landkreis)</td><td>Thüringen</td><td>100380</td><td>93</td><td>3</td><td>926</td><td>30</td><td>4.4</td></tr>
+<tr><td>Nordhausen (Landkreis)</td><td>Thüringen</td><td>83822</td><td>29</td><td>0</td><td>346</td><td>0</td><td>6.7</td></tr>
+<tr><td>Wartburgkreis (Landkreis)</td><td>Thüringen</td><td>123025</td><td>33</td><td>0</td><td>268</td><td>0</td><td>3.4</td></tr>
+<tr><td>Unstrut-Hainich-Kreis (Landkreis)</td><td>Thüringen</td><td>102912</td><td>52</td><td>0</td><td>505</td><td>0</td><td>12.6</td></tr>
+<tr><td>Kyffhäuserkreis (Landkreis)</td><td>Thüringen</td><td>75009</td><td>35</td><td>0</td><td>467</td><td>0</td><td>10.5</td></tr>
+<tr><td>Schmalkalden-Meiningen (Landkreis)</td><td>Thüringen</td><td>122347</td><td>56</td><td>1</td><td>458</td><td>8</td><td>7.1</td></tr>
+<tr><td>Gotha (Landkreis)</td><td>Thüringen</td><td>135452</td><td>74</td><td>1</td><td>546</td><td>7</td><td>4.8</td></tr>
+<tr><td>Sömmerda (Landkreis)</td><td>Thüringen</td><td>69655</td><td>32</td><td>0</td><td>459</td><td>0</td><td>1.5</td></tr>
+<tr><td>Hildburghausen (Landkreis)</td><td>Thüringen</td><td>63553</td><td>11</td><td>1</td><td>173</td><td>16</td><td>0.0</td></tr>
+<tr><td>Ilm-Kreis (Landkreis)</td><td>Thüringen</td><td>108742</td><td>102</td><td>2</td><td>938</td><td>18</td><td>2.3</td></tr>
+<tr><td>Weimarer Land (Landkreis)</td><td>Thüringen</td><td>81947</td><td>58</td><td>1</td><td>708</td><td>12</td><td>4.9</td></tr>
+<tr><td>Sonneberg (Landkreis)</td><td>Thüringen</td><td>56196</td><td>47</td><td>1</td><td>836</td><td>18</td><td>9.1</td></tr>
+<tr><td>Saalfeld-Rudolstadt (Landkreis)</td><td>Thüringen</td><td>106356</td><td>54</td><td>0</td><td>508</td><td>0</td><td>1.8</td></tr>
+<tr><td>Saale-Holzland-Kreis (Landkreis)</td><td>Thüringen</td><td>83051</td><td>50</td><td>0</td><td>602</td><td>0</td><td>3.8</td></tr>
+<tr><td>Saale-Orla-Kreis (Landkreis)</td><td>Thüringen</td><td>80868</td><td>95</td><td>3</td><td>1175</td><td>37</td><td>7.3</td></tr>
+<tr><td>Greiz (Landkreis)</td><td>Thüringen</td><td>98159</td><td>244</td><td>13</td><td>2486</td><td>132</td><td>4.5</td></tr>
+<tr><td>Altenburger Land (Landkreis)</td><td>Thüringen</td><td>90118</td><td>35</td><td>0</td><td>388</td><td>0</td><td>6.1</td></tr>
+<tr><td>Hamburg (Kreisfreie Stadt)</td><td>Hamburg</td><td>1841179</td><td>3808</td><td>59</td><td>2068</td><td>32</td><td>6.0</td></tr>
+<tr><td>Braunschweig (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>248292</td><td>271</td><td>7</td><td>1091</td><td>28</td><td>7.5</td></tr>
+<tr><td>Salzgitter (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>104948</td><td>96</td><td>3</td><td>915</td><td>29</td><td>7.8</td></tr>
+<tr><td>Wolfsburg (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>124151</td><td>249</td><td>39</td><td>2006</td><td>314</td><td>5.9</td></tr>
+<tr><td>Gifhorn (Landkreis)</td><td>Niedersachsen</td><td>175920</td><td>107</td><td>2</td><td>608</td><td>11</td><td>0.6</td></tr>
+<tr><td>Goslar (Landkreis)</td><td>Niedersachsen</td><td>137014</td><td>112</td><td>3</td><td>817</td><td>22</td><td>12.8</td></tr>
+<tr><td>Helmstedt (Landkreis)</td><td>Niedersachsen</td><td>91307</td><td>82</td><td>0</td><td>898</td><td>0</td><td>0.6</td></tr>
+<tr><td>Northeim (Landkreis)</td><td>Niedersachsen</td><td>132765</td><td>71</td><td>0</td><td>535</td><td>0</td><td>9.2</td></tr>
+<tr><td>Peine (Landkreis)</td><td>Niedersachsen</td><td>133965</td><td>126</td><td>5</td><td>941</td><td>37</td><td>4.3</td></tr>
+<tr><td>Wolfenbüttel (Landkreis)</td><td>Niedersachsen</td><td>119960</td><td>108</td><td>1</td><td>900</td><td>8</td><td>19.1</td></tr>
+<tr><td>Göttingen (Landkreis)</td><td>Niedersachsen</td><td>328074</td><td>438</td><td>11</td><td>1335</td><td>34</td><td>10.9</td></tr>
+<tr><td>Region Hannover (Landkreis)</td><td>Niedersachsen</td><td>1157624</td><td>1445</td><td>27</td><td>1248</td><td>23</td><td>8.0</td></tr>
+<tr><td>Diepholz (Landkreis)</td><td>Niedersachsen</td><td>216886</td><td>253</td><td>8</td><td>1167</td><td>37</td><td>7.3</td></tr>
+<tr><td>Hameln-Pyrmont (Landkreis)</td><td>Niedersachsen</td><td>148559</td><td>94</td><td>3</td><td>633</td><td>20</td><td>2.7</td></tr>
+<tr><td>Hildesheim (Landkreis)</td><td>Niedersachsen</td><td>276594</td><td>215</td><td>1</td><td>777</td><td>4</td><td>5.4</td></tr>
+<tr><td>Holzminden (Landkreis)</td><td>Niedersachsen</td><td>70975</td><td>95</td><td>2</td><td>1338</td><td>28</td><td>7.8</td></tr>
+<tr><td>Nienburg (Weser) (Landkreis)</td><td>Niedersachsen</td><td>121386</td><td>59</td><td>1</td><td>486</td><td>8</td><td>7.4</td></tr>
+<tr><td>Schaumburg (Landkreis)</td><td>Niedersachsen</td><td>157781</td><td>123</td><td>1</td><td>780</td><td>6</td><td>15.6</td></tr>
+<tr><td>Celle (Landkreis)</td><td>Niedersachsen</td><td>178936</td><td>129</td><td>7</td><td>721</td><td>39</td><td>6.7</td></tr>
+<tr><td>Cuxhaven (Landkreis)</td><td>Niedersachsen</td><td>198213</td><td>75</td><td>3</td><td>378</td><td>15</td><td>3.7</td></tr>
+<tr><td>Harburg (Landkreis)</td><td>Niedersachsen</td><td>252776</td><td>366</td><td>6</td><td>1448</td><td>24</td><td>10.1</td></tr>
+<tr><td>Lüchow-Dannenberg (Landkreis)</td><td>Niedersachsen</td><td>48424</td><td>14</td><td>2</td><td>289</td><td>41</td><td>0.0</td></tr>
+<tr><td>Lüneburg (Landkreis)</td><td>Niedersachsen</td><td>183372</td><td>138</td><td>0</td><td>753</td><td>0</td><td>4.7</td></tr>
+<tr><td>Osterholz (Landkreis)</td><td>Niedersachsen</td><td>113517</td><td>68</td><td>0</td><td>599</td><td>0</td><td>5.8</td></tr>
+<tr><td>Rotenburg (Wümme) (Landkreis)</td><td>Niedersachsen</td><td>163455</td><td>79</td><td>1</td><td>483</td><td>6</td><td>2.5</td></tr>
+<tr><td>Heidekreis (Landkreis)</td><td>Niedersachsen</td><td>139755</td><td>52</td><td>1</td><td>372</td><td>7</td><td>8.9</td></tr>
+<tr><td>Stade (Landkreis)</td><td>Niedersachsen</td><td>203102</td><td>169</td><td>5</td><td>832</td><td>25</td><td>3.0</td></tr>
+<tr><td>Uelzen (Landkreis)</td><td>Niedersachsen</td><td>92572</td><td>34</td><td>0</td><td>367</td><td>0</td><td>6.8</td></tr>
+<tr><td>Verden (Landkreis)</td><td>Niedersachsen</td><td>136792</td><td>106</td><td>1</td><td>775</td><td>7</td><td>0.4</td></tr>
+<tr><td>Delmenhorst (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>77607</td><td>28</td><td>2</td><td>361</td><td>26</td><td>4.3</td></tr>
+<tr><td>Emden (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>50195</td><td>14</td><td>0</td><td>279</td><td>0</td><td>6.9</td></tr>
+<tr><td>Oldenburg (Oldb) (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>168210</td><td>148</td><td>0</td><td>880</td><td>0</td><td>1.3</td></tr>
+<tr><td>Osnabrück (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>164748</td><td>379</td><td>7</td><td>2300</td><td>42</td><td>6.2</td></tr>
+<tr><td>Wilhelmshaven (Kreisfreie Stadt)</td><td>Niedersachsen</td><td>76278</td><td>13</td><td>0</td><td>170</td><td>0</td><td>3.2</td></tr>
+<tr><td>Ammerland (Landkreis)</td><td>Niedersachsen</td><td>124071</td><td>135</td><td>2</td><td>1088</td><td>16</td><td>3.6</td></tr>
+<tr><td>Aurich (Landkreis)</td><td>Niedersachsen</td><td>189848</td><td>70</td><td>3</td><td>369</td><td>16</td><td>2.4</td></tr>
+<tr><td>Cloppenburg (Landkreis)</td><td>Niedersachsen</td><td>169348</td><td>83</td><td>0</td><td>490</td><td>0</td><td>24.5</td></tr>
+<tr><td>Emsland (Landkreis)</td><td>Niedersachsen</td><td>325657</td><td>300</td><td>10</td><td>921</td><td>31</td><td>12.2</td></tr>
+<tr><td>Friesland (Landkreis)</td><td>Niedersachsen</td><td>98460</td><td>26</td><td>1</td><td>264</td><td>10</td><td>3.9</td></tr>
+<tr><td>Grafschaft Bentheim (Landkreis)</td><td>Niedersachsen</td><td>136511</td><td>174</td><td>9</td><td>1275</td><td>66</td><td>5.5</td></tr>
+<tr><td>Leer (Landkreis)</td><td>Niedersachsen</td><td>169809</td><td>69</td><td>1</td><td>406</td><td>6</td><td>2.3</td></tr>
+<tr><td>Oldenburg (Landkreis)</td><td>Niedersachsen</td><td>130144</td><td>178</td><td>8</td><td>1368</td><td>61</td><td>3.7</td></tr>
+<tr><td>Osnabrück (Landkreis)</td><td>Niedersachsen</td><td>357343</td><td>751</td><td>20</td><td>2102</td><td>56</td><td>7.1</td></tr>
+<tr><td>Vechta (Landkreis)</td><td>Niedersachsen</td><td>141598</td><td>270</td><td>7</td><td>1907</td><td>49</td><td>5.7</td></tr>
+<tr><td>Wesermarsch (Landkreis)</td><td>Niedersachsen</td><td>88624</td><td>51</td><td>1</td><td>575</td><td>11</td><td>2.1</td></tr>
+<tr><td>Wittmund (Landkreis)</td><td>Niedersachsen</td><td>56882</td><td>21</td><td>0</td><td>369</td><td>0</td><td>-2.0</td></tr>
+<tr><td>Bremen (Kreisfreie Stadt)</td><td>Bremen</td><td>569352</td><td>466</td><td>20</td><td>818</td><td>35</td><td>3.3</td></tr>
+<tr><td>Bremerhaven (Kreisfreie Stadt)</td><td>Bremen</td><td>113634</td><td>26</td><td>0</td><td>229</td><td>0</td><td>0.0</td></tr>
+<tr><td>Düsseldorf (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>619294</td><td>773</td><td>10</td><td>1248</td><td>16</td><td>6.2</td></tr>
+<tr><td>Duisburg (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>498590</td><td>517</td><td>9</td><td>1037</td><td>18</td><td>8.4</td></tr>
+<tr><td>Essen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>583109</td><td>502</td><td>23</td><td>861</td><td>39</td><td>3.9</td></tr>
+<tr><td>Krefeld (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>227020</td><td>282</td><td>2</td><td>1242</td><td>9</td><td>3.2</td></tr>
+<tr><td>Mönchengladbach (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>261454</td><td>361</td><td>16</td><td>1381</td><td>61</td><td>7.7</td></tr>
+<tr><td>Mülheim an der Ruhr (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>170880</td><td>128</td><td>4</td><td>749</td><td>23</td><td>4.2</td></tr>
+<tr><td>Oberhausen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>210829</td><td>140</td><td>0</td><td>664</td><td>0</td><td>7.7</td></tr>
+<tr><td>Remscheid (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>110994</td><td>164</td><td>2</td><td>1478</td><td>18</td><td>24.6</td></tr>
+<tr><td>Solingen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>159360</td><td>173</td><td>2</td><td>1086</td><td>13</td><td>6.7</td></tr>
+<tr><td>Wuppertal (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>354382</td><td>561</td><td>17</td><td>1583</td><td>48</td><td>16.2</td></tr>
+<tr><td>Kleve (Kreis)</td><td>Nordrhein-Westfalen</td><td>310974</td><td>418</td><td>9</td><td>1344</td><td>29</td><td>12.9</td></tr>
+<tr><td>Mettmann (Kreis)</td><td>Nordrhein-Westfalen</td><td>485684</td><td>657</td><td>24</td><td>1353</td><td>49</td><td>10.1</td></tr>
+<tr><td>Rhein-Kreis Neuss (Kreis)</td><td>Nordrhein-Westfalen</td><td>451007</td><td>505</td><td>12</td><td>1120</td><td>27</td><td>2.2</td></tr>
+<tr><td>Viersen (Kreis)</td><td>Nordrhein-Westfalen</td><td>298935</td><td>377</td><td>7</td><td>1261</td><td>23</td><td>8.1</td></tr>
+<tr><td>Wesel (Kreis)</td><td>Nordrhein-Westfalen</td><td>459809</td><td>381</td><td>9</td><td>829</td><td>20</td><td>6.4</td></tr>
+<tr><td>Bonn (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>327258</td><td>516</td><td>5</td><td>1577</td><td>15</td><td>7.5</td></tr>
+<tr><td>Köln (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>1085664</td><td>2031</td><td>46</td><td>1871</td><td>42</td><td>4.3</td></tr>
+<tr><td>Leverkusen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>163838</td><td>146</td><td>2</td><td>891</td><td>12</td><td>0.0</td></tr>
+<tr><td>Städteregion Aachen (Kreis)</td><td>Nordrhein-Westfalen</td><td>555465</td><td>1498</td><td>52</td><td>2697</td><td>94</td><td>6.4</td></tr>
+<tr><td>Düren (Kreis)</td><td>Nordrhein-Westfalen</td><td>263722</td><td>447</td><td>18</td><td>1695</td><td>68</td><td>10.3</td></tr>
+<tr><td>Rhein-Erft-Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>470089</td><td>747</td><td>13</td><td>1589</td><td>28</td><td>6.7</td></tr>
+<tr><td>Euskirchen (Kreis)</td><td>Nordrhein-Westfalen</td><td>192840</td><td>276</td><td>8</td><td>1431</td><td>41</td><td>10.4</td></tr>
+<tr><td>Heinsberg (Kreis)</td><td>Nordrhein-Westfalen</td><td>254322</td><td>1564</td><td>48</td><td>6150</td><td>189</td><td>2.6</td></tr>
+<tr><td>Oberbergischer Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>272471</td><td>369</td><td>9</td><td>1354</td><td>33</td><td>4.8</td></tr>
+<tr><td>Rheinisch-Bergischer Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>283455</td><td>371</td><td>4</td><td>1309</td><td>14</td><td>8.4</td></tr>
+<tr><td>Rhein-Sieg-Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>599780</td><td>889</td><td>12</td><td>1482</td><td>20</td><td>6.2</td></tr>
+<tr><td>Bottrop (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>117383</td><td>55</td><td>1</td><td>469</td><td>9</td><td>12.5</td></tr>
+<tr><td>Gelsenkirchen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>260654</td><td>214</td><td>5</td><td>821</td><td>19</td><td>7.3</td></tr>
+<tr><td>Münster (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>314319</td><td>585</td><td>7</td><td>1861</td><td>22</td><td>2.0</td></tr>
+<tr><td>Borken (Kreis)</td><td>Nordrhein-Westfalen</td><td>370676</td><td>778</td><td>20</td><td>2099</td><td>54</td><td>4.1</td></tr>
+<tr><td>Coesfeld (Kreis)</td><td>Nordrhein-Westfalen</td><td>219929</td><td>454</td><td>15</td><td>2064</td><td>68</td><td>4.0</td></tr>
+<tr><td>Recklinghausen (Kreis)</td><td>Nordrhein-Westfalen</td><td>615261</td><td>635</td><td>5</td><td>1032</td><td>8</td><td>11.9</td></tr>
+<tr><td>Steinfurt (Kreis)</td><td>Nordrhein-Westfalen</td><td>447614</td><td>957</td><td>23</td><td>2138</td><td>51</td><td>12.0</td></tr>
+<tr><td>Warendorf (Kreis)</td><td>Nordrhein-Westfalen</td><td>277783</td><td>372</td><td>3</td><td>1339</td><td>11</td><td>3.6</td></tr>
+<tr><td>Bielefeld (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>333786</td><td>367</td><td>0</td><td>1100</td><td>0</td><td>0.0</td></tr>
+<tr><td>Gütersloh (Kreis)</td><td>Nordrhein-Westfalen</td><td>364083</td><td>439</td><td>8</td><td>1206</td><td>22</td><td>1.7</td></tr>
+<tr><td>Herford (Kreis)</td><td>Nordrhein-Westfalen</td><td>250783</td><td>277</td><td>1</td><td>1105</td><td>4</td><td>6.0</td></tr>
+<tr><td>Höxter (Kreis)</td><td>Nordrhein-Westfalen</td><td>140667</td><td>150</td><td>1</td><td>1066</td><td>7</td><td>0.3</td></tr>
+<tr><td>Lippe (Kreis)</td><td>Nordrhein-Westfalen</td><td>348391</td><td>514</td><td>7</td><td>1475</td><td>20</td><td>4.7</td></tr>
+<tr><td>Minden-Lübbecke (Kreis)</td><td>Nordrhein-Westfalen</td><td>310710</td><td>371</td><td>3</td><td>1194</td><td>10</td><td>5.7</td></tr>
+<tr><td>Paderborn (Kreis)</td><td>Nordrhein-Westfalen</td><td>306890</td><td>467</td><td>12</td><td>1522</td><td>39</td><td>7.3</td></tr>
+<tr><td>Bochum (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>364628</td><td>309</td><td>7</td><td>847</td><td>19</td><td>9.5</td></tr>
+<tr><td>Dortmund (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>587010</td><td>538</td><td>3</td><td>917</td><td>5</td><td>6.5</td></tr>
+<tr><td>Hagen (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>188814</td><td>165</td><td>2</td><td>874</td><td>11</td><td>14.5</td></tr>
+<tr><td>Hamm (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>179111</td><td>313</td><td>11</td><td>1748</td><td>61</td><td>5.3</td></tr>
+<tr><td>Herne (Kreisfreie Stadt)</td><td>Nordrhein-Westfalen</td><td>156374</td><td>103</td><td>0</td><td>659</td><td>0</td><td>10.2</td></tr>
+<tr><td>Ennepe-Ruhr-Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>324296</td><td>311</td><td>3</td><td>959</td><td>9</td><td>6.4</td></tr>
+<tr><td>Hochsauerlandkreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>260475</td><td>507</td><td>6</td><td>1946</td><td>23</td><td>10.6</td></tr>
+<tr><td>Märkischer Kreis (Kreis)</td><td>Nordrhein-Westfalen</td><td>412120</td><td>361</td><td>9</td><td>876</td><td>22</td><td>22.7</td></tr>
+<tr><td>Olpe (Kreis)</td><td>Nordrhein-Westfalen</td><td>134775</td><td>374</td><td>14</td><td>2775</td><td>104</td><td>21.1</td></tr>
+<tr><td>Siegen-Wittgenstein (Kreis)</td><td>Nordrhein-Westfalen</td><td>278210</td><td>205</td><td>4</td><td>737</td><td>14</td><td>10.0</td></tr>
+<tr><td>Soest (Kreis)</td><td>Nordrhein-Westfalen</td><td>301902</td><td>312</td><td>2</td><td>1033</td><td>7</td><td>7.6</td></tr>
+<tr><td>Unna (Kreis)</td><td>Nordrhein-Westfalen</td><td>394782</td><td>374</td><td>10</td><td>947</td><td>25</td><td>6.2</td></tr>
+<tr><td>Darmstadt (Kreisfreie Stadt)</td><td>Hessen</td><td>159207</td><td>118</td><td>0</td><td>741</td><td>0</td><td>5.4</td></tr>
+<tr><td>Frankfurt am Main (Kreisfreie Stadt)</td><td>Hessen</td><td>753056</td><td>868</td><td>14</td><td>1153</td><td>19</td><td>6.4</td></tr>
+<tr><td>Offenbach am Main (Kreisfreie Stadt)</td><td>Hessen</td><td>128744</td><td>55</td><td>2</td><td>427</td><td>16</td><td>6.9</td></tr>
+<tr><td>Wiesbaden (Kreisfreie Stadt)</td><td>Hessen</td><td>278342</td><td>249</td><td>6</td><td>895</td><td>22</td><td>4.5</td></tr>
+<tr><td>Bergstraße (Landkreis)</td><td>Hessen</td><td>269694</td><td>266</td><td>1</td><td>986</td><td>4</td><td>3.3</td></tr>
+<tr><td>Darmstadt-Dieburg (Landkreis)</td><td>Hessen</td><td>297399</td><td>297</td><td>5</td><td>999</td><td>17</td><td>5.1</td></tr>
+<tr><td>Groß-Gerau (Landkreis)</td><td>Hessen</td><td>274526</td><td>303</td><td>3</td><td>1104</td><td>11</td><td>9.1</td></tr>
+<tr><td>Hochtaunuskreis (Landkreis)</td><td>Hessen</td><td>236564</td><td>212</td><td>2</td><td>896</td><td>8</td><td>2.7</td></tr>
+<tr><td>Main-Kinzig-Kreis (Landkreis)</td><td>Hessen</td><td>418950</td><td>384</td><td>7</td><td>917</td><td>17</td><td>5.3</td></tr>
+<tr><td>Main-Taunus-Kreis (Landkreis)</td><td>Hessen</td><td>237735</td><td>192</td><td>4</td><td>808</td><td>17</td><td>5.5</td></tr>
+<tr><td>Odenwaldkreis (Landkreis)</td><td>Hessen</td><td>96798</td><td>192</td><td>23</td><td>1984</td><td>238</td><td>6.1</td></tr>
+<tr><td>Offenbach (Landkreis)</td><td>Hessen</td><td>354092</td><td>347</td><td>14</td><td>980</td><td>40</td><td>5.6</td></tr>
+<tr><td>Rheingau-Taunus-Kreis (Landkreis)</td><td>Hessen</td><td>187157</td><td>176</td><td>2</td><td>940</td><td>11</td><td>1.6</td></tr>
+<tr><td>Wetteraukreis (Landkreis)</td><td>Hessen</td><td>306460</td><td>204</td><td>5</td><td>666</td><td>16</td><td>10.4</td></tr>
+<tr><td>Gießen (Landkreis)</td><td>Hessen</td><td>268876</td><td>185</td><td>0</td><td>688</td><td>0</td><td>1.4</td></tr>
+<tr><td>Lahn-Dill-Kreis (Landkreis)</td><td>Hessen</td><td>253777</td><td>305</td><td>9</td><td>1202</td><td>35</td><td>3.3</td></tr>
+<tr><td>Limburg-Weilburg (Landkreis)</td><td>Hessen</td><td>172083</td><td>216</td><td>0</td><td>1255</td><td>0</td><td>4.5</td></tr>
+<tr><td>Marburg-Biedenkopf (Landkreis)</td><td>Hessen</td><td>246648</td><td>159</td><td>1</td><td>645</td><td>4</td><td>5.9</td></tr>
+<tr><td>Vogelsbergkreis (Landkreis)</td><td>Hessen</td><td>105878</td><td>100</td><td>4</td><td>944</td><td>38</td><td>9.5</td></tr>
+<tr><td>Kassel (Kreisfreie Stadt)</td><td>Hessen</td><td>201585</td><td>149</td><td>3</td><td>739</td><td>15</td><td>12.6</td></tr>
+<tr><td>Fulda (Landkreis)</td><td>Hessen</td><td>222584</td><td>263</td><td>5</td><td>1182</td><td>22</td><td>6.2</td></tr>
+<tr><td>Hersfeld-Rotenburg (Landkreis)</td><td>Hessen</td><td>120829</td><td>173</td><td>9</td><td>1432</td><td>74</td><td>5.9</td></tr>
+<tr><td>Kassel (Landkreis)</td><td>Hessen</td><td>236633</td><td>216</td><td>8</td><td>913</td><td>34</td><td>19.4</td></tr>
+<tr><td>Schwalm-Eder-Kreis (Landkreis)</td><td>Hessen</td><td>180222</td><td>349</td><td>17</td><td>1937</td><td>94</td><td>4.7</td></tr>
+<tr><td>Waldeck-Frankenberg (Landkreis)</td><td>Hessen</td><td>156953</td><td>113</td><td>1</td><td>720</td><td>6</td><td>6.1</td></tr>
+<tr><td>Werra-Meißner-Kreis (Landkreis)</td><td>Hessen</td><td>101017</td><td>92</td><td>2</td><td>911</td><td>20</td><td>22.7</td></tr>
+<tr><td>Koblenz (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>114024</td><td>213</td><td>9</td><td>1868</td><td>79</td><td>4.4</td></tr>
+<tr><td>Ahrweiler (Landkreis)</td><td>Rheinland-Pfalz</td><td>129727</td><td>112</td><td>1</td><td>863</td><td>8</td><td>5.4</td></tr>
+<tr><td>Altenkirchen (Westerwald) (Landkreis)</td><td>Rheinland-Pfalz</td><td>128705</td><td>90</td><td>2</td><td>699</td><td>16</td><td>14.2</td></tr>
+<tr><td>Bad Kreuznach (Landkreis)</td><td>Rheinland-Pfalz</td><td>158080</td><td>145</td><td>1</td><td>917</td><td>6</td><td>1.3</td></tr>
+<tr><td>Birkenfeld (Landkreis)</td><td>Rheinland-Pfalz</td><td>80720</td><td>68</td><td>0</td><td>842</td><td>0</td><td>12.0</td></tr>
+<tr><td>Cochem-Zell (Landkreis)</td><td>Rheinland-Pfalz</td><td>61587</td><td>122</td><td>0</td><td>1981</td><td>0</td><td>0.6</td></tr>
+<tr><td>Mayen-Koblenz (Landkreis)</td><td>Rheinland-Pfalz</td><td>214259</td><td>315</td><td>6</td><td>1470</td><td>28</td><td>5.6</td></tr>
+<tr><td>Neuwied (Landkreis)</td><td>Rheinland-Pfalz</td><td>181941</td><td>197</td><td>2</td><td>1083</td><td>11</td><td>4.0</td></tr>
+<tr><td>Rhein-Hunsrück-Kreis (Landkreis)</td><td>Rheinland-Pfalz</td><td>102937</td><td>138</td><td>0</td><td>1341</td><td>0</td><td>3.1</td></tr>
+<tr><td>Rhein-Lahn-Kreis (Landkreis)</td><td>Rheinland-Pfalz</td><td>122308</td><td>133</td><td>2</td><td>1087</td><td>16</td><td>4.7</td></tr>
+<tr><td>Westerwaldkreis (Landkreis)</td><td>Rheinland-Pfalz</td><td>201597</td><td>273</td><td>9</td><td>1354</td><td>45</td><td>6.3</td></tr>
+<tr><td>Trier (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>110636</td><td>88</td><td>0</td><td>795</td><td>0</td><td>0.4</td></tr>
+<tr><td>Bernkastel-Wittlich (Landkreis)</td><td>Rheinland-Pfalz</td><td>112262</td><td>112</td><td>0</td><td>998</td><td>0</td><td>10.1</td></tr>
+<tr><td>Eifelkreis Bitburg-Prüm (Landkreis)</td><td>Rheinland-Pfalz</td><td>98561</td><td>135</td><td>2</td><td>1370</td><td>20</td><td>2.7</td></tr>
+<tr><td>Vulkaneifel (Landkreis)</td><td>Rheinland-Pfalz</td><td>60603</td><td>94</td><td>1</td><td>1551</td><td>17</td><td>5.3</td></tr>
+<tr><td>Trier-Saarburg (Landkreis)</td><td>Rheinland-Pfalz</td><td>148945</td><td>138</td><td>3</td><td>927</td><td>20</td><td>4.4</td></tr>
+<tr><td>Frankenthal (Pfalz) (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>48561</td><td>31</td><td>0</td><td>638</td><td>0</td><td>9.5</td></tr>
+<tr><td>Kaiserslautern (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>99845</td><td>89</td><td>1</td><td>891</td><td>10</td><td>7.8</td></tr>
+<tr><td>Landau in der Pfalz (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>46677</td><td>49</td><td>0</td><td>1050</td><td>0</td><td>3.9</td></tr>
+<tr><td>Ludwigshafen am Rhein (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>171061</td><td>205</td><td>1</td><td>1198</td><td>6</td><td>3.7</td></tr>
+<tr><td>Mainz (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>217118</td><td>358</td><td>5</td><td>1649</td><td>23</td><td>9.9</td></tr>
+<tr><td>Neustadt an der Weinstraße (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>53148</td><td>86</td><td>1</td><td>1618</td><td>19</td><td>6.4</td></tr>
+<tr><td>Pirmasens (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>40403</td><td>26</td><td>0</td><td>644</td><td>0</td><td>5.5</td></tr>
+<tr><td>Speyer (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>50378</td><td>48</td><td>0</td><td>953</td><td>0</td><td>14.1</td></tr>
+<tr><td>Worms (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>83330</td><td>140</td><td>6</td><td>1680</td><td>72</td><td>6.4</td></tr>
+<tr><td>Zweibrücken (Kreisfreie Stadt)</td><td>Rheinland-Pfalz</td><td>34209</td><td>30</td><td>0</td><td>877</td><td>0</td><td>6.1</td></tr>
+<tr><td>Alzey-Worms (Landkreis)</td><td>Rheinland-Pfalz</td><td>129244</td><td>133</td><td>1</td><td>1029</td><td>8</td><td>11.7</td></tr>
+<tr><td>Bad Dürkheim (Landkreis)</td><td>Rheinland-Pfalz</td><td>132660</td><td>270</td><td>4</td><td>2035</td><td>30</td><td>7.6</td></tr>
+<tr><td>Donnersbergkreis (Landkreis)</td><td>Rheinland-Pfalz</td><td>75101</td><td>87</td><td>1</td><td>1158</td><td>13</td><td>9.6</td></tr>
+<tr><td>Germersheim (Landkreis)</td><td>Rheinland-Pfalz</td><td>129075</td><td>117</td><td>1</td><td>906</td><td>8</td><td>9.1</td></tr>
+<tr><td>Kaiserslautern (Landkreis)</td><td>Rheinland-Pfalz</td><td>106057</td><td>87</td><td>0</td><td>820</td><td>0</td><td>8.9</td></tr>
+<tr><td>Kusel (Landkreis)</td><td>Rheinland-Pfalz</td><td>70526</td><td>81</td><td>0</td><td>1149</td><td>0</td><td>7.8</td></tr>
+<tr><td>Südliche Weinstraße (Landkreis)</td><td>Rheinland-Pfalz</td><td>110356</td><td>134</td><td>1</td><td>1214</td><td>9</td><td>5.7</td></tr>
+<tr><td>Rhein-Pfalz-Kreis (Landkreis)</td><td>Rheinland-Pfalz</td><td>154201</td><td>159</td><td>2</td><td>1031</td><td>13</td><td>5.1</td></tr>
+<tr><td>Mainz-Bingen (Landkreis)</td><td>Rheinland-Pfalz</td><td>210889</td><td>282</td><td>6</td><td>1337</td><td>28</td><td>11.2</td></tr>
+<tr><td>Südwestpfalz (Landkreis)</td><td>Rheinland-Pfalz</td><td>95113</td><td>95</td><td>2</td><td>999</td><td>21</td><td>7.4</td></tr>
+<tr><td>Stuttgart (Stadtkreis)</td><td>Baden-Württemberg</td><td>634830</td><td>1146</td><td>23</td><td>1805</td><td>36</td><td>2.6</td></tr>
+<tr><td>Böblingen (Landkreis)</td><td>Baden-Württemberg</td><td>391640</td><td>1154</td><td>27</td><td>2947</td><td>69</td><td>4.3</td></tr>
+<tr><td>Esslingen (Landkreis)</td><td>Baden-Württemberg</td><td>533859</td><td>1387</td><td>48</td><td>2598</td><td>90</td><td>7.1</td></tr>
+<tr><td>Göppingen (Landkreis)</td><td>Baden-Württemberg</td><td>257253</td><td>653</td><td>24</td><td>2538</td><td>93</td><td>2.7</td></tr>
+<tr><td>Ludwigsburg (Landkreis)</td><td>Baden-Württemberg</td><td>543984</td><td>1299</td><td>29</td><td>2388</td><td>53</td><td>6.3</td></tr>
+<tr><td>Rems-Murr-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>426158</td><td>966</td><td>19</td><td>2267</td><td>45</td><td>3.3</td></tr>
+<tr><td>Heilbronn (Stadtkreis)</td><td>Baden-Württemberg</td><td>125960</td><td>344</td><td>4</td><td>2731</td><td>32</td><td>5.0</td></tr>
+<tr><td>Heilbronn (Landkreis)</td><td>Baden-Württemberg</td><td>343068</td><td>662</td><td>14</td><td>1930</td><td>41</td><td>7.4</td></tr>
+<tr><td>Hohenlohekreis (Landkreis)</td><td>Baden-Württemberg</td><td>112010</td><td>676</td><td>27</td><td>6035</td><td>241</td><td>3.6</td></tr>
+<tr><td>Schwäbisch Hall (Landkreis)</td><td>Baden-Württemberg</td><td>195861</td><td>631</td><td>31</td><td>3222</td><td>158</td><td>6.0</td></tr>
+<tr><td>Main-Tauber-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>132321</td><td>291</td><td>3</td><td>2199</td><td>23</td><td>7.2</td></tr>
+<tr><td>Heidenheim (Landkreis)</td><td>Baden-Württemberg</td><td>132472</td><td>314</td><td>22</td><td>2370</td><td>166</td><td>7.1</td></tr>
+<tr><td>Ostalbkreis (Landkreis)</td><td>Baden-Württemberg</td><td>314002</td><td>486</td><td>7</td><td>1548</td><td>22</td><td>2.8</td></tr>
+<tr><td>Baden-Baden (Stadtkreis)</td><td>Baden-Württemberg</td><td>55123</td><td>143</td><td>7</td><td>2594</td><td>127</td><td>6.6</td></tr>
+<tr><td>Karlsruhe (Stadtkreis)</td><td>Baden-Württemberg</td><td>313092</td><td>289</td><td>3</td><td>923</td><td>10</td><td>7.0</td></tr>
+<tr><td>Karlsruhe (Landkreis)</td><td>Baden-Württemberg</td><td>444232</td><td>729</td><td>24</td><td>1641</td><td>54</td><td>9.7</td></tr>
+<tr><td>Rastatt (Landkreis)</td><td>Baden-Württemberg</td><td>231018</td><td>423</td><td>5</td><td>1831</td><td>22</td><td>3.5</td></tr>
+<tr><td>Heidelberg (Stadtkreis)</td><td>Baden-Württemberg</td><td>160355</td><td>281</td><td>7</td><td>1752</td><td>44</td><td>1.3</td></tr>
+<tr><td>Mannheim (Stadtkreis)</td><td>Baden-Württemberg</td><td>309370</td><td>378</td><td>5</td><td>1222</td><td>16</td><td>6.6</td></tr>
+<tr><td>Neckar-Odenwald-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>143535</td><td>184</td><td>6</td><td>1282</td><td>42</td><td>11.5</td></tr>
+<tr><td>Rhein-Neckar-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>547625</td><td>726</td><td>15</td><td>1326</td><td>27</td><td>1.8</td></tr>
+<tr><td>Pforzheim (Stadtkreis)</td><td>Baden-Württemberg</td><td>125542</td><td>106</td><td>4</td><td>844</td><td>32</td><td>4.7</td></tr>
+<tr><td>Calw (Landkreis)</td><td>Baden-Württemberg</td><td>158397</td><td>515</td><td>9</td><td>3251</td><td>57</td><td>7.5</td></tr>
+<tr><td>Enzkreis (Landkreis)</td><td>Baden-Württemberg</td><td>198905</td><td>330</td><td>6</td><td>1659</td><td>30</td><td>9.5</td></tr>
+<tr><td>Freudenstadt (Landkreis)</td><td>Baden-Württemberg</td><td>117935</td><td>431</td><td>9</td><td>3655</td><td>76</td><td>14.8</td></tr>
+<tr><td>Freiburg im Breisgau (Stadtkreis)</td><td>Baden-Württemberg</td><td>230241</td><td>841</td><td>40</td><td>3653</td><td>174</td><td>7.5</td></tr>
+<tr><td>Breisgau-Hochschwarzwald (Landkreis)</td><td>Baden-Württemberg</td><td>262795</td><td>866</td><td>21</td><td>3295</td><td>80</td><td>7.0</td></tr>
+<tr><td>Emmendingen (Landkreis)</td><td>Baden-Württemberg</td><td>165383</td><td>478</td><td>30</td><td>2890</td><td>181</td><td>6.3</td></tr>
+<tr><td>Ortenaukreis (Landkreis)</td><td>Baden-Württemberg</td><td>429479</td><td>819</td><td>52</td><td>1907</td><td>121</td><td>11.2</td></tr>
+<tr><td>Rottweil (Landkreis)</td><td>Baden-Württemberg</td><td>139455</td><td>439</td><td>6</td><td>3148</td><td>43</td><td>18.2</td></tr>
+<tr><td>Schwarzwald-Baar-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>212381</td><td>382</td><td>6</td><td>1799</td><td>28</td><td>3.9</td></tr>
+<tr><td>Tuttlingen (Landkreis)</td><td>Baden-Württemberg</td><td>140152</td><td>356</td><td>7</td><td>2540</td><td>50</td><td>6.5</td></tr>
+<tr><td>Konstanz (Landkreis)</td><td>Baden-Württemberg</td><td>285325</td><td>352</td><td>5</td><td>1234</td><td>18</td><td>4.7</td></tr>
+<tr><td>Lörrach (Landkreis)</td><td>Baden-Württemberg</td><td>228639</td><td>451</td><td>22</td><td>1973</td><td>96</td><td>4.7</td></tr>
+<tr><td>Waldshut (Landkreis)</td><td>Baden-Württemberg</td><td>170619</td><td>233</td><td>16</td><td>1366</td><td>94</td><td>8.8</td></tr>
+<tr><td>Reutlingen (Landkreis)</td><td>Baden-Württemberg</td><td>286748</td><td>1007</td><td>15</td><td>3512</td><td>52</td><td>5.8</td></tr>
+<tr><td>Tübingen (Landkreis)</td><td>Baden-Württemberg</td><td>227331</td><td>1094</td><td>24</td><td>4812</td><td>106</td><td>2.8</td></tr>
+<tr><td>Zollernalbkreis (Landkreis)</td><td>Baden-Württemberg</td><td>188935</td><td>756</td><td>34</td><td>4001</td><td>180</td><td>4.4</td></tr>
+<tr><td>Ulm (Stadtkreis)</td><td>Baden-Württemberg</td><td>126329</td><td>220</td><td>2</td><td>1741</td><td>16</td><td>2.4</td></tr>
+<tr><td>Alb-Donau-Kreis (Landkreis)</td><td>Baden-Württemberg</td><td>196047</td><td>432</td><td>7</td><td>2204</td><td>36</td><td>3.5</td></tr>
+<tr><td>Biberach (Landkreis)</td><td>Baden-Württemberg</td><td>199742</td><td>424</td><td>9</td><td>2123</td><td>45</td><td>3.4</td></tr>
+<tr><td>Bodenseekreis (Landkreis)</td><td>Baden-Württemberg</td><td>216227</td><td>259</td><td>6</td><td>1198</td><td>28</td><td>4.3</td></tr>
+<tr><td>Ravensburg (Landkreis)</td><td>Baden-Württemberg</td><td>284285</td><td>462</td><td>5</td><td>1625</td><td>18</td><td>2.6</td></tr>
+<tr><td>Sigmaringen (Landkreis)</td><td>Baden-Württemberg</td><td>130873</td><td>625</td><td>26</td><td>4776</td><td>199</td><td>3.4</td></tr>
+<tr><td>Ingolstadt (Kreisfreie Stadt)</td><td>Bayern</td><td>136981</td><td>315</td><td>9</td><td>2300</td><td>66</td><td>2.3</td></tr>
+<tr><td>München (Kreisfreie Stadt)</td><td>Bayern</td><td>1471508</td><td>4528</td><td>39</td><td>3077</td><td>27</td><td>5.2</td></tr>
+<tr><td>Rosenheim (Kreisfreie Stadt)</td><td>Bayern</td><td>63324</td><td>282</td><td>7</td><td>4453</td><td>111</td><td>13.2</td></tr>
+<tr><td>Altötting (Landkreis)</td><td>Bayern</td><td>111210</td><td>425</td><td>16</td><td>3822</td><td>144</td><td>14.0</td></tr>
+<tr><td>Berchtesgadener Land (Landkreis)</td><td>Bayern</td><td>105722</td><td>207</td><td>3</td><td>1958</td><td>28</td><td>8.4</td></tr>
+<tr><td>Bad Tölz-Wolfratshausen (Landkreis)</td><td>Bayern</td><td>127227</td><td>348</td><td>5</td><td>2735</td><td>39</td><td>7.6</td></tr>
+<tr><td>Dachau (Landkreis)</td><td>Bayern</td><td>153884</td><td>625</td><td>13</td><td>4062</td><td>84</td><td>6.0</td></tr>
+<tr><td>Ebersberg (Landkreis)</td><td>Bayern</td><td>142142</td><td>359</td><td>1</td><td>2526</td><td>7</td><td>4.9</td></tr>
+<tr><td>Eichstätt (Landkreis)</td><td>Bayern</td><td>132341</td><td>194</td><td>7</td><td>1466</td><td>53</td><td>6.3</td></tr>
+<tr><td>Erding (Landkreis)</td><td>Bayern</td><td>137660</td><td>488</td><td>6</td><td>3545</td><td>44</td><td>5.7</td></tr>
+<tr><td>Freising (Landkreis)</td><td>Bayern</td><td>179116</td><td>848</td><td>24</td><td>4734</td><td>134</td><td>4.0</td></tr>
+<tr><td>Fürstenfeldbruck (Landkreis)</td><td>Bayern</td><td>219320</td><td>643</td><td>15</td><td>2932</td><td>68</td><td>3.4</td></tr>
+<tr><td>Garmisch-Partenkirchen (Landkreis)</td><td>Bayern</td><td>88467</td><td>208</td><td>5</td><td>2351</td><td>57</td><td>4.2</td></tr>
+<tr><td>Landsberg am Lech (Landkreis)</td><td>Bayern</td><td>120071</td><td>289</td><td>8</td><td>2407</td><td>67</td><td>3.0</td></tr>
+<tr><td>Miesbach (Landkreis)</td><td>Bayern</td><td>99726</td><td>462</td><td>6</td><td>4633</td><td>60</td><td>2.1</td></tr>
+<tr><td>Mühldorf a. Inn (Landkreis)</td><td>Bayern</td><td>115250</td><td>385</td><td>13</td><td>3341</td><td>113</td><td>4.2</td></tr>
+<tr><td>München (Landkreis)</td><td>Bayern</td><td>348871</td><td>1036</td><td>17</td><td>2970</td><td>49</td><td>3.7</td></tr>
+<tr><td>Neuburg-Schrobenhausen (Landkreis)</td><td>Bayern</td><td>96680</td><td>197</td><td>3</td><td>2038</td><td>31</td><td>10.1</td></tr>
+<tr><td>Pfaffenhofen a.d. Ilm (Landkreis)</td><td>Bayern</td><td>127151</td><td>286</td><td>13</td><td>2249</td><td>102</td><td>10.0</td></tr>
+<tr><td>Rosenheim (Landkreis)</td><td>Bayern</td><td>260983</td><td>1554</td><td>42</td><td>5954</td><td>161</td><td>9.6</td></tr>
+<tr><td>Starnberg (Landkreis)</td><td>Bayern</td><td>136092</td><td>452</td><td>4</td><td>3321</td><td>29</td><td>5.6</td></tr>
+<tr><td>Traunstein (Landkreis)</td><td>Bayern</td><td>177089</td><td>753</td><td>18</td><td>4252</td><td>102</td><td>14.6</td></tr>
+<tr><td>Weilheim-Schongau (Landkreis)</td><td>Bayern</td><td>135348</td><td>321</td><td>1</td><td>2372</td><td>7</td><td>2.6</td></tr>
+<tr><td>Landshut (Kreisfreie Stadt)</td><td>Bayern</td><td>72404</td><td>227</td><td>5</td><td>3135</td><td>69</td><td>5.5</td></tr>
+<tr><td>Passau (Kreisfreie Stadt)</td><td>Bayern</td><td>52469</td><td>109</td><td>10</td><td>2077</td><td>191</td><td>7.1</td></tr>
+<tr><td>Straubing (Kreisfreie Stadt)</td><td>Bayern</td><td>47794</td><td>229</td><td>10</td><td>4791</td><td>209</td><td>11.4</td></tr>
+<tr><td>Deggendorf (Landkreis)</td><td>Bayern</td><td>119326</td><td>195</td><td>5</td><td>1634</td><td>42</td><td>8.2</td></tr>
+<tr><td>Freyung-Grafenau (Landkreis)</td><td>Bayern</td><td>78355</td><td>141</td><td>6</td><td>1800</td><td>77</td><td>2.4</td></tr>
+<tr><td>Kelheim (Landkreis)</td><td>Bayern</td><td>122258</td><td>359</td><td>21</td><td>2936</td><td>172</td><td>6.2</td></tr>
+<tr><td>Landshut (Landkreis)</td><td>Bayern</td><td>158698</td><td>538</td><td>18</td><td>3390</td><td>113</td><td>4.7</td></tr>
+<tr><td>Passau (Landkreis)</td><td>Bayern</td><td>192043</td><td>340</td><td>10</td><td>1770</td><td>52</td><td>9.7</td></tr>
+<tr><td>Regen (Landkreis)</td><td>Bayern</td><td>77656</td><td>124</td><td>1</td><td>1597</td><td>13</td><td>5.9</td></tr>
+<tr><td>Rottal-Inn (Landkreis)</td><td>Bayern</td><td>120659</td><td>636</td><td>32</td><td>5271</td><td>265</td><td>4.2</td></tr>
+<tr><td>Straubing-Bogen (Landkreis)</td><td>Bayern</td><td>100649</td><td>295</td><td>9</td><td>2931</td><td>89</td><td>8.9</td></tr>
+<tr><td>Dingolfing-Landau (Landkreis)</td><td>Bayern</td><td>96217</td><td>164</td><td>1</td><td>1704</td><td>10</td><td>3.4</td></tr>
+<tr><td>Amberg (Kreisfreie Stadt)</td><td>Bayern</td><td>41970</td><td>55</td><td>2</td><td>1310</td><td>48</td><td>15.3</td></tr>
+<tr><td>Regensburg (Kreisfreie Stadt)</td><td>Bayern</td><td>152610</td><td>336</td><td>3</td><td>2202</td><td>20</td><td>6.0</td></tr>
+<tr><td>Weiden i.d. OPf. (Kreisfreie Stadt)</td><td>Bayern</td><td>42520</td><td>203</td><td>5</td><td>4774</td><td>118</td><td>9.5</td></tr>
+<tr><td>Amberg-Sulzbach (Landkreis)</td><td>Bayern</td><td>103109</td><td>329</td><td>8</td><td>3191</td><td>78</td><td>21.5</td></tr>
+<tr><td>Cham (Landkreis)</td><td>Bayern</td><td>127882</td><td>340</td><td>10</td><td>2659</td><td>78</td><td>3.0</td></tr>
+<tr><td>Neumarkt i.d. OPf. (Landkreis)</td><td>Bayern</td><td>133561</td><td>205</td><td>4</td><td>1535</td><td>30</td><td>12.0</td></tr>
+<tr><td>Neustadt a.d. Waldnaab (Landkreis)</td><td>Bayern</td><td>94352</td><td>572</td><td>23</td><td>6062</td><td>244</td><td>5.3</td></tr>
+<tr><td>Regensburg (Landkreis)</td><td>Bayern</td><td>193572</td><td>340</td><td>2</td><td>1756</td><td>10</td><td>5.2</td></tr>
+<tr><td>Schwandorf (Landkreis)</td><td>Bayern</td><td>147189</td><td>349</td><td>10</td><td>2371</td><td>68</td><td>4.6</td></tr>
+<tr><td>Tirschenreuth (Landkreis)</td><td>Bayern</td><td>72504</td><td>990</td><td>65</td><td>13654</td><td>897</td><td>1.7</td></tr>
+<tr><td>Bamberg (Kreisfreie Stadt)</td><td>Bayern</td><td>77592</td><td>129</td><td>3</td><td>1663</td><td>39</td><td>5.9</td></tr>
+<tr><td>Bayreuth (Kreisfreie Stadt)</td><td>Bayern</td><td>74657</td><td>145</td><td>4</td><td>1942</td><td>54</td><td>4.5</td></tr>
+<tr><td>Coburg (Kreisfreie Stadt)</td><td>Bayern</td><td>41249</td><td>40</td><td>0</td><td>970</td><td>0</td><td>-0.5</td></tr>
+<tr><td>Hof (Kreisfreie Stadt)</td><td>Bayern</td><td>45930</td><td>85</td><td>1</td><td>1851</td><td>22</td><td>6.8</td></tr>
+<tr><td>Bamberg (Landkreis)</td><td>Bayern</td><td>147086</td><td>332</td><td>20</td><td>2257</td><td>136</td><td>3.7</td></tr>
+<tr><td>Bayreuth (Landkreis)</td><td>Bayern</td><td>103656</td><td>287</td><td>6</td><td>2769</td><td>58</td><td>6.0</td></tr>
+<tr><td>Coburg (Landkreis)</td><td>Bayern</td><td>86906</td><td>136</td><td>1</td><td>1565</td><td>12</td><td>-9.4</td></tr>
+<tr><td>Forchheim (Landkreis)</td><td>Bayern</td><td>116099</td><td>173</td><td>2</td><td>1490</td><td>17</td><td>6.2</td></tr>
+<tr><td>Hof (Landkreis)</td><td>Bayern</td><td>95311</td><td>282</td><td>13</td><td>2959</td><td>136</td><td>2.7</td></tr>
+<tr><td>Kronach (Landkreis)</td><td>Bayern</td><td>67135</td><td>86</td><td>1</td><td>1281</td><td>15</td><td>8.7</td></tr>
+<tr><td>Kulmbach (Landkreis)</td><td>Bayern</td><td>71845</td><td>156</td><td>6</td><td>2171</td><td>84</td><td>5.2</td></tr>
+<tr><td>Lichtenfels (Landkreis)</td><td>Bayern</td><td>66838</td><td>157</td><td>1</td><td>2349</td><td>15</td><td>2.1</td></tr>
+<tr><td>Wunsiedel i. Fichtelgebirge (Landkreis)</td><td>Bayern</td><td>73178</td><td>527</td><td>22</td><td>7202</td><td>301</td><td>3.8</td></tr>
+<tr><td>Ansbach (Kreisfreie Stadt)</td><td>Bayern</td><td>41847</td><td>76</td><td>1</td><td>1816</td><td>24</td><td>10.3</td></tr>
+<tr><td>Erlangen (Kreisfreie Stadt)</td><td>Bayern</td><td>111962</td><td>150</td><td>1</td><td>1340</td><td>9</td><td>7.9</td></tr>
+<tr><td>Fürth (Kreisfreie Stadt)</td><td>Bayern</td><td>127748</td><td>229</td><td>11</td><td>1793</td><td>86</td><td>5.1</td></tr>
+<tr><td>Nürnberg (Kreisfreie Stadt)</td><td>Bayern</td><td>518365</td><td>692</td><td>10</td><td>1335</td><td>19</td><td>7.1</td></tr>
+<tr><td>Schwabach (Kreisfreie Stadt)</td><td>Bayern</td><td>40792</td><td>66</td><td>0</td><td>1618</td><td>0</td><td>2.8</td></tr>
+<tr><td>Ansbach (Landkreis)</td><td>Bayern</td><td>183949</td><td>351</td><td>4</td><td>1908</td><td>22</td><td>11.0</td></tr>
+<tr><td>Erlangen-Höchstadt (Landkreis)</td><td>Bayern</td><td>136271</td><td>189</td><td>4</td><td>1387</td><td>29</td><td>9.9</td></tr>
+<tr><td>Fürth (Landkreis)</td><td>Bayern</td><td>117387</td><td>354</td><td>26</td><td>3016</td><td>221</td><td>3.8</td></tr>
+<tr><td>Nürnberger Land (Landkreis)</td><td>Bayern</td><td>170365</td><td>469</td><td>13</td><td>2753</td><td>76</td><td>10.4</td></tr>
+<tr><td>Neustadt a.d. Aisch-Bad Windsheim (Landkreis)</td><td>Bayern</td><td>100364</td><td>144</td><td>2</td><td>1435</td><td>20</td><td>7.6</td></tr>
+<tr><td>Roth (Landkreis)</td><td>Bayern</td><td>126958</td><td>250</td><td>5</td><td>1969</td><td>39</td><td>3.6</td></tr>
+<tr><td>Weißenburg-Gunzenhausen (Landkreis)</td><td>Bayern</td><td>94393</td><td>247</td><td>6</td><td>2617</td><td>64</td><td>10.6</td></tr>
+<tr><td>Aschaffenburg (Kreisfreie Stadt)</td><td>Bayern</td><td>70527</td><td>90</td><td>1</td><td>1276</td><td>14</td><td>2.0</td></tr>
+<tr><td>Schweinfurt (Kreisfreie Stadt)</td><td>Bayern</td><td>54032</td><td>119</td><td>10</td><td>2202</td><td>185</td><td>13.8</td></tr>
+<tr><td>Würzburg (Kreisfreie Stadt)</td><td>Bayern</td><td>127880</td><td>424</td><td>41</td><td>3316</td><td>321</td><td>3.0</td></tr>
+<tr><td>Aschaffenburg (Landkreis)</td><td>Bayern</td><td>174208</td><td>368</td><td>16</td><td>2112</td><td>92</td><td>7.8</td></tr>
+<tr><td>Bad Kissingen (Landkreis)</td><td>Bayern</td><td>103218</td><td>167</td><td>6</td><td>1618</td><td>58</td><td>4.2</td></tr>
+<tr><td>Rhön-Grabfeld (Landkreis)</td><td>Bayern</td><td>79690</td><td>120</td><td>2</td><td>1506</td><td>25</td><td>8.9</td></tr>
+<tr><td>Haßberge (Landkreis)</td><td>Bayern</td><td>84599</td><td>107</td><td>0</td><td>1265</td><td>0</td><td>2.4</td></tr>
+<tr><td>Kitzingen (Landkreis)</td><td>Bayern</td><td>90909</td><td>82</td><td>0</td><td>902</td><td>0</td><td>7.2</td></tr>
+<tr><td>Miltenberg (Landkreis)</td><td>Bayern</td><td>128756</td><td>228</td><td>2</td><td>1771</td><td>16</td><td>12.0</td></tr>
+<tr><td>Main-Spessart (Landkreis)</td><td>Bayern</td><td>126365</td><td>137</td><td>3</td><td>1084</td><td>24</td><td>5.2</td></tr>
+<tr><td>Schweinfurt (Landkreis)</td><td>Bayern</td><td>115106</td><td>340</td><td>7</td><td>2954</td><td>61</td><td>16.4</td></tr>
+<tr><td>Würzburg (Landkreis)</td><td>Bayern</td><td>161834</td><td>352</td><td>2</td><td>2175</td><td>12</td><td>3.4</td></tr>
+<tr><td>Augsburg (Kreisfreie Stadt)</td><td>Bayern</td><td>295135</td><td>290</td><td>7</td><td>983</td><td>24</td><td>5.0</td></tr>
+<tr><td>Kaufbeuren (Kreisfreie Stadt)</td><td>Bayern</td><td>43893</td><td>76</td><td>3</td><td>1731</td><td>68</td><td>4.2</td></tr>
+<tr><td>Kempten (Allgäu) (Kreisfreie Stadt)</td><td>Bayern</td><td>68907</td><td>89</td><td>5</td><td>1292</td><td>73</td><td>12.8</td></tr>
+<tr><td>Memmingen (Kreisfreie Stadt)</td><td>Bayern</td><td>43837</td><td>45</td><td>0</td><td>1027</td><td>0</td><td>3.5</td></tr>
+<tr><td>Aichach-Friedberg (Landkreis)</td><td>Bayern</td><td>133596</td><td>233</td><td>12</td><td>1744</td><td>90</td><td>2.1</td></tr>
+<tr><td>Augsburg (Landkreis)</td><td>Bayern</td><td>251534</td><td>323</td><td>3</td><td>1284</td><td>12</td><td>5.5</td></tr>
+<tr><td>Dillingen a.d. Donau (Landkreis)</td><td>Bayern</td><td>96021</td><td>160</td><td>1</td><td>1666</td><td>10</td><td>18.2</td></tr>
+<tr><td>Günzburg (Landkreis)</td><td>Bayern</td><td>125747</td><td>184</td><td>2</td><td>1463</td><td>16</td><td>4.5</td></tr>
+<tr><td>Neu-Ulm (Landkreis)</td><td>Bayern</td><td>174200</td><td>332</td><td>7</td><td>1906</td><td>40</td><td>3.8</td></tr>
+<tr><td>Lindau (Bodensee) (Landkreis)</td><td>Bayern</td><td>81669</td><td>228</td><td>5</td><td>2792</td><td>61</td><td>3.2</td></tr>
+<tr><td>Ostallgäu (Landkreis)</td><td>Bayern</td><td>140316</td><td>424</td><td>19</td><td>3022</td><td>135</td><td>8.3</td></tr>
+<tr><td>Unterallgäu (Landkreis)</td><td>Bayern</td><td>144041</td><td>206</td><td>2</td><td>1430</td><td>14</td><td>4.3</td></tr>
+<tr><td>Donau-Ries (Landkreis)</td><td>Bayern</td><td>133496</td><td>259</td><td>14</td><td>1940</td><td>105</td><td>4.9</td></tr>
+<tr><td>Oberallgäu (Landkreis)</td><td>Bayern</td><td>155362</td><td>153</td><td>4</td><td>985</td><td>26</td><td>3.5</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,60 @@
+name: Update Maps
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:  
+  schedule:
+    - cron: "15 11 * * *"
+# TODO       
+#  push:
+#    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  
+  # This workflow contains a single job
+  job1:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+    
+# Clone repository
+    - uses: actions/checkout@v2
+    
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    
+    - name: Cache Python pip
+      uses: actions/cache@v2
+      with:
+        # This path is specific to Ubuntu
+        path: ~/.cache/pip
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-pip-${{ hashFiles('py-requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          ${{ runner.os }}-
+    - name: Install dependencies
+      run: pip install -r py-requirements.txt
+
+
+# Generate maps
+    - name: Generate + zip maps
+      run: | 
+        # sudo apt-get update > /dev/null
+        # sudo apt-get install imagemagick > /dev/null
+        python3 gen-map-de-districts.py
+        cd maps
+        tar cfz ../cache/maps.tgz *.gif
+
+
+# https://github.com/actions/upload-artifact/issues/21
+    - name: Upload data artifact via tip
+      uses: eine/tip@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          cache/maps.tgz

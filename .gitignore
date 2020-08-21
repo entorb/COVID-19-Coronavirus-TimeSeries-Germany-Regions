@@ -1,0 +1,20 @@
+# dirs
+__pycache__/
+backup/
+cache/
+data/old/
+plots-gnuplot/
+plots-python/
+maps/out/
+maps/*.gif
+test/
+.vscode/
+
+# files
+**/.~lock.*.xlsx#
+.DS_Store
+~$*.xlsx
+index-*.html
+.vstags
+index2.html
+eCharts/myHelper2.js

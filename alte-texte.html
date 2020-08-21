@@ -1,0 +1,54 @@
+<h3>
+    <a id="DE_cases_time_series-absolute"></a> Zeitverlauf der Ausbreitung in den Bundesländern </h3>
+
+<p> Update vom 04.04.2020: Wie <a href="#DE_calc-cases-from-deaths-DE-total">hier</a> beschrieben, halte ich es mittlerweile für riskant allzuviel in die Daten der positiv getesteten Fälle hinhein zu interpretieren. Für meine <a href="#Countries">internationalen Vergleiche</a> habe ich mich ausschließlich auf die Opferzahlen gestützt, diese halte ich für belastbarer. Die folgenden Kapitel belasse ich trotzdem online. </p>
+
+<p> Die erste Grafik die ich erstellt habe, zeigt den Zeitverlauf der offiziell gemeldeten positiv getesteten Infektionsfälle in den Bundesländern. Dazu habe ich die Daten zunächst normal (mit einer linearen Y-Achse) aufgetragen, wie man dies überall findet. Als nächstes habe ich die y-Achse logarithmisch skaliert, was bedeutet jede Hilfslinie entspricht einem Faktor 10. Der Vorteil diese Darstellung ist, dass man große Wertebereiche darstellen kann. Ferner hat diese Darstellung die Eigenschaft, das exponentielle Zusammenhänge zu einer Geraden werden, deren Steigung die Wachstumsrate beschreibt, was hier sehr gut zu erkennen ist. </p>
+<img src="plots-gnuplot/de-states/cases-de-absolute.png" alt="cases-de-absolute.png" width="640" height="800">
+<img src="plots-gnuplot/de-states/cases-de-absolute-log.png" alt="cases-de-absolute-log.png" width="640" height="800">
+<br />
+<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-state-XX.tsv</a>
+    <br />
+</small>
+
+<p><small><a href="#ToC">Back to top</a></small></p>
+
+<h3>
+    <a id="DE_cases_time_series-per-million"></a> Zeitverlauf der Ausbreitung in den Bundesländern, skaliert auf deren Einwohnerzahlen </h3>
+
+<p> Ich halte es für irreführend die Absolutzahlen der Infektionen der unterschiedlich stark bevölkerten Bundesländer miteinander zu vergleichen. Stattdessen bevorzuge ich eine Skalierung pro Einwohner der Bundesländer. Die Daten im Folgenden sind auf "pro 1 Millionen Einwohner" skaliert, abermals zuerst mit linearer und anschließend mit logarithmischer Y-Achse. </p>
+<img src="plots-gnuplot/de-states/cases-de-per-million.png" alt="cases-de-per-million.png" width="640" height="800">
+<img src="plots-gnuplot/de-states/cases-de-per-million-log.png" alt="cases-de-per-million.png" width="640" height="800">
+<br />
+<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-state-XX.tsv</a>
+</small>
+
+<p><small><a href="#ToC">Back to top</a></small></p>
+
+<h3>
+    <a id="DE_cases_new_time_series-per-million"></a> Zeitverlauf der Neu-Infektionen in den Bundesländern, skaliert auf deren Einwohnerzahlen </h3>
+
+<p> Nun eine ähnliche Darstellung, allerdings der täglich neuen Fälle anstatt der Summe. Diese Daten habe ich (mit einer Bézierkurve) geglättet. </p>
+<img src="plots-gnuplot/de-states/cases-de-new-per-million.png" alt="cases-de-new-per-million.png" width="640" height="800">
+<img src="plots-gnuplot/de-states/cases-de-new-per-million-log.png" alt="cases-de-new-per-million-log.png" width="640" height="800">
+
+<p>Als alternative Darstellung nun die Neu-Infektionen als eine gleitenden Summe über 7 Tage. So werden Wochenendeffekte heraus gemittelt. </p>
+<img src="plots-gnuplot/de-states/cases-de-last_week-per-million.png" alt="cases-de-last_week-per-million.png" width="640" height="800">
+<img src="plots-gnuplot/de-states/cases-de-last_week-per-million-log.png" alt="cases-de-last_week-per-million-log.png" width="640" height="800">
+<br />
+<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-state-XX.tsv</a>
+</small>
+
+<p>Eine ähnliche <a href="#de-states-deaths">Darstellung für die Opferzahlen</a> ist oben zu finden.</p>
+
+<p><small><a href="#ToC">Back to top</a></small></p>
+<!--  Bar Chart -->
+<br />
+
+<p>Erkenntnisse</p>
+<ul>
+    <li>Skaliert man die offiziell gemeldeten positiv getesteten Fälle mit der Bevölkerung des jeweiligen Bundeslandes, so ergibt sich ein ganz anderes Bild als in den üblichen Darstellungen.</li>
+    <!-- <li>Die graue Linie zeigt den DE Mittelwert</li> -->
+    <li>15.03.2020: Hamburg ist trauriger Spitzenreiter mit 88 Infektionen pro 1 Millionen Einwohner. Dies ist in absoluten Zahlen immer noch wenig, aber viel mehr als Wirkstoff homöopathischen "Medikamenten" (88x so viel wie in D6) </li>
+    <li>22.03.2020: Hamburg hat nun eine doppelt so hohe offizielle Infektionsdichte in der Bevölkerung wie NRW. Es ist knapp 1 von 2000 Einwohnern positiv getestet.</li>
+</ul>
