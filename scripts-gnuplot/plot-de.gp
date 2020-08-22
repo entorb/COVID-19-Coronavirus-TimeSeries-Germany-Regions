@@ -10,3 +10,4 @@ reset; load 'plot-de-calc-deaths.gp'
 # reset; load 'plot-de-divi.gp'
 reset; load 'plot-de-districts.gp'
 reset; load "plot-de-shift-deaths-to-match-cases.gp"
+reset; load "plot-de-states-doubling.gp"
