@@ -88,7 +88,7 @@ https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/F
 """
 
 
-args = helper.read_command_line_parameters()
+# args = helper.read_command_line_parameters()
 
 # here I store the fetched ref_data_from
 d_ref_landkreise = {}

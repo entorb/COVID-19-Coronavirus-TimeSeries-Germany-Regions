@@ -25,6 +25,8 @@ import helper
 os.makedirs('cache/de-states/', exist_ok=True)
 os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
 
+# TODO: persisting caching of doubling time fit results for reducing runtime
+
 # args = helper.read_command_line_parameters()
 download_file = 'cache/download-de-federalstates-timeseries.csv'
 
