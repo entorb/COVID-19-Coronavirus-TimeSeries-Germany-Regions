@@ -334,21 +334,30 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
     assert mode in ("exp", "lin")
     (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
         data, fit_range_x, fit_range_y)
+    if len(data_x_for_fit) < 3:
+        return {}
     if mode == "lin":
         fit_function = fit_function_linear
-        bounds_lower = (0, -np.inf)      # low(N0), low(para2)
-        bounds_upper = (np.inf, np.inf)  # up (N0), up (para2)
+        bounds_lower = (-np.inf, -np.inf)  # low(N0), low(slope)
+        bounds_upper = (np.inf, np.inf)  # up (N0), up (slope)
     else:  # mode == "exp"
         fit_function = fit_function_exp_growth
-        bounds_lower = (1, 0.1)
-        bounds_upper = (np.inf, np.inf)
+        bounds_lower = (0, -365)  # low(N0), low(T)
+        bounds_upper = ((1+data_y_for_fit[-1])*10, 365)  # up (N0), up (T)
 
     d = {}
     # min 3 values in list
     # only if not all y data values are equal
-    if len(data_x_for_fit) >= 3 and data_y_for_fit.count(data_y_for_fit[0]) < len(data_y_for_fit):
+    # and data_y_for_fit.count(data_y_for_fit[0]) < len(data_y_for_fit):
+    if len(data_x_for_fit) >= 3:
+        # initial guess of parameters
+        if (data_y_for_fit[-1] > data_y_for_fit[0]):
+            p0 = [float(data_y_for_fit[-1]), 10]
+        else:
+            p0 = [float(data_y_for_fit[-1]), -10]
+
+        # guess if slope is pos or neg
         # Do the fit
-        p0 = [float(data_y_for_fit[-1]), 5.0]  # initial guess of parameters
         try:
             fit_res, fit_res_cov = curve_fit(
                 fit_function,
@@ -359,53 +368,53 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
             )
             # bounds: ( min of all parameters) , (max of all parameters) )
 
-            y_next_day = fit_function(1, fit_res[0], fit_res[1])
-            y_next_day_delta = y_next_day - data_y_for_fit[-1]
-            factor_increase_next_day = ""
-            if data_y_for_fit[-1] > 0:
-                factor_increase_next_day = y_next_day / data_y_for_fit[-1]
+            # y_next_day = fit_function(1, fit_res[0], fit_res[1])
+            # y_next_day_delta = y_next_day - data_y_for_fit[-1]
+            # factor_increase_next_day = ""
+            # if data_y_for_fit[-1] > 0:
+            #     factor_increase_next_day = y_next_day / data_y_for_fit[-1]
 
             d = {
-                'fit_set_x_range': fit_range_x,
-                'fit_set_y_range': fit_range_y,
-                'fit_used_x_range': (data_x_for_fit[0], data_x_for_fit[-1]),
+                # 'fit_set_x_range': fit_range_x,
+                # 'fit_set_y_range': fit_range_y,
+                # 'fit_used_x_range': (data_x_for_fit[0], data_x_for_fit[-1]),
                 'fit_res': fit_res,
-                'fit_res_cov': fit_res_cov,
-                'y_at_x_max': data_y_for_fit[-1],
-                'forcast_y_at_x+1': y_next_day,
-                'forcast_y_delta_at_x+1': y_next_day_delta,
-                'factor_increase_x+1': factor_increase_next_day
+                'fit_res_cov': fit_res_cov
+                # 'y_at_x_max': data_y_for_fit[-1],
+                # 'forcast_y_at_x+1': y_next_day,
+                # 'forcast_y_delta_at_x+1': y_next_day_delta,
+                # 'factor_increase_x+1': factor_increase_next_day
             }
         except (RuntimeError, ValueError) as error:  # Exception, RuntimeWarning
             print(error)
     return d
 
 
-def series_of_fits(data: list, fit_range: int = 7, max_days_past=14) -> list:
+def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp") -> list:
     """
     perform a series of fits: per day on data of 7 days back
     fit_range: fit over how many days
     max_days_past: how far in the past shall we go
     = (fitted in range [x-6, x])
-    returns dict: day -> doubling_time
-    # TODO: this currently uses fit mode=exp hard coded
+    mode: exp or lin
+    returns dict: day -> doubling_time (neg for halftime)
     """
     fit_series_res = {}
     # remove y=0 values from start until first non-null
-    while len(data) > 0 and data[0][1] == 0:
-        data.pop(0)
+#    while len(data) > 0 and data[0][1] == 0:
+#        data.pop(0)
     if len(data) >= 3:
         # range(0, -7, -1): does not include -7, it has only 0,-1,..-6 = 7 values
         for last_day_for_fit in range(0, -max_days_past, -1):
             d = fit_routine(
-                data=data, mode="exp", fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1))  # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
+                data=data, mode=mode, fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1))  # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
             # d is empty if fit fails
             if len(d) != 0:
                 # doubling_time -> dict
                 this_doubling_time = d['fit_res'][1]
-                if this_doubling_time > 0 and this_doubling_time <= 100:
-                    fit_series_res[last_day_for_fit] = round(
-                        this_doubling_time, 1)
+                # if this_doubling_time > 0 and this_doubling_time <= 100:
+                fit_series_res[last_day_for_fit] = round(
+                    this_doubling_time, 1)
     return fit_series_res
 
 
