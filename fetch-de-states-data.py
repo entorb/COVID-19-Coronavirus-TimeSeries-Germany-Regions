@@ -148,11 +148,12 @@ def read_csv_to_dict() -> dict:
     return d_states_data
 
 
-def fit_doubling_or_halftime():
+def fit_doubling_or_halftime() -> dict:
     for code, l_time_series in d_states_data.items():
-        if code != 'DE-total':  # TODO
-            continue
-        print(code)
+        print(f'fitting doubling time for {code}')
+
+        # if code != 'DE-total':  # TODO
+        #     continue
 
         # # fit cases data
         # dataCases = []
@@ -192,39 +193,32 @@ def fit_doubling_or_halftime():
 
         # # fit cases data V2: based on CasesNew instead of Cases and T<0 = Halftime
         dataCases = []
-        for i in range(1, len(l_time_series)):
+        for i in range(1, len(l_time_series)):  # TODO
+            # for i in range(10, 60):
             # x= day , y = cases
             dataCases.append(
                 (
                     l_time_series[i]['Days_Past'],
-                    l_time_series[i]['Cases_Last_Week']
+                    l_time_series[i]['Cases_Last_Week_Per_100000']
                 )
             )
 
         fit_series_res = helper.series_of_fits(
-            dataCases, fit_range=7, max_days_past=180, mode='exp')
-        print(fit_series_res)
+            dataCases, fit_range=7, max_days_past=365, mode='exp')
         for i in range(0, len(l_time_series)):
             this_Doubling_Time = ""
             this_days_past = l_time_series[i]['Days_Past']
             if this_days_past in fit_series_res:
-                if abs(fit_series_res[this_days_past]) < 365:
-                    this_Doubling_Time = fit_series_res[this_days_past]
+                this_Doubling_Time = fit_series_res[this_days_past]
             l_time_series[i]['Cases_Last_Week_Doubling_Time'] = this_Doubling_Time
-            print(l_time_series[i]['Date'], this_Doubling_Time)
+            #print(l_time_series[i]['Days_Past'], this_Doubling_Time)
 
-        # fit_series_res = helper.series_of_fits(
-        #     dataDeaths, fit_range=7, max_days_past=60)
-        # for i in range(0, len(l_time_series)):
-        #     this_Doubling_Time = ""
-        #     this_days_past = l_time_series[i]['Days_Past']
-        #     if this_days_past in fit_series_res:
-        #         this_Doubling_Time = fit_series_res[this_days_past]
-        #     l_time_series[i]['Deaths_Doubling_Time'] = this_Doubling_Time
+        d_states_data[code] = l_time_series
+    return d_states_data
 
 
 # this is a copy of fetch-de-districts.py
-def join_with_divi_data(d_states_data: dict) -> dict:
+def join_with_divi_data() -> dict:
     d_divi_data = helper.read_json_file('cache/de-divi/de-divi-V3-states.json')
     for bl_code, l_time_series in d_states_data.items():
         assert bl_code in d_divi_data, f"Error: BL {bl_code} missing in DIVI data"
@@ -264,8 +258,10 @@ def export_data(d_states_data: dict):
                 'Cases_Per_Million', 'Deaths_Per_Million',
                 'Cases_New_Per_Million', 'Deaths_New_Per_Million',
                 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
-                'Cases_Doubling_Time', 'Deaths_Doubling_Time',
-                'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent'
+                'Cases_Last_Week_Per_100000',
+                #                'Cases_Doubling_Time', 'Deaths_Doubling_Time',
+                'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent',
+                'Cases_Last_Week_Doubling_Time'
             ]
             )
             csvwriter.writeheader()
@@ -316,9 +312,9 @@ d_ref_states = helper.read_ref_data_de_states()
 download_new_data()
 d_states_data = read_csv_to_dict()
 
-fit_doubling_or_halftime()
+d_states_data = fit_doubling_or_halftime()
 
-d_states_data = join_with_divi_data(d_states_data)
+d_states_data = join_with_divi_data()
 
 export_data(d_states_data)
 export_latest_data(d_ref_states, d_states_data)

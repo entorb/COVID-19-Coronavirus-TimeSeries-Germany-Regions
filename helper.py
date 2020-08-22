@@ -300,10 +300,13 @@ def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_rang
     # reduce the data on which we fit
     data_x_for_fit = []
     data_y_for_fit = []
+    if len(data) == 0:
+        return (data_x_for_fit, data_y_for_fit)
     for i in range(len(data)):
         if data[i][0] >= fit_range_x[0] and data[i][0] <= fit_range_x[1] and data[i][1] >= fit_range_y[0] and data[i][1] <= fit_range_y[1]:
             data_x_for_fit.append(data[i][0])
             data_y_for_fit.append(data[i][1])
+    assert len(data_x_for_fit) == len(data_x_for_fit)
     return (data_x_for_fit, data_y_for_fit)
 
 
@@ -342,8 +345,8 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
         bounds_upper = (np.inf, np.inf)  # up (N0), up (slope)
     else:  # mode == "exp"
         fit_function = fit_function_exp_growth
-        bounds_lower = (0, -365)  # low(N0), low(T)
-        bounds_upper = ((1+data_y_for_fit[-1])*10, 365)  # up (N0), up (T)
+        bounds_lower = (1, -365)  # low(N0), low(T)
+        bounds_upper = (np.inf, 365)  # up (N0), up (T)
 
     d = {}
     # min 3 values in list
@@ -351,12 +354,18 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
     # and data_y_for_fit.count(data_y_for_fit[0]) < len(data_y_for_fit):
     if len(data_x_for_fit) >= 3:
         # initial guess of parameters
-        if (data_y_for_fit[-1] > data_y_for_fit[0]):
-            p0 = [float(data_y_for_fit[-1]), 10]
-        else:
-            p0 = [float(data_y_for_fit[-1]), -10]
+        if mode == 'lin':
+            p0 = [0.0, 1.0]
+        else:  # mode = 'exp'
+            # for exp we need to know if the slope is pos or negative
+            # I have no better idea than performing a linear fit first
+            lin_fit_res = curve_fit(
+                fit_function_linear,
+                data_x_for_fit,
+                data_y_for_fit
+            )[0]
+            p0 = [float(data_y_for_fit[-1]), lin_fit_res[1]]
 
-        # guess if slope is pos or neg
         # Do the fit
         try:
             fit_res, fit_res_cov = curve_fit(
@@ -403,18 +412,32 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
     # remove y=0 values from start until first non-null
 #    while len(data) > 0 and data[0][1] == 0:
 #        data.pop(0)
-    if len(data) >= 3:
-        # range(0, -7, -1): does not include -7, it has only 0,-1,..-6 = 7 values
-        for last_day_for_fit in range(0, -max_days_past, -1):
-            d = fit_routine(
-                data=data, mode=mode, fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1))  # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
-            # d is empty if fit fails
-            if len(d) != 0:
-                # doubling_time -> dict
-                this_doubling_time = d['fit_res'][1]
-                # if this_doubling_time > 0 and this_doubling_time <= 100:
-                fit_series_res[last_day_for_fit] = round(
-                    this_doubling_time, 1)
+    if len(data) < 7:
+        return {}
+    if -max_days_past < min(data[0]):
+        max_days_past = -min(data[0]) - 3
+    # range(0, -7, -1): does not include -7, it has only 0,-1,..-6 = 7 values
+    for last_day_for_fit in range(0, -max_days_past, -1):
+
+        # for each fit we set x=0 to last value
+        (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
+            data, fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1), fit_range_y=(-np.inf, np.inf))
+        # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
+
+        # shift x-values to end with 0
+        data_x_for_fit = [x - last_day_for_fit for x in data_x_for_fit]
+        data_modified = list(zip(data_x_for_fit, data_y_for_fit))
+
+        d = fit_routine(
+            data=data_modified, mode=mode)
+        # d is empty if fit fails
+        if len(d) != 0:
+            # doubling_time -> dict
+            this_doubling_time = d['fit_res'][1]
+            # if this_doubling_time > 0 and this_doubling_time <= 100:
+            fit_series_res[last_day_for_fit] = round(
+                this_doubling_time, 1)
+
     return fit_series_res
 
 
