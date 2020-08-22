@@ -9,7 +9,7 @@ set title ""
 # set ylabel "Cases"
 # set xlabel "Days since first data"
 set ylabel "Neu-Infektionen pro Woche pro 100000 Einwohner"
-set xlabel "Tage"
+# set xlabel "Tage"
 # set xtics 7
 
 set key top right
