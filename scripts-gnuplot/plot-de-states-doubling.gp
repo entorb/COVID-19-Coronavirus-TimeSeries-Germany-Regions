@@ -18,6 +18,12 @@ set yrange [0:]
 # set yrange [0.1:]; set logscale y
 set ytics nomirror
 
+# set xrange [x_min:x_max+1]
+set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
+set format x '%d.%m'
+set xdata time
+
+
 set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 # tc rgb "red" 
 set y2tics nomirror
 #  tc ls 5

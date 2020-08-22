@@ -19,13 +19,13 @@ set label 1 label1_text_right." based on RKI data of ".date_last
 
 set xtic add (date_last 0) 
 
-# set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
-# set format x '%d.%m'
-# set xdata time
+set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
+set format x '%d.%m'
+set xdata time
 # set xrange [x_min:x_max+1]
 
 set output '../plots-gnuplot/de-states/cases-de-doubling-'.short_name.'.png'
-plot data using (column("Days_Past")):(column("Cases_Last_Week_Per_100000")) title "Infektionen" with lines lw 2 dt 1 lc "black" \
-, data using (column("Days_Past")):(column("Cases_Last_Week_Doubling_Time")) title "Verdopplungszeit" axis x1y2 with lines ls 5 linecolor rgb "red" \
-, data using (column("Days_Past")):(-column("Cases_Last_Week_Doubling_Time")) title "Halbwertszeit" axis x1y2 with lines ls 5 linecolor rgb "sea-green"
+plot data using (column("Date")):(column("Cases_Last_Week_Per_100000")) title "Infektionen" with lines lw 2 dt 1 lc "black" \
+, data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")) title "Verdopplungszeit" axis x1y2 with lines ls 5 linecolor rgb "red" \
+, data using (column("Date")):(-column("Cases_Last_Week_Doubling_Time")) title "Halbwertszeit" axis x1y2 with lines ls 5 linecolor rgb "sea-green"
 unset output
