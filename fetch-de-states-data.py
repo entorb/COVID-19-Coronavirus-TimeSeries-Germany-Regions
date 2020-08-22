@@ -204,7 +204,7 @@ def fit_doubling_or_halftime() -> dict:
             )
 
         fit_series_res = helper.series_of_fits(
-            dataCases, fit_range=7, max_days_past=365, mode='exp')
+            dataCases, fit_range=14, max_days_past=365, mode='exp')
         for i in range(0, len(l_time_series)):
             this_Doubling_Time = ""
             this_days_past = l_time_series[i]['Days_Past']
