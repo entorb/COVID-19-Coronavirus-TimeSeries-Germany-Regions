@@ -1,20 +1,25 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-#
 
+"""
+fetched German hospital occupancy data from DIVI https://www.intensivregister.de
+lk_id sind https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import os
 import os.path
 import re
-import requests  # for read_url_or_cachefile
-import glob
 import csv
+import glob
+import requests  # for read_url_or_cachefile
 
 # my helper modules
 import helper
-
-"""
-lk_id sind https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
-"""
 
 os.makedirs('cache/de-divi/', exist_ok=True)
 os.makedirs('plots-gnuplot/de-divi/', exist_ok=True)

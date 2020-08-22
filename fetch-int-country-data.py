@@ -3,17 +3,18 @@
 
 """
 This script downloads COVID-19 / coronavirus data provided by https://github.com/pomber/covid19
-
 Data is enriched by calculated values and exported
 """
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
 
 # TODO: modify cache to plot old data via
 # ,\n\s+\{[\n]\s+"date": "2020-4-1",[^\]]*\]
 # -> ]
 
 # Built-in/Generic Imports
-
 import os
 import time
 import urllib.request
@@ -26,21 +27,9 @@ from tqdm import tqdm
 # my helper modules
 import helper
 
-
-# Author and version info
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__maintainer__ = __author__
-# __copyright__ = "Copyright 2020, My Project"
-# __credits__ = ["John", "Jim", "Jack"]
-__license__ = "GPL"
-__status__ = "Dev"
-__version__ = "0.1"
-
 os.makedirs('cache/int/', exist_ok=True)
 os.makedirs('plots-gnuplot/int/', exist_ok=True)
 
-args = helper.read_command_line_parameters()
 file_cache = 'cache/download-countries-timeseries.json'
 
 
@@ -289,8 +278,6 @@ def fit_doubling_time():
                 entry['Deaths_Doubling_Time'] = fit_series_res_deaths[this_DaysPast]
             l_country_data[i] = entry
 
-        if args["sleep"]:
-            time.sleep(1)
         d_countries_timeseries[country] = l_country_data
 
 
@@ -445,7 +432,7 @@ d_countries_timeseries = read_json_data()
 
 check_for_further_interesting_countries()
 
-# TODO: depricated
+# TODO: deprecated
 # fit_doubling_time()
 
 extract_latest_date_data()
@@ -457,11 +444,3 @@ export_time_series_all_countries()
 
 print(
     f"int: countries: latest date in DE set: {d_countries_timeseries['Germany'][-1]['Date']}")
-
-
-# IDEAS
-
-# DONE
-# for selected countries write into csv: all 3 data per capita
-# am I missing further intersting countries ?
-# export time series for interesting countries to files

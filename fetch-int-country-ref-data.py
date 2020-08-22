@@ -1,14 +1,22 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# this is based on https://raw.githubusercontent.com/lorey/list-of-l_countries/master/generator.py
-# fetches a ref table of country data from geonames.org
+"""
+fetches a ref table of country data from geonames.org
+is based on https://raw.githubusercontent.com/lorey/list-of-l_countries/master/generator.py
+"""
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import codecs
 import urllib
 import requests
 import csv
 import json
+import requests
 
 # my helper modules
 import helper

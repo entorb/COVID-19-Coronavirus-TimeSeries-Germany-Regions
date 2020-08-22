@@ -3,11 +3,15 @@
 
 """
 Source: https://www.intensivregister.de/#/intensivregister
-
 primary data store is in data/de-divi/de-divi-V2.json. from there the tsv files are re-created at every run
-
+Deprecated, since DIVI now provides data in CSV format. See fetch-de-divi-V3.py
 """
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import sys
 import csv
 from datetime import datetime

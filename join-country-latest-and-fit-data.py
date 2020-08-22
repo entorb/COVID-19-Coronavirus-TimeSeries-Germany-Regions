@@ -1,9 +1,16 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 """
-Joins to files
+Joins 2 files
 """
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import math
-
 import csv
 
 f1 = "data/int/countries-latest-selected.tsv"

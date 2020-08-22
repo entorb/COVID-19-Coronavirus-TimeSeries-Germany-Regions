@@ -3,9 +3,40 @@
 
 """
 This script downloads COVID-19 / coronavirus data of German disticts (Landkreise) provided by
-
 GUI: https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_0/
+"""
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
+import os
+import time
+import datetime
+import csv
+import json
+
+# further modules
+# fitting
+import numpy as np
+# curve-fit() function imported from scipy
+# from scipy.optimize import curve_fit
+# from matplotlib import pyplot as plt
+
+# process bar
+from tqdm import tqdm
+
+# my helper modules
+import helper
+
+# ensure all output folders are present
+os.makedirs('cache/de-districts/', exist_ok=True)
+os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
+
+
+"""
+Further details and Endpoints
 LK_ID is https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
 Amtliche Gemeindeschlüssel (AGS)
 bzw Kreisschlüssel ohne letzte 3 Stellen
@@ -56,40 +87,6 @@ https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/F
 
 """
 
-
-# Author and version info
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__maintainer__ = __author__
-# __copyright__ = "Copyright 2020, My Project"
-# __credits__ = ["John", "Jim", "Jack"]
-__license__ = "GPL"
-__status__ = "Dev"
-__version__ = "0.1"
-
-
-# Built-in/Generic Imports
-import os
-import datetime
-import json
-import csv
-import time
-
-# further modules
-# fitting
-import numpy as np
-# curve-fit() function imported from scipy
-# from scipy.optimize import curve_fit
-# from matplotlib import pyplot as plt
-
-# process bar
-from tqdm import tqdm
-
-# my helper modules
-import helper
-
-os.makedirs('cache/de-districts/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
 
 args = helper.read_command_line_parameters()
 

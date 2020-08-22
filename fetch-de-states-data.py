@@ -5,23 +5,15 @@
 This script downloads COVID-19 / coronavirus data provided by https://github.com/swildermann/COVID-19
 """
 
-
-# Author and version info
 __author__ = "Dr. Torben Menke"
 __email__ = "https://entorb.net"
-__maintainer__ = __author__
-# __copyright__ = "Copyright 2020, My Project"
-# __credits__ = ["John", "Jim", "Jack"]
 __license__ = "GPL"
-__status__ = "Dev"
-__version__ = "0.1"
-
 
 # Built-in/Generic Imports
 import os
 import time
-import urllib.request
 import csv
+import urllib.request
 # import json
 
 # from matplotlib import pyplot as plt
@@ -29,10 +21,11 @@ import csv
 # my helper modules
 import helper
 
+# ensure all output folders are present
 os.makedirs('cache/de-states/', exist_ok=True)
 os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
 
-args = helper.read_command_line_parameters()
+# args = helper.read_command_line_parameters()
 download_file = 'cache/download-de-federalstates-timeseries.csv'
 
 

@@ -1,22 +1,29 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 """
 Helper functions collections
 """
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
 
 # Built-in/Generic Imports
 import os.path
 import time
 import datetime
-import argparse
+# import argparse
 import csv
 import json
 import urllib.request
 import requests  # for read_url_or_cachefile
 
-import multiprocessing as mp  # for fetching number of CPUs
-import logging
-import threading
-import concurrent.futures
+# multithreading
+# import multiprocessing as mp  # for fetching number of CPUs
+# import logging
+# import threading
+# import concurrent.futures
 
 # further modules
 import math
@@ -63,11 +70,11 @@ def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 1):
                   sort_keys=sort_keys, indent=indent)
 
 
-def read_command_line_parameters() -> dict:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--sleep", help="sleep 1 second after each item",
-                        default=False, action="store_true")  # store_true -> Boolean Value
-    return vars(parser.parse_args())
+# def read_command_line_parameters() -> dict:
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-s", "--sleep", help="sleep 1 second after each item",
+#                         default=False, action="store_true")  # store_true -> Boolean Value
+#     return vars(parser.parse_args())
 
 
 def convert_timestamp_to_date_str(ts: int) -> str:
@@ -441,35 +448,35 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
     return fit_series_res
 
 
-def series_of_fits_multi_threading(data: list, fit_range: int = 7, max_days_past=14) -> list:
-    # This does not speedup the process, so not used
-    # from https://docs.python.org/3/library/concurrent.futures.html
-    fit_series_res = {}
-    l_last_days_for_fit = range(0, -max_days_past, -1)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=mp.cpu_count()) as executor:
-        # Start the load operations and mark each future with its data set
-        list_future = {executor.submit(
-            series_of_fits_worker_thread, data, fit_range, last_day_for_fit): last_day_for_fit for last_day_for_fit in l_last_days_for_fit}
-        for future in concurrent.futures.as_completed(list_future):
-            last_day_for_fit = list_future[future]
-            d_this_fit_result = {}
-            try:
-                d_this_fit_result = future.result()
-            except Exception as exc:
-                print('%r generated an exception: %s' %
-                      (last_day_for_fit, exc))
-            if len(d_this_fit_result) != 0:
-                fit_series_res[last_day_for_fit] = round(
-                    d_this_fit_result['fit_res'][1], 1)
+# def series_of_fits_multi_threading(data: list, fit_range: int = 7, max_days_past=14) -> list:
+#     # This does not speedup the process, so not used
+#     # from https://docs.python.org/3/library/concurrent.futures.html
+#     fit_series_res = {}
+#     l_last_days_for_fit = range(0, -max_days_past, -1)
+#     with concurrent.futures.ThreadPoolExecutor(max_workers=mp.cpu_count()) as executor:
+#         # Start the load operations and mark each future with its data set
+#         list_future = {executor.submit(
+#             series_of_fits_worker_thread, data, fit_range, last_day_for_fit): last_day_for_fit for last_day_for_fit in l_last_days_for_fit}
+#         for future in concurrent.futures.as_completed(list_future):
+#             last_day_for_fit = list_future[future]
+#             d_this_fit_result = {}
+#             try:
+#                 d_this_fit_result = future.result()
+#             except Exception as exc:
+#                 print('%r generated an exception: %s' %
+#                       (last_day_for_fit, exc))
+#             if len(d_this_fit_result) != 0:
+#                 fit_series_res[last_day_for_fit] = round(
+#                     d_this_fit_result['fit_res'][1], 1)
 
-    return fit_series_res
+#     return fit_series_res
 
 
-def series_of_fits_worker_thread(data: list, fit_range: int, last_day_for_fit: int):
-    # print(threading.currentThread().getName(), 'Starting')
-    d = fit_routine(
-        data=data, mode="exp", fit_range_x=(last_day_for_fit-fit_range, last_day_for_fit))
-    return d
+# def series_of_fits_worker_thread(data: list, fit_range: int, last_day_for_fit: int):
+#     # print(threading.currentThread().getName(), 'Starting')
+#     d = fit_routine(
+#         data=data, mode="exp", fit_range_x=(last_day_for_fit-fit_range, last_day_for_fit))
+#     return d
 
 
 def read_ref_data_de_states() -> dict:

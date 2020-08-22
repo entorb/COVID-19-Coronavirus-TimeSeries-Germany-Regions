@@ -1,27 +1,34 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# Based on
-# https://raw.githubusercontent.com/ythlev/covid-19/master/run.py
-# by Chang Chia-huan
+"""
+Generates animated maps for Germany using Covid-19 data and Divi hospital data
+Based on
+https://raw.githubusercontent.com/ythlev/covid-19/master/run.py
+by Chang Chia-huan
+"""
 
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import os
 import sys
 import glob
 import subprocess
-# import argparse
-# import pathlib
 import json
-# import csv
-# import io
-# import urllib.request
-# import urllib.parse
 import math
 import statistics
-# import datetime
 import re
+
 # my helper modules
 import helper
+
+# ensure all output folders are present
+os.makedirs('maps/out/de-districts/', exist_ok=True)
+
+# TODO: replace threshold magic based on all data by simple logic based on last value for cases and manually set threshold for other sets
 
 unit = 1000000
 
