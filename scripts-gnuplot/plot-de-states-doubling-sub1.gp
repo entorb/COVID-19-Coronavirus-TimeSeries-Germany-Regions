@@ -26,6 +26,6 @@ set xdata time
 
 set output '../plots-gnuplot/de-states/cases-de-doubling-'.short_name.'.png'
 plot data using (column("Date")):(column("Cases_Last_Week_Per_100000")) title "Infektionen" with lines lw 2 dt 1 lc "black" \
-, data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")) title "Verdopplungszeit" axis x1y2 with lines ls 5 linecolor rgb "red" \
-, data using (column("Date")):(-column("Cases_Last_Week_Doubling_Time")) title "Halbwertszeit" axis x1y2 with lines ls 5 linecolor rgb "sea-green"
+, data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")>0?column("Cases_Last_Week_Doubling_Time"):1/0) title "Verdopplungszeit" axis x1y2 with lines ls 5 linecolor rgb "red" \
+, data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")<0?-column("Cases_Last_Week_Doubling_Time"):1/0) title "Halbwertszeit" axis x1y2 with lines ls 5 linecolor rgb "sea-green"
 unset output

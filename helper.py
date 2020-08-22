@@ -102,9 +102,9 @@ def prepare_time_series(l_time_series: list) -> list:
     assumes items in l_time_series are dicts having the following keys: Date, Cases, Deaths
     sorts l_time_series by Date
     if cases at last entry equals 2nd last entry, than remove last entry, as sometime the source has a problem.
-    loops over l_time_series and calculates the 
+    loops over l_time_series and calculates the
       Days_Past
-      _New values per item/day    
+      _New values per item/day
       _Last_Week
     """
     # some checks
@@ -215,37 +215,6 @@ def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
     return d_data_latest
 
 
-def fit_slopes(l_time_series: list) -> dict:
-    """
-    fit data of last 14 days via linear regression: y=m*x+b , b = last value
-    """
-    d_slopes = {}
-    data_cases_new_pm = []
-    data_deaths_new_pm = []
-    # for i in range(len(l_time_series)):
-    for i in range(-14, 0):  # TM: checked: this is correct and results in the last 7 entries
-        d = l_time_series[i]
-        data_cases_new_pm.append((d['Days_Past'], d['Cases_New_Per_Million']))
-        data_deaths_new_pm.append(
-            (d['Days_Past'], d['Deaths_New_Per_Million']))
-
-    N0, m = 0, 0
-    d_res = fit_routine(data=data_cases_new_pm,
-                        mode="lin")
-    if "fit_res" in d_res:
-        N0, m = d_res["fit_res"]
-    d_slopes["Slope_Cases_New_Per_Million"] = round(m, 2)
-
-    N0, m = 0, 0
-    d_res = fit_routine(data=data_deaths_new_pm,
-                        mode="lin")
-    if "fit_res" in d_res:
-        N0, m = d_res["fit_res"]
-    d_slopes["Slope_Deaths_New_Per_Million"] = round(m, 2)
-
-    return d_slopes
-
-
 def add_per_million_via_lookup(d: dict, d_ref: dict, code: str) -> dict:
     pop_in_million = d_ref[code]['Population'] / 1000000
     return add_per_million(d=d, pop_in_million=pop_in_million)
@@ -302,19 +271,58 @@ def extract_x_and_y_data(data: list) -> list:
         data_y.append(pair[1])
     return data_x, data_y
 
+#
+# Helpers for fitting
+#
 
-def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_range_y: list):
-    # reduce the data on which we fit
+
+def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_range_y: list) -> list:
+    """
+    filters the data on which we fit
+    data ist list of (x,y) value pairs
+    """
     data_x_for_fit = []
     data_y_for_fit = []
     if len(data) == 0:
         return (data_x_for_fit, data_y_for_fit)
+    assert len(data[0]) == 2  # pairs of (x,y)
     for i in range(len(data)):
         if data[i][0] >= fit_range_x[0] and data[i][0] <= fit_range_x[1] and data[i][1] >= fit_range_y[0] and data[i][1] <= fit_range_y[1]:
             data_x_for_fit.append(data[i][0])
             data_y_for_fit.append(data[i][1])
     assert len(data_x_for_fit) == len(data_x_for_fit)
     return (data_x_for_fit, data_y_for_fit)
+
+
+def fit_slopes(l_time_series: list) -> dict:
+    """
+    fit data of !only! last 14 days via linear regression: y=m*x+b , b = last value
+    returns dict with 2 keys: "Slope_Cases_New_Per_Million" and "Slope_Deaths_New_Per_Million"
+    """
+    d_slopes = {}
+    data_cases_new_pm = []
+    data_deaths_new_pm = []
+    # for i in range(len(l_time_series)):
+    for i in range(-14, 0):  # TM: checked: this is correct and results in the last 7 entries
+        d = l_time_series[i]
+        data_cases_new_pm.append((d['Days_Past'], d['Cases_New_Per_Million']))
+        data_deaths_new_pm.append(
+            (d['Days_Past'], d['Deaths_New_Per_Million']))
+
+    N0, m = 0, 0
+    d_res = fit_routine(data=data_cases_new_pm,
+                        mode="lin")
+    if "fit_res" in d_res:
+        N0, m = d_res["fit_res"]
+    d_slopes["Slope_Cases_New_Per_Million"] = round(m, 2)
+
+    N0, m = 0, 0
+    d_res = fit_routine(data=data_deaths_new_pm,
+                        mode="lin")
+    if "fit_res" in d_res:
+        N0, m = d_res["fit_res"]
+    d_slopes["Slope_Deaths_New_Per_Million"] = round(m, 2)
+    return d_slopes
 
 
 # Fit functions with coefficients as parameters
@@ -359,50 +367,63 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
     # min 3 values in list
     # only if not all y data values are equal
     # and data_y_for_fit.count(data_y_for_fit[0]) < len(data_y_for_fit):
-    if len(data_x_for_fit) >= 3:
-        # initial guess of parameters
-        if mode == 'lin':
-            p0 = [0.0, 1.0]
-        else:  # mode = 'exp'
-            # for exp we need to know if the slope is pos or negative
-            # I have no better idea than performing a linear fit first
-            lin_fit_res = curve_fit(
-                fit_function_linear,
-                data_x_for_fit,
-                data_y_for_fit
-            )[0]
-            p0 = [float(data_y_for_fit[-1]), lin_fit_res[1]]
+    if len(data_x_for_fit) < 3:
+        return {}
 
-        # Do the fit
-        try:
-            fit_res, fit_res_cov = curve_fit(
-                fit_function,
-                data_x_for_fit,
-                data_y_for_fit,
-                p0,
-                bounds=(bounds_lower, bounds_upper)
-            )
+    # initial guess of parameters
+    if data_y_for_fit[-1] > 0:
+        initial_guess_1 = float(data_y_for_fit[-1])
+    else:
+        initial_guess_1 = 10.0
+
+    if mode == 'lin':
+        p0 = [initial_guess_1, 1.0]
+    else:  # mode = 'exp'
+        # for exp we need to know if the slope is pos or negative
+        # I have no better idea than performing a linear fit first
+        lin_fit_res = curve_fit(
+            fit_function_linear,
+            data_x_for_fit,
+            data_y_for_fit
+        )[0]
+        lin_fit_slope_m = lin_fit_res[1]
+
+        if abs(lin_fit_slope_m) < 1.0/10:
+            # print(f"linear slope too small: {lin_fit_slope_m}")
+            return {}
+
+        p0 = [initial_guess_1, lin_fit_slope_m]
+
+        # print(f"debugging: lin-slope = {lin_fit_slope_m}, y={data_y_for_fit}")
+
+    # Do the actual fitting
+    try:
+        fit_res, fit_res_cov = curve_fit(
+            fit_function,
+            data_x_for_fit,
+            data_y_for_fit,
+            p0,
             # bounds: ( min of all parameters) , (max of all parameters) )
+            bounds=(bounds_lower, bounds_upper)
+        )
 
-            # y_next_day = fit_function(1, fit_res[0], fit_res[1])
-            # y_next_day_delta = y_next_day - data_y_for_fit[-1]
-            # factor_increase_next_day = ""
-            # if data_y_for_fit[-1] > 0:
-            #     factor_increase_next_day = y_next_day / data_y_for_fit[-1]
+        # y_next_day = fit_function(1, fit_res[0], fit_res[1])
+        # y_next_day_delta = y_next_day - data_y_for_fit[-1]
+        # factor_increase_next_day = ""
+        # if data_y_for_fit[-1] > 0:
+        #     factor_increase_next_day = y_next_day / data_y_for_fit[-1]
 
-            d = {
-                # 'fit_set_x_range': fit_range_x,
-                # 'fit_set_y_range': fit_range_y,
-                # 'fit_used_x_range': (data_x_for_fit[0], data_x_for_fit[-1]),
-                'fit_res': fit_res,
-                'fit_res_cov': fit_res_cov
-                # 'y_at_x_max': data_y_for_fit[-1],
-                # 'forcast_y_at_x+1': y_next_day,
-                # 'forcast_y_delta_at_x+1': y_next_day_delta,
-                # 'factor_increase_x+1': factor_increase_next_day
-            }
-        except (RuntimeError, ValueError) as error:  # Exception, RuntimeWarning
-            print(error)
+        d = {
+            'fit_res': fit_res,
+            'fit_res_cov': fit_res_cov
+        }
+        # print(f"debugging: fit_res_1 = {fit_res[1]}")
+        if mode == 'exp' and abs(fit_res[1]) < 1:
+            print("T %.2f is very small" % fit_res[1])
+
+    except (RuntimeError, ValueError) as error:
+        # Exception, RuntimeWarning
+        print(error)
     return d
 
 
@@ -425,25 +446,35 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
         max_days_past = -min(data[0]) - 3
     # range(0, -7, -1): does not include -7, it has only 0,-1,..-6 = 7 values
     for last_day_for_fit in range(0, -max_days_past, -1):
+        # this loop starts at t=0 and moves to t=-max_days_past
 
-        # for each fit we set x=0 to last value
+        # extracting/filtering the data matching the time interval
         (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
             data, fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1), fit_range_y=(-np.inf, np.inf))
         # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
 
-        # shift x-values to end with 0
+        if sum(data_y_for_fit) == 0:
+            continue
+
+        # shift x-values to always end with t=x=0
         data_x_for_fit = [x - last_day_for_fit for x in data_x_for_fit]
         data_modified = list(zip(data_x_for_fit, data_y_for_fit))
 
+        # debugging
+        # print(last_day_for_fit)
+        # if last_day_for_fit == -999:
+        #     print("debugging")
+
         d = fit_routine(
             data=data_modified, mode=mode)
-        # d is empty if fit fails
+        # d={} if fit fails
         if len(d) != 0:
-            # doubling_time -> dict
-            this_doubling_time = d['fit_res'][1]
-            # if this_doubling_time > 0 and this_doubling_time <= 100:
-            fit_series_res[last_day_for_fit] = round(
-                this_doubling_time, 1)
+            # dict: day -> doubling_time (neg for halftime)
+            this_doubling_time = round(d['fit_res'][1], 1)
+            fit_series_res[last_day_for_fit] = this_doubling_time
+        # else:
+        #     print(
+        #         f"debugging: last day={last_day_for_fit}, data={data_y_for_fit}")
 
     return fit_series_res
 

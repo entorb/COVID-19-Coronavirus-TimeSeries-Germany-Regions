@@ -148,43 +148,7 @@ def fit_doubling_or_halftime() -> dict:
         # if code != 'DE-total':  # TODO
         #     continue
 
-        # # fit cases data
-        # dataCases = []
-        # dataDeaths = []
-        # for i in range(1, len(l_time_series)):
-        #     # x= day , y = cases
-        #     dataCases.append(
-        #         (
-        #             l_time_series[i]['Days_Past'],
-        #             l_time_series[i]['Cases']
-        #         )
-        #     )
-        #     dataDeaths.append(
-        #         (
-        #             l_time_series[i]['Days_Past'],
-        #             l_time_series[i]['Deaths']
-        #         )
-        #     )
-
-        # fit_series_res = helper.series_of_fits(
-        #     dataCases, fit_range=7, max_days_past=60)
-        # for i in range(0, len(l_time_series)):
-        #     this_Doubling_Time = ""
-        #     this_days_past = l_time_series[i]['Days_Past']
-        #     if this_days_past in fit_series_res:
-        #         this_Doubling_Time = fit_series_res[this_days_past]
-        #     l_time_series[i]['Cases_Doubling_Time'] = this_Doubling_Time
-
-        # fit_series_res = helper.series_of_fits(
-        #     dataDeaths, fit_range=7, max_days_past=60)
-        # for i in range(0, len(l_time_series)):
-        #     this_Doubling_Time = ""
-        #     this_days_past = l_time_series[i]['Days_Past']
-        #     if this_days_past in fit_series_res:
-        #         this_Doubling_Time = fit_series_res[this_days_past]
-        #     l_time_series[i]['Deaths_Doubling_Time'] = this_Doubling_Time
-
-        # # fit cases data V2: based on CasesNew instead of Cases and T<0 = Halftime
+        # # fit cases data V2: based on CasesNew instead of Cases and interpreting T<0 -> halftime
         dataCases = []
         for i in range(1, len(l_time_series)):  # TODO
             # for i in range(10, 60):
@@ -204,13 +168,14 @@ def fit_doubling_or_halftime() -> dict:
             if this_days_past in fit_series_res:
                 this_Doubling_Time = fit_series_res[this_days_past]
             l_time_series[i]['Cases_Last_Week_Doubling_Time'] = this_Doubling_Time
-            #print(l_time_series[i]['Days_Past'], this_Doubling_Time)
+            # debugging
+            # print(l_time_series[i]['Days_Past'], this_Doubling_Time)
 
         d_states_data[code] = l_time_series
     return d_states_data
 
 
-# this is a copy of fetch-de-districts.py
+# this is based on a copy from fetch-de-districts.py
 def join_with_divi_data() -> dict:
     d_divi_data = helper.read_json_file('cache/de-divi/de-divi-V3-states.json')
     for bl_code, l_time_series in d_states_data.items():
