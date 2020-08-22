@@ -16,13 +16,7 @@ date_last = system("tail -1 " . data . " | cut -f2")
 y_last = ( system("tail -1 " . data . " | cut -f3") + 0)
 set label 1 label1_text_right." based on RKI data of ".date_last
 
-
-set xtic add (date_last 0) 
-
-set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
-set format x '%d.%m'
-set xdata time
-# set xrange [x_min:x_max+1]
+# set xtic add (date_last 0) 
 
 set output '../plots-gnuplot/de-states/cases-de-doubling-'.short_name.'.png'
 plot data using (column("Date")):(column("Cases_Last_Week_Per_100000")) title "Infektionen" with lines lw 2 dt 1 lc "black" \

@@ -22,7 +22,7 @@ set ytics nomirror
 set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
 set format x '%d.%m'
 set xdata time
-
+set xrange ["2020-03-01":]
 
 set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 # tc rgb "red" 
 set y2tics nomirror
