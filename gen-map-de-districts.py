@@ -381,7 +381,7 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     # from https://unix.stackexchange.com/questions/40638/how-to-do-i-convert-an-animated-gif-to-an-mp4-or-mv4-on-the-command-line
     f'maps/de-districts-{property_to_plot}.gif'
     # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
-    command = ['fmpeg', '-i', outfile, '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
+    command = ['ffmpeg', '-i', outfile, '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
                '"scale=trunc(iw/2)*2:trunc(ih/2)*2"', f'maps/de-districts-{property_to_plot}.mp4']
     process = subprocess.Popen(command,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
