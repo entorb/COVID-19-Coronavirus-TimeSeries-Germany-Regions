@@ -27,6 +27,7 @@ import helper
 
 # ensure all output folders are present
 os.makedirs('maps/out/de-districts/', exist_ok=True)
+os.makedirs('cache', exist_ok=True)
 
 # TODO: replace threshold magic based on all data by simple logic based on last value for cases and manually set threshold for other sets
 
