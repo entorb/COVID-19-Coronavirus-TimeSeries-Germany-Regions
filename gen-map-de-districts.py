@@ -377,6 +377,22 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     ]
     run_imagemagick_convert(l_imagemagick_parameters)
 
+    # convert gif to mp4
+    # from https://unix.stackexchange.com/questions/40638/how-to-do-i-convert-an-animated-gif-to-an-mp4-or-mv4-on-the-command-line
+    f'maps/de-districts-{property_to_plot}.gif'
+    # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
+    command = ['fmpeg', '-i', outfile, '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
+               '"scale=trunc(iw/2)*2:trunc(ih/2)*2"', f'maps/de-districts-{property_to_plot}.mp4']
+    process = subprocess.Popen(command,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               universal_newlines=True)
+    # wait_for_finish
+    stdout, stderr = process.communicate()
+    if stdout != '':
+        print(f'Out: {stdout}')
+    if stderr != '':
+        print(f'ERROR: {stderr}')
+
     # # create copies with shorter and longer delay
     # # this does not work: all have the same speed :-(
     # delay_variants = (100, 250, 500)
@@ -397,6 +413,7 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
 
 
 # cleanup
+# TODO: keep all but latest month gif and commit it
 for f in glob.glob('maps/out/de-districts/*.gif'):
     os.remove(f)
     pass
@@ -406,4 +423,4 @@ for f in glob.glob('maps/out/de-districts/*.svg'):
     pass
 
 
-print ("End of script reached")
+print("End of script reached")
