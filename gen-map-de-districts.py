@@ -404,3 +404,6 @@ for f in glob.glob('maps/out/de-districts/*.gif'):
 for f in glob.glob('maps/out/de-districts/*.svg'):
     os.remove(f)
     pass
+
+
+print ("End of script reached")
