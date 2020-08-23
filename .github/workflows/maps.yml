@@ -48,7 +48,7 @@ jobs:
         # sudo apt-get install imagemagick > /dev/null
         python3 gen-map-de-districts.py
         cd maps
-        tar cfz ../cache/maps.tgz *.gif
+        tar cfz ../cache/maps.tgz *.gif *.mp4
 
 
 # https://github.com/actions/upload-artifact/issues/21
