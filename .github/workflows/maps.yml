@@ -44,8 +44,9 @@ jobs:
 # Generate maps
     - name: Generate + zip maps
       run: | 
-        # sudo apt-get update > /dev/null
+        sudo apt-get update > /dev/null
         # sudo apt-get install imagemagick > /dev/null
+        sudo apt-get install ffmpeg > /dev/null
         python3 gen-map-de-districts.py
         cd maps
         tar cfz ../cache/maps.tgz *.gif *.mp4
