@@ -6,28 +6,27 @@
 load "header.gp"
 
 set title ""
-# set ylabel "Cases"
-# set xlabel "Days since first data"
-set ylabel "Neu-Infektionen pro Woche pro 100000 Einwohner"
-# set xlabel "Tage"
-# set xtics 7
 
 set key top right
 
+# set ylabel "Cases"
+set ylabel "Neu-Infektionen pro Woche pro 100000 Einwohner" tc rgb "blue"
 set yrange [0:]
 # set yrange [0.1:]; set logscale y
-set ytics nomirror
+set ytics nomirror tc rgb "blue"
 
+set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 tc rgb "red" 
+set y2tics nomirror tc rgb "red"
+set y2range [30:0]
+
+# set xlabel "Tage"
+# set xtics 7
 # set xrange [x_min:x_max+1]
 set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
 set format x '%d.%m'
 set xdata time
 set xrange ["2020-03-01":]
 
-set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 # tc rgb "red" 
-set y2tics nomirror
-#  tc ls 5
-set y2range [30:0]
 
 short_name = 'BW' ; long_name = "Baden-Württemberg" ; load "plot-de-states-doubling-sub1.gp"
 short_name = 'BY' ; long_name = "Bayern" ; load "plot-de-states-doubling-sub1.gp"
