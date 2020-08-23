@@ -115,7 +115,7 @@ print("<h2>Anmeldungen</h2>")
 print("<table border=\"1\">")
 print("<tr><th>Woche</th><th>Neue Abonnenten</th></tr>")
 # print("Anz : Landkreis")
-for week, value in sorted(d_counter_week.items()):
+for week, value in reversed(sorted(d_counter_week.items())):
     # print(f"%3d : {d_districts_latest[id]['Landkreis']}" % value)
     print(
         f"<tr><td>{week}</td><td>{value}</td></tr>")
