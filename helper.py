@@ -10,6 +10,7 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
+import os
 import os.path
 import time
 import datetime
@@ -32,9 +33,13 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 
+# ensure all output folders are present
+os.makedirs('cache', exist_ok=True)
+
 #
 # General Helpers
 #
+
 
 def read_url_or_cachefile(url: str, cachefile: str, request_type: str = 'get', payload: dict = {}, cache_max_age: int = 15, verbose: bool = True) -> str:
     b_cache_is_recent = check_cache_file_available_and_recent(
