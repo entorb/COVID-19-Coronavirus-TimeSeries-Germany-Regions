@@ -5,6 +5,7 @@ cache/
 plots-gnuplot/
 maps/out/
 maps/*.gif
+maps/*.mp4
 test/
 
 # files

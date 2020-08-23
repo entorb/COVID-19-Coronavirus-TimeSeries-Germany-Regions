@@ -157,6 +157,19 @@ d_latest_svg_file = {}  # store the last generated file per property
 # for property_to_plot in ('Cases_Per_Million',):
 for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'DIVI_Intensivstationen_Covid_Prozent'):
 
+    # # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
+    # command = ['ffmpeg', '-y', '-i', f'maps/de-districts-{property_to_plot}.gif', '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
+    #            'scale=trunc(iw/2)*2:trunc(ih/2)*2', f'maps/de-districts-{property_to_plot}.mp4']
+    # process = subprocess.Popen(command,
+    #                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    #                            universal_newlines=True)
+    # # wait_for_finish
+    # stdout, stderr = process.communicate()
+    # if stdout != '':
+    #     print(f'Out: {stdout}')
+    # if stderr != '':
+    #     print(f'ERROR: {stderr}')
+
     if property_to_plot == 'Cases_Last_Week_Per_100000':
         meta = {"colour": d_color_scales['blue']}
     elif property_to_plot == 'Cases_Per_Million':
@@ -378,11 +391,12 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     run_imagemagick_convert(l_imagemagick_parameters)
 
     # convert gif to mp4
+    print(f'converting {property_to_plot}.gif -> .mp4')
     # from https://unix.stackexchange.com/questions/40638/how-to-do-i-convert-an-animated-gif-to-an-mp4-or-mv4-on-the-command-line
-    f'maps/de-districts-{property_to_plot}.gif'
+
     # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
-    command = ['ffmpeg', '-i', outfile, '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
-               '"scale=trunc(iw/2)*2:trunc(ih/2)*2"', f'maps/de-districts-{property_to_plot}.mp4']
+    command = ['ffmpeg', '-y', '-i', outfile, '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
+               'scale=trunc(iw/2)*2:trunc(ih/2)*2', f'maps/de-districts-{property_to_plot}.mp4']
     process = subprocess.Popen(command,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)

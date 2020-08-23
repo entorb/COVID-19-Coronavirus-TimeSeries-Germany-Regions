@@ -1,0 +1,1 @@
+ffmpeg -y -i de-districts-Cases_Last_Week_Per_100000.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" de-districts-Cases_Last_Week_Per_100000.mp4
