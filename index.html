@@ -233,6 +233,9 @@
 					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist?</a><b> (new)</b>
 				</li>
 				<li>
+					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a><b> (new)</b>
+				</li>
+				<li>
 					<a href="#DE_shift_deaths_to_cases">Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?</a>
 				</li>
 				<li>
@@ -965,11 +968,142 @@
 
 	<h3><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist? </h3>
 
-	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche entspricht der Zahl der aktuell ansteckenden Personen. Wichtig ist die Dunkelziffer der unbemerkt infizierten Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro 100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
+	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche entspricht der Zahl der aktuell infektiösen Personen. Wichtig ist die Dunkelziffer der unbemerkt infizierten Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro 100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
 	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="612" height="802" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
 	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
 		<br />
 	</small>
+
+	<h3><a id="event_risk_calculator_DE"></a>Veranstaltungsrisikoabschätzung</h3>
+
+	<p>Basierend auf den Annahmen des <a href="#DE_wahrscheinlichkeit-infizierten-treffen">letzten Abschnitts</a>, hier ein "Taschenrechner" für die Risikoabschätzung von Veranstaltungen/Menschenansammlungen.</p>
+	<table style="text-align: left;">
+		<tr>
+			<th>Eingangsgrößen</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Ort</td>
+			<td><select id="rc_sel_bundesland" style="width:200px" onchange="rc_sel_bundesland_selected()"> </select></td>
+		</tr>
+		<tr>
+			<td><input id="rc_input_cases_last_week_100k" size="5" type="number" min="1" max="1000" step="0.1" value="10" onchange="rc_calc()"></td>
+			<td>Neu-Infektionen in Region (letzte 7 Tage pro 100.000 Einwohner), Zahlen können auch der obigen <a href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
+		</tr>
+		<!-- <tr>
+		<td>Faktor Dunkelziffer<br /> (Schätzung)</td>
+		<td><input type="number" min="1" max="50" step="0.5" id="rc_input_factor_unreported" value="4" onchange="rc_calc()"></td>
+	</tr> -->
+		<tr>
+			<td>
+				<input id="rc_input_num_people" size="5" type="number" min="5" max="10000" step="5" value="20" onchange="rc_calc()">
+			</td>
+			<td>Anzahl Personen in Veranstaltung</td>
+		</tr>
+		<tr>
+			<th>Ergebnis</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="rc_output_rop_someone_at_event_is_infectious" type="text" size="5" readonly disabled value="" style="background-color: white; color: black; background-color: orange;">
+			</td>
+			<td>Wahrscheinlichkeit dass eine aktuell infektiöse Person unter den Teilnehmern ist</td>
+		</tr>
+	</table>
+	<script>
+		function rc_calc() {
+			const cases_last_week_100k = document.getElementById("rc_input_cases_last_week_100k").value;
+			// const factor_unreported = document.getElementById("rc_input_factor_unreported").value;
+			const factor_unreported = 4;
+			const people = document.getElementById("rc_input_num_people").value;
+			const cases_last_week_100k_reported_and_unreported = cases_last_week_100k * factor_unreported;
+			const prop_1_random_person_is_infectious = cases_last_week_100k_reported_and_unreported / 100000;
+			const prop_no_one_at_event_is_infectious = Math.pow((1 - prop_1_random_person_is_infectious), people)
+			const prop_someone_at_event_is_infectious = 1 - prop_no_one_at_event_is_infectious;
+
+			const string_prop_someone_at_event_is_infectious_in_percent = (prop_someone_at_event_is_infectious * 100).toFixed(1) + " %";
+
+			// console.log(string_prop_someone_at_event_is_infectious_in_percent);
+
+			document.getElementById("rc_output_rop_someone_at_event_is_infectious").value = string_prop_someone_at_event_is_infectious_in_percent;
+		}
+		rc_calc();
+
+		// populate select
+		// rc_sel_bundesland = document.getElementById("rc_sel_bundesland");
+		// for (var i = 0; i <= 16; i++) {
+		// 	var opt = document.createElement('option');
+		// 	opt.value = i;
+		// 	opt.innerHTML = i;
+		// rc_sel_bundesland.appendChild(opt);
+		// }
+
+
+
+		// TODO: provide selection of Bundesland or District
+		// fetches DE_states_latest data and populates selects for risk calculator
+		function rc_fetch_DE_states_and_populate_risk_calc_select() {
+			const url =
+				"https://entorb.net/COVID-19-coronavirus/data/de-states/de-states-latest.json";
+			return $.getJSON(url, function (data) {
+				console.log("success: de-states-latest");
+			})
+				.done(function (data) {
+					console.log("done: de-states-latest");
+					// console.log(data);
+
+					list_of_de_states = [
+						"DE-total"
+						, "BW"
+						, "BY"
+						, "BE"
+						, "BB"
+						, "HB"
+						, "HH"
+						, "HE"
+						, "MV"
+						, "NI"
+						, "NW"
+						, "RP"
+						, "SL"
+						, "SN"
+						, "ST"
+						, "SH"
+						, "TH"];
+
+					// $.each(data, function (bl_key, bl_data) {
+					for (var i = 0; i < list_of_de_states.length; i++) {
+						bl_data = data[list_of_de_states[i]];
+						// mapDeDistrictNames[key] = val;
+						var opt = document.createElement('option');
+						opt.innerHTML = bl_data['State'];
+						// ensure value >= 1
+						if (bl_data['Cases_Last_Week_Per_100000'] >= 1) {
+							opt.value = bl_data['Cases_Last_Week_Per_100000'];
+						} else {
+							opt.value = 1.0;
+						}
+						rc_sel_bundesland.appendChild(opt);
+						// set inital value to DE-total
+						document.getElementById("rc_input_cases_last_week_100k").value = data["DE-total"]["Cases_Last_Week_Per_100000"];
+
+					}
+					// });
+				})
+				.fail(function () {
+					console.log("fail: de-states-latest");
+				});
+		}
+		promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
+
+
+		function rc_sel_bundesland_selected() {
+			document.getElementById("rc_input_cases_last_week_100k").value = document.getElementById("rc_sel_bundesland").value;
+			rc_calc();
+		}
+
+	</script>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 

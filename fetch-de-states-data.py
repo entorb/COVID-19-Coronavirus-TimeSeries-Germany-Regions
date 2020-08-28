@@ -231,6 +231,8 @@ def export_data(d_states_data: dict):
 
 def export_latest_data(d_ref_states, d_states_data: dict):
     d_states_latest = helper.extract_latest_data(d_ref_states, d_states_data)
+    helper.write_json(
+        f'data/de-states/de-states-latest.json', d_states_latest)
 
     # # d_states_latest = dict(d_ref_states)
     # for code in d_states_latest.keys():
