@@ -230,19 +230,19 @@
 			</li>
 			<ul>
 				<li>
+					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist?</a><b> (new)</b>
+				</li>
+				<li>
 					<a href="#DE_shift_deaths_to_cases">Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?</a>
 				</li>
 				<li>
 					<a href="#DE_calc-cases-from-deaths-DE-total">Abschätzung der Dunkelziffer der Infizierten</a>
 				</li>
-				<li>
-					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist?</a><b> (new)</b>
-				</li>
 			</ul>
 			<li>Archiv</li>
 			<ul>
 				<li>
-					<a href="expGrowth.html#Exp_Wachstum">Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland</a>
+					<a href="expGrowth.html#Exp_Wachstum">Untersuchung der exponentiellen Zunahme der Gesamtzahl der Infektionen in Deutschland</a>
 				</li>
 			</ul>
 		</ul>
@@ -963,6 +963,16 @@
 	<h3>
 		<a id="DeAnalyses"></a>Weitere Auswertungen</h3>
 
+	<h3><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist? </h3>
+
+	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion beim Treffe von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche entspricht der Zahl der aktuell ansteckenden Personen. Wichtig ist die Dunkelziffer der unbemerkt Infizierten Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro 100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
+	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="612" height="802" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
+	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
+		<br />
+	</small>
+
+	<p><small><a href=" #ToC">Back to top</a></small></p>
+
 	<h3>
 		<a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h3>
 
@@ -1011,16 +1021,6 @@
 	<p> Beispiel 2: Eine Insel mit 1000 Einwohnern von denen bisher keiner infiziert war, auf der aber getestet wird.<br /> Ergebnis ist das gleiche, mit dem Unterschied, dass die Zahl der positiv getesteten Personen ungleich 0 ist, was aber nicht die Abschätzung einfließt. </p>
 
 	<p> Beispiel 3: Eine Insel mit 16000 Einwohnern von denen bisher keiner infiziert war.<br /> Werden nun 1000 am 01.01.2020 infiziert, so werden am 15.01. immer noch 10 sterben. Am 15.01. lässt sich daher wie oben beschrieben auf die Gesamtzahl von 1000 am 01.01. schließen. Allerdings werden weiter Menschen infiziert. Nehmen wir z.B. exemplarisch eine Verdopplungszeit von 7 Tagen an, so ist am 8.01. eine Gesamtzahl von 2000 Personen infiziert, am 15.01. dann 4000. Somit ist die Gesamtzahl der Infizierten am 15.01. größer als 1000, was zur Folge hat, dass an den Folgetagen weitere Menschen sterben werden. Am 15.01. sind 4000 infiziert (Verstorbene mitgezählt) aber nur 10 verstorben. Würde man am 15.01. großangelegte Tests durchführen, so würde man im Idealfall alle 4000 infizierten Personen bestimmen und die Dunkelziffer wäre 0. Bestimmt man an diesem Tag die Sterblichkeit, so würde man am 15.01.2020 10 Tote auf 4000 Infizierte = 0.25% finden, was der Eingangsgröße/Annahme widerspricht. Wartet man allerdings weiteren 2 Verdopplungszeiten ab, so sind am 29.01. alle 16000 Einwohner infiziert. Wartet man nochmal 2 Wochen, bis die unglücklichen schweren Fälle verstorben sind, so findet man dann dass von den 16000 Einwohnern 160 verstorben sind, und die Sterblichkeit ist wie erwartet 1%. Dies verdeutlicht, dass die Sterblichkeit erst korrekt ermittelt werden kann, wenn das exponentielle Wachstum vorbei ist. </p>
-
-	<h3><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist? </h3>
-
-	<p>Hier eine kleine Exkursion in die Stochastik. Die einfache Excel-Berechnung dazu ist unter der Tabelle verlinkt. </p>
-	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="438" height="483" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
-	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
-		<br />
-	</small>
-
-	<p><small><a href=" #ToC">Back to top</a></small></p>
 
 	<h3>
 		<a id="Exp_Wachstum"></a> Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland </h3>
