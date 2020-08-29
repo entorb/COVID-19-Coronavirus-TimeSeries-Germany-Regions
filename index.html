@@ -969,7 +969,7 @@
 	<h3><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist? </h3>
 
 	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche entspricht der Zahl der aktuell infektiösen Personen. Wichtig ist die Dunkelziffer der unbemerkt infizierten Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro 100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
-	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="612" height="802" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
+	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="488" height="622" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
 	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
 		<br />
 	</small>
@@ -987,16 +987,22 @@
 			<td><select id="rc_sel_bundesland" style="width:200px" onchange="rc_sel_bundesland_selected()"> </select></td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_cases_last_week_100k" size="5" type="number" min="1" max="1000" step="0.1" value="10" onchange="rc_calc()"></td>
+			<td><input id="rc_input_cases_last_week_100k" type="number" value="10" min="1" max="1000" step="0.1" size="5" style="text-align: right;" onchange="rc_calc()"></td>
 			<td>Neu-Infektionen in Region (letzte 7 Tage pro 100.000 Einwohner), Zahlen können auch der obigen <a href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
 		</tr>
-		<!-- <tr>
-		<td>Faktor Dunkelziffer<br /> (Schätzung)</td>
-		<td><input type="number" min="1" max="50" step="0.5" id="rc_input_factor_unreported" value="4" onchange="rc_calc()"></td>
-	</tr> -->
+		<tr>
+			<td><input id="rc_input_factor_unreported" type="number" value="4" min="1" max="20" step="0.5" size="5" style="text-align: right;" onchange="rc_calc()"></td>
+			<td>Schätzung Faktor Dunkelziffer</td>
+		</tr>
 		<tr>
 			<td>
-				<input id="rc_input_num_people" size="5" type="number" min="5" max="10000" step="5" value="20" onchange="rc_calc()">
+				<input id="rc_output_infectious_pop" type="number" size="5" readonly disabled value="" style="text-align: right;">
+			</td>
+			<td>Geschätzte Gesamtzahl infektiöser Personen (inklusive Dunkelziffer) in Region (pro 100.000 Einwohner)</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="rc_input_num_people" type="number" value="20" min="5" max="10000" step="1" size="5" style="text-align: right;" onchange="rc_calc()">
 			</td>
 			<td>Anzahl Personen in Veranstaltung</td>
 		</tr>
@@ -1006,18 +1012,19 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_output_rop_someone_at_event_is_infectious" type="text" size="5" readonly disabled value="" style="background-color: white; color: black; background-color: orange;">
+				<input id="rc_output_prop_someone_at_event_is_infectious" type="text" size="5" readonly disabled value="" style="background-color: orange; color: black;  font-weight: bold;text-align: right">
 			</td>
-			<td>Wahrscheinlichkeit dass eine aktuell infektiöse Person unter den Teilnehmern ist</td>
+			<td>Wahrscheinlichkeit dass eine aktuell infektiöse Person unter den Teilnehmern ist (Berechnungslogik siehe <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>)</td>
 		</tr>
 	</table>
 	<script>
 		function rc_calc() {
 			const cases_last_week_100k = document.getElementById("rc_input_cases_last_week_100k").value;
-			// const factor_unreported = document.getElementById("rc_input_factor_unreported").value;
-			const factor_unreported = 4;
+			const factor_unreported = document.getElementById("rc_input_factor_unreported").value;
+			// const factor_unreported = 4;
 			const people = document.getElementById("rc_input_num_people").value;
 			const cases_last_week_100k_reported_and_unreported = cases_last_week_100k * factor_unreported;
+			document.getElementById("rc_output_infectious_pop").value = cases_last_week_100k_reported_and_unreported;
 			const prop_1_random_person_is_infectious = cases_last_week_100k_reported_and_unreported / 100000;
 			const prop_no_one_at_event_is_infectious = Math.pow((1 - prop_1_random_person_is_infectious), people)
 			const prop_someone_at_event_is_infectious = 1 - prop_no_one_at_event_is_infectious;
@@ -1026,7 +1033,7 @@
 
 			// console.log(string_prop_someone_at_event_is_infectious_in_percent);
 
-			document.getElementById("rc_output_rop_someone_at_event_is_infectious").value = string_prop_someone_at_event_is_infectious_in_percent;
+			document.getElementById("rc_output_prop_someone_at_event_is_infectious").value = string_prop_someone_at_event_is_infectious_in_percent;
 		}
 		rc_calc();
 
