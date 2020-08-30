@@ -159,6 +159,8 @@ def fit_doubling_or_halftime() -> dict:
                 (
                     l_time_series[i]['Days_Past'],
                     l_time_series[i]['Cases_Last_Week_Per_100000']
+                    # l_time_series[i]['Cases_New_Per_Million']
+                    # this set to very noisy results, so using Last_week data instead
                 )
             )
 

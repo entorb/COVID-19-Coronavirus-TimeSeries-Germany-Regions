@@ -377,12 +377,12 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
 
     # initial guess of parameters
     if data_y_for_fit[-1] > 0:
-        initial_guess_1 = float(data_y_for_fit[-1])
+        initial_guess_y0 = float(data_y_for_fit[-1])
     else:
-        initial_guess_1 = 10.0
+        initial_guess_y0 = 10.0
 
     if mode == 'lin':
-        p0 = [initial_guess_1, 1.0]
+        p0 = [initial_guess_y0, 1.0]
     else:  # mode = 'exp'
         # for exp we need to know if the slope is pos or negative
         # I have no better idea than performing a linear fit first
@@ -391,13 +391,15 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
             data_x_for_fit,
             data_y_for_fit
         )[0]
+        if lin_fit_res[0] > 0:
+            initial_guess_y0 = lin_fit_res[0]
         lin_fit_slope_m = lin_fit_res[1]
 
         if abs(lin_fit_slope_m) < 1.0/10:
             # print(f"linear slope too small: {lin_fit_slope_m}")
             return {}
 
-        p0 = [initial_guess_1, lin_fit_slope_m]
+        p0 = [initial_guess_y0, lin_fit_slope_m]
 
         # print(f"debugging: lin-slope = {lin_fit_slope_m}, y={data_y_for_fit}")
 
