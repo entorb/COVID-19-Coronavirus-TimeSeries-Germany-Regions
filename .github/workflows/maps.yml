@@ -6,8 +6,8 @@ on:
   schedule:
     - cron: "15 11 * * *"
 # TODO       
-#  push:
-#    branches: [ master ]
+  push:
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -50,6 +50,7 @@ jobs:
         python3 gen-map-de-districts.py
         cd maps
         tar cfz ../cache/maps.tgz *.gif *.mp4
+        cd ..
 
 
 # https://github.com/actions/upload-artifact/issues/21
