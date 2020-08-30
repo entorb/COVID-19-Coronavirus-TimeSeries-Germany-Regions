@@ -71,6 +71,7 @@ jobs:
       run: |
         cd data
         tar cfz ../cache/data.tgz *
+        cd ..
  
     - name: data upload data artifact via tip
       uses: eine/tip@master
@@ -89,11 +90,13 @@ jobs:
       run: |
         cd scripts-gnuplot
         gnuplot all.gp
+        cd ..
 
     - name: Gnuplot zipping plots
       run: |
         cd plots-gnuplot
         tar cfz ../cache/plots-gnuplot.tgz *
+        cd ..
 
     - name: Gnuplot upload artifact via tip
       uses: eine/tip@master
