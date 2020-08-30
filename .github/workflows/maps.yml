@@ -18,16 +18,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Repositiry
+      uses: actions/checkout@v2
     
-# Clone repository
-    - uses: actions/checkout@v2
-    
-    - name: Setup Python
+    - name: Python Setup
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
     
-    - name: Cache Python pip
+    - name: Python Cached pip
       uses: actions/cache@v2
       with:
         # This path is specific to Ubuntu
@@ -53,8 +52,7 @@ jobs:
         cd ..
 
 
-# https://github.com/actions/upload-artifact/issues/21
-    - name: Upload data artifact via tip
+    - name: Gnuplot upload artifact via tip
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
