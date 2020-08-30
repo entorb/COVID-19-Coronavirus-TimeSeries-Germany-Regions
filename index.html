@@ -1022,7 +1022,7 @@
 	<ul>
 		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Die wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiositätsdauer von 8-9 Tage</a>.</li>
 		<li>Dunkelziffer: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank">das RKI erwartet einen Bereich von 4,5–11,1</a>.</li>
-		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um 1 einrechnen (nur die zwar infizierten aber nicht getesteten Personen bilden eine Gefahr für ihre Umgebung).</li>
+		<li>Verordnete Quarantäne ist noch nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um 1 einrechnen (nur die zwar infizierten aber nicht getesteten Personen bilden eine Gefahr für ihre Umgebung).</li>
 		<li>Die infektiösen Personen werden gleichverteilt auf die gesamte Bevölkerung angenommen und nicht nach Altergruppen etc. unterschieden.</li>
 	</ul>
 
@@ -1030,19 +1030,20 @@
 	<script>
 		function rc_calc() {
 			const cases_last_week_100k = document.getElementById("rc_input_cases_last_week_100k").value;
+			var string_prop_someone_at_event_is_infectious_in_percent;
 			if (cases_last_week_100k >= 100000) {
-				const string_prop_someone_at_event_is_infectious_in_percent = "100%"
+				string_prop_someone_at_event_is_infectious_in_percent = "100%"
 				document.getElementById("rc_output_infectious_pop").value = 100000;
 			} else {
 				const factor_unreported = document.getElementById("rc_input_factor_unreported").value;
 				// const factor_unreported = 4;
 				const people = document.getElementById("rc_input_num_people").value;
 				const cases_last_week_100k_reported_and_unreported = cases_last_week_100k * factor_unreported;
-				document.getElementById("rc_output_infectious_pop").value = cases_last_week_100k_reported_and_unreported;
+				document.getElementById("rc_output_infectious_pop").value = cases_last_week_100k_reported_and_unreported.toFixed(1);
 				const prop_1_random_person_is_infectious = cases_last_week_100k_reported_and_unreported / 100000;
 				const prop_no_one_at_event_is_infectious = Math.pow((1 - prop_1_random_person_is_infectious), people)
 				const prop_someone_at_event_is_infectious = 1 - prop_no_one_at_event_is_infectious;
-				const string_prop_someone_at_event_is_infectious_in_percent = (prop_someone_at_event_is_infectious * 100).toFixed(1) + "%";
+				string_prop_someone_at_event_is_infectious_in_percent = (prop_someone_at_event_is_infectious * 100).toFixed(1) + "%";
 			}
 			// console.log(string_prop_someone_at_event_is_infectious_in_percent);
 
