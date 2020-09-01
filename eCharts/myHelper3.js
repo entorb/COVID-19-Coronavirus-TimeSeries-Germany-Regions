@@ -531,7 +531,7 @@ function refreshDeChart(
       containLabel: false,
       left: 75,
       bottom: 40,
-      right: 250,
+      right: 200,
     },
   };
 
