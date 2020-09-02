@@ -6,12 +6,12 @@ body {
 /* max-width: 700px; display: block; margin:auto; */
 
 p {
-  max-width: 800px; 
+  max-width: 1000px; 
   text-align: justify;
 }
 
 ul {
-  max-width: 800px; 
+  max-width: 900px; 
   text-align: left;
 }
 
