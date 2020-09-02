@@ -189,4 +189,4 @@ set ytics autofreq
 
 
 
-reset ; load "plot-countries-timeshifted.gp"
+reset ; load "plot-countries-deaths.gp"

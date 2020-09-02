@@ -5,9 +5,8 @@
 	<title>COVID-19 Coronavirus Disease Spread Analysis in German Regions and the World</title>
 	<meta charset="utf-8">
 	<meta name="author" content="Dr. Torben Menke">
-	<link rel="stylesheet" href="/style.css" />
+	<!-- <link rel="stylesheet" href="/style.css" /> -->
 	<link rel="stylesheet" href="style-covid.css" />
-	<link rel="stylesheet" href="af_gallery.css" />
 	<!-- Matomo -->
 	<script>
 		var _paq = window._paq || [];
@@ -66,10 +65,10 @@
 	<h1>COVID-19 Coronavirus Disease Spread Analysis in German Regions and the World</h1>
 
 	<p> In early 2020 the SARS-CoV-2 virus (colloquially known as the coronavirus) spread across the globe and caused a
-		pandemic of COVID-19 disease. This page displays a collection of daily updated charts and analysis of disease spread
+		pandemic of COVID-19 disease. This page presents a collection of daily updated charts and analysis of disease spread
 		in German regions and the world. The focus lies on displaying the data of the past and deriving trends for the near
-		future. In order to compare data of different regions, the data is scaled by the regions' population. Charts are
-		updated daily in the morning (UTC). Raw data and plot scripts are available in <a
+		future. In order to compare data of different regions, data is scaled by the regions' population. Charts are updated
+		daily in the morning (UTC). Raw data and plot scripts are available in <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions" target="_blank">my GitHub repository</a>.
 	</p>
 
@@ -184,7 +183,7 @@
 				<a href="#SelectedCountries">Comparison of selected countries</a>
 			</li>
 			<li>
-				<a href="#countries-timeshifted">How did the death toll develop in different countries?</a>
+				<a href="#CountriesTimeseriesDeaths">How did the death toll develop in different countries?</a>
 			</li>
 			<li>
 				<a href="#RefDeathCauses">Reference data: deaths by other causes</a>
@@ -651,7 +650,7 @@
 
 	<p>(Screenshot anklicken um zur Anmeldung zu gelangen)</p>
 	<a href="https://entorb.net/COVID-19-coronavirus/newsletter-register.html" target="_blank">
-		<img src="newsletter/newsletter-screenshot-2-mail.png" width="1173" height="733" style="border: 5px solid #555;"
+		<img src="newsletter-screenshot-2-mail.png" width="1173" height="733" style="border: 5px solid #555;"
 			alt="newsletter-screenshot-2-mail.png">
 	</a>
 
@@ -1769,6 +1768,8 @@
 
 	<h3><a id="SelectedCountries"></a>Comparison of selected countries</h3>
 
+	<h4>Current situation</h4>
+
 	<p>Deaths, absolute values.</p>
 	<img src="plots-gnuplot/int/countries-latest-selected-deaths.png" alt="countries-latest-selected-deaths.png"
 		width="640" height="480">
@@ -1782,7 +1783,7 @@
 			target="_blank">countries-latest-selected.tsv</a>
 	</small>
 
-	<p> Let us now scale the absolute numbers by the population of the countries, to make them comparable. </p>
+	<p> Deaths, scaled by of the countries, to make them comparable. </p>
 	<img src="plots-gnuplot/int/countries-latest-selected-deaths-per-mill.png"
 		alt="countries-latest-selected-deaths-per-mill.png" width="640" height="480">
 	<img src="plots-gnuplot/int/countries-latest-selected-deaths-per-mill-log.png"
@@ -1799,44 +1800,46 @@
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
-	<h3>
-		<a id="countries-timeshifted"></a>How did the death toll develop in different countries?</h3>
-
-	<p> Let us now take a look into the past. In the following set of plots, I moved the time (x) axis zero point to the
+	<h4><a id="CountriesTimeseriesDeaths"></a>Timeseries</h4>
+	<!-- <h3>
+		<a id="CountriesTimeseriesDeaths"></a>How did the death toll develop in different countries?</h3> -->
+	<!-- <p> Let us now take a look into the past. In the following set of plots, I moved the time (x) axis zero point to the
 		time when a given country reported its 2nd death cases. This allows for comparing the spreading in the countries.
-		First using absolute values. </p>
-	<img src="plots-gnuplot/int/countries-timeshifted-absolute.png" alt="countries-timeshifted-absolute.png" width="800"
+		First using absolute values. </p> -->
+
+	<p>First using absolute values.</p>
+	<img src="plots-gnuplot/int/countries-deaths-absolute.png" alt="countries-deaths-absolute.png" width="800"
 		height="800">
-	<img src="plots-gnuplot/int/countries-timeshifted-absolute-log.png" alt="countries-timeshifted-absolute-log.png"
-		width="800" height="800">
+	<img src="plots-gnuplot/int/countries-deaths-absolute-log.png" alt="countries-deaths-absolute-log.png" width="800"
+		height="800">
 	<br />
 	<small> generated via Gnuplot <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
-			target="_blank">plot-countries-timeshifted.gp</a>, raw data can be found in <a
+			target="_blank">plot-countries-deaths.gp</a>, raw data can be found in <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
 			target="_blank">countries-timeseries-XX.tsv</a>
 	</small>
 
 	<p> Now again re-scaled to the population of the countries, to make them comparable. </p>
-	<img src="plots-gnuplot/int/countries-timeshifted-per-million.png" alt="countries-timeshifted-per-million.png"
-		width="800" height="800">
-	<img src="plots-gnuplot/int/countries-timeshifted-per-million-log.png" alt="countries-timeshifted-per-million-log.png"
+	<img src="plots-gnuplot/int/countries-deaths-per-million.png" alt="countries-deaths-per-million.png" width="800"
+		height="800">
+	<img src="plots-gnuplot/int/countries-deaths-per-million-log.png" alt="countries-deaths-per-million-log.png"
 		width="800" height="800">
 	<br />
 
-	<p> Now a similar chart, but using new deaths per million population as y-axes. I decided to use the delta of the last
-		7 days (rolling week) instead of daily values, since there are strong weekend and other effects present, leading to
-		wrong conclusions. The 7 days delta data is much more reliable.
+	<p> Now weekly new deaths per million population. I decided to use this delta of the last 7 days (rolling week)
+		instead of daily new deaths values, since there are strong weekend and other effects present, leading to wrong
+		conclusions.
 		<!-- Note: for here the data is smoothed using a Bézier curve. -->
 	</p>
-	<img src="plots-gnuplot/int/countries-timeshifted-last_week-per-million.png"
-		alt="countries-timeshifted-last_week-per-million.png" width="800" height="800">
-	<img src="plots-gnuplot/int/countries-timeshifted-last_week-per-million-log.png"
-		alt="countries-timeshifted-last_week-per-million-log.png" width="800" height="800">
+	<img src="plots-gnuplot/int/countries-deaths-last_week-per-million.png"
+		alt="countries-deaths-last_week-per-million.png" width="800" height="800">
+	<img src="plots-gnuplot/int/countries-deaths-last_week-per-million-log.png"
+		alt="countries-deaths-last_week-per-million-log.png" width="800" height="800">
 	<br />
 	<small> generated via Gnuplot <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
-			target="_blank">plot-countries-timeshifted.gp</a>, raw data can be found in <a
+			target="_blank">plot-countries-deaths.gp</a>, raw data can be found in <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
 			target="_blank">countries-timeseries-XX.tsv</a>
 	</small>
