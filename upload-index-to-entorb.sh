@@ -10,6 +10,8 @@ rsync -rvhu --delete --delete-excluded --no-perms eCharts/myHelper*.js entorb@en
 
 rsync -rvhu --delete --delete-excluded --no-perms maps-de-districts.html entorb@entorb.net:html/COVID-19-coronavirus/
 rsync -rvhu --delete --delete-excluded --no-perms expGrowth.html entorb@entorb.net:html/COVID-19-coronavirus/
+rsync -rvhu --delete --delete-excluded --no-perms af_gallery.* entorb@entorb.net:html/COVID-19-coronavirus/
+rsync -rvhu --delete --delete-excluded --no-perms style-covid.css entorb@entorb.net:html/COVID-19-coronavirus/
 
 # rsync -rvhu --delete --delete-excluded --no-perms index-nav*.html entorb@entorb.net:html/COVID-19-coronavirus/
 
