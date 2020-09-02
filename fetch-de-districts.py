@@ -588,7 +588,7 @@ def export_latest_data(d_districts_data: dict):
         csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
             'Landkreis',   'Bundesland', 'Population', 'Cases', 'Deaths',
             'Cases_Per_Million', 'Deaths_Per_Million',
-            'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent'
+            'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'DoublingTime_Cases_Last_Week_Per_100000'
         ])
 
         csvwriter.writeheader()

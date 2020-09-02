@@ -153,7 +153,7 @@ def extract_latest_date_data():
         csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=[
             'Country', 'Population', 'Date', 'Cases',
             'Deaths', 'Cases_Per_Million', 'Deaths_Per_Million', 'Cases_Last_Week_Per_Million',
-            'Deaths_Last_Week_Per_Million', 'Continent', 'Code'
+            'Deaths_Last_Week_Per_Million', 'Continent', 'Code', 'DoublingTime_Cases_Last_Week_Per_100000'
         ])
         csvwriter.writeheader()
 
@@ -192,7 +192,7 @@ def extract_latest_date_data():
             'Country', 'Date',
             'Population',
             'Cases', 'Deaths',
-            'Cases_Per_Million', 'Deaths_Per_Million'
+            'Cases_Per_Million', 'Deaths_Per_Million', 'DoublingTime_Cases_Last_Week_Per_100000'
         ])
         csvwriter.writeheader()
         for country in sorted(d_selected_countries.keys(), key=str.casefold):

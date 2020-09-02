@@ -1355,6 +1355,9 @@
 	<h3><a id="CountryTable"></a>Country Table</h3>
 
 	<p>Click on a row to add it to the <a href="#CountriesCustomChart">country comparison chart</a> below.</p>
+
+	<p>"Cases Doubling Time" is derived by an exponential fit of the "Cases Last Week per 100.000 population" of the last
+		14 days.</p>
 	<div id="table-countries-latest-all"></div>
 	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found in <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.tsv"
@@ -1429,7 +1432,7 @@
 					}, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
 				},
 				{
-					title: "Cases<br/>Trend Index", field: "Slope_Cases_New_Per_Million", sorter: "number", width: 100, hozAlign: "right", sorterParams: {
+					title: "Cases Doubling Time<br/>Days", field: "DoublingTime_Cases_Last_Week_Per_100000", sorter: "number", width: 200, hozAlign: "right", sorterParams: {
 						alignEmptyValues: "bottom"
 					}, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
 				},

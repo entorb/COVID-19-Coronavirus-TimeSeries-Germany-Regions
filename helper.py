@@ -307,13 +307,17 @@ def fit_slopes(l_time_series: list) -> dict:
     d_slopes = {}
     data_cases_new_pm = []
     data_deaths_new_pm = []
+    data_cases_last_week_100k = []
     # for i in range(len(l_time_series)):
     for i in range(-14, 0):  # TM: checked: this is correct and results in the last 7 entries
         d = l_time_series[i]
         data_cases_new_pm.append((d['Days_Past'], d['Cases_New_Per_Million']))
         data_deaths_new_pm.append(
             (d['Days_Past'], d['Deaths_New_Per_Million']))
+        data_cases_last_week_100k.append(
+            (d['Days_Past'], d['Cases_Last_Week_Per_100000']))
 
+    # Cases_New_Per_Million
     N0, m = 0, 0
     d_res = fit_routine(data=data_cases_new_pm,
                         mode="lin")
@@ -321,12 +325,24 @@ def fit_slopes(l_time_series: list) -> dict:
         N0, m = d_res["fit_res"]
     d_slopes["Slope_Cases_New_Per_Million"] = round(m, 2)
 
+    # Deaths_New_Per_Million
     N0, m = 0, 0
     d_res = fit_routine(data=data_deaths_new_pm,
                         mode="lin")
     if "fit_res" in d_res:
         N0, m = d_res["fit_res"]
     d_slopes["Slope_Deaths_New_Per_Million"] = round(m, 2)
+
+    # Cases_Last_Week_Per_100000
+    N0, doubling_time = 0, 0
+    d_res = fit_routine(data=data_cases_last_week_100k,
+                        mode="exp")
+    if "fit_res" in d_res:
+        N0, doubling_time = d_res["fit_res"]
+        if doubling_time > 1 and doubling_time <= 60:
+            d_slopes["DoublingTime_Cases_Last_Week_Per_100000"] = round(
+                doubling_time, 1)
+
     return d_slopes
 
 
