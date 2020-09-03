@@ -27,11 +27,14 @@
 	<!-- Tabulator -->
 	<link href="./js/tabulator.min.css" rel="stylesheet">
 	<script src="./js/tabulator-4.6.min.js"></script>
-	<script src="./js/tabulator-myHelper.js"></script>
 	<!-- eCharts -->
 	<script src="./js/echarts-4.7.0-en.min.js"></script>
 	<script src="./js/jquery-3.5.0.min.js"></script>
-	<script src="./js/myHelper3.js"></script>
+	<!-- My Helper -->
+	<script src="./js/myHelper.js"></script>
+	<script src="./js/myHelper-tabulator.js"></script>
+	<script src="./js/myHelper-eCharts.js"></script>
+	<script src="./js/myHelper-risk-calc.js"></script>
 	<!-- Gallery by Alex Friedl -->
 	<script src="./js/af_gallery.js"></script>
 	<!-- Gallery by Alex Friedl -->
@@ -305,49 +308,6 @@
 
 	<p> 06.05.2020: In Deutschland wurde als Richtwert für die Verschärfung von Maßnahmen der Grenzwert von <a href="https://www.tagesschau.de/inland/lockerungen-bund-laender-101.html" target="_blank">500 Neuinfektionen pro 1.000.000 Einwohnern in sieben Tagen in einem Stadt-/Landkreis</a> festgelegt. Daher habe ich die Landkreistabelle nun nach diesem Wert in der Spalte "Infizierte pro Millionen Einwohner pro Woche" sortiert. </p>
 	<div id="div_table-de-districts"></div>
-	<!-- 
-		Common JS for eCharts
-	-->
-	<script>
-		// array of promises for async fetching, used for eCharts plots
-		const promises = [];
-		// This dirty workaround is needed for Edge and IE :-(
-		var urlParams = [];
-		if ('search' in window.location) {
-			urlParams = URLToParameterArray(window.location.search);
-		}
-		const options_eCharts_sorting = [
-			"Sort_by_last_value",
-			"Sort_by_max_value",
-			"Sort_by_name"
-		]
-
-
-		// Initial list of DeDistrict codes
-		var deDistrictCodesDefaultValue = "02000"; // do not delete, used in reset function as well
-		if ('DeDistricts' in urlParams) {
-			var list_of_codes_to_plot_DeDistricts = urlParams.DeDistricts.split(",");
-			// Adding an entry to this array draws a new line
-			// read districts list from URL parameter if set
-		} else {
-			// Adding an entry to this array draws a new line
-			// read districts list from URL parameter if set
-			// 02000 = Hamburg
-			// 05558 = Coesfeld
-			// 05370 = Heinsberg
-			var list_of_codes_to_plot_DeDistricts = [deDistrictCodesDefaultValue];
-		}
-
-
-		// Initial list of country codes
-		if ('countries' in urlParams) {
-			var list_of_codes_to_plot_countries = urlParams.countries.split(",");
-		} else {
-			// Adding a new country code to this array draws a new line
-			var list_of_codes_to_plot_countries = ["DE"];
-		}
-
-	</script>
 	<script>
 
 		var table_DeDistricts = defineTable_DeDistricts();
@@ -376,63 +336,16 @@
 			<td><input type="reset" onclick="resetChart('DeDistrict')"></td>
 		</tr>
 	</table>
-	<div id="eChartsDeDistrictsContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
+	<div id="div_eChartsDeDistrictsContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts" target="_blank">here</a>
 	</small>
 	<!-- 
 		JS for eCharts DE Districts 
 	-->
 	<script>
-		const eChart_DeDistricts = echarts.init(document.getElementById("eChartsDeDistrictsContainer"));
-
-		var mapDeDistrictNames = {};
-
-		// fetch mapping_landkreis_ID_name.json reference data like code and continent
-		function fetch_mapRefDeDistrictData(mapDeDistrictNames) {
-			const url =
-				"https://entorb.net/COVID-19-coronavirus/data/de-districts/mapping_landkreis_ID_name.json";
-			return $.getJSON(url, function (data) {
-				console.log("success: mapDeDistrictNames");
-			})
-				.done(function (data) {
-					console.log("done: mapDeDistrictNames");
-					$.each(data, function (key, val) {
-						mapDeDistrictNames[key] = val;
-					});
-				})
-				.fail(function () {
-					console.log("fail: mapDeDistrictNames");
-				});
-		}
+		const eChart_DeDistricts = echarts.init(document.getElementById("div_eChartsDeDistrictsContainer"));
 		promises.push(fetch_mapRefDeDistrictData(mapDeDistrictNames));
 
-
-		const data_object_DE_districts = {}; // We store all the data in an object
-
-		// For each district code we fetch the data
-		for (let i = 0; i < list_of_codes_to_plot_DeDistricts.length; i++) {
-			promises.push(fetchData('DeDistrict', list_of_codes_to_plot_DeDistricts[i], data_object_DE_districts));
-		}
-
-		// chart parameter option lists
-		// const options_xAxisProperty
-		const options_yAxisProperty_DeDistricts = [
-			"Cases_Last_Week_Per_100000",
-			"Cases_Last_Week_Per_Million",
-			"Cases_Per_Million",
-			"Cases_New_Per_Million",
-			"Cases",
-			"Cases_Last_Week",
-			"Cases_New",
-			"Deaths_Last_Week_Per_Million",
-			"Deaths_Per_Million",
-			"Deaths_New_Per_Million",
-			"Deaths",
-			"Deaths_Last_Week",
-			"Deaths_New",
-			"DIVI_Intensivstationen_Covid_Prozent",
-			"DIVI_Intensivstationen_Betten_belegt_Prozent",
-		];
 		const select_yAxisProperty_DeDistricts = document.getElementById("sel_y_axis_field_DeDistricts");
 		setOptionsToSelect(select_yAxisProperty_DeDistricts, options_yAxisProperty_DeDistricts, "");
 		const select_sorting_DeDistricts = document.getElementById("sel_sorting_DeDistricts");
@@ -474,21 +387,6 @@
 			)
 			refresh_table_selections('DeDistrict');
 		});
-
-		// Wraps the refreshChart function so it is more readable, takes less space
-		function refreshDeDistrictsChartWrapper() {
-			refreshDeChart(
-				eChart_DeDistricts,
-				list_of_codes_to_plot_DeDistricts,
-				data_object_DE_districts,
-				mapDeDistrictNames,
-				select_yAxisProperty_DeDistricts,
-				select_xAxisTimeRange_DeDistricts,
-				select_sorting_DeDistricts,
-				update_url = true
-			);
-		}
-
 	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -521,43 +419,13 @@
 		</tr>
 	</table>
 	<!--  -->
-	<div id="eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
+	<div id="div_eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-states</a></small>
 	<!-- 
 		JS for eCharts DE States 
 	-->
 	<script>
-		const eChart_DeStates = echarts.init(document.getElementById("eChartsDeStatesContainer"));
-
-		var codes_DeStates = ["BB", "BE", "BW", "BY", "HB", "HE", "HH", "MV", "NI", "NW", "RP", "SH", "SL", "SN", "ST", "TH", "DE-total"];
-		var mapDeStatesNames = {
-			"BB": "Brandenburg",
-			"BE": "Berlin",
-			"BW": "Baden-Württemberg",
-			"BY": "Bayern",
-			"HB": "Bremen",
-			"HE": "Hessen",
-			"HH": "Hamburg",
-			"MV": "Mecklenburg-Vorpommern",
-			"NI": "Niedersachsen",
-			"NW": "Nordrhein-Westfalen",
-			"RP": "Rheinland-Pfalz",
-			"SH": "Schleswig-Holstein",
-			"SL": "Saarland",
-			"SN": "Sachsen",
-			"ST": "Sachsen-Anhalt",
-			"TH": "Thüringen",
-			"DE-total": "DEUTSCHLAND"
-		};
-
-
-		const data_object_DeStates = {}; // We store all the data in an object
-
-		// For each DE state we fetch the data
-		for (let i = 0; i < codes_DeStates.length; i++) {
-			promises.push(fetchData('DeState', codes_DeStates[i], data_object_DeStates));
-		}
-
+		const eChart_DeStates = echarts.init(document.getElementById("div_eChartsDeStatesContainer"));
 		const select_yAxisProperty_DeStates = document.getElementById("sel_y_axis_field_DeStates");
 		// setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeStates, "");
 		setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeDistricts, "");
@@ -600,19 +468,7 @@
 			)
 		});
 
-		// Wraps the refreshChart function so it is more readable, takes less space
-		function refreshDeStatesChartWrapper() {
-			refreshDeChart(
-				eChart_DeStates,
-				codes_DeStates,
-				data_object_DeStates,
-				mapDeStatesNames,
-				select_yAxisProperty_DeStates,
-				select_xAxisTimeRange_DeStates,
-				select_sorting_DeStates,
-				update_url = false // false here becasue url is hard coded in refreshDeChart
-			);
-		}
+
 
 	</script>
 
@@ -830,6 +686,11 @@
 			<td>Wahrscheinlichkeit dass eine aktuell infektiöse Person unter den Teilnehmern ist (Berechnungslogik siehe <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>)</td>
 		</tr>
 	</table>
+	<script>
+
+		rc_calc();
+
+	</script>
 
 	<p>Anmerkungen zu den Eingangsgrößen und Annahmen:<br>Folgenden Vereinfachungen habe ich für dieses grobe Modell getroffen:</p>
 	<ul>
@@ -840,104 +701,6 @@
 	</ul>
 
 	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weitern Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, Kontakt siehe unten.</p>
-	<script>
-		function rc_calc() {
-			const cases_last_week_100k = document.getElementById("rc_input_cases_last_week_100k").value;
-			var string_prop_someone_at_event_is_infectious_in_percent;
-			if (cases_last_week_100k >= 100000) {
-				string_prop_someone_at_event_is_infectious_in_percent = "100%"
-				document.getElementById("rc_output_infectious_pop").value = 100000;
-			} else {
-				const factor_unreported = document.getElementById("rc_input_factor_unreported").value;
-				// const factor_unreported = 4;
-				const people = document.getElementById("rc_input_num_people").value;
-				const cases_last_week_100k_reported_and_unreported = cases_last_week_100k * factor_unreported;
-				document.getElementById("rc_output_infectious_pop").value = cases_last_week_100k_reported_and_unreported.toFixed(1);
-				const prop_1_random_person_is_infectious = cases_last_week_100k_reported_and_unreported / 100000;
-				const prop_no_one_at_event_is_infectious = Math.pow((1 - prop_1_random_person_is_infectious), people)
-				const prop_someone_at_event_is_infectious = 1 - prop_no_one_at_event_is_infectious;
-				string_prop_someone_at_event_is_infectious_in_percent = (prop_someone_at_event_is_infectious * 100).toFixed(1) + "%";
-			}
-			// console.log(string_prop_someone_at_event_is_infectious_in_percent);
-
-			document.getElementById("rc_output_prop_someone_at_event_is_infectious").value = string_prop_someone_at_event_is_infectious_in_percent;
-		}
-		rc_calc();
-
-		// populate select
-		// rc_sel_bundesland = document.getElementById("rc_sel_bundesland");
-		// for (var i = 0; i <= 16; i++) {
-		// 	var opt = document.createElement('option');
-		// 	opt.value = i;
-		// 	opt.innerHTML = i;
-		// rc_sel_bundesland.appendChild(opt);
-		// }
-
-
-
-		// TODO: provide selection of Bundesland or District
-		// fetches DE_states_latest data and populates selects for risk calculator
-		function rc_fetch_DE_states_and_populate_risk_calc_select() {
-			const url =
-				"https://entorb.net/COVID-19-coronavirus/data/de-states/de-states-latest.json";
-			return $.getJSON(url, function (data) {
-				console.log("success: de-states-latest");
-			})
-				.done(function (data) {
-					console.log("done: de-states-latest");
-					// console.log(data);
-
-					list_of_de_states = [
-						"DE-total"
-						, "BW"
-						, "BY"
-						, "BE"
-						, "BB"
-						, "HB"
-						, "HH"
-						, "HE"
-						, "MV"
-						, "NI"
-						, "NW"
-						, "RP"
-						, "SL"
-						, "SN"
-						, "ST"
-						, "SH"
-						, "TH"];
-
-					// $.each(data, function (bl_key, bl_data) {
-					for (var i = 0; i < list_of_de_states.length; i++) {
-						bl_data = data[list_of_de_states[i]];
-						// mapDeDistrictNames[key] = val;
-						var opt = document.createElement('option');
-						opt.innerHTML = bl_data['State'];
-						// ensure value >= 1
-						if (bl_data['Cases_Last_Week_Per_100000'] >= 1) {
-							opt.value = bl_data['Cases_Last_Week_Per_100000'];
-						} else {
-							opt.value = 1.0;
-						}
-						rc_sel_bundesland.appendChild(opt);
-						// set inital value to DE-total
-						document.getElementById("rc_input_cases_last_week_100k").value = data["DE-total"]["Cases_Last_Week_Per_100000"];
-
-					}
-					// });
-				})
-				.fail(function () {
-					console.log("fail: de-states-latest");
-				});
-		}
-		promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
-
-
-		function rc_sel_bundesland_selected() {
-			document.getElementById("rc_input_cases_last_week_100k").value = document.getElementById("rc_sel_bundesland").value;
-			rc_calc();
-		}
-
-	</script>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 
@@ -1015,7 +778,6 @@
 	<script>
 
 		var table_Countries = defineTable_Countries();
-
 		promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
 
 	</script>
@@ -1112,50 +874,15 @@
 		-->
 
 	<h4><a id="CountriesCustomChart"></a>3. Chart</h4>
-	<div id="eChartsCountryContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
+	<div id="div_eChartsCountryContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/" target="_blank">country-XX.tsv / .json</a>
 		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version of the select data logic!</small>
 	<!-- 
 		JS for eCharts Countries
 	-->
 	<script>
-		const eChart_countries = echarts.init(document.getElementById("eChartsCountryContainer"));
-
-		// fetch ref list: Country Code -> Country Name
-		var mapCountryNames = {};
-		var mapContinentCountries = {};
-
-		// fetch countries-latest-all.json containing country reference data like code and continent
-		function fetch_mapRefCountryData(mapCountryNames, mapContinentCountries) {
-			const url =
-				"https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json";
-			return $.getJSON(url, function (data) {
-				console.log("success: mapCountryNames");
-			})
-				.done(function (data) {
-					console.log("done: mapCountryNames");
-					$.each(data, function (key, val) {
-						mapCountryNames[data[key].Code] = data[key].Country;
-						const this_continent = data[key].Continent;
-						if (!(this_continent in mapContinentCountries)) {
-							mapContinentCountries[this_continent] = [];
-						}
-						mapContinentCountries[this_continent].push([data[key].Code, data[key].Country]);  // pair of country_code , country_name
-					});
-				})
-				.fail(function () {
-					console.log("fail: mapCountryNames");
-				});
-		}
+		const eChart_countries = echarts.init(document.getElementById("div_eChartsCountryContainer"));
 		promises.push(fetch_mapRefCountryData(mapCountryNames, mapContinentCountries));
-
-
-		const data_object_countries = {}; // We store all the data in an object
-
-		// For each country code we fetch the data
-		for (let i = 0; i < list_of_codes_to_plot_countries.length; i++) {
-			promises.push(fetchData('Country', list_of_codes_to_plot_countries[i], data_object_countries));
-		}
 
 		// Wait for all async promises to be done (all data is fetched), 
 		// populates the select dropdowns
@@ -1176,60 +903,6 @@
 				update_url = false
 			)
 		});
-
-		// chart parameter option lists
-		const options_xAxisProperty = [
-			"Date",
-			"Days_Since_2nd_Death",
-			"Days_Past",
-			"Deaths_Per_Million",
-			"Deaths_Last_Week_Per_Million",
-			"Deaths_New_Per_Million",
-			"Deaths",
-			"Deaths_Last_Week",
-			"Deaths_New",
-			"Cases_Per_Million",
-			"Cases_Last_Week_Per_100000",
-			"Cases_Last_Week_Per_Million",
-			"Cases_New_Per_Million",
-			"Cases",
-			"Cases_Last_Week",
-			"Cases_New",
-		];
-		// "Deaths_Doubling_Time",
-		// "Cases_Doubling_Time"
-
-		const options_yAxisProperty = [
-			"Deaths_Last_Week_Per_Million",
-			"Deaths_Per_Million",
-			"Deaths_New_Per_Million",
-			"Deaths",
-			"Deaths_Last_Week",
-			"Deaths_New",
-			"Cases_Last_Week_Per_100000",
-			"Cases_Last_Week_Per_Million",
-			"Cases_Per_Million",
-			"Cases_New_Per_Million",
-			"Cases",
-			"Cases_Last_Week",
-			"Cases_New",
-			"Deaths_Per_Cases",
-			"Deaths_Per_Cases_Last_Week",
-		];
-
-		// "Deaths_Doubling_Time",
-		// "Cases_Doubling_Time",
-
-		const options_xaxis_time_range = [
-			{ value: "12weeks", text: "12 weeks" },
-			{ value: "4weeks", text: "4 weeks" },
-			{ value: "all", text: "all time" },
-		];
-
-		const options_axis_scales = [
-			{ value: "linscale", text: "linear" },
-			{ value: "logscale", text: "logarithmic" },
-		];
 
 		const select_sorting_Countries = document.getElementById("sel_sorting_Countries");
 		setOptionsToSelect(select_sorting_Countries, options_eCharts_sorting, "");
@@ -1263,16 +936,6 @@
 		select_yAxisScale.onchange = function () { refreshCountryChartWrapper() };
 		select_sorting_Countries.onchange = function () { refreshCountryChartWrapper() };
 
-
-
-		// country arrays
-		var options_countries_africa = [];
-		var options_countries_asia = [];
-		var options_countries_europe = [];
-		var options_countries_north_america = [];
-		var options_countries_south_america = [];
-		var options_countries_oceania = [];
-
 		// country selects
 		const select_countries_africa = document.getElementById("sel_countries_africa");
 		const select_countries_asia = document.getElementById("sel_countries_asia");
@@ -1297,23 +960,6 @@
 		// select_countries_oceania.onchange = function () { new_country_selected(list_of_codes_to_plot_countries, select_countries_oceania, options_countries_oceania) };
 
 
-
-
-		// Wraps the refreshChart function so it is more readable, takes less space
-		function refreshCountryChartWrapper() {
-			refreshCountryChart(
-				eChart_countries,
-				list_of_codes_to_plot_countries,
-				data_object_countries,
-				select_xAxisProperty,
-				select_yAxisProperty,
-				select_xAxisTimeRange,
-				select_xAxisScale,
-				select_yAxisScale,
-				select_sorting_Countries,
-				update_url = true
-			);
-		}
 	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>

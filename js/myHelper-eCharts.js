@@ -1,3 +1,202 @@
+// -------------
+// Setting up Chart DeStates
+// -------------
+var codes_DeStates = ["BB", "BE", "BW", "BY", "HB", "HE", "HH", "MV", "NI", "NW", "RP", "SH", "SL", "SN", "ST", "TH", "DE-total"];
+var mapDeStatesNames = {
+    "BB": "Brandenburg",
+    "BE": "Berlin",
+    "BW": "Baden-Württemberg",
+    "BY": "Bayern",
+    "HB": "Bremen",
+    "HE": "Hessen",
+    "HH": "Hamburg",
+    "MV": "Mecklenburg-Vorpommern",
+    "NI": "Niedersachsen",
+    "NW": "Nordrhein-Westfalen",
+    "RP": "Rheinland-Pfalz",
+    "SH": "Schleswig-Holstein",
+    "SL": "Saarland",
+    "SN": "Sachsen",
+    "ST": "Sachsen-Anhalt",
+    "TH": "Thüringen",
+    "DE-total": "DEUTSCHLAND"
+};
+const data_object_DeStates = {}; // We store all the data in an object
+// For each DE state we fetch the data
+for (let i = 0; i < codes_DeStates.length; i++) {
+    promises.push(fetchData('DeState', codes_DeStates[i], data_object_DeStates));
+}
+// Wraps the refreshChart function so it is more readable, takes less space
+function refreshDeStatesChartWrapper() {
+    refreshDeChart(
+        eChart_DeStates,
+        codes_DeStates,
+        data_object_DeStates,
+        mapDeStatesNames,
+        select_yAxisProperty_DeStates,
+        select_xAxisTimeRange_DeStates,
+        select_sorting_DeStates,
+        update_url = false // false here becasue url is hard coded in refreshDeChart
+    );
+}
+
+
+// -------------
+// Setting up Chart DeDistricts
+// -------------
+var mapDeDistrictNames = {};
+
+const data_object_DE_districts = {}; // We store all the data in an object
+
+// For each district code we fetch the data
+for (let i = 0; i < list_of_codes_to_plot_DeDistricts.length; i++) {
+    promises.push(fetchData('DeDistrict', list_of_codes_to_plot_DeDistricts[i], data_object_DE_districts));
+}
+
+// chart parameter option lists
+// const options_xAxisProperty
+const options_yAxisProperty_DeDistricts = [
+    "Cases_Last_Week_Per_100000",
+    "Cases_Last_Week_Per_Million",
+    "Cases_Per_Million",
+    "Cases_New_Per_Million",
+    "Cases",
+    "Cases_Last_Week",
+    "Cases_New",
+    "Deaths_Last_Week_Per_Million",
+    "Deaths_Per_Million",
+    "Deaths_New_Per_Million",
+    "Deaths",
+    "Deaths_Last_Week",
+    "Deaths_New",
+    "DIVI_Intensivstationen_Covid_Prozent",
+    "DIVI_Intensivstationen_Betten_belegt_Prozent",
+];
+
+
+
+// fetch mapping_landkreis_ID_name.json reference data like code and continent
+function fetch_mapRefDeDistrictData(mapDeDistrictNames) {
+    const url =
+        "https://entorb.net/COVID-19-coronavirus/data/de-districts/mapping_landkreis_ID_name.json";
+    return $.getJSON(url, function (data) {
+        console.log("success: mapDeDistrictNames");
+    })
+        .done(function (data) {
+            console.log("done: mapDeDistrictNames");
+            $.each(data, function (key, val) {
+                mapDeDistrictNames[key] = val;
+            });
+        })
+        .fail(function () {
+            console.log("fail: mapDeDistrictNames");
+        });
+}
+// Wraps the refreshChart function so it is more readable, takes less space
+function refreshDeDistrictsChartWrapper() {
+    refreshDeChart(
+        eChart_DeDistricts,
+        list_of_codes_to_plot_DeDistricts,
+        data_object_DE_districts,
+        mapDeDistrictNames,
+        select_yAxisProperty_DeDistricts,
+        select_xAxisTimeRange_DeDistricts,
+        select_sorting_DeDistricts,
+        update_url = true
+    );
+}
+
+// -------------
+// Setting up Chart Countries
+// -------------
+// fetch ref list: Country Code -> Country Name
+var mapCountryNames = {};
+var mapContinentCountries = {};
+const data_object_countries = {}; // We store all the data in an object
+// For each country code we fetch the data
+for (let i = 0; i < list_of_codes_to_plot_countries.length; i++) {
+    promises.push(fetchData('Country', list_of_codes_to_plot_countries[i], data_object_countries));
+}
+// chart parameter option lists
+const options_xAxisProperty = [
+    "Date",
+    "Days_Since_2nd_Death",
+    "Days_Past",
+    "Deaths_Per_Million",
+    "Deaths_Last_Week_Per_Million",
+    "Deaths_New_Per_Million",
+    "Deaths",
+    "Deaths_Last_Week",
+    "Deaths_New",
+    "Cases_Per_Million",
+    "Cases_Last_Week_Per_100000",
+    "Cases_Last_Week_Per_Million",
+    "Cases_New_Per_Million",
+    "Cases",
+    "Cases_Last_Week",
+    "Cases_New",
+];
+// "Deaths_Doubling_Time",
+// "Cases_Doubling_Time"
+const options_yAxisProperty = [
+    "Deaths_Last_Week_Per_Million",
+    "Deaths_Per_Million",
+    "Deaths_New_Per_Million",
+    "Deaths",
+    "Deaths_Last_Week",
+    "Deaths_New",
+    "Cases_Last_Week_Per_100000",
+    "Cases_Last_Week_Per_Million",
+    "Cases_Per_Million",
+    "Cases_New_Per_Million",
+    "Cases",
+    "Cases_Last_Week",
+    "Cases_New",
+    "Deaths_Per_Cases",
+    "Deaths_Per_Cases_Last_Week",
+];
+
+const options_xaxis_time_range = [
+    { value: "12weeks", text: "12 weeks" },
+    { value: "4weeks", text: "4 weeks" },
+    { value: "all", text: "all time" },
+];
+
+const options_axis_scales = [
+    { value: "linscale", text: "linear" },
+    { value: "logscale", text: "logarithmic" },
+];
+// country arrays
+var options_countries_africa = [];
+var options_countries_asia = [];
+var options_countries_europe = [];
+var options_countries_north_america = [];
+var options_countries_south_america = [];
+var options_countries_oceania = [];
+// Wraps the refreshChart function so it is more readable, takes less space
+function refreshCountryChartWrapper() {
+    refreshCountryChart(
+        eChart_countries,
+        list_of_codes_to_plot_countries,
+        data_object_countries,
+        select_xAxisProperty,
+        select_yAxisProperty,
+        select_xAxisTimeRange,
+        select_xAxisScale,
+        select_yAxisScale,
+        select_sorting_Countries,
+        update_url = true
+    );
+}
+
+
+
+
+
+
+// -------------
+// Common Functions
+// -------------
 
 function resetChart(type) {
     if (type == 'Country') {

@@ -1,4 +1,53 @@
 // -------------
+// 0. Variables and code to run
+// -------------
+
+
+// array of promises for async fetching, used for eCharts plots
+const promises = [];
+
+
+// This dirty workaround is needed for Edge and IE :-(
+var urlParams = [];
+if ('search' in window.location) {
+  urlParams = URLToParameterArray(window.location.search);
+}
+const options_eCharts_sorting = [
+  "Sort_by_last_value",
+  "Sort_by_max_value",
+  "Sort_by_name"
+]
+
+
+// Initial list of DeDistrict codes
+var deDistrictCodesDefaultValue = "02000"; // do not delete, used in reset function as well
+if ('DeDistricts' in urlParams) {
+  var list_of_codes_to_plot_DeDistricts = urlParams.DeDistricts.split(",");
+  // Adding an entry to this array draws a new line
+  // read districts list from URL parameter if set
+} else {
+  // Adding an entry to this array draws a new line
+  // read districts list from URL parameter if set
+  // 02000 = Hamburg
+  // 05558 = Coesfeld
+  // 05370 = Heinsberg
+  var list_of_codes_to_plot_DeDistricts = [deDistrictCodesDefaultValue];
+}
+
+
+// Initial list of country codes
+if ('countries' in urlParams) {
+  var list_of_codes_to_plot_countries = urlParams.countries.split(",");
+} else {
+  // Adding a new country code to this array draws a new line
+  var list_of_codes_to_plot_countries = ["DE"];
+}
+
+
+
+
+
+// -------------
 // 1. Small helpers
 // -------------
 
@@ -137,7 +186,28 @@ function fetchData(type, code, dataObject) {
 }
 
 
-
+// fetch countries-latest-all.json containing country reference data like code and continent
+function fetch_mapRefCountryData(mapCountryNames, mapContinentCountries) {
+  const url =
+    "https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json";
+  return $.getJSON(url, function (data) {
+    console.log("success: mapCountryNames");
+  })
+    .done(function (data) {
+      console.log("done: mapCountryNames");
+      $.each(data, function (key, val) {
+        mapCountryNames[data[key].Code] = data[key].Country;
+        const this_continent = data[key].Continent;
+        if (!(this_continent in mapContinentCountries)) {
+          mapContinentCountries[this_continent] = [];
+        }
+        mapContinentCountries[this_continent].push([data[key].Code, data[key].Country]);  // pair of country_code , country_name
+      });
+    })
+    .fail(function () {
+      console.log("fail: mapCountryNames");
+    });
+}
 
 
 
