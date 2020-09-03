@@ -210,7 +210,7 @@ function resetChart(type) {
 }
 
 
-
+// De States Chart
 function refreshDeChart(
     chart,
     codes,
@@ -929,4 +929,89 @@ function getSeries(codes, dataObject, map_id_name, xAxis, yAxis, sorting) {
         series.push(seria);
     }
     return series;
+}
+
+
+
+
+function create_latest_data_plot(eChartsObjectID, property, ordering) {
+    let sortmap = [];
+    const codes_ordered = [];
+    var data_names = [];
+    var data_values = [];
+
+    for (const [key, values] of Object.entries(array_countries_latest)) {
+        if (property in values) {
+            value = values[property];
+            sortmap.push([key, value]);
+        }
+    }
+    sortmap.sort(function (a, b) {
+        return a[1] - b[1];
+    });
+
+    for (let i = 0; i < sortmap.length; i++) {
+        codes_ordered.push(sortmap[i][0]);
+    }
+
+    if (ordering == 'DESC') {
+        codes_ordered.reverse();
+    }
+
+    for (let i = 0; i < codes_ordered.length; i++) {
+        name = array_countries_latest[codes_ordered[i]]['Country'];
+        data_names.push(name);
+        value = array_countries_latest[codes_ordered[i]][property];
+        data_values.push(value);
+    }
+
+    option = {
+        title: {
+            // text: "COVID-19: Landkreisvergleich 7-Tages-Neuinfektionen",
+            text: "COVID-19: " + capitalize_words(property, "_"),
+            left: 'center',
+            subtext: "by Torben https://entorb.net based on JHU data",
+            sublink: "https://entorb.net/COVID-19-coronavirus/",
+        },
+        yAxis: {
+            type: 'category',
+            data: data_names,
+        },
+        xAxis: {
+            type: 'value',
+            position: 'top',
+        },
+        series: [{
+            data: data_values,
+            type: 'bar'
+        }],
+        tooltip: {
+            trigger: 'item', // item or axis
+            axisPointer: {
+                type: 'shadow',
+                snap: true
+            }
+        },
+        toolbox: {
+            show: true,
+            showTitle: true,
+            feature: {
+                saveAsImage: {},
+            },
+        }, grid: {
+            containLabel: false,
+            left: 200,
+            bottom: 20,
+            top: 90,
+            right: 20,
+        },
+    };
+
+    // fine tuning
+    if (property == 'DoublingTime_Cases_Last_Week_Per_100000') {
+        option.title.text = 'COVID-19: New Cases Doubling Time (days)'
+    }
+
+    let echartsObj = echarts.init(document.getElementById(eChartsObjectID));
+    echartsObj.setOption(option)
 }

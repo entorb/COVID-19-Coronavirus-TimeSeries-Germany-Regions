@@ -101,7 +101,7 @@
 					<a href="#DeDistrictZeroCases">Anzahl der Landkreise mit Neu-Infektionen in der letzten Woche</a>
 				</li>
 				<li>
-					<a href="#DeDistrictTable">Landkreistabelle mit Intensivstationsauslastung </li>
+					<a href="#DeDistrictTable">Landkreistabelle mit Intensivstationsauslastung
 				<li>
 					<a href="#DeDistrictChart">Interaktiver Landkreis Vergleich </a>
 				</li>
@@ -162,6 +162,9 @@
 			</li>
 			<li>
 				<a href="#CountriesCustomChart">Country comparison chart</a>
+			</li>
+			<li>
+				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a>
 			</li>
 			<li>
 				<a href="#SelectedCountries">Comparison of selected countries</a>
@@ -959,6 +962,35 @@
 		// select_countries_south_america.onchange = function () { new_country_selected(list_of_codes_to_plot_countries, select_countries_south_america, options_countries_south_america) };
 		// select_countries_oceania.onchange = function () { new_country_selected(list_of_codes_to_plot_countries, select_countries_oceania, options_countries_oceania) };
 
+
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h3><a id="CountriesDoublingTime"></a>Doubling Time of New Infections</h3>
+
+	<p> In the following the exponential growth of the new infections is analyzed. If an increase is found, I fitted the data with an exponential function to drive the new cases doubling time. As data I used the "Cases Last Week Per 100000 population" series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new cases, shorter is worse, of cause. </p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Doubling_Time" style="height: 2000px">
+		</div>
+	</div>
+	<script>
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('div_eChart_Country_Doubling_Time', 'DoublingTime_Cases_Last_Week_Per_100000', 'DESC')
+
+		});
+
+	</script>
+	<div id="div_table-countries-doubling"></div>
+	<script>
+
+		var table_Countries = defineTable_Countries_Doubling();
+		promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
 
 	</script>
 

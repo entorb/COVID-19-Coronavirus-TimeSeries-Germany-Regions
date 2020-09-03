@@ -6,6 +6,9 @@
 // array of promises for async fetching, used for eCharts plots
 const promises = [];
 
+// here we store latest data for countries
+var array_countries_latest = {};
+
 
 // This dirty workaround is needed for Edge and IE :-(
 var urlParams = [];
@@ -43,7 +46,30 @@ if ('countries' in urlParams) {
   var list_of_codes_to_plot_countries = ["DE"];
 }
 
+// -------------
+// fetching data
+// -------------
+function fetch_countries_latest(array_countries_latest) {
+  const url =
+    "https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json";
+  return $.getJSON(url, function (data) {
+    console.log("success: array_countries_latest");
+  })
+    .done(function (data) {
+      console.log("done: array_countries_latest");
+      $.each(data, function (key, val) {
+        code = data[key]['Code'];
+        array_countries_latest[code] = val;
+        delete array_countries_latest[code]['Code'];
+      });
+      // console.log(array_countries_latest);
 
+    })
+    .fail(function () {
+      console.log("fail: array_countries_latest");
+    });
+}
+promises.push(fetch_countries_latest(array_countries_latest));
 
 
 

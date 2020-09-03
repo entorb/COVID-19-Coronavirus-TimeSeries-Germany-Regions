@@ -201,6 +201,76 @@ function defineTable_Countries() {
 
 
 
+
+function defineTable_Countries_Doubling() {
+  table = new Tabulator("#div_table-countries-doubling", {
+    height: 600, // set height of table to enable virtual DOM
+    layout: "fitColumns", //fit columns to width of table (optional)
+    // autoColumns: true, // very nice!!!
+    tooltipsHeader: true,
+    selectable: true,
+    columns: [ //Define Table Columns
+      { title: "Country<br/>&nbsp;", field: "Country", sorter: "string", width: 100, headerFilter: true },
+      {
+        title: "Code<br/>&nbsp;", field: "Code", sorter: "string", width: 30, sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true
+      },
+      {
+        title: "Continent<br/>&nbsp;", field: "Continent", width: 75, editor: "select", sorter: "string", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterParams: {
+          "": "any",
+          "Africa": "Africa",
+          "Asia": "Asia",
+          "Europe": "Europe",
+          "North America": "North America",
+          "South America": "South America",
+          "Oceania": "Oceania"
+          // "Antarctica": "Antarctica",
+        }
+      },
+      {
+        title: "Population<br/>&nbsp;", field: "Population", sorter: "number", width: 100, hozAlign: "right", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
+      },
+      {
+        title: "Cases<br/>&nbsp;", field: "Cases", sorter: "number", width: 100, hozAlign: "right", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
+      },
+      {
+        title: "Cases<br/>per Million", field: "Cases_Per_Million", sorter: "number", hozAlign: "right", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
+      },
+      {
+        title: "Cases Last Week<br/>per 100000", field: "Cases_Last_Week_Per_100000", sorter: "number", hozAlign: "right", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
+      },
+      {
+        title: "Cases Doubling Time<br/>Days", field: "DoublingTime_Cases_Last_Week_Per_100000", sorter: "number", width: 200, hozAlign: "right", sorterParams: {
+          alignEmptyValues: "bottom"
+        }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
+      },
+    ],
+  });
+
+
+  table.setSort([
+    { column: "Country", dir: "asc" }, //then sort by this second
+    { column: "DoublingTime_Cases_Last_Week_Per_100000", dir: "asc" }, //sort by this first
+  ]);
+
+  return table;
+}
+
+
+
+
+
 // when a row is selected for adding to the chart, this is called
 // type: Country or DeDistrict
 // action: 'selected' or 'unselected'
