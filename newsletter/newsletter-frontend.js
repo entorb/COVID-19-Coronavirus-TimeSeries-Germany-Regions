@@ -130,7 +130,7 @@ function refresh_userdata() {
 
 
 function defineTable() {
-    var table = new Tabulator("#table-de-districts", {
+    var table = new Tabulator("#div_table-de-districts", {
         height: 600, // set height of table to enable virtual DOM
         layout: "fitColumns", //fit columns to width of table (optional)
         // autoColumns: true, // very nice!!!
