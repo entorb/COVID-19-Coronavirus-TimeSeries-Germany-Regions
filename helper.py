@@ -321,7 +321,8 @@ def fit_slopes(l_time_series: list) -> dict:
         data_deaths_new_pm.append(
             (d['Days_Past'], d['Deaths_New_Per_Million']))
         data_cases_last_week.append(
-            (d['Days_Past'], 0.0 + d['Cases_Last_Week_Per_100000']))  # TODO: why does the fit not work well wenn using Cases_Last_Week instead of Cases_Last_Week_Per_Million
+            (d['Days_Past'], 0.0 + d['Cases_Last_Week']))
+        # SOLVED: why does the fit not work well wenn using Cases_Last_Week instead of Cases_Last_Week_Per_Million ??? d['Cases_Last_Week']/10 again works... -> because of bad start values for T
 
     # Cases_New_Per_Million
     N0, m = 0, 0
@@ -341,7 +342,7 @@ def fit_slopes(l_time_series: list) -> dict:
 
     # Cases_Last_Week
     # only perform fit of doubling time if more than 100 new cases today and yesterday
-    if data_cases_last_week[-1][1] >= 1:  # TODO: 100
+    if data_cases_last_week[-1][1] >= 100:
         N0, doubling_time = 0, 0
         d_res = fit_routine(data=data_cases_last_week,
                             mode="exp")
@@ -350,6 +351,7 @@ def fit_slopes(l_time_series: list) -> dict:
             if doubling_time > 1 and doubling_time <= 60:
                 d_slopes["DoublingTime_Cases_Last_Week_Per_100000"] = round(
                     doubling_time, 1)
+                # TODO: DoublingTime_Cases_Last_Week_Per_100000 -> DoublingTime_Cases_Last_Week
     else:
         print(f'not fitting: {data_cases_last_week[-1][1]}')
 
@@ -425,7 +427,10 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
             # print(f"linear slope too small: {lin_fit_slope_m}")
             return {}
 
-        p0 = [initial_guess_y0, 1.0/lin_fit_slope_m]
+        if lin_fit_slope_m > 0:
+            p0 = [initial_guess_y0, 10.0]
+        else:
+            p0 = [initial_guess_y0, -10.0]
 
         # print(f"debugging: lin-slope = {lin_fit_slope_m}, y={data_y_for_fit}")
 
