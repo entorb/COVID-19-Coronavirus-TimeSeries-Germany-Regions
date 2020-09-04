@@ -65,6 +65,14 @@ img {
 }
 
 
+.echart-latest-data-wrapper {
+  display: inline-block;
+  width: 700px;
+  height: 700px;
+  overflow: scroll;
+  border: 1px solid black;
+}
+
 /*
 Gallery by Alex Friedl
 */

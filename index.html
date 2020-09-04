@@ -164,7 +164,10 @@
 				<a href="#CountriesCustomChart">Country comparison chart</a>
 			</li>
 			<li>
-				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a>
+				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a><b> (new)</b>
+			</li>
+			<li>
+				<a href="#event_risk_calculator_EN">Event Risk Calculator</a><b> (new)</b>
 			</li>
 			<li>
 				<a href="#SelectedCountries">Comparison of selected countries</a>
@@ -695,15 +698,15 @@
 
 	</script>
 
-	<p>Anmerkungen zu den Eingangsgrößen und Annahmen:<br>Folgenden Vereinfachungen habe ich für dieses grobe Modell getroffen:</p>
+	<p>Anmerkungen zu den Eingangsgrößen, Annahmen und Vereinfachungen für dieses grobe Modell:</p>
 	<ul>
-		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Die wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiositätsdauer von 8-9 Tage</a>.</li>
-		<li>Dunkelziffer: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank">das RKI erwartet einen Bereich von 4,5–11,1</a>.</li>
-		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um 1 einrechnen (nur die infizierten und herumlaufenden Personen bilden eine Gefahr für ihre Umgebung). Allerdings erfahren viele Leute ihr Testergebnis erst wenn sie bereits infektiös sind.</li>
+		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Dies wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiositätsdauer von 8-9 Tage</a>.</li>
+		<li>Dunkelziffer: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank">das RKI schätzt einen Bereich von 4,5–11,1</a>.</li>
+		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um bis zu 1 einrechnen (nur die infektiösen und dennoch herum laufenden Personen bilden eine Gefahr für ihre Umgebung). Allerdings erfahren viele Leute ihr Testergebnis erst wenn sie bereits infektiös sind.</li>
 		<li>Die infektiösen Personen werden gleichverteilt auf die gesamte Bevölkerung angenommen und nicht nach Altergruppen etc. unterschieden.</li>
 	</ul>
 
-	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weitern Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, Kontakt siehe unten.</p>
+	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weitern Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 
@@ -995,6 +998,69 @@
 	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h4><a id="event_risk_calculator_EN"></a>Event Risk Calculator</h4>
+
+	<p>Assuming an event/company/school with many people attending. What is the propability of a COVID-19 infectious person being there?
+		<!-- Der Anspruch dieser groben Abschätzung ist nicht eine exakte Zahl sondern die Größenordnung der Wahrscheinlichkeit in Abhängigkeit von Infektionslage und Teilnehmerzahl zu liefern. -->
+	</p>
+	<table style="text-align: left;">
+		<tr>
+			<th>Input</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="rc_input_num_people_en" type="number" value="20" min="5" max="10000" step="1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()">
+			</td>
+			<td>Number of people attending</td>
+		</tr>
+		<!-- <tr>
+			<td>Ort</td>
+			<td><select id="rc_sel_bundesland" style="width:200px" onchange="rc_sel_bundesland_selected()"> </select></td>
+		</tr> -->
+		<tr>
+			<td><input id="rc_input_cases_last_week_100k_en" type="number" value="10" min="1" max="1000" step="0.1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
+			<td>Cases-New in region (last 7 days per 100.000 population), numbers can be found at <a href="#CountryTable">Country Table</a> above. </td>
+		</tr>
+		<tr>
+			<td><input id="rc_input_factor_unreported_en" type="number" value="4" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
+			<td>Estimated factor of unreported cases</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="rc_output_infectious_pop_en" type="text" readonly disabled value="" style="text-align: right; font-size:20px; width: 100px;">
+			</td>
+			<td>Estimated total amount of infectious people in population (last 7 days per 100.000 population)</td>
+		</tr>
+		<tr>
+			<th>Output</th>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="rc_output_prop_someone_at_event_is_infectious_en" type="text" readonly value="" style="text-align: right; font-size:20px; width: 100px; background-color: orange; color: black; font-weight: bold;">
+			</td>
+			<td>Probability for 1 or more infective people are attending</td>
+		</tr>
+	</table>
+	<script>
+
+		rc_calc_en();
+
+	</script>
+
+	<p>I have made the following simplifications for this rough model:</p>
+	<ul>
+		<li> The number of new infections per week is approximated by the number of currently infectious people. This is supported by the<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank"> German RKI, stating an average duration of infection of 8 -9 days </a>. </li>
+		<li> Unreported numbers: For Germany the <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank"> RKI expects a range of 4.5-11.1</a>. The more tests are performed, the lower this number should be.</li>
+		<li> Quarantine is not taken into account. This could be accounted for by reducing the factor of unreported cases by up to 1 (only the infected and walking around are a threat to their surroundings). However, many people retrieve their test results when they are already infectious and are still around others. </li>
+		<li> The infectious people are assumed to be evenly distributed across the entire population and not differentiated according to age groups, etc. </li>
+	</ul>
+
+	<p>Comment on the result: The likelihood that an infection will occur depends additionally on many other factors such as duration, environment and protective measures taken and is very difficult to estimate as a probability in %. I am grateful for ideas and hints, here you can <a href="/contact.php?origin=COVID-19">contact</a> me. </p>
+
+	<p><small><a href=" #ToC">Back to top</a></small></p>
 
 	<h3><a id="SelectedCountries"></a>Comparison of selected countries</h3>
 

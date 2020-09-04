@@ -1,3 +1,16 @@
+function rc_calc_en() {
+
+  document.getElementById("rc_input_cases_last_week_100k").value = document.getElementById("rc_input_cases_last_week_100k_en").value;
+  document.getElementById("rc_input_factor_unreported").value = document.getElementById("rc_input_factor_unreported_en").value;
+  document.getElementById("rc_input_num_people").value = document.getElementById("rc_input_num_people_en").value;
+  document.getElementById("rc_input_factor_unreported").value = document.getElementById("rc_input_factor_unreported_en").value;
+  rc_calc();
+  document.getElementById("rc_output_infectious_pop_en").value = document.getElementById("rc_output_infectious_pop").value;
+
+  document.getElementById("rc_output_prop_someone_at_event_is_infectious_en").value = document.getElementById("rc_output_prop_someone_at_event_is_infectious").value;
+
+}
+
 function rc_calc() {
   const cases_last_week_100k = document.getElementById("rc_input_cases_last_week_100k").value;
   var string_prop_someone_at_event_is_infectious_in_percent;
@@ -68,11 +81,11 @@ function rc_fetch_DE_states_and_populate_risk_calc_select() {
           opt.value = 1.0;
         }
         rc_sel_bundesland.appendChild(opt);
-        // set inital value to DE-total
-        document.getElementById("rc_input_cases_last_week_100k").value = data["DE-total"]["Cases_Last_Week_Per_100000"];
+
 
       }
-      // });
+      // set inital value to DE-total
+      document.getElementById("rc_input_cases_last_week_100k").value = data["DE-total"]["Cases_Last_Week_Per_100000"];      // });
     })
     .fail(function () {
       console.log("fail: de-states-latest");
