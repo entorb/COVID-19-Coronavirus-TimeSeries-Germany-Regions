@@ -155,6 +155,7 @@ def extract_latest_date_data():
             'Deaths', 'Cases_Per_Million', 'Deaths_Per_Million', 'Cases_Last_Week_Per_Million',
             'Deaths_Last_Week_Per_Million', 'Continent', 'Code', 'DoublingTime_Cases_Last_Week_Per_100000'
         ])
+        # 'Cases_Last_Week',
         csvwriter.writeheader()
 
         for country in sorted(d_countries_latest.keys(), key=str.casefold):
@@ -192,7 +193,7 @@ def extract_latest_date_data():
             'Country', 'Date',
             'Population',
             'Cases', 'Deaths',
-            'Cases_Per_Million', 'Deaths_Per_Million', 'DoublingTime_Cases_Last_Week_Per_100000'
+            'Cases_Per_Million', 'Deaths_Per_Million'
         ])
         csvwriter.writeheader()
         for country in sorted(d_selected_countries.keys(), key=str.casefold):
