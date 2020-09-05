@@ -170,6 +170,9 @@
 				<a href="#event_risk_calculator_EN">Event Risk Calculator</a><b> (new)</b>
 			</li>
 			<li>
+				<a href="#CountryRankings">Country Rankings</a><b> (new)</b>
+			</li>
+			<li>
 				<a href="#SelectedCountries">Comparison of selected countries</a>
 			</li>
 			<li>
@@ -779,7 +782,7 @@
 
 	<p>Click on a row to add it to the <a href="#CountriesCustomChart">country comparison chart</a> below.</p>
 
-	<p>"Cases Doubling Time" is derived by an exponential fit of the "Cases Last Week per 100.000 population" of the last 14 days.</p>
+	<p>"Cases Doubling Time" is derived by an exponential fit of the "Cases Last Week" of the last 14 days.</p>
 	<div id="div_table-countries-latest-all"></div>
 	<script>
 
@@ -972,7 +975,7 @@
 
 	<h3><a id="CountriesDoublingTime"></a>Doubling Time of New Infections</h3>
 
-	<p> In the following the exponential growth of the new infections is analyzed. If an increase is found, I fitted the data with an exponential function to drive the new cases doubling time. As data I used the "Cases Last Week Per 100000 population" series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new cases, shorter is worse, of cause. </p>
+	<p> In the following the exponential growth of the new infections is analyzed. If an increase is found, I fitted the data with an exponential function to drive the new cases doubling time. As data I used the "Cases Last Week" series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new cases, shorter is worse, of cause. Color coded is the value of "Cases Last Week Per Million" as additional information, red means high.</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Doubling_Time" style="height: 2000px">
 		</div>
@@ -984,7 +987,7 @@
 		Promise.all(promises).then(function () {
 			// console.log(array_countries_latest);
 			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('div_eChart_Country_Doubling_Time', 'DoublingTime_Cases_Last_Week_Per_100000', 'DESC')
+			create_latest_data_plot('div_eChart_Country_Doubling_Time', 'DoublingTime_Cases_Last_Week_Per_100000', 'Cases_Last_Week_Per_Million')
 
 		});
 
@@ -1061,6 +1064,88 @@
 	<p>Comment on the result: The likelihood that an infection will occur depends additionally on many other factors such as duration, environment and protective measures taken and is very difficult to estimate as a probability in %. I am grateful for ideas and hints, here you can <a href="/contact.php?origin=COVID-19">contact</a> me. </p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
+
+	<h3><a id="CountryRankings"></a>Country Rankings</h3>
+
+	<h4><a id="CountriesLatestCases"></a>Cases</h4>
+
+	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new cases (series "Cases Last Week per Million Population"). </p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+	<script>
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('div_eChart_Country_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_Million');
+
+		});
+
+	</script>
+
+	<p> Ranking countries by current new cases (series "Cases Last Week per Million Population") and color-coding their total cases (series "Cases per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+	<script>
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('div_eChart_Country_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_Million', 'Cases_Per_Million');
+
+		});
+
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h4><a id="CountriesLatestDeaths"></a>Deaths</h4>
+
+	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their current new deaths (series "Deaths Last Week per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+	<script>
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('div_eChart_Country_Deaths_Per_Million', 'Deaths_Per_Million', 'Deaths_Last_Week_Per_Million');
+
+		});
+
+	</script>
+
+	<p> Ranking countries by current new deaths (series "Deaths Last Week per Million Population") and color-coding their total deaths (series "Deaths per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Deaths_Last_Week_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+	<script>
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('div_eChart_Country_Deaths_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million', 'Deaths_Per_Million');
+
+		});
+
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
 
 	<h3><a id="SelectedCountries"></a>Comparison of selected countries</h3>
 

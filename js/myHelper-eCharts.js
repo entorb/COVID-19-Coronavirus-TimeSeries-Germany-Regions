@@ -934,11 +934,18 @@ function getSeries(codes, dataObject, map_id_name, xAxis, yAxis, sorting) {
 
 
 
-function create_latest_data_plot(eChartsObjectID, property, ordering) {
+function create_latest_data_plot(eChartsObjectID, property, property_for_color) {
     let sortmap = [];
     const codes_ordered = [];
-    var data_names = [];
-    var data_values = [];
+    // var data_names = [];
+    // var data_values = [];
+    var data_values_property_for_color = [];
+    var data_set = [];
+    var max_property_for_color = 0;
+    let ordering = 'ASC';
+    if (property == 'DoublingTime_Cases_Last_Week_Per_100000') {
+        ordering = 'DESC';
+    }
 
     for (const [key, values] of Object.entries(array_countries_latest)) {
         if (property in values) {
@@ -960,9 +967,14 @@ function create_latest_data_plot(eChartsObjectID, property, ordering) {
 
     for (let i = 0; i < codes_ordered.length; i++) {
         name = array_countries_latest[codes_ordered[i]]['Country'];
-        data_names.push(name);
         value = array_countries_latest[codes_ordered[i]][property];
-        data_values.push(value);
+        value_property_for_color = array_countries_latest[codes_ordered[i]][property_for_color];
+        if (value_property_for_color > max_property_for_color) {
+            max_property_for_color = value_property_for_color;
+        }
+        // data_names.push(name);
+        // data_values.push(value);
+        data_set.push([name, value, value_property_for_color]);
     }
 
     option = {
@@ -975,22 +987,23 @@ function create_latest_data_plot(eChartsObjectID, property, ordering) {
         },
         yAxis: {
             type: 'category',
-            data: data_names,
+            // data: data_names,
         },
         xAxis: {
             type: 'value',
             position: 'top',
         },
+        dataset: {
+            source: data_set,
+        },
         series: [{
-            data: data_values,
+            // data: data_values,
+            datasetIndex: 0,
             type: 'bar'
         }],
         tooltip: {
             trigger: 'item', // item or axis
-            axisPointer: {
-                type: 'shadow',
-                snap: true
-            }
+
         },
         toolbox: {
             show: true,
@@ -1005,6 +1018,15 @@ function create_latest_data_plot(eChartsObjectID, property, ordering) {
             top: 90,
             right: 20,
         },
+        visualMap: {
+            dimension: 2,
+            min: 0,
+            max: max_property_for_color,
+            text: [max_property_for_color, 0],
+            // top: '60',
+            show: false,
+            // dataValue corresponding to the two handles.
+        }
     };
 
     // fine tuning
