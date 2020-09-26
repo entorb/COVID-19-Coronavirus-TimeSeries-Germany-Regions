@@ -73,8 +73,8 @@ def format_line(cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: s
         round(cases_lw_100k, 1), cases_lw, slope_arrow, location)
 
 
-def format_line2(cases_lw_100k: str, location: str) -> str:
-    return "%5.1f            : %s\n" % (round(cases_lw_100k, 1), location)
+def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) -> str:
+    return "%5.1f       %s    : %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
 
 
 def get_slope_arrow(slope: float) -> str:
@@ -94,49 +94,117 @@ def get_slope_arrow(slope: float) -> str:
 
 
 # set path variables
+pathPrefixOnServer = '/home/entorb/html/COVID-19-coronavirus/'
+pathToDataDeDistricts = 'data/de-districts/de-districts-results.json'
+pathToDataDeStates = 'data/de-states/de-states-latest.json'
+pathToDataCountries = 'data/int/countries-latest-all.json'
 if checkRunningOnServer():
-    pathToData = '/home/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json'
-else:
-    pathToData = 'data/de-districts/de-districts-results.json'
+    pathToDataDeDistricts = pathPrefixOnServer + pathToDataDeDistricts
+    pathToDataDeStates = pathPrefixOnServer + pathToDataDeStates
+    pathToDataCountries = pathPrefixOnServer + pathToDataCountries
 
 # connect to DB
 con, cur = db_connect()
 
 # load latest data
-d_districts_latest = {}
-with open(pathToData, mode='r', encoding='utf-8') as fh:
-    d_districts_latest = json.load(fh)
-dataDate = d_districts_latest["02000"]["Date_Latest"]
+d_data_DeDistricts = {}
+with open(pathToDataDeDistricts, mode='r', encoding='utf-8') as fh:
+    d_data_DeDistricts = json.load(fh)
+dataDate = d_data_DeDistricts["02000"]["Date_Latest"]
 
-d_id_cases_lw_100k = {}
-# sum up German values
-cases_DE_last_week = 0
-for lk_id, d in d_districts_latest.items():
-    cases_DE_last_week += d["Cases_Last_Week"]
-    d_id_cases_lw_100k[lk_id] = d["Cases_Last_Week_Per_100000"]
+d_data_DeStates = {}
+with open(pathToDataDeStates, mode='r', encoding='utf-8') as fh:
+    d_data_DeStates = json.load(fh)
+
+d_data_Countries = {}
+with open(pathToDataCountries, mode='r', encoding='utf-8') as fh:
+    # convert list to dict
+    l = json.load(fh)
+    for d in l:
+        code = d['Code']
+        del d['Code']
+        d_data_Countries[code] = d
+del code
+
+# Ranking of worst Landkreise
+d_id_cases_DeDistricts = {}
+for id, d in d_data_DeDistricts.items():
+    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_100000"]
     d["Slope_Cases_Arrow"] = get_slope_arrow(d["Slope_Cases_New_Per_Million"])
-cases_DE_last_week_100k = cases_DE_last_week / 83.019200 / 10
-
-# find worst districts
 l_worst_lk_ids = []
-for lk_id, value in sorted(d_id_cases_lw_100k.items(), key=lambda item: item[1], reverse=True):
-    l_worst_lk_ids.append(lk_id)
-del d_id_cases_lw_100k, lk_id
+for id, value in sorted(d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True):
+    l_worst_lk_ids.append(id)
+del d_id_cases_DeDistricts, id
+
+# Ranking of worst Bundesländer
+d_id_cases_DeStates = {}
+for id, d in d_data_DeStates.items():
+    if id == 'DE-total':
+        cases_DE_last_week_100k = d["Cases_Last_Week_Per_100000"]
+        slope_DE = get_slope_arrow(
+            d["Slope_Cases_New_Per_Million"])
+    else:
+        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_100000"]
+        d["Slope_Cases_Arrow"] = get_slope_arrow(
+            d["Slope_Cases_New_Per_Million"])
+l_worst_bl_ids = []
+for id, value in sorted(d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True):
+    l_worst_bl_ids.append(id)
+del d_id_cases_DeStates, id
+
+# Ranking of worst Countries
+d_id_cases_Countries = {}
+for id, d in d_data_Countries.items():
+    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_100000"]
+    d["Slope_Cases_Arrow"] = get_slope_arrow(d["Slope_Cases_New_Per_Million"])
+l_worst_country_ids = []
+for id, value in sorted(d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True):
+    l_worst_country_ids.append(id)
+del d_id_cases_Countries, id
+
+
+# string snippet of worst DeDistricts
 s_worst_lk = ""
-number_worst = 5
+max_lines = 10
 count = 0
-for lk_id in l_worst_lk_ids:
+for id in l_worst_lk_ids:
     count += 1
-    d = d_districts_latest[lk_id]
+    d = d_data_DeDistricts[id]
     s_worst_lk += format_line(
         cases_lw_100k=d["Cases_Last_Week_Per_100000"],
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
         slope_arrow=d["Slope_Cases_Arrow"]
     )
-    if count == number_worst:
+    if count == max_lines:
         break
-del lk_id, count
+
+# string snippet of worst Bundesländer
+s_worst_bl = ""
+for id in l_worst_bl_ids:
+    d = d_data_DeStates[id]
+    s_worst_bl += format_line(
+        cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+        cases_lw=d["Cases_Last_Week"],
+        location=f"{d['State']}",
+        slope_arrow=d["Slope_Cases_Arrow"]
+    )
+
+# string snippet of worst Countries
+s_worst_countries = ""
+max_lines = 30
+count = 0
+for id in l_worst_country_ids:
+    count += 1
+    d = d_data_Countries[id]
+    s_worst_countries += format_line_only_rel(
+        cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+        location=f"{d['Country']}",
+        slope_arrow=d["Slope_Cases_Arrow"]
+    )
+    if count == max_lines:
+        break
+
 
 # loop over subscriptions
 for row in cur.execute("SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"):
@@ -153,7 +221,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for sorting by value
     d_this_regions_cases_100k = {}
     for lk_id in l_this_regions:
-        d_this_regions_cases_100k[lk_id] = d_districts_latest[lk_id]["Cases_Last_Week_Per_100000"]
+        d_this_regions_cases_100k[lk_id] = d_data_DeDistricts[lk_id]["Cases_Last_Week_Per_100000"]
 
     toSend = False
     reason_for_sending = ""
@@ -172,23 +240,29 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     if toSend:
         #        mailBody += f"Versandgrund: \n\n"
         # table header
-        mailBody += "Infektionen      : Landkreis\n"
+        mailBody += "Infektionen      : Ort\n"
         mailBody += "Rel.¹ / Absolut²\n"
+        mailBody += "Deine Landkreisauswahl\n"
         # table body
         for lk_id, value in sorted(d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True):
-            d = d_districts_latest[lk_id]
+            d = d_data_DeDistricts[lk_id]
             mailBody += format_line(
                 cases_lw_100k=d["Cases_Last_Week_Per_100000"],
                 cases_lw=d["Cases_Last_Week"],
                 location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
                 slope_arrow=d["Slope_Cases_Arrow"]
             )
-        mailBody += format_line2(cases_DE_last_week_100k, "Deutschland")
-        # flop 10
-        mailBody += "Top 5\n" + s_worst_lk
+
+        mailBody += "Top 10 Landkreise\n" + s_worst_lk
+
+        mailBody += "Bundesländer\n" + s_worst_bl
+
+        mailBody += "Deutschland gemittelt\n" + format_line_only_rel(cases_DE_last_week_100k,
+                                                                     "Deutschland", slope_DE)
+        mailBody += "Länder der Welt\n" + s_worst_countries
 
         # table footer
-        mailBody += f"Datenstand: {dataDate}\n"
+        mailBody += f"Datenstand Landkreisdaten: {dataDate}\n"
         mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner / ²absolut\n"
         mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
 
@@ -199,7 +273,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
 
         mailBody += "\nNeu anmelden: https://entorb.net/COVID-19-coronavirus/newsletter-register.html\n"
 
-        mailBody += f"\nentorb's Coronavirus Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
+        mailBody += f"\nAlle Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
 
         sendmail(to=mailTo, body=mailBody,
                  subject=f"[COVID-19 Landkreis Benachrichtigung] - {reason_for_sending}")
