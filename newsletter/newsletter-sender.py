@@ -253,13 +253,13 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
                 slope_arrow=d["Slope_Cases_Arrow"]
             )
 
-        mailBody += "Top 10 Landkreise\n" + s_worst_lk
+        mailBody += "\nTop 10 Landkreise\n" + s_worst_lk
 
-        mailBody += "Bundesländer\n" + s_worst_bl
+        mailBody += "\nBundesländer\n" + s_worst_bl
 
-        mailBody += "Deutschland gemittelt\n" + format_line_only_rel(cases_DE_last_week_100k,
-                                                                     "Deutschland", slope_DE)
-        mailBody += "Länder der Welt\n" + s_worst_countries
+        mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(cases_DE_last_week_100k,
+                                                                       "Deutschland", slope_DE)
+        mailBody += "\nLänder der Welt\n" + s_worst_countries
 
         # table footer
         mailBody += f"Datenstand Landkreisdaten: {dataDate}\n"
