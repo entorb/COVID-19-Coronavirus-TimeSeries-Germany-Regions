@@ -1,3 +1,6 @@
+#!/usr/bin/python3.8
+# -*- coding: utf-8 -*-
+
 import os
 import re
 import sqlite3
