@@ -16,7 +16,7 @@ print()
 # Copy of common functions
 ##########################
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/home/entorb/data-web-pages/covid-19"):
+    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
         return True
     else:
         return False
@@ -25,8 +25,8 @@ def checkRunningOnServer() -> bool:
 def db_connect():
     "connect to sqlite DB"
     # check I running on entorb.net webserver
-    if os.path.isdir("/home/entorb/data-web-pages/covid-19"):
-        pathToDb = '/home/entorb/data-web-pages/covid-19/newsletter.db'
+    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
+        pathToDb = '/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db'
     else:
         pathToDb = 'cache/newsletter.db'
     con = sqlite3.connect(pathToDb)
@@ -54,7 +54,7 @@ print("""<!doctype html>
 
 # set path variables
 if checkRunningOnServer():
-    pathToData = '/home/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json'
+    pathToData = '/var/www/virtual/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json'
 else:
     pathToData = 'data/de-districts/de-districts-results.json'
 

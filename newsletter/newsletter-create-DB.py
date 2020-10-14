@@ -16,7 +16,7 @@ import datetime
 # Copy of common functions
 ##########################
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/home/entorb/data-web-pages/covid-19"):
+    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
         return True
     else:
         return False
@@ -98,7 +98,7 @@ def test_select():
 
 # check I running on entorb.net webserver
 if checkRunningOnServer():
-    pathToDb = '/home/entorb/data-web-pages/covid-19/newsletter.db'
+    pathToDb = '/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db'
 else:
     pathToDb = 'cache/newsletter.db'
 

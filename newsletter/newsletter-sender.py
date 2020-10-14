@@ -16,7 +16,7 @@ from datetime import date
 
 
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/home/entorb/data-web-pages/covid-19"):
+    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
         return True
     else:
         return False
@@ -35,8 +35,8 @@ def gen_SHA256_string(s: str) -> str:
 
 def db_connect():
     # check I running on entorb.net webserver
-    if os.path.isdir("/home/entorb/data-web-pages/covid-19"):
-        pathToDb = '/home/entorb/data-web-pages/covid-19/newsletter.db'
+    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
+        pathToDb = '/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db'
     else:
         pathToDb = 'cache/newsletter.db'
     con = sqlite3.connect(pathToDb)
@@ -95,7 +95,7 @@ def get_slope_arrow(slope: float) -> str:
 
 
 # set path variables
-pathPrefixOnServer = '/home/entorb/html/COVID-19-coronavirus/'
+pathPrefixOnServer = '/var/www/virtual/entorb/html/COVID-19-coronavirus/'
 pathToDataDeDistricts = 'data/de-districts/de-districts-results.json'
 pathToDataDeStates = 'data/de-states/de-states-latest.json'
 pathToDataCountries = 'data/int/countries-latest-all.json'
