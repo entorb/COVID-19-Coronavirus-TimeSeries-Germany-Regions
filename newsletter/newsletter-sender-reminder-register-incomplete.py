@@ -32,7 +32,7 @@ def db_connect():
     return con, cur
 
 
-SENDMAIL = "/usr/lib/sendmail"
+SENDMAIL = "/usr/sbin/sendmail"
 
 
 def sendmail(to: str, body: str, subject: str, sender: str = 'no-reply@entorb.net'):

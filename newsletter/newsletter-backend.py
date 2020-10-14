@@ -112,7 +112,7 @@ def db_updateHash(email) -> str:
     return h
 
 
-SENDMAIL = "/usr/lib/sendmail"
+SENDMAIL = "/usr/sbin/sendmail"
 
 
 def sendmail(to: str, body: str, subject: str = "[COVID-19 Landkreis Benachrichtigung]", sender: str = "no-reply@entorb.net"):
