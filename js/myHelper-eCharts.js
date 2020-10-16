@@ -935,6 +935,11 @@ function getSeries(codes, dataObject, map_id_name, xAxis, yAxis, sorting) {
 
 
 function create_latest_data_plot(eChartsObjectID, property, property_for_color) {
+    if (type == 'Country') {
+        array_data_latest = array_countries_latest;
+    } else if (type == 'DeStates') {
+        array_data_latest = array_states_latest;
+    }
     let sortmap = [];
     const codes_ordered = [];
     // var data_names = [];
@@ -947,7 +952,7 @@ function create_latest_data_plot(eChartsObjectID, property, property_for_color) 
         ordering = 'DESC';
     }
 
-    for (const [key, values] of Object.entries(array_countries_latest)) {
+    for (const [key, values] of Object.entries(array_data_latest)) {
         if (property in values) {
             value = values[property];
             sortmap.push([key, value]);
@@ -966,9 +971,9 @@ function create_latest_data_plot(eChartsObjectID, property, property_for_color) 
     }
 
     for (let i = 0; i < codes_ordered.length; i++) {
-        name = array_countries_latest[codes_ordered[i]]['Country'];
-        value = array_countries_latest[codes_ordered[i]][property];
-        value_property_for_color = array_countries_latest[codes_ordered[i]][property_for_color];
+        name = array_data_latest[codes_ordered[i]]['Country'];
+        value = array_data_latest[codes_ordered[i]][property];
+        value_property_for_color = array_data_latest[codes_ordered[i]][property_for_color];
         if (value_property_for_color > max_property_for_color) {
             max_property_for_color = value_property_for_color;
         }

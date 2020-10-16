@@ -233,8 +233,6 @@ def export_data(d_states_data: dict):
 
 def export_latest_data(d_ref_states, d_states_data: dict):
     d_states_latest = helper.extract_latest_data(d_ref_states, d_states_data)
-    helper.write_json(
-        f'data/de-states/de-states-latest.json', d_states_latest)
 
     # # d_states_latest = dict(d_ref_states)
     # for code in d_states_latest.keys():
@@ -268,6 +266,17 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         d_de['State'] = '# Deutschland'
         csvwriter.writerow(d_de)
         del d_de
+
+    helper.write_json(
+        f'data/de-states/de-states-latest.json', d_states_latest)
+
+    l_for_export = []
+    for code in sorted(d_states_latest.keys(), key=str.casefold):
+        d2 = d_states_latest[code]
+        d2['Code'] = code
+        l_for_export.append(d2)
+    helper.write_json(
+        filename='data/de-states/de-states-latest-list.json', d=l_for_export)
 
 
 d_ref_states = helper.read_ref_data_de_states()
