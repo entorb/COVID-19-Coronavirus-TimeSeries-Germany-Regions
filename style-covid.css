@@ -67,8 +67,8 @@ img {
 
 .echart-latest-data-wrapper {
   display: inline-block;
-  width: 700px;
-  height: 700px;
+  width: 710px;
+  height: 710px;
   overflow: scroll;
   border: 1px solid black;
 }

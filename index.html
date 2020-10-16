@@ -608,7 +608,36 @@
 	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-state-XX.tsv</a>
 	</small>
 
-	<h5>
+	<h5><a id="DeStatesLatestCases"></a>Ranking nach Infektionen</h5>
+
+	<p> Ranking der Bundesländer nach Gesamtzahl der Infektionen (Reihe "Cases per Million Population") und farbkodiert die Inzidenz (Reihe "Cases Last Week per 100.000 Population"). </p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_DeStates_Cases_Per_Million" style="height: 675px;width: 675px;"></div>
+	</div>
+	<script>
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
+		});
+	</script>
+
+	<p> Ranking der Bundesländer nach Inzidenz (Reihe "Cases Last Week per 100.000 Population") und farbkodiert die Gesamtzahl der Infektionen (Reihe "Cases per Million Population"). </p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_DeStates_Cases_Last_Week_Per_Million" style="height: 675px;width: 675px;"></div>
+	</div>
+	<script>
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
+		});
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<!-- <h5>
 		<a id="cases-de-states-latest-per-million"></a> Gesamtzahl Infizierte - Bar Chart</h5>
 
 	<p>Die graue Linie zeigt den Wert für Gesamtdeutschland.</p>
@@ -616,7 +645,7 @@
 	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-de.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states-latest.tsv" target="_blank">de-states-latest.tsv</a>
 	</small>
 
-	<p><small><a href="#ToC">Back to top</a></small></p>
+	<p><small><a href="#ToC">Back to top</a></small></p> -->
 
 	<h4>
 		<a id="DeStatesDeaths"></a>Bundesländer - Opfer</h4>

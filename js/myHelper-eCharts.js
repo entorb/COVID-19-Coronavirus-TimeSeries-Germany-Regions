@@ -935,7 +935,8 @@ function getSeries(codes, dataObject, map_id_name, xAxis, yAxis, sorting) {
 
 
 function create_latest_data_plot(type, eChartsObjectID, property, property_for_color) {
-    let array_data_latest = []
+    let array_data_latest = {}
+    console.log('create_latest_data_plot: ' + type)
     if (type == 'Country') {
         array_data_latest = array_countries_latest;
     } else if (type == 'DeStates') {
@@ -972,14 +973,17 @@ function create_latest_data_plot(type, eChartsObjectID, property, property_for_c
     }
 
     for (let i = 0; i < codes_ordered.length; i++) {
-        name = array_data_latest[codes_ordered[i]]['Country'];
+
+        if (type == 'Country') {
+            name = array_data_latest[codes_ordered[i]]['Country'];
+        } else if (type == 'DeStates') {
+            name = array_data_latest[codes_ordered[i]]['State'];
+        }
         value = array_data_latest[codes_ordered[i]][property];
         value_property_for_color = array_data_latest[codes_ordered[i]][property_for_color];
         if (value_property_for_color > max_property_for_color) {
             max_property_for_color = value_property_for_color;
         }
-        // data_names.push(name);
-        // data_values.push(value);
         data_set.push([name, value, value_property_for_color]);
     }
 
@@ -988,7 +992,7 @@ function create_latest_data_plot(type, eChartsObjectID, property, property_for_c
             // text: "COVID-19: Landkreisvergleich 7-Tages-Neuinfektionen",
             text: "COVID-19: " + capitalize_words(property, "_"),
             left: 'center',
-            subtext: "by Torben https://entorb.net based on JHU data",
+            // subtext: "by Torben https://entorb.net based on JHU data",
             sublink: "https://entorb.net/COVID-19-coronavirus/",
         },
         yAxis: {
@@ -1038,6 +1042,12 @@ function create_latest_data_plot(type, eChartsObjectID, property, property_for_c
     // fine tuning
     if (property == 'DoublingTime_Cases_Last_Week_Per_100000') {
         option.title.text = 'COVID-19: New Cases Doubling Time (days)'
+    }
+    if (type == 'Country') {
+        option.title.subtext = "by Torben https://entorb.net based on JHU data"
+    }
+    else if (type == 'DeStates') {
+        option.title.subtext = "by Torben https://entorb.net based on RKI data"
     }
 
     let echartsObj = echarts.init(document.getElementById(eChartsObjectID));

@@ -256,6 +256,19 @@ function defineTable_Countries_Doubling() {
         }, headerFilter: true, headerFilterPlaceholder: "filter >=", headerFilterFunc: ">="
       },
     ],
+    rowClick: function (e, row) {
+      var rowData = row.getData();
+      var clickedCode = rowData["Code"];
+      var clickedCountry = rowData["Country"];
+      if (row._row.modules.select.selected == true) {
+        tabulator_row_clicked('Country', 'selected', clickedCode);
+        alert(clickedCountry + " added to country chart above")
+      } else {
+        if (list_of_codes_to_plot_countries.length > 1) {
+          tabulator_row_clicked('Country', 'unselected', clickedCode);
+        }
+      }
+    },
   });
 
 

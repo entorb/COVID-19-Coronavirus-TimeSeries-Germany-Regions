@@ -69,7 +69,8 @@ function fetch_countries_latest(array_countries_latest) {
       console.log("fail: array_countries_latest");
     });
 }
-promises.push(fetch_countries_latest(array_states_latest));
+promises.push(fetch_countries_latest(array_countries_latest));
+
 
 function fetch_states_latest(array_states_latest) {
   const url =
