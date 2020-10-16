@@ -91,7 +91,7 @@ function fetch_states_latest(array_states_latest) {
       console.log("fail: array_states_latest");
     });
 }
-promises.push(fetch_countries_latest(array_states_latest));
+promises.push(fetch_states_latest(array_states_latest));
 
 
 // -------------

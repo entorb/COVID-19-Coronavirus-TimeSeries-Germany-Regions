@@ -934,7 +934,8 @@ function getSeries(codes, dataObject, map_id_name, xAxis, yAxis, sorting) {
 
 
 
-function create_latest_data_plot(eChartsObjectID, property, property_for_color) {
+function create_latest_data_plot(type, eChartsObjectID, property, property_for_color) {
+    let array_data_latest = []
     if (type == 'Country') {
         array_data_latest = array_countries_latest;
     } else if (type == 'DeStates') {
