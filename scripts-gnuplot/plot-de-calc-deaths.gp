@@ -56,7 +56,7 @@ set label 2 \
  "\
  , T, f(0) , f(0) / 83019200 * 100, f(0)/cases_last \
  ) \
- right front at graph 0.98, graph 0.25
+ right front at graph 0.98, graph 0.98
 
 set key left center width -2
 

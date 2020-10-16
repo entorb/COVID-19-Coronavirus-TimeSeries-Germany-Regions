@@ -136,9 +136,9 @@
 				<li>
 					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a><b> (new)</b>
 				</li>
-				<li>
+				<!-- <li>
 					<a href="#DE_shift_deaths_to_cases">Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?</a>
-				</li>
+				</li> -->
 				<li>
 					<a href="#DE_calc-cases-from-deaths-DE-total">Abschätzung der Dunkelziffer der Infizierten</a>
 				</li>
@@ -181,9 +181,9 @@
 			<li>
 				<a href="#RefDeathCauses">Reference data: deaths by other causes</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a href="#Countries_Mortality">Investigating the Calculated Case Mortality: Deaths per Reported Infections</a>
-			</li>
+			</li> -->
 			<li>Archive</li>
 			<ul>
 				<li>
@@ -712,8 +712,7 @@
 	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weitern Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
-
-	<h4>
+	<!-- <h4>
 		<a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h4>
 
 	<p>In der folgenden Abbildung habe ich für Deutschland die Neu-Infizierten und die Neu-Verstorbenen aufgetragen. Die Kurve der Neu-Verstorbenen habe ich dann zeitlich verschoben um heraus zu finden, um wie viele Tage die Verstorbenen "nachlaufen". Anstatt von Tagessummen wurde die 7-Tage-Differenz verwendet um Wochenendeffekte auszuschließen.</p>
@@ -728,7 +727,7 @@
 	<br />
 	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-shift-deaths-to-match-cases.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv" target="_blank">de-state-DE-total.tsv</a> </small>
 
-	<p><small><a href="#ToC">Back to top</a></small></p>
+	<p><small><a href="#ToC">Back to top</a></small></p> -->
 
 	<h4>
 		<a id="DE_calc-cases-from-deaths-DE-total"></a> Wie hoch ist die Dunkelziffer der Infizierten im Vergleich zu den offiziellen Fallzahlen?</h4>
@@ -765,7 +764,7 @@
 	<h4>
 		<a id="Exp_Wachstum"></a> Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland</h4>
 
-	<p>Dieses Kapitel ist nicht mehr relevant, da wir glücklicherweise den Bereich der exponentiellen Zunahme der Neu-Infektionen verlassen haben. Daher habe ich es <a href="expGrowth.html#Exp_Wachstum">archiviert</a>.</p>
+	<p><strike>Dieses Kapitel ist nicht mehr relevant, da wir glücklicherweise den Bereich der exponentiellen Zunahme der Neu-Infektionen verlassen haben.</strike> Daher habe ich es <a href="expGrowth.html#Exp_Wachstum">archiviert</a>.</p>
 
 	<h2>
 		<a id="Countries"></a>Countries Worldwide</h2>
@@ -1069,7 +1068,7 @@
 
 	<h4><a id="CountriesLatestCases"></a>Cases</h4>
 
-	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new cases (series "Cases Last Week per Million Population"). </p>
+	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new cases (series "Cases Last Week per 100.000 Population"). </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
 		</div>
@@ -1081,13 +1080,13 @@
 		Promise.all(promises).then(function () {
 			// console.log(array_countries_latest);
 			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('div_eChart_Country_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_Million');
+			create_latest_data_plot('div_eChart_Country_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
 
 		});
 
 	</script>
 
-	<p> Ranking countries by current new cases (series "Cases Last Week per Million Population") and color-coding their total cases (series "Cases per Million Population").</p>
+	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their total cases (series "Cases per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
 		</div>
@@ -1099,7 +1098,7 @@
 		Promise.all(promises).then(function () {
 			// console.log(array_countries_latest);
 			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('div_eChart_Country_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_Million', 'Cases_Per_Million');
+			create_latest_data_plot('div_eChart_Country_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
 
 		});
 
@@ -1321,8 +1320,7 @@
 
 	<p><small>
 			<a href="#ToC">Back to top</a></small></p>
-
-	<h3>
+	<!-- <h3>
 		<a id="Countries_Mortality"></a>Investigating the Calculated Case Mortality: Deaths per Reported Infections</h3>
 
 	<p>Different countries put different effort in testing the population for COVID-19. Hence, some have rather high death toll despite a rather low reported cases. The ratio between the two will be called "calculated case mortality" in the following. The calculated case mortality is of cause highly related to the test effort: more testing results in more reported cases and hence a lower calculated mortality. If on the other hand the clinics are overrun, this will result in an increase in mortality, as the docs are unable to heal all patients. Countries that show a strongly exponentially increasing death toll (short doubling time) will have a lower calculated mortality than the true value. Here a plots of this value for different countries. </p>
@@ -1345,12 +1343,12 @@
 	<p>Findings</p>
 	<ul>
 		<li> A low calculated case mortality seems to be related to low deaths per capita, so testing might safe lives, or it is a stronger medical system being related to higher testing capacity.</li>
-	</ul>
+	</ul> -->
 
 	<h3>
 		<a id="CountriesDeathTimeSeries"></a>Time series, Doubling time calculation and forecast for selected countries </h3>
 
-	<p>As in all countries the exponentially increase of the death toll is stopped, this chapter has been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
+	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter has been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
 	<!-- 
 		Footer
 	 -->

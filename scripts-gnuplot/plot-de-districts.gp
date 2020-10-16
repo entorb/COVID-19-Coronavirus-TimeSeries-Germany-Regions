@@ -23,7 +23,7 @@ set y2tics (0, 20, 40, 60, 80, 100) nomirror format "%g%%"
 unset grid
 set grid xtics y2tics
 
-set title "Anzahl der Landkreise mit COVID-19 Neu-Infektion in der letzten Woche"
+set title "Landkreise mit COVID-19 Neu-Infektionen in der letzten Woche"
 
 set output "../plots-gnuplot/de-districts/zero_cases_last_week.png"
 plot data u 1:2 axis x1y1 with lines dt 1 lc "blue"
