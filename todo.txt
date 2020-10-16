@@ -16,4 +16,4 @@ as https://covid19publicdata.blob.core.windows.net/rki/covid19-germany-federalst
 Vergleichszahlen:
 see draft/Ref-Todesfälle-in-DE.ods
 
-Test
+Test2
