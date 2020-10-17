@@ -155,7 +155,7 @@
 		</li>
 		<ul>
 			<li>
-				<a href="#MapCountries">Map: Countries's Casulties</a>
+				<a href="#MapCountries">Map: Country Casualties</a>
 			</li>
 			<li>
 				<a href="#CountryTable">Table of all countries' current situation</a>
@@ -583,7 +583,7 @@
 
 	<p> Exponentielle Wachstumsfunktion:<br /> f(x) = N0 &middot; exp(b &middot; x)<br /> mit N0: Skalierungsfaktor/Wert zum Zeitpunkt (x = 0 = heute)<br /> und b: allgemeiner Parameter der das Wachstum beschreibt. </p>
 
-	<p> Um den Parameter b in eine besser verständlichere Verdopplungszeit T umzuskalieren, trifft man einfach folgenden Festlegung: <br /> f(T) = 2 &middot; f(x=0) <br /> &rarr; N0 &middot; exp (b &middot; T) = 2 &middot; N0 <br /> &rarr; b = ln (2) &divide; T <br> Analog lässt sich dies für eine Halbierung durchführen. Da aber ln(0,5) = -ln(2) ist, ist das Ergebnis fast identisch, nur das Vorzeichen der Halbwertszeit T ist negativ. <br />Anmerkung: Die Verdopplungszeit/Halbwertszeit T ist unabhängig vom Skalierungsfaktor N0. Daher ist es für die Bestimmung der Verdopplungszeit nicht notwendig die Daten auf die Bevölkerung zu skalieren. </p>
+	<p> Um den Parameter b in eine besser verständlichere Verdopplungszeit T umzurechnen, trifft man einfach folgenden Festlegung: <br /> f(T) = 2 &middot; f(x=0) <br /> &rarr; N0 &middot; exp (b &middot; T) = 2 &middot; N0 <br /> &rarr; b = ln (2) &divide; T <br> Analog lässt sich dies für eine Halbierung durchführen. Da aber ln(0,5) = -ln(2) ist, ist das Ergebnis fast identisch, nur das Vorzeichen der Halbwertszeit T ist negativ. <br />Anmerkung: Die Verdopplungszeit/Halbwertszeit T ist unabhängig vom Skalierungsfaktor N0. Daher ist es für die Bestimmung der Verdopplungszeit nicht notwendig die Daten auf die Bevölkerung zu skalieren. </p>
 
 	<p> Obige Routine habe ich nun für jeder Tag auf der x-Achse wiederholt um einen Zeitverlauf der Verdopplungszeit bzw. Halbwertszeit (bei Abnahme) zu bestimmen. Dabei verwende ich pro Tag das Intervall der y-Werte der Daten dieses Tages und der jeweils 13 vorangegangenen Tage. Als x-Werte verwende ich für jedes dieser Intervalle die Werte -13..0 (Tage). Der N0 Skalierungsfaktor wird mit dem y-Wert des aktuellen Tages initiiert (aber auch durch den Algorithmus optimiert).</p>
 
@@ -704,7 +704,7 @@
 			<td>Neu-Infektionen in Region (letzte 7 Tage pro 100.000 Einwohner), Zahlen können auch der obigen <a href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_factor_unreported" type="number" value="4" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
+			<td><input id="rc_input_factor_unreported" type="number" value="3" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
 			<td>Schätzung Faktor Dunkelziffer</td>
 		</tr>
 		<tr>
@@ -732,13 +732,13 @@
 
 	<p>Anmerkungen zu den Eingangsgrößen, Annahmen und Vereinfachungen für dieses grobe Modell:</p>
 	<ul>
-		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Dies wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiositätsdauer von 8-9 Tage</a>.</li>
+		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Dies wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiösitätsdauer von 8-9 Tage</a>.</li>
 		<li>Dunkelziffer: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank">das RKI schätzt einen Bereich von 4,5–11,1</a>.</li>
 		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um bis zu 1 einrechnen (nur die infektiösen und dennoch herum laufenden Personen bilden eine Gefahr für ihre Umgebung). Allerdings erfahren viele Leute ihr Testergebnis erst wenn sie bereits infektiös sind.</li>
 		<li>Die infektiösen Personen werden gleichverteilt auf die gesamte Bevölkerung angenommen und nicht nach Altergruppen etc. unterschieden.</li>
 	</ul>
 
-	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weitern Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
+	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weiteren Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 	<!-- <h4>
@@ -776,8 +776,7 @@
 	</small>
 
 	<p> Anmerkung zu den Annahmen: Die Sterblichkeit ist vermutlich geringer als die angenommenen 1%. Es dauert wohl üblicherweise eher 3-4 Wochen von Infektion bis zum Tode, nicht wie von mir gerechnet nur 3 Wochen. Beide Effekte wirken sich vergrößernd auf die Dunkelziffer aus.</p>
-
-	<p> Update vom 18.04.2020: Spiegel Online zitiert in <a href="https://www.spiegel.de/wissenschaft/medizin/coronavirus-wie-antikoerpertests-dabei-helfen-die-pandemie-zu-verstehen-a-2258edcd-a304-4ee0-83cc-76a24f340c45" target="_blank">diesem Artikel</a> Thomas Fenner mit der Schätzung, dass 1,9% der Deutschen Bevölkerung bereits von Covid-19 infiziert waren. Meine grobe Abschätzung lieferte an diesem Tag 1.5%, was überraschend dicht dran ist. (Am 04.05.2020 ist diese meine Abschätzung auf 1.1% gesunken. Ursache ist die starke Reduktion des exponentiellen Wachstums, durch die erfolgreichen Lockdown Maßnahmen in der Zwischenzeit.</p>
+	<!-- <p> Update vom 18.04.2020: Spiegel Online zitiert in <a href="https://www.spiegel.de/wissenschaft/medizin/coronavirus-wie-antikoerpertests-dabei-helfen-die-pandemie-zu-verstehen-a-2258edcd-a304-4ee0-83cc-76a24f340c45" target="_blank">diesem Artikel</a> Thomas Fenner mit der Schätzung, dass 1,9% der Deutschen Bevölkerung bereits von Covid-19 infiziert waren. Meine grobe Abschätzung lieferte an diesem Tag 1.5%, was überraschend dicht dran ist. (Am 04.05.2020 ist diese meine Abschätzung auf 1.1% gesunken. Ursache ist die starke Reduktion des exponentiellen Wachstums, durch die erfolgreichen Lockdown Maßnahmen in der Zwischenzeit.</p> -->
 	<!-- <p> Mein persönliches Fazit aus dieser sehr groben Abschätzung ist, dass die Dunkelziffer recht groß zu sein scheint und aufgrund der beschränkten Testkapazität in Zukunft wohl weiter zunehmen wird. Dies bewirkt in den Grafiken und Auswertungen eine stärkere Zunahme der berechneten Verdopplungszeit als es in der Realität der Fall sein sollte. Die wirkliche Verdopplungszeit ist daher vermutlich kürzer als von mir <a href="#Exp_Wachstum">unten</a> pro Bundesland ermittelt. Für meine <a href="#Countries">internationalen Vergleiche</a> habe ich mich ausschließlich auf die Opferzahlen gestützt, diese halte ich weiterhin für belastbar. Die folgenden Kapitel belasse ich trotzdem online, so kann jeder Leser selber entscheiden welche Schlüsse er aus den Daten zieht. </p> -->
 	<!-- <p> Nun folgen noch drei Beispiele die die Idee hinter meiner groben Abschätzung verdeutlichen sollen, da es berechtigte Kritik an der ersten Fassung dieses Abschnitts gab.</p>
 
@@ -796,7 +795,7 @@
 		<a id="Countries"></a>Countries Worldwide</h2>
 
 	<h3>
-		<a id="MapCountries"></a>Map: Countries's Casulties</h3>
+		<a id="MapCountries"></a>Map: Country Casualties</h3>
 	<a title="Dan Polansky and authors of File:BlankMap-World.svg. / CC BY-SA (https://creativecommons.org/licenses/by-sa/4.0)" href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg" target="_blank"><img width="1024" alt="COVID-19 Outbreak World Map Total Deaths per Capita" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg/1024px-COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg.png"></a>
 
 	<p>Map deaths per million population, borrowed from <a href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg" target="_blank">Wikipedia</a>. Data source: the <a href="https://pomber.github.io/covid19/timeseries.json" target="_blank">json</a> file provided by <a href="https://github.com/pomber/covid19" target="_blank">github.com/pomber/covid19</a> is based on <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">data of Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE)</a> </p>
@@ -1052,7 +1051,7 @@
 			<td>Cases-New in region (last 7 days per 100.000 population), numbers can be found at <a href="#CountryTable">Country Table</a> above. </td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_factor_unreported_en" type="number" value="4" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
+			<td><input id="rc_input_factor_unreported_en" type="number" value="3" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
 			<td>Estimated factor of unreported cases</td>
 		</tr>
 		<tr>

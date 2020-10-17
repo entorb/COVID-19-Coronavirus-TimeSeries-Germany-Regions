@@ -3,6 +3,9 @@
 # by Torben Menke
 # https://entorb.net
 
+# 17.10.2020: Umstellung von Exp Fit auf Lin Fit, da exp Anstieg der Gesamtzahl keinen Sinn mehr macht
+
+
 load "header.gp"
 
 set style data linespoints
