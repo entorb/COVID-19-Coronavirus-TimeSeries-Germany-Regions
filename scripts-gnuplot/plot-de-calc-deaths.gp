@@ -11,27 +11,39 @@ set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'red'
 set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'blue' 
 
 
+death_offset = 21 # 
+fit_days = 7
 
-set title "Abschätzung der Dunkelziffer der Infektionen\nAnnahmen: Infizierte sterben nach 2 Wochen mit Wahrscheinlichkeit von 1%"
+
+set title "Abschätzung der Dunkelziffer der Infektionen\nAnnahmen: Infizierte sterben nach 3 Wochen mit Wahrscheinlichkeit von 1%"
 # set ylabel "Cases"
 # set xlabel "Days since first data"
-set ylabel "Infektionen"
+set ylabel "Infizierte"
 set xlabel "Tage"
 set xtics 7
 
 data = '../data/de-states/de-state-DE-total.tsv'
 
-
-f(x)=N0 * exp(x * log(2)/T)
-N0 = 10000.0
-T = 5.0
-
-# use only last 7 days for fit at require the number to be at least 2
-set xrange [-20.1:-13.9]
+date_last = system("tail -1 " . data . " | cut -f2")
+cases_last = ( system("tail -1 " . data . " | cut -f3") + 0)
+deaths_last = ( system("tail -1 " . data . " | cut -f4") + 0)
 
 
-fit f(x) data using (column("Days_Past")-14):(column("Deaths")*100) via N0, T
-#b = log(2)/T
+f_exp(x)=N0 * exp(x * log(2)/T)
+N0 = deaths_last + 0.0
+T = 50.0
+
+f_lin(x)= b + m*x
+m = 1000.0
+b = deaths_last + 0.0
+
+
+# use only last 7 days (shifted by 14 days) for fit and require the number to be at least 2
+xmin_for_fit = -(death_offset+fit_days-0.75)
+set xrange [xmin_for_fit:-(death_offset+0.25)]
+
+fit f_exp(x) data using (column("Days_Past")-death_offset):(column("Deaths")*100) via N0, T
+fit f_lin(x) data using (column("Days_Past")-death_offset):(column("Deaths")*100) via b,m
 
 # delete fit logfile
 `rm fit.log`
@@ -40,33 +52,37 @@ fit f(x) data using (column("Days_Past")-14):(column("Deaths")*100) via N0, T
 # set xdata time
 # set format x "%d.%m"
 
-date_last = system("tail -1 " . data . " | cut -f2")
-cases_last = ( system("tail -1 " . data . " | cut -f3") + 0)
-
 set label 1 label1_text_right." based on RKI data of ".date_last
 
 
 set label 2 \
  sprintf("\
  Fit Ergebnisse\n\
- Verdopplungszeit: %.1f Tage\n\
  Abschätzung Infizierte heute: %d\n\
  = %.3f%% der DE Bevölkerung\n\
- Vergleich Abschätzung zu offizieller Fallzahl: %.1fx höher\
+ Vergleich Abschätzung zu\noffizieller Fallzahl: %.1fx höher\
  "\
- , T, f(0) , f(0) / 83019200 * 100, f(0)/cases_last \
+ , f_lin(0) \
+ , f_lin(0) / 83019200 * 100 \
+ , f_lin(0)/cases_last \
  ) \
- right front at graph 0.98, graph 0.98
+ right front at graph 0.98, graph 0.6
+#  Verdopplungszeit Opfer: %d Tage\n\
+# Exp Vergleich Abschätzung zu\noffizieller Fallzahl: %.1fx höher\
+ 
 
-set key left center width -2
+set key right bottom width -2
 
 set xtic add (date_last 0) 
-set logscale y
+#set logscale y
 set xrange [-35:0]
+set yrange  [0:]
 # set samples 300
 set output '../plots-gnuplot/de-states/calc-cases-from-deaths-DE-total.png'
-plot data using (column("Days_Past")-14):(column("Deaths")*100) title "geschätze Infizierte" with linespoints ls 1 ,\
+plot data using (column("Days_Past")-death_offset):(column("Deaths")*100) title "geschätze Infizierte" with linespoints ls 1 ,\
      data using (column("Days_Past")):(column("Cases")) title "positiv getestet" with linespoints ls 2 ,\
-     (x<=-20.25)?1/0:f(x) title "Fit/Modell" with lines ls 1 dt "-" linecolor rgb 'black' 
+     (x<=xmin_for_fit)?1/0:f_lin(x) title "Fit/Modell" with lines ls 1 dt "-" linecolor rgb 'black' 
+
+#     (x<=xmin_for_fit)?1/0:f_exp(x) title "ExpFit/Modell" with lines ls 1 dt "-" linecolor rgb 'black' ,\
 
 unset output
