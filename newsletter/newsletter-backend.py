@@ -112,18 +112,40 @@ def db_updateHash(email) -> str:
     return h
 
 
-SENDMAIL = "/usr/sbin/sendmail"
-
-
 def sendmail(to: str, body: str, subject: str = "[COVID-19 Landkreis Benachrichtigung]", sender: str = "no-reply@entorb.net"):
-    mail = f"To: {to}\nSubject: {subject}\nFrom: {sender}\nContent-Type: text/plain; charset=\"utf-8\"\n\n{body}"
+
     if checkRunningOnServer():
-        p = os.popen(f"{SENDMAIL} -t -i", "w")
-        p.write(mail)
-        # status = p.close()
-        p.close()
+        # V1: via SENDMAIL
+        # SENDMAIL = "/usr/sbin/sendmail"
+        # mail = f"To: {to}\nSubject: {subject}\nFrom: {sender}\nContent-Type: text/plain; charset=\"utf-8\"\n\n{body}"
+        # # p = os.popen(f"{SENDMAIL} -t -i", "w")
+        # p.write(mail)
+        # # status = p.close()
+        # p.close()
+
+        # V2: via my Mailer Daemon
+        insertNewEMail(send_to=to, subject=subject, body=body,
+                       send_from=sender)
+
     else:
-        print(mail)
+        print(f"To: {to}\nSubject: {subject}\nFrom: {sender}\n{body}")
+
+
+def insertNewEMail(send_to: str, subject: str, body: str, send_from: str = 'no-reply@entorb.net', send_cc: str = '', send_bcc: str = ''):
+    # This is a copy from mailer-daemon/insert.py
+    import sqlite3
+    PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
+
+    # ensureValidEMail(send_to) # uncommented, because send_to might contain the name as well
+
+    con = sqlite3.connect(PATH)
+    cur = con.cursor()
+    cur.execute("INSERT INTO outbox(send_to, subject, body, send_from, send_cc, send_bcc, date_created, date_sent) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP, NULL)",
+                (send_to, subject, body, send_from, send_cc, send_bcc))
+    con.commit()
+    cur.close()
+    con.close()
+
 
 ##########################
 
