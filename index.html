@@ -49,6 +49,15 @@
 					af_gallery_show("results_cases-de-doubling", event.srcElement.hash)
 				})
 			}
+			af_gallery_hideAll("results_cases-deaths-divi");
+			var dropdown = document.getElementById("dropdown_cases-deaths-divi");
+			var element = dropdown.getElementsByTagName("a");
+			// add click event listener -> show (hash)
+			for (i = 0; i < element.length; i++) {
+				element[i].addEventListener("click", function (event) {
+					af_gallery_show("results_cases-deaths-divi", event.srcElement.hash)
+				})
+			}
 		});
 	</script>
 	<!-- <body onload="pageLoadPopup()"> -->
