@@ -114,10 +114,13 @@
 			</li>
 			<ul>
 				<li>
-					<a href="#DeStatesChart">Interaktiver Bundesland Vergleich </a> <b> (neu)</b>
+					<a href="#DeStatesChart">Interaktiver Bundesland Vergleich </a>
 				</li>
 				<li>
-					<a href="#DeStatesCasesDoubling">Verdopplungszeit der Neu-Infektionen</a> <b>(neu)</b>
+					<a href="#DeStates-cases-deaths-divi">Infektionen, Tote und Intensivstationsauslastung durch COVID-19 pro Bundesland</a> <b>(neu)</b>
+				</li>
+				<li>
+					<a href="#DeStatesCasesDoubling">Verdopplungszeit der Neu-Infektionen</a>
 				</li>
 				<li>
 					<a href="#DeStatesCases">Infektionen</a>
@@ -131,10 +134,10 @@
 			</li>
 			<ul>
 				<li>
-					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist?</a><b> (new)</b>
+					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit Personen ein Infizierter dabei ist?</a>
 				</li>
 				<li>
-					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a><b> (new)</b>
+					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a>
 				</li>
 				<!-- <li>
 					<a href="#DE_shift_deaths_to_cases">Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?</a>
@@ -164,13 +167,13 @@
 				<a href="#CountriesCustomChart">Country comparison chart</a>
 			</li>
 			<li>
-				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a><b> (new)</b>
+				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a>
 			</li>
 			<li>
-				<a href="#event_risk_calculator_EN">Event Risk Calculator</a><b> (new)</b>
+				<a href="#event_risk_calculator_EN">Event Risk Calculator</a>
 			</li>
 			<li>
-				<a href="#CountryRankings">Country Rankings</a><b> (new)</b>
+				<a href="#CountryRankings">Country Rankings</a>
 			</li>
 			<li>
 				<a href="#SelectedCountries">Comparison of selected countries</a>
@@ -480,6 +483,93 @@
 
 
 	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h4><a id="DeStates-cases-deaths-divi"></a>Infektionen, Tote und Intensivstationsauslastung durch COVID-19 pro Bundesland</h4>
+	<div class="af_gallery_container">
+		<div class="af_gallery_select" id="dropdown_cases-deaths-divi">
+			<!-- <input type="text" placeholder="Filter.." id="filter" onkeyup="filter()"> -->
+
+			<p><b>Auswahl</b></p>
+			<a href="#article-cases-deaths-divi-DE-total">DE-total</a>
+			<a href="#article-cases-deaths-divi-BW">BW</a>
+			<a href="#article-cases-deaths-divi-BY">BY</a>
+			<a href="#article-cases-deaths-divi-BE">BE</a>
+			<a href="#article-cases-deaths-divi-BB">BB</a>
+			<a href="#article-cases-deaths-divi-HB">HB</a>
+			<a href="#article-cases-deaths-divi-HH">HH</a>
+			<a href="#article-cases-deaths-divi-HE">HE</a>
+			<a href="#article-cases-deaths-divi-MV">MV</a>
+			<a href="#article-cases-deaths-divi-NI">NI</a>
+			<a href="#article-cases-deaths-divi-NW">NW</a>
+			<a href="#article-cases-deaths-divi-RP">RP</a>
+			<a href="#article-cases-deaths-divi-SL">SL</a>
+			<a href="#article-cases-deaths-divi-SN">SN</a>
+			<a href="#article-cases-deaths-divi-ST">ST</a>
+			<a href="#article-cases-deaths-divi-SH">SH</a>
+			<a href="#article-cases-deaths-divi-TH">TH</a>
+		</div>
+		<div class="af_gallery_results" id="results_cases-deaths-divi" style="display: flex;flex-flow:column">
+			<div class="af_gallery_results_plot" id="results_DE_states_plot">
+				<article id="#article-cases-deaths-divi-DE-total">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-DE-total.png" alt="plots-gnuplot/de-states/cases-deaths-divi-DE-total.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BW">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-BW.png" alt="plots-gnuplot/de-states/cases-deaths-divi-BW.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BY">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-BY.png" alt="plots-gnuplot/de-states/cases-deaths-divi-BY.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BE">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-BE.png" alt="plots-gnuplot/de-states/cases-deaths-divi-BE.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BB">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-BB.png" alt="plots-gnuplot/de-states/cases-deaths-divi-BB.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HB">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-HB.png" alt="plots-gnuplot/de-states/cases-deaths-divi-HB.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HH">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-HH.png" alt="plots-gnuplot/de-states/cases-deaths-divi-HH.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HE">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-HE.png" alt="plots-gnuplot/de-states/cases-deaths-divi-HE.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-MV">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-MV.png" alt="plots-gnuplot/de-states/cases-deaths-divi-MV.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-NI">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-NI.png" alt="plots-gnuplot/de-states/cases-deaths-divi-NI.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-NW">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-NW.png" alt="plots-gnuplot/de-states/cases-deaths-divi-NW.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-RP">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-RP.png" alt="plots-gnuplot/de-states/cases-deaths-divi-RP.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SL">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-SL.png" alt="plots-gnuplot/de-states/cases-deaths-divi-SL.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SN">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-SN.png" alt="plots-gnuplot/de-states/cases-deaths-divi-SN.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-ST">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-ST.png" alt="plots-gnuplot/de-states/cases-deaths-divi-ST.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SH">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-SH.png" alt="plots-gnuplot/de-states/cases-deaths-divi-SH.png"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-TH">
+					<img src="plots-gnuplot/de-states/cases-deaths-divi-TH.png" alt="plots-gnuplot/de-states/cases-deaths-divi-TH.png"><br />
+				</article>
+			</div>
+			<div class="af_gallery_results_footer" id="results_DE_states-cases-deaths-divi_footer">
+				<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-de-states-doubling.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-states</a>
+					<br /> Many thanks to Alex Friedl for writing this gallery feature! </small>
+			</div>
+		</div>
+	</div>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
