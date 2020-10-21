@@ -13,12 +13,12 @@ set xdata time
 # set xlabel ""
 # set xtics 7
 
-set ylabel "Neu-Infizierte pro 100.000 (rot) und Tote pro 1.000.000 (schwarz)"
+set ylabel "Neu-Infizierte pro 100.000/7 (rot) und Tote pro 1.000.000/7 (schwarz)"
 set ytics nomirror
 set yrange [0:]
 set ytics 25
 
-set y2label "Intensivstationen: Anteil COVID-19 Patienten (%)" tc ls 3 offset -1,0
+set y2label "Intensivstationsbelerung durch COVID-19 (%)" tc ls 3 offset -1,0
 set y2tics tc ls 5
 set y2tics 5
 # set y2range [0:20]
