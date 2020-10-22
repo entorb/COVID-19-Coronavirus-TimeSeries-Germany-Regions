@@ -12,7 +12,7 @@ set xdata time
 # set xlabel ""
 # set xtics 7
 
-# set ylabel "Neu-Infizierte pro 100.000/7 (rot) und Tote pro 1.000.000/7 (schwarz)"
+set ylabel "Sterbefälle"
 # set ytics nomirror
 # set yrange [0:]
 set ytics 500
@@ -36,7 +36,7 @@ set label 2 "" right front at graph 0.98, graph 0.22
 
 data = '../data/de-mortality.tsv'
 
-set title "Sterbefälle in Deutschland"
+set title "Tägliche Sterbefälle in Deutschland"
 set label 1 label1_text_right." based on Destatis data" # of ".date_last
 
 set key right top
@@ -50,9 +50,10 @@ plot \
     , data using (column("Day")):(column("2020_roll"))   title "2020" axis x1y1  with lines ls 2 lw 4
 unset output
 
-set key left center
+set terminal pngcairo size 640,800 font 'Verdana,9'
+# set key right center
 
-set title "Sterbefälle in Deutschland gesamt und an COVID-19"
+set title "Tägliche Sterbefälle in Deutschland gesamt und an COVID-19"
 set label 1 label1_text_right." based on Destatis and RKI data" # of ".date_last
 
 set output '../plots-gnuplot/de-mortality-covid.png'
