@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-fetches a ref table of country data from geonames.org
-is based on https://raw.githubusercontent.com/lorey/list-of-l_countries/master/generator.py
+fetches mortality data from Destatis
 """
 
 __author__ = "Dr. Torben Menke"

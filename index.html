@@ -137,6 +137,9 @@
 				<li>
 					<a href="#DeStatesDeaths">Opfer</a>
 				</li>
+				<li>
+					<a href="#DeMortality">Vergleich der Sterbefälle 2016-2020</a> <b>(neu)</b>
+				</li>
 			</ul>
 			<li>
 				<a href="#DeAnalyses">Weitere Auswertungen</a>
@@ -766,6 +769,17 @@
 	<img src="plots-gnuplot/de-states/deaths-de-per-million.png" alt="deaths-de-per-million.png" width="640" height="800">
 	<img src="plots-gnuplot/de-states/deaths-de-per-million-log.png" alt="deaths-de-per-million-log.png" width="640" height="800">
 	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/" target="_blank">de-state-XX.tsv</a></small>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h5><a id="DeMortality"></a>Vergleich der Sterbefälle 2016-2020</h5>
+
+	<p> Basierend auf den <a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile" target="_blank">Daten</a> des Deutschen Statistischen Bundesamts habe ich die Sterbefälle von 2020 mit den Vorjahren verglichen. Alle Datenreihen wurden mit einem gleitenden Durchschnitt von 7 Tagen geglättet. </p>
+	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality.png" width="640" height="480">
+
+	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro Kalendertag gemittelt, neben den Daten von 2020 aufgetragen. Im unteren Bereich ist die Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen aufgetragen.</p>
+	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality-covid.png" width="640" height="480">
+	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-mortality.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-mortality.tsv" target="_blank">de-mortality.tsv</a></small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
