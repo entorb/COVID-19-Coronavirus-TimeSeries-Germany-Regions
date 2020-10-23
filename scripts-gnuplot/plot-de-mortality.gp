@@ -56,8 +56,12 @@ set terminal pngcairo size 640,800 font 'Verdana,9'
 set title "Tägliche Sterbefälle in Deutschland gesamt und an COVID-19"
 set label 1 label1_text_right." based on Destatis and RKI data" # of ".date_last
 
+set style fill solid 0.4 border rgb "gray60"
+
 set output '../plots-gnuplot/de-mortality-covid.png'
-plot data using (column("Day")):(column("2016_2019_mean_roll"))   title "Mittelwert 2016-19" axis x1y1  with lines ls 1   \
+plot \
+      data using (column("Day")):(column("2016_2019_roll_min")):(column("2016_2019_roll_max")) title "Bandbreite 2016-19" with filledcurve lc rgb "gray60" \
+    , data using (column("Day")):(column("2016_2019_mean_roll"))   title "Mittelwert 2016-19" axis x1y1  with lines ls 1   \
     , data using (column("Day")):(column("2020_roll")) title "2020" axis x1y1 with lines ls 2 \
     , data using (column("Day")):(column("2020_roll")-column("2016_2019_mean_roll")) title "Differenz" axis x1y1 with lines ls 4 \
     , data using (column("Day")):(column("Deaths_Covid_2020_roll")) title "COVID-19" axis x1y1 with lines ls 3 

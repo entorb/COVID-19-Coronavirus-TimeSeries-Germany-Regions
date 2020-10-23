@@ -109,6 +109,10 @@ df['2016_2019_mean'] = df.iloc[:, [1, 2, 3, 4]
                                ].mean(axis=1)  # not column 0 = day
 df['2016_2019_mean_roll'] = df['2016_2019_mean'].rolling(
     window=7, min_periods=1).mean().round(1)
+
+df['2016_2019_roll_max'] = df.iloc[:, [6, 7, 8, 9]].max(axis=1)
+df['2016_2019_roll_min'] = df.iloc[:, [6, 7, 8, 9]].min(axis=1)
+
 df = df.join(df_covid_2020)
 
 df.to_csv('data/de-mortality.tsv', sep="\t", index=False)
