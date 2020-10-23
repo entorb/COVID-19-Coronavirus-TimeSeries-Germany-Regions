@@ -60,6 +60,6 @@ set output '../plots-gnuplot/de-mortality-covid.png'
 plot data using (column("Day")):(column("2016_2019_mean_roll"))   title "Mittelwert 2016-19" axis x1y1  with lines ls 1   \
     , data using (column("Day")):(column("2020_roll")) title "2020" axis x1y1 with lines ls 2 \
     , data using (column("Day")):(column("2020_roll")-column("2016_2019_mean_roll")) title "Differenz" axis x1y1 with lines ls 4 \
-    , data using (column("Day")):(column("Deaths_Covid_2020_roll")) title "Covid-19" axis x1y1 with lines ls 3 
+    , data using (column("Day")):(column("Deaths_Covid_2020_roll")) title "COVID-19" axis x1y1 with lines ls 3 
 unset output
 
