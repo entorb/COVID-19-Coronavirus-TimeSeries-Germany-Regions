@@ -51,7 +51,7 @@ jobs:
     - name: fetch-de-districts
       run: python3 fetch-de-districts.py
     
-    - Name: fetch-mortality-de
+    - name: fetch-mortality-de
     - run: python3 fetch-mortality-de.py
 
     - name: data show dates
