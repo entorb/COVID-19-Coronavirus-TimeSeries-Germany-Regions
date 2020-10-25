@@ -3,3 +3,4 @@ scipy
 requests
 tqdm
 pandas
+openpyxl
