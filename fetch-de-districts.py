@@ -33,6 +33,7 @@ import helper
 # ensure all output folders are present
 os.makedirs('cache/de-districts/', exist_ok=True)
 os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
+os.makedirs('data/de-districts/latest/', exist_ok=True)
 
 
 """
@@ -582,6 +583,11 @@ def export_latest_data(d_districts_data: dict):
 
     helper.write_json(
         filename='data/de-districts/de-districts-results-V2.json', d=l_for_export_V2, sort_keys=True)
+
+    # 1 files per district
+    for d in (l_for_export_V2):
+        helper.write_json(
+            filename=f"data/de-districts/latest/{d['LK_ID']}.json", d=d, sort_keys=True)
 
     # Export as CSV
     with open('data/de-districts/de-districts-results.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
