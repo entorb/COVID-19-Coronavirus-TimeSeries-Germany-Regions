@@ -27,5 +27,10 @@ set title "Landkreise mit COVID-19 Neu-Infektionen in der letzten Woche"
 
 set output "../plots-gnuplot/de-districts/zero_cases_last_week.png"
 plot data u 1:2 axis x1y1 with lines dt 1 lc "blue"
+unset output
 
+set title "Landkreise mit Inzidenz > 50"
+data = "../data/de-districts/de-districts-50_cases_last_week.tsv"
+set output "../plots-gnuplot/de-districts/50_cases_last_week.png"
+plot data u 1:2 axis x1y1 with lines dt 1 lc "blue"
 unset output
