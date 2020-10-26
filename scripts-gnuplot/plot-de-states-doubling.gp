@@ -14,10 +14,12 @@ set ylabel "Neu-Infektionen pro Woche pro 100000 Einwohner" tc rgb "blue"
 set yrange [0:]
 # set yrange [0.1:]; set logscale y
 set ytics nomirror tc rgb "blue"
+set ytics 25
 
 set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 tc rgb "red" 
 set y2tics nomirror tc rgb "red"
 set y2range [30:0]
+set y2tics 5
 
 # set xlabel "Tage"
 # set xtics 7
