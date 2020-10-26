@@ -13,6 +13,10 @@ set xdata time
 # set xlabel ""
 # set xtics 7
 
+set style line 1 linetype 7 lw 2 dt 1 linecolor rgb 'blue' 
+set style line 2 linetype 7 lw 2 dt 1 linecolor rgb 'black' 
+set style line 3 linetype 7 lw 2 dt 1 linecolor rgb 'red' 
+
 set ylabel "Neu-Infizierte pro 100.000/7 (rot) und Tote pro 1.000.000/7 (schwarz)"
 set ytics nomirror
 set yrange [0:]
@@ -22,15 +26,6 @@ set y2label "Intensivstationsbelerung durch COVID-19 (%)" tc ls 3 offset -1,0
 set y2tics tc ls 5 format "%g%%"
 set y2tics 5
 # set y2range [0:20]
-
-set style line 1 linetype 7 lw 2 dt 1 linecolor rgb 'red' 
-set style line 2 linetype 7 lw 2 dt 1 linecolor rgb 'black' 
-set style line 3 linetype 7 lw 2 dt 1 linecolor rgb 'blue' 
-
-# lw 2 dt 1 lc "red"
-# lw 2 dt 1 linecolor rgb "black"
-# linecolor rgb "blue" 
-
 
 set key width -2 height +.5 spacing 1.5 center top
 
