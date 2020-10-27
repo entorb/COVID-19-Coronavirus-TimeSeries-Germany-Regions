@@ -46,12 +46,13 @@ x_min = -10
 set xrange [x_min:0]
 # y_max=41000
 mortality = 4.3/100
+mortality = 2.0/100
 
 # mask_zero_values(x) = (x<=0)?1/0:x
 
 set label 2 sprintf("Skalierung: %.1f%%", mortality*100.0) right front at graph 0.99, graph 0.95 textcolor rgb "red"
 
-set key width 0 bottom center
+set key width 0 top left
 
 # How much are the deaths in Germany delayed?
 set title "Zeitverzug zwischen Infizierten und Toten"
