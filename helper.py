@@ -310,16 +310,13 @@ def fit_slopes(l_time_series: list) -> dict:
     data_cases_last_week = []
 
     # for i in range(len(l_time_series)):
-    for i in range(-14, 0):  # TM: checked: this is correct and results in the last 14 entries
-
-        if l_time_series[i]['Date'] == '2020-09-03' and l_time_series[i]['Cases'] == 6923:
-            print("This is HU")
-            pass
-
+    # TM: checked: this is correct and results in the last 14 entries: -14 ..
+    for i in range(-14, 0):
         d = l_time_series[i]
-        data_cases_new_pm.append((d['Days_Past'], d['Cases_New_Per_Million']))
+        data_cases_new_pm.append(
+            (d['Days_Past'], d['Cases_Last_Week_Per_Million']))
         data_deaths_new_pm.append(
-            (d['Days_Past'], d['Deaths_New_Per_Million']))
+            (d['Days_Past'], d['Deaths_Last_Week_Per_Million']))
         data_cases_last_week.append(
             (d['Days_Past'], 0.0 + d['Cases_Last_Week']))
         # SOLVED: why does the fit not work well wenn using Cases_Last_Week instead of Cases_Last_Week_Per_Million ??? d['Cases_Last_Week']/10 again works... -> because of bad start values for T

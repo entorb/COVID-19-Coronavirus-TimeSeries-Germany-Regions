@@ -79,13 +79,13 @@ def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) ->
 
 
 def get_slope_arrow(slope: float) -> str:
-    if slope > 1:
+    if slope > 6:
         slope_arrow = "↑"
-    elif slope > 0.5:
+    elif slope > 3:
         slope_arrow = "↗"
-    elif slope >= -0.5:
+    elif slope >= -3:
         slope_arrow = "→"
-    elif slope >= -1:
+    elif slope >= -6:
         slope_arrow = "↘"
     else:
         slope_arrow = "↓"
@@ -214,6 +214,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # if row["email"] != "my-email-address":
     #     continue
     # mailBody += "HINWEIS: Dies ist ein Nachversand, da mir ein Fehler unterlaufen ist, der dazu führte, dass die heutige E-Mail veraltete Daten (Datenstand: 2020-07-06) enthielt. Ich bitte die Umstände zu entschuldigen. \nLG Torben\n\n\n"
+    mailBody += "HINWEIS: Nicht wundern, ich habe die Richtlinien für die der Pfeile verändert, da sich hier ein Fehler eingeschlichen hatte. Ich hoffe dass die Tendenzen nun sinnvoller sind. \nLG Torben\n\n\n"
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
