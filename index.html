@@ -151,9 +151,9 @@
 				<li>
 					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a>
 				</li>
-				<!-- <li>
+				<li>
 					<a href="#DE_shift_deaths_to_cases">Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?</a>
-				</li> -->
+				</li>
 				<li>
 					<a href="#DE_calc-cases-from-deaths-DE-total">Abschätzung der Dunkelziffer der Infizierten</a>
 				</li>
@@ -857,6 +857,15 @@
 	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weiteren Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwiering als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
+
+	<h4><a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h4>
+
+	<p>In der folgenden Abbildung habe ich für Deutschland die Neu-Infizierten und die Neu-Verstorbenen (jeweils pro 7 Tage und pro 1 Millionen Einwohner) aufgetragen. Die Kurve der Neu-Verstorbenen habe ich dann zeitlich verschoben und skaliert auf den Frühjahrspeak der Neu-Infektionen.</p>
+	<img src="plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week_per_million.png" alt="shift-deaths-to-match-cases_DE_last-week_per_million.png" width="640" height="480">
+
+	<p>Ergebnis vom 28.10.2020: Im Frühjahr 2020 war die Verzögerung zwischen Infektion und Tod etwa 14 Tage mit einer Skalierung von 4.3%. Im Sommer 2020 liegt die Kurve der Neu-Infizierten bei dieser Skalierung oberhalb der Kurve der Opferzahlen. Gründe dafür könnten in der Anzahl der durchgeführten Tests und im Altersprofil der Infizierten zu finden sein.</p>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
 	<!-- <h4>
 		<a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h4>
 
@@ -872,7 +881,7 @@
 	<br />
 	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-shift-deaths-to-match-cases.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv" target="_blank">de-state-DE-total.tsv</a> </small>
 
-	<p><small><a href="#ToC">Back to top</a></small></p> -->
+	 -->
 
 	<h4>
 		<a id="DE_calc-cases-from-deaths-DE-total"></a> Wie hoch ist die Dunkelziffer der Infizierten im Vergleich zu den offiziellen Fallzahlen?</h4>
