@@ -11,7 +11,7 @@ set style data linespoints
 set style increment user # important!!! switch between linetypes (default) and userdefined linestyles
 set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'blue' 
 set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'red' 
-set style line 3 linetype 7 dt "-" lw 2 linecolor rgb 'black' 
+set style line 3 linetype 7 dt "-" lw 3 linecolor rgb 'red' 
 
 
 
@@ -38,7 +38,7 @@ set xdata time
 set ytics nomirror
 set y2tics nomirror
 
-set ylabel "Neu-Infektionen letzte Woche" offset 0,0 textcolor ls 1
+set ylabel "Infizierte letzte Woche" offset 0,0 textcolor ls 1
 set y2label "Tote letzte Woche" offset -0,0 textcolor ls 2
 
 set ytics textcolor ls 1
@@ -48,16 +48,16 @@ set y2tics textcolor ls 2
 # set xrange [x_min:0]
 # y_max=41000
 mortality = 4.3/100
-#mortality = 2.0/100
+# mortality = 2.0/100 ; set xrange ["2020-07-01":]
 
 # mask_zero_values(x) = (x<=0)?1/0:x
 
-set label 2 sprintf("Skalierung: %.1f%%", mortality*100.0) right front at graph 0.99, graph 0.95 textcolor rgb "red"
+set label 2 sprintf("Skalierung: %.1f%%", mortality*100.0) left front at graph 0.28, graph 0.85 textcolor rgb "red"
 
-set key width 0 top left
+set key width 0 top left width -2
 
 # How much are the deaths in Germany delayed?
-set title "Zeitverzug zwischen Infizierten und Toten in Deutschland"
+set title "Zeitverzug zwischen Infektion und Tod in Deutschland"
 set yrange [0:*]
 
 output ='../plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week.png'
@@ -77,7 +77,7 @@ unset output
 
 
 # cases last week per million
-set ylabel "Infektionen letzte Woche pro Millionen" 
+set ylabel "Infizierte letzte Woche pro Millionen" 
 set y2label "Tote letzte Woche pro Millionen"
 
 set yrange [0:*]
