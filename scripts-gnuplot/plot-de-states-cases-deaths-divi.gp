@@ -22,7 +22,7 @@ set ytics nomirror
 set yrange [0:]
 set ytics 25
 
-set y2label "Intensivstationsbelerung durch COVID-19 (%)" tc ls 3 offset -1,0
+set y2label "Intensivstationsbelegung durch COVID-19 (%)" tc ls 3 offset -1,0
 set y2tics tc ls 3 format "%g%%"
 set y2tics 5
 # set y2range [0:20]
