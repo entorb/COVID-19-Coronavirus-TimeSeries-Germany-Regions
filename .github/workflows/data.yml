@@ -16,7 +16,7 @@ jobs:
 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repositiry
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
     - name: Python Setup
