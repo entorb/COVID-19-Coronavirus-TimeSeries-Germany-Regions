@@ -45,13 +45,17 @@ with open(pathToData, mode='r', encoding='utf-8') as fh:
 
 con, cur = db_connect()
 
+# Maintenance
 # cur.execute("ALTER TABLE newsletter ADD date_registered date")
 # cur.execute("UPDATE newsletter set date_registered  = ?",
 #             (datetime.date.today(),))
 # con.commit()
+
 # threshold: per Million to per 100k
 # cur.execute("UPDATE newsletter SET threshold = 30 WHERE threshold = 300")
+# con.commit()
 
+# cur.execute("DELETE FROM newsletter WHERE email = 'soll@weg.de'")
 # con.commit()
 
 
