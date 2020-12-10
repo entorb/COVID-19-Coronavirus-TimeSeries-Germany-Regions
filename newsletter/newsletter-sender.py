@@ -6,7 +6,7 @@ import sqlite3
 import json
 import hashlib
 import random
-from datetime import date
+from datetime import date, timedelta
 
 # TODO
 
@@ -112,6 +112,11 @@ d_data_DeDistricts = {}
 with open(pathToDataDeDistricts, mode='r', encoding='utf-8') as fh:
     d_data_DeDistricts = json.load(fh)
 dataDate = d_data_DeDistricts["02000"]["Date_Latest"]
+
+date_data_hh = date.fromisoformat(dataDate)
+date_yesterday = date.today()-timedelta(days=1)
+
+assert date_data_hh == date_yesterday, f"date data hh: {date_data_hh} != date yesterday {date_yesterday}"
 
 d_data_DeStates = {}
 with open(pathToDataDeStates, mode='r', encoding='utf-8') as fh:
