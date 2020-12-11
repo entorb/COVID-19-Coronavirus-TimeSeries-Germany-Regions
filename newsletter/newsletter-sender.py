@@ -111,12 +111,12 @@ con, cur = db_connect()
 d_data_DeDistricts = {}
 with open(pathToDataDeDistricts, mode='r', encoding='utf-8') as fh:
     d_data_DeDistricts = json.load(fh)
-dataDate = d_data_DeDistricts["02000"]["Date_Latest"]
 
-date_data_hh = date.fromisoformat(dataDate)
+s_date_data_hh = d_data_DeDistricts["02000"]["Date_Latest"]
+date_data_hh = date.fromisoformat(s_date_data_hh)
 date_yesterday = date.today()-timedelta(days=1)
-
 assert date_data_hh == date_yesterday, f"date data hh: {date_data_hh} != date yesterday {date_yesterday}"
+del date_data_hh, date_yesterday
 
 d_data_DeStates = {}
 with open(pathToDataDeStates, mode='r', encoding='utf-8') as fh:
@@ -130,7 +130,7 @@ with open(pathToDataCountries, mode='r', encoding='utf-8') as fh:
         code = d['Code']
         del d['Code']
         d_data_Countries[code] = d
-del code
+del code, fh, l, d
 
 # Ranking of worst Landkreise
 d_id_cases_DeDistricts = {}
@@ -219,7 +219,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # if row["email"] != "my-email-address":
     #     continue
     # mailBody += "HINWEIS: Dies ist ein Nachversand, da mir ein Fehler unterlaufen ist, der dazu führte, dass die heutige E-Mail veraltete Daten (Datenstand: 2020-07-06) enthielt. Ich bitte die Umstände zu entschuldigen. \nLG Torben\n\n\n"
-    mailBody += "HINWEIS: Nicht wundern, ich habe die Richtlinien für die der Pfeile verändert, da sich hier ein Fehler eingeschlichen hatte. Ich hoffe dass die Tendenzen nun sinnvoller sind. \nLG Torben\n\n\n"
+    # mailBody += "HINWEIS: Nicht wundern, ich habe die Richtlinien für die der Pfeile verändert, da sich hier ein Fehler eingeschlichen hatte. Ich hoffe dass die Tendenzen nun sinnvoller sind. \nLG Torben\n\n\n"
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -269,7 +269,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
         mailBody += "\nLänder der Welt\n" + s_worst_countries
 
         # table footer
-        mailBody += f"Datenstand Landkreisdaten: {dataDate}\n"
+        mailBody += f"Datenstand Landkreisdaten: {s_date_data_hh}\n"
         mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner / ²absolut\n"
         mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
 
