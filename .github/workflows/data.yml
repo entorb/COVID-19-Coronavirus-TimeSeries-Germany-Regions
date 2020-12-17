@@ -4,7 +4,7 @@ name: Update Data All
 # events but only for the master branch
 on:  
   schedule:
-    - cron: "13 2,5,12 * * *"
+    - cron: "07 2,5,12 * * *"
 # TODO       
 #  push: 
 #    branches: [ master ]
