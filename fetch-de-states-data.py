@@ -21,10 +21,6 @@ import urllib.request
 # my helper modules
 import helper
 
-# ensure all output folders are present
-os.makedirs('cache/de-states/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
-
 # TODO: persisting caching of doubling time fit results for reducing runtime
 
 # args = helper.read_command_line_parameters()

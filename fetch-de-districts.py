@@ -30,12 +30,6 @@ from tqdm import tqdm
 # my helper modules
 import helper
 
-# ensure all output folders are present
-os.makedirs('cache/de-districts/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
-os.makedirs('data/de-districts/latest/', exist_ok=True)
-
-
 """
 Further details and Endpoints
 LK_ID is https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel

@@ -21,9 +21,6 @@ import requests  # for read_url_or_cachefile
 # my helper modules
 import helper
 
-os.makedirs('cache/de-divi/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-divi/', exist_ok=True)
-
 
 def extractLinkList(cont: str) -> list:
     # myPattern = '<a href="(/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-[^"]+/download)"'

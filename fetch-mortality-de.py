@@ -28,9 +28,6 @@ import urllib.request
 # my helper modules
 import helper
 
-# ensure all output folders are present
-os.makedirs('cache/', exist_ok=True)
-os.makedirs('plots-gnuplot/', exist_ok=True)
 # 1. read my covid data, drop starting empty 2 days from feb, prepend 31+28=59 empty rows for matching
 
 # Jan und Feb values are missing for Covid Deaths series, so I need a couple of empty rows

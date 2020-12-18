@@ -27,9 +27,6 @@ from tqdm import tqdm
 # my helper modules
 import helper
 
-os.makedirs('cache/int/', exist_ok=True)
-os.makedirs('plots-gnuplot/int/', exist_ok=True)
-
 file_cache = 'cache/download-countries-timeseries.json'
 
 
