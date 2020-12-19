@@ -245,7 +245,7 @@ def export_latest_data(d_ref_states, d_states_data: dict):
                                                'Cases', 'Deaths',
                                                'Cases_New', 'Deaths_New',
                                                'Cases_Per_Million',
-                                               'Deaths_Per_Million', 'DoublingTime_Cases_Last_Week_Per_100000')
+                                               'Deaths_Per_Million', 'DoublingTime_Cases_Last_Week_Per_100000', 'Slope_Cases_Last_Week_Percent', 'Slope_Deaths_Last_Week_Percent')
                                    )
         csvwriter.writeheader()
         for code in sorted(d_states_latest.keys()):

@@ -320,10 +320,55 @@ def fit_slopes(l_time_series: list) -> dict:
     data_cases_new_pm = []
     data_deaths_new_pm = []
     data_cases_last_week = []
+    data_cases_last_week_percent = []
+    data_deaths_last_week_percent = []
 
+    # TODO: should I reduce to 7 days as using data of Last_Week?
+    days_used_for_slope_fit = 14
+    # TODO: convert to % instead of Per_Million
+    avg_Cases_Last_Week = 0
+    avg_Deaths_Last_Week = 0
+    sum_Cases_Last_Week = 0
+    sum_Deaths_Last_Week = 0
     # for i in range(len(l_time_series)):
     # TM: checked: this is correct and results in the last 14 entries: -14 ..
-    for i in range(-14, 0):
+    for i in range(-days_used_for_slope_fit, 0):
+        d = l_time_series[i]
+        sum_Cases_Last_Week += d['Cases_Last_Week']
+        sum_Deaths_Last_Week += d['Deaths_Last_Week']
+    if sum_Cases_Last_Week > 0:
+        avg_Cases_Last_Week = sum_Cases_Last_Week / days_used_for_slope_fit
+    if sum_Deaths_Last_Week > 0:
+        avg_Deaths_Last_Week = sum_Deaths_Last_Week / days_used_for_slope_fit
+    del sum_Cases_Last_Week, sum_Deaths_Last_Week
+
+    # Cases Percent
+    if avg_Cases_Last_Week > 0:
+        for i in range(-days_used_for_slope_fit, 0):
+            d = l_time_series[i]
+            data_cases_last_week_percent.append(
+                (d['Days_Past'], d['Cases_Last_Week'] / avg_Cases_Last_Week * 100))
+        N0, m = 0, 0
+        d_res = fit_routine(data=data_cases_last_week_percent,
+                            mode="lin")
+        if "fit_res" in d_res:
+            N0, m = d_res["fit_res"]
+        d_slopes["Slope_Cases_Last_Week_Percent"] = round(m, 1)
+
+    # Deaths Percent
+    if avg_Deaths_Last_Week > 0:
+        for i in range(-days_used_for_slope_fit, 0):
+            d = l_time_series[i]
+            data_cases_last_week_percent.append(
+                (d['Days_Past'], d['Deaths_Last_Week'] / avg_Deaths_Last_Week * 100))
+        N0, m = 0, 0
+        d_res = fit_routine(data=data_cases_last_week_percent,
+                            mode="lin")
+        if "fit_res" in d_res:
+            N0, m = d_res["fit_res"]
+        d_slopes["Slope_Deaths_Last_Week_Percent"] = round(m, 1)
+
+    for i in range(-days_used_for_slope_fit, 0):
         d = l_time_series[i]
         data_cases_new_pm.append(
             (d['Days_Past'], d['Cases_Last_Week_Per_Million']))
@@ -331,7 +376,7 @@ def fit_slopes(l_time_series: list) -> dict:
             (d['Days_Past'], d['Deaths_Last_Week_Per_Million']))
         data_cases_last_week.append(
             (d['Days_Past'], 0.0 + d['Cases_Last_Week']))
-        # SOLVED: why does the fit not work well wenn using Cases_Last_Week instead of Cases_Last_Week_Per_Million ??? d['Cases_Last_Week']/10 again works... -> because of bad start values for T
+        # SOLVED: why does the fit not work well when using Cases_Last_Week instead of Cases_Last_Week_Per_Million ??? d['Cases_Last_Week']/10 again works... -> because of bad start values for T
 
     # Cases_New_Per_Million
     N0, m = 0, 0

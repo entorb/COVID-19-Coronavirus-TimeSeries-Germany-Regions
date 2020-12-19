@@ -79,13 +79,13 @@ def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) ->
 
 
 def get_slope_arrow(slope: float) -> str:
-    if slope > 6:
+    if slope >= 3:
         slope_arrow = "↑"
-    elif slope > 3:
+    elif slope >= 1:
         slope_arrow = "↗"
-    elif slope >= -3:
+    elif slope > -1:
         slope_arrow = "→"
-    elif slope >= -6:
+    elif slope > -3:
         slope_arrow = "↘"
     else:
         slope_arrow = "↓"
@@ -136,7 +136,8 @@ del code, fh, l, d
 d_id_cases_DeDistricts = {}
 for id, d in d_data_DeDistricts.items():
     d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_100000"]
-    d["Slope_Cases_Arrow"] = get_slope_arrow(d["Slope_Cases_New_Per_Million"])
+    d["Slope_Cases_Arrow"] = get_slope_arrow(
+        d["Slope_Cases_Last_Week_Percent"])
 l_worst_lk_ids = []
 for id, value in sorted(d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True):
     l_worst_lk_ids.append(id)
