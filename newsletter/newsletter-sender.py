@@ -70,26 +70,38 @@ def sendmail(to: str, body: str, subject: str, sender: str = 'no-reply@entorb.ne
 
 
 def format_line(cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: str) -> str:
-    return "%5.1f / %4d %s   : %s\n" % (
+    return "%5.1f | %5d | %5s | %s\n" % (
         round(cases_lw_100k, 1), cases_lw, slope_arrow, location)
 
 
 def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) -> str:
-    return "%5.1f       %s    : %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
+    return "%5.1f           %5s | %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
 
 
-def get_slope_arrow(slope: float) -> str:
-    if slope >= 3:
-        slope_arrow = "↑"
-    elif slope >= 1:
-        slope_arrow = "↗"
-    elif slope > -1:
-        slope_arrow = "→"
-    elif slope > -3:
-        slope_arrow = "↘"
-    else:
-        slope_arrow = "↓"
-    return slope_arrow
+# def get_slope_arrow(slope: float) -> str:
+#     if slope >= 3:
+#         slope_arrow = "↑"
+#     elif slope >= 1:
+#         slope_arrow = "↗"
+#     elif slope > -1:
+#         slope_arrow = "→"
+#     elif slope > -3:
+#         slope_arrow = "↘"
+#     else:
+#         slope_arrow = "↓"
+#     return slope_arrow
+
+
+def get_slope_text(slope: float) -> str:
+    s = "%+5.1f%%" % slope
+    return s
+
+
+def get_slope_text_from_dict(d: dict) -> str:
+    slope = 0
+    if "Slope_Cases_Last_Week_Percent" in d:
+        slope = d["Slope_Cases_Last_Week_Percent"]
+    return get_slope_text(slope)
 
 ##########################
 
@@ -136,8 +148,7 @@ del code, fh, l, d
 d_id_cases_DeDistricts = {}
 for id, d in d_data_DeDistricts.items():
     d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_100000"]
-    d["Slope_Cases_Arrow"] = get_slope_arrow(
-        d["Slope_Cases_Last_Week_Percent"])
+    d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
 for id, value in sorted(d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True):
     l_worst_lk_ids.append(id)
@@ -148,12 +159,11 @@ d_id_cases_DeStates = {}
 for id, d in d_data_DeStates.items():
     if id == 'DE-total':
         cases_DE_last_week_100k = d["Cases_Last_Week_Per_100000"]
-        slope_DE = get_slope_arrow(
-            d["Slope_Cases_New_Per_Million"])
+        slope_DE = get_slope_text_from_dict(d)
+
     else:
         d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_100000"]
-        d["Slope_Cases_Arrow"] = get_slope_arrow(
-            d["Slope_Cases_New_Per_Million"])
+        d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
 for id, value in sorted(d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True):
     l_worst_bl_ids.append(id)
@@ -163,7 +173,7 @@ del d_id_cases_DeStates, id
 d_id_cases_Countries = {}
 for id, d in d_data_Countries.items():
     d_id_cases_Countries[id] = d["Cases_Last_Week_Per_100000"]
-    d["Slope_Cases_Arrow"] = get_slope_arrow(d["Slope_Cases_New_Per_Million"])
+    d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
 for id, value in sorted(d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True):
     l_worst_country_ids.append(id)
@@ -181,7 +191,7 @@ for id in l_worst_lk_ids:
         cases_lw_100k=d["Cases_Last_Week_Per_100000"],
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-        slope_arrow=d["Slope_Cases_Arrow"]
+        slope_arrow=d["Slope"]
     )
     if count == max_lines:
         break
@@ -194,7 +204,7 @@ for id in l_worst_bl_ids:
         cases_lw_100k=d["Cases_Last_Week_Per_100000"],
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['State']}",
-        slope_arrow=d["Slope_Cases_Arrow"]
+        slope_arrow=d["Slope"]
     )
 
 # string snippet of worst Countries
@@ -207,7 +217,7 @@ for id in l_worst_country_ids:
     s_worst_countries += format_line_only_rel(
         cases_lw_100k=d["Cases_Last_Week_Per_100000"],
         location=f"{d['Country']}",
-        slope_arrow=d["Slope_Cases_Arrow"]
+        slope_arrow=d["Slope"]
     )
     if count == max_lines:
         break
@@ -219,8 +229,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #     continue
-    # mailBody += "HINWEIS: Dies ist ein Nachversand, da mir ein Fehler unterlaufen ist, der dazu führte, dass die heutige E-Mail veraltete Daten (Datenstand: 2020-07-06) enthielt. Ich bitte die Umstände zu entschuldigen. \nLG Torben\n\n\n"
-    # mailBody += "HINWEIS: Nicht wundern, ich habe die Richtlinien für die der Pfeile verändert, da sich hier ein Fehler eingeschlichen hatte. Ich hoffe dass die Tendenzen nun sinnvoller sind. \nLG Torben\n\n\n"
+    # mailBody += "HINWEIS: Dies ist ein Nachversand, da es eine Änderung in einer der Datenquellen gab. Ich bitte die Umstände zu entschuldigen.\nLG Torben\n\n\n"
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -249,7 +258,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
         #        mailBody += f"Versandgrund: \n\n"
         # table header
         mailBody += "Infektionen      : Ort\n"
-        mailBody += "Rel.¹ / Absolut²\n"
+        mailBody += "Rel.¹ | Absolut² | Änderung³\n"
         mailBody += "Deine Landkreisauswahl\n"
         # table body
         for lk_id, value in sorted(d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True):
@@ -258,7 +267,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
                 cases_lw_100k=d["Cases_Last_Week_Per_100000"],
                 cases_lw=d["Cases_Last_Week"],
                 location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-                slope_arrow=d["Slope_Cases_Arrow"]
+                slope_arrow=d["Slope"]
             )
 
         mailBody += "\nTop 10 Landkreise\n" + s_worst_lk
@@ -271,7 +280,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
 
         # table footer
         mailBody += f"Datenstand Landkreisdaten: {s_date_data_hh}\n"
-        mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner / ²absolut\n"
+        mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner, ²absolut, ³Änderung pro Tag (ermittelt über 14 Tage)\n"
         mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
 
         # create a new hash
