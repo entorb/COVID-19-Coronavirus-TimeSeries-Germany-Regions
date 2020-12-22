@@ -70,12 +70,12 @@ def sendmail(to: str, body: str, subject: str, sender: str = 'no-reply@entorb.ne
 
 
 def format_line(cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: str) -> str:
-    return "%5.1f | %5d | %5s | %s\n" % (
+    return "%6.1f | %5d | %5s | %s\n" % (
         round(cases_lw_100k, 1), cases_lw, slope_arrow, location)
 
 
 def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) -> str:
-    return "%5.1f           %5s | %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
+    return "%6.1f           %5s | %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
 
 
 # def get_slope_arrow(slope: float) -> str:
