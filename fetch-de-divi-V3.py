@@ -24,7 +24,8 @@ import helper
 
 def extractLinkList(cont: str) -> list:
     # myPattern = '<a href="(/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-[^"]+/download)"'
-    myPattern = '<a href="(/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-[^"]+/viewdocument[^"]*)"'
+    myPattern = r'<a href="(/divi-intensivregister-tagesreport-archiv-csv/viewdocument/\d+?/divi-intensivregister-[^"]*)"'
+#    /divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15
     myRegExp = re.compile(myPattern)
     myMatches = myRegExp.findall(cont)
     assert len(myMatches) > 10, "Error: no csv download links found"
@@ -69,8 +70,9 @@ def fetch_latest_csvs():
     # '/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-25-12-15-2/download'
     for url in l_csv_urls:
         url = f"https://www.divi.de{url}"
+        '/divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15'
         filename = re.search(
-            '/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-(\d{4}\-\d{2}\-\d{2})[^/]+/viewdocument', url).group(1)
+            r'/divi-intensivregister-tagesreport-archiv-csv/viewdocument/\d+?/divi-intensivregister-(\d{4}\-\d{2}\-\d{2})[^/]', url).group(1)
         d_csvs_to_fetch[filename] = url
     del l_csv_urls
 
