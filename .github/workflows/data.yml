@@ -51,8 +51,8 @@ jobs:
     - name: fetch-int-country-data
       run: python3 fetch-int-country-data.py
       
-    - name: fetch-de-districts
-      run: python3 fetch-de-districts.py
+#    - name: fetch-de-districts
+#      run: python3 fetch-de-districts.py
       
     - name: fetch-mortality-de
       run: python3 fetch-mortality-de.py
@@ -80,12 +80,12 @@ jobs:
         tar cfz ../cache/data.tgz *
         cd ..
  
-    - name: data upload data artifact via tip
-      uses: eine/tip@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          cache/data.tgz
+#    - name: data upload data artifact via tip
+#      uses: eine/tip@master
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        files: |
+#          cache/data.tgz
 
 # Gnuplot plotting
     - name: Gnuplot Install 
@@ -105,12 +105,12 @@ jobs:
         tar cfz ../cache/plots-gnuplot.tgz *
         cd ..
 
-    - name: Gnuplot upload artifact via tip
-      uses: eine/tip@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          cache/plots-gnuplot.tgz
+#    - name: Gnuplot upload artifact via tip
+#      uses: eine/tip@master
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        files: |
+#          cache/plots-gnuplot.tgz
 
 # moved as a separate action, as it takes quite long
 # Generate maps
