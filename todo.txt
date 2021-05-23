@@ -1,0 +1,19 @@
+in
+https://docs.google.com/spreadsheets/d/13la9BFcPUeZKnx6amfwogzmhcNxtF_ouBiV6aOpDHFM/edit#gid=0
+is a link 
+https://npgeo-corona-npgeo-de.hub.arcgis.com/search?groupIds=b28109b18022405bb965c602b13e1bbc
+for RKI Daten auf Bundesländer und Landkreis-Ebene
+
+in
+https://docs.google.com/spreadsheets/d/1ilitnf_C15GZFn-D16QK3fQE8nF70y7fm7-WJgXkwEo/edit#gid=0
+are futher interesting sources
+espcially:
+https://github.com/swildermann/COVID-19
+for RKI Daten COVID19 für Bundesländer historisch
+as https://covid19publicdata.blob.core.windows.net/rki/covid19-germany-federalstates.csv
+
+
+Vergleichszahlen:
+see draft/Ref-Todesfälle-in-DE.ods
+
+Test2
