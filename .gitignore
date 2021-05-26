@@ -8,6 +8,7 @@ maps/out/
 maps/*.gif
 maps/*.mp4
 test/
+.git2
 
 # files
 .vstags
