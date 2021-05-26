@@ -45,23 +45,23 @@ jobs:
     - name: fetch-de-divi
       run: python3 fetch-de-divi-V3.py
       
-#    - name: fetch-de-states
-#      run: python3 fetch-de-states-data.py
+    - name: fetch-de-states
+      run: python3 fetch-de-states-data.py
       
-#    - name: fetch-int-country-data
-#      run: python3 fetch-int-country-data.py
+    - name: fetch-int-country-data
+      run: python3 fetch-int-country-data.py
       
-#    - name: fetch-de-districts
-#      run: python3 fetch-de-districts.py
+    - name: fetch-de-districts
+      run: python3 fetch-de-districts.py
     
-#    - name: calc-increase-histogram
-#      run: python3 calc-increase-histogram.py
+    - name: calc-increase-histogram
+      run: python3 calc-increase-histogram.py
       
-#    - name: fetch-mortality-de
-#      run: python3 fetch-mortality-de.py
+    - name: fetch-mortality-de
+      run: python3 fetch-mortality-de.py
 
-#    - name: data show dates
-#      run: bash show_data_dates.sh
+    - name: data show dates
+      run: bash show_data_dates.sh
 
     - name: data commit new files
       run: |
