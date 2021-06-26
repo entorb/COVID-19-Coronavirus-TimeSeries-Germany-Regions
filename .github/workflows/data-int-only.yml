@@ -43,11 +43,11 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Fetch new data
-    - name: fetch-de-divi
-      run: python3 fetch-de-divi-V3.py
-      
-    - name: fetch-de-states
-      run: python3 fetch-de-states-data.py
+#    - name: fetch-de-divi
+#      run: python3 fetch-de-divi-V3.py
+#      
+#    - name: fetch-de-states
+#      run: python3 fetch-de-states-data.py
       
     - name: fetch-int-country-data
       run: python3 fetch-int-country-data.py
