@@ -48,7 +48,7 @@ jobs:
     - name: fetch-de-states
       run: python3 fetch-de-states-data.py
 
-# here we currently have a bug
+# this is now extrated to an action of its own
 #    - name: fetch-int-country-data
 #      run: python3 fetch-int-country-data.py
       
