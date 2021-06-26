@@ -80,6 +80,8 @@ def read_json_data() -> dict:
     d_countries = {}
     # re-format date using my date_format(y,m,d) function
     for country, country_data in d_json_downloaded.items():
+        if country == 'Summer Olympics 2020':
+            continue
         assert country in d_countries_ref, "E: Country missing in ref list d_countries_ref"
         l_time_series = []
 
