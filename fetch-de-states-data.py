@@ -205,7 +205,7 @@ def export_data(d_states_data: dict):
         l_time_series = d_states_data[code]
 
         helper.write_json(
-            f'data/de-states/de-state-{code}.json', l_time_series)
+            f'data/de-states/de-state-{code}.json', d=l_time_series, sort_keys=True)
 
         with open(outfile, mode='w', encoding='utf-8', newline='\n') as fh:
             csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=[

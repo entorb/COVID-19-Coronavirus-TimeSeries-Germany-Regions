@@ -526,8 +526,8 @@ def export_data(d_districts_data: dict):
     for lk_id, l_time_series in d_districts_data.items():
         file_out = f'data/de-districts/de-district_timeseries-{lk_id}'
         # Export data as JSON
-        with open(file_out+'.json', mode='w', encoding='utf-8', newline='\n') as fh:
-            json.dump(l_time_series, fh, ensure_ascii=False)
+        helper.write_json(
+            file_out+'.json', d=l_time_series, sort_keys=True)
 
         with open(file_out+'.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
             csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
@@ -573,7 +573,7 @@ def export_latest_data(d_districts_data: dict):
 
     # Export as JSON
     helper.write_json('data/de-districts/de-districts-results.json',
-                      d_for_export_V1, sort_keys=True)
+                      d=d_for_export_V1, sort_keys=True)
 
     helper.write_json(
         filename='data/de-districts/de-districts-results-V2.json', d=l_for_export_V2, sort_keys=True)

@@ -184,7 +184,7 @@ def extract_latest_date_data():
 
     # JSON export
     helper.write_json(
-        filename='data/int/countries-latest-all.json', d=l_for_export)
+        filename='data/int/countries-latest-all.json', d=l_for_export, sort_keys=True)
 
     # for selected countries write to separate file, for Gnuplot plotting
     with open('data/int/countries-latest-selected.tsv', mode='w', encoding='utf-8', newline='\n') as fh:
