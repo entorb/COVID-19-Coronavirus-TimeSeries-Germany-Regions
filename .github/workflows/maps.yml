@@ -4,7 +4,7 @@ name: Update Maps
 # events but only for the master branch
 on:  
   schedule:
-    - cron: "15 11 * * *"
+    - cron: "15 22 * * 1"
 # TODO       
 #  push:
 #    branches: [ master ]
