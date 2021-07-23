@@ -52,7 +52,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     ax1.tick_params(axis='y', colors='blue')
     ax2.yaxis.label.set_color('red')
     ax2.tick_params(axis='y', colors='red')
-    plt.title(f"Inzidenz und Anstieg in {code}")
+    plt.title(f"Inzidenzwert und -anstieg in {code}")
 
     ax2.yaxis.set_major_formatter(mtick.PercentFormatter())
 
