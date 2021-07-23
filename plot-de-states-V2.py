@@ -41,15 +41,15 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     ax2.set_xlabel("")
 
     ax1.set_ylabel('Inzidenz (7 Tage)')
-    ax2.set_ylabel('Anstieg (7 Tage)')
+    ax2.set_ylabel('Anstieg (7 Tage) in %')
 
     ax1.yaxis.label.set_color('blue')
     ax1.tick_params(axis='y', colors='blue')
     ax2.yaxis.label.set_color('red')
     ax2.tick_params(axis='y', colors='red')
     plt.title(f"Inzidenz und Anstieg in {code}")
+
     plt.grid()
-    # plt.fill_between(x, y, color='blue')
     plt.tight_layout()
 
     plt.savefig(
