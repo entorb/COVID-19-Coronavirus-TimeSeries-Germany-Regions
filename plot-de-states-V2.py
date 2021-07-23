@@ -3,9 +3,14 @@ import glob
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import locale
 
 # my helper modules
 import helper
+
+# DE date format: Okt instead of Oct
+locale.setlocale(locale.LC_ALL, 'de_DE')
 
 for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
@@ -41,13 +46,15 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     ax2.set_xlabel("")
 
     ax1.set_ylabel('Inzidenz (7 Tage)')
-    ax2.set_ylabel('Anstieg (7 Tage) in %')
+    ax2.set_ylabel('Anstieg (7 Tage)')
 
     ax1.yaxis.label.set_color('blue')
     ax1.tick_params(axis='y', colors='blue')
     ax2.yaxis.label.set_color('red')
     ax2.tick_params(axis='y', colors='red')
     plt.title(f"Inzidenz und Anstieg in {code}")
+
+    ax2.yaxis.set_major_formatter(mtick.PercentFormatter())
 
     plt.grid()
     plt.tight_layout()
