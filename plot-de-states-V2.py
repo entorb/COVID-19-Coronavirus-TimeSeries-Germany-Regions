@@ -41,7 +41,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     ax2.set_xlabel("")
 
     ax1.set_ylabel('Inzidenz (7 Tage)')
-    ax2.set_ylabel('Anstieg (7 Tage)')
+    ax2.set_ylabel('Anstieg (7 Tage) in %')
 
     ax1.yaxis.label.set_color('blue')
     ax1.tick_params(axis='y', colors='blue')
