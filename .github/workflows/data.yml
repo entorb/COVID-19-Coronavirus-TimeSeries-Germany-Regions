@@ -47,8 +47,8 @@ jobs:
       
     - name: fetch-de-states
       run: |
-      python3 fetch-de-states-data.py
-      python3 plot-de-states-V2.py
+        python3 fetch-de-states-data.py
+        python3 plot-de-states-V2.py
 
 # this is now extrated to an action of its own
 #    - name: fetch-int-country-data
