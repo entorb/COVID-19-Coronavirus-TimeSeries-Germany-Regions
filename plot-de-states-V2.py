@@ -52,7 +52,6 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     # plt.fill_between(x, y, color='blue')
     plt.tight_layout()
 
-    print(ax1.get_zorder(), ax2.get_zorder())
     plt.savefig(
         fname=f"plots-python/de-states/{fileBaseName}.png", format='png')
     plt.close()
