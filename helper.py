@@ -46,6 +46,7 @@ os.makedirs('plots-gnuplot/de-divi/', exist_ok=True)
 os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
 os.makedirs('plots-gnuplot/int/', exist_ok=True)
 os.makedirs('plots-python/', exist_ok=True)
+os.makedirs('plots-python/de-states/', exist_ok=True)
 os.makedirs('maps/out/de-districts/', exist_ok=True)
 
 
@@ -188,13 +189,13 @@ def prepare_time_series(l_time_series: list) -> list:
 
             # Cases_Last_Week_7Day_Percent and Deaths_Last_Week_7Day_Percent
             d['Cases_Last_Week_7Day_Percent'] = 0
-            if d7['Cases_Last_Week'] > 0:
-                d['Cases_Last_Week_7Day_Percent'] = (d['Cases_Last_Week']-d7['Cases_Last_Week']) / \
-                    d7['Cases_Last_Week'] * 100
+            if d7['Cases_Last_Week'] >= 2:  # min 2 to reduce noise
+                d['Cases_Last_Week_7Day_Percent'] = round((d['Cases_Last_Week']-d7['Cases_Last_Week']) /
+                                                          d7['Cases_Last_Week'] * 100, 1)
             d['Deaths_Last_Week_7Day_Percent'] = 0
-            if d7['Deaths_Last_Week'] > 0:
-                d['Deaths_Last_Week_7Day_Percent'] = (d['Deaths_Last_Week']-d7['Deaths_Last_Week']) / \
-                    d7['Deaths_Last_Week'] * 100
+            if d7['Deaths_Last_Week'] >= 2:  # min 2 to reduce noise
+                d['Deaths_Last_Week_7Day_Percent'] = round((d['Deaths_Last_Week']-d7['Deaths_Last_Week']) /
+                                                           d7['Deaths_Last_Week'] * 100, 1)
 
         # sometimes values are corrected, leading to negative values, which I replace by 0
         if (d['Cases_Last_Week'] < 0):
