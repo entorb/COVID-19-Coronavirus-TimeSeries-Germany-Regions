@@ -10,7 +10,7 @@ import locale
 import helper
 
 # DE date format: Okt instead of Oct
-locale.setlocale(locale.LC_ALL, 'de_DE')
+locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
