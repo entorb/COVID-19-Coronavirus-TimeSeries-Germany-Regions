@@ -118,7 +118,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     axes[0].set_ylabel('Inzidenz (7 Tage)')
     axes[0].yaxis.label.set_color(colors[0][0])
     axes[0].tick_params(axis='y', colors=colors[0][0])
-    axes[1].set_ylabel('Tote (7 Tage) pro Millionen')
+    axes[1].set_ylabel('Tote (7 Tage pro Millionen)')
     axes[1].yaxis.label.set_color(colors[1][0])
     axes[1].tick_params(axis='y', colors=colors[1][0])
     axes[1].grid(zorder=0)
