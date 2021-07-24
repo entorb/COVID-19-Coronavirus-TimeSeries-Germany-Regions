@@ -6,8 +6,8 @@ on:
   schedule:
     - cron: "07 5,6 * * *" 
 # TODO
-#  push: 
-#    branches: [ master ]
+  push: 
+    branches: [ master ]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -21,6 +21,11 @@ jobs:
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+    - name: Setup environment 
+      run: |
+        cd /usr/share/locales
+        sudo ./install-language-pack de_DE.UTF-8
 
     - name: Python Setup
       uses: actions/setup-python@v2
