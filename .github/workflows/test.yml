@@ -19,8 +19,9 @@ jobs:
     - name: test locale
       run: |
         locale -a
-        sudo apt-get install -y locales
-        locale -a
+        # sudo apt-get install -y locales
+        # locale -a
         cd /usr/share/locales
         sudo ./install-language-pack de_DE.UTF-8
+        locale -a
         
