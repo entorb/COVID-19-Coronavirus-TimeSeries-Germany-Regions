@@ -6,8 +6,8 @@ on:
   schedule:
     - cron: "07 5,6 * * *" 
 # TODO
-#  push: 
-#    branches: [ master ]
+  push: 
+    branches: [ master ]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -37,7 +37,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
-          
+
+    - name: test locale
+      run: locale -a
+    - name: exit
+      run: exit(1)
+
     - name: Python Install requirements
       run: pip install -r py-requirements.txt
 
