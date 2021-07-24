@@ -17,42 +17,9 @@ import helper  # my helper modules
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 
-def getNameFromCode(code: str) -> str:
-    if code == 'BW':
-        long_name = "Baden-Württemberg"
-    elif code == 'BY':
-        long_name = "Bayern"
-    elif code == 'BE':
-        long_name = "Berlin"
-    elif code == 'BB':
-        long_name = "Brandenburg"
-    elif code == 'HB':
-        long_name = "Bremen"
-    elif code == 'HH':
-        long_name = "Hamburg"
-    elif code == 'HE':
-        long_name = "Hessen"
-    elif code == 'MV':
-        long_name = "Mecklenburg-Vorpommern"
-    elif code == 'NI':
-        long_name = "Niedersachsen"
-    elif code == 'NW':
-        long_name = "Nordrhein-Westfalen"
-    elif code == 'RP':
-        long_name = "Rheinland-Pfalz"
-    elif code == 'SL':
-        long_name = "Saarland"
-    elif code == 'SN':
-        long_name = "Sachsen"
-    elif code == 'ST':
-        long_name = "Sachsen-Anhalt"
-    elif code == 'SH':
-        long_name = "Schleswig-Holstein"
-    elif code == 'TH':
-        long_name = "Thüringen"
-    elif code == 'DE-total':
-        long_name = "Deutschland"
-    return long_name
+d_nameToCode = {
+    'BW': "Baden-Württemberg", 'BY': "Bayern", 'BE': "Berlin", 'BB': "Brandenburg", 'HB': "Bremen", 'HH': "Hamburg", 'HE': "Hessen", 'MV': "Mecklenburg-Vorpommern", 'NI': "Niedersachsen", 'NW': "Nordrhein-Westfalen", 'RP': "Rheinland-Pfalz", 'SL': "Saarland", 'SN': "Sachsen", 'ST': "Sachsen-Anhalt", 'SH': "Schleswig-Holstein", 'TH': "Thüringen", 'DE-total': "Deutschland"
+}
 
 
 for datafile in glob.glob("data/de-states/de-state-*.tsv"):
@@ -60,7 +27,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[9:]
-    long_name = getNameFromCode(code)
+    long_name = d_nameToCode[code]
 
     #
     # Read and setup data
