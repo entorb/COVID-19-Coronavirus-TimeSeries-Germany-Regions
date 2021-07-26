@@ -6,8 +6,8 @@ on:
   schedule:
     - cron: "07 5,6 * * *" 
 # TODO
-#  push: 
-#    branches: [ master ]
+  push: 
+    branches: [ master ]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -67,6 +67,9 @@ jobs:
       
     - name: fetch-mortality-de
       run: python3 fetch-mortality-de.py
+
+    - name: fetch-de-vaccination
+      run: python3 fetch-de-vaccination.py
 
     - name: data show dates
       run: bash show_data_dates.sh
