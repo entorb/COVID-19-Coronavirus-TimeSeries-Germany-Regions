@@ -59,9 +59,9 @@ axes = ['', ]
 fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True  # , figsize=(6, 8)  # default = 6.4,4.8
                             , dpi=100)
 
-
-# super title
 fig.suptitle(f"COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
+
+# plot
 df_doses_per_day.Anzahl_rolling_av.plot(
     ax=axes[0],
     # color=colors[0][0],
@@ -72,11 +72,11 @@ axes[0].set_xlabel("")
 # axes[0].set_title("7-Tagesmittel", fontsize=10)
 axes[0].set_zorder(1)
 axes[0].grid(zorder=0)
-axes[0].patch.set_visible(False)
+# axes[0].patch.set_visible(False)
 
 # add text to bottom right
-plt.gcf().text(1.0, 0.0, s="by Torben https://entorb.net , based on RKI data", fontsize=8,
-               horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
+plt.gcf().text(1.0, 0.5, s="by Torben https://entorb.net , based on RKI data", fontsize=8,
+               horizontalalignment='right', verticalalignment='center', rotation='vertical')
 
 fig.tight_layout()
 

@@ -127,8 +127,8 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     # axes[1].set_facecolor('none')
 
     # add text to bottom right
-    plt.gcf().text(1.0, 0.0, s="by Torben https://entorb.net , based on RKI and DIVI data", fontsize=8,
-                   horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
+    plt.gcf().text(1.0, 0.5, s="by Torben https://entorb.net , based on RKI and DIVI data", fontsize=8,
+                   horizontalalignment='right', verticalalignment='center', rotation='vertical')
 
     fig.tight_layout()
     # plt.show()
