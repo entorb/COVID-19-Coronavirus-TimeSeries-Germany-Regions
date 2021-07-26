@@ -1188,18 +1188,27 @@
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
 
-	<h5>RKI Auswertung der Impfdaten</h5>
+	<ul>
+		<li>
+			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
+				target="_blank">
+				RKI Auswertung der Impfdaten, mit Rohdaten
+			</a>
+		</li>
+		<li>
+			<a href="https://impfdashboard.de/" target="_blank">
+				Impfdashboard des Bundesministeriums für Gesundheit (BMG)
+			</a>
+		</li>
+	</ul>
 
-	<p> Die folgenden Grafik ist vom RKI und hier nur eingebettet. <a
-			href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
-			target="_blank"><br />Quelle mit Daten in Excel Format</a>. <br /><img
+	<!-- 
+			Die folgenden Grafik ist vom RKI und hier nur eingebettet.
+				<br />
+				<img
 			src="https://www.rki.de/SharedDocs/Bilder/InfAZ/neuartiges_Coronavirus/Impfquotenmonitoring_Balken.png;?__blob=poster"
-			width="800px" /> </p>
-
-	<p><small><a href="#ToC">Back to top</a></small></p>
-
-	<h5>Impfdashboard</h5>
-	<a href="https://impfdashboard.de/" target="_blank">Impfdashboard des Bundesministeriums für Gesundheit (BMG)</a>
+			width="800px" /> 
+		-->
 
 	<h4>
 		<a id="ArduinoSensorics-De"></a>Nebenprojekt: CO<sub>2</sub>-Ampel
@@ -1208,7 +1217,8 @@
 	<p>Hier der Verweis auf mein anderes Corona-Projekt <a
 			href="https://github.com/entorb/arduino-sensorics/blob/main/CO2-Ampel-Bauanleitung.md"
 			target="_blank">CO<sub>2</sub>-Ampeln für unsere Schule und KiTa</a>. Motivation: Die
-		CO<sub>2</sub>-Konzentration in der Luft ist ein guter Indikator dafür, dass es Zeit zum Lüften ist. Wer sich
+		CO<sub>2</sub>-Konzentration in der Luft ist ein guter Indikator dafür, dass es Zeit zum Lüften ist. Wer
+		sich
 		beteiligen möchte kann gerne <a href="/contact.php?origin=CO2Ampel">Kontakt</a> zu mir aufnehmen. Aktueller
 		Stand: </p>
 	<img alt="ASGS-V1.jpg"
@@ -1222,7 +1232,8 @@
 		<a id="Exp_Wachstum"></a> Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland
 	</h4>
 
-	<p><strike>Dieses Kapitel ist nicht mehr relevant, da wir glücklicherweise den Bereich der exponentiellen Zunahme
+	<p><strike>Dieses Kapitel ist nicht mehr relevant, da wir glücklicherweise den Bereich der exponentiellen
+			Zunahme
 			der Neu-Infektionen verlassen haben.</strike> Daher habe ich es <a
 			href="expGrowth.html#Exp_Wachstum">archiviert</a>.</p>
 
@@ -1243,7 +1254,8 @@
 			target="_blank">Wikipedia</a>. Data source: the <a href="https://pomber.github.io/covid19/timeseries.json"
 			target="_blank">json</a> file provided by <a href="https://github.com/pomber/covid19"
 			target="_blank">github.com/pomber/covid19</a> is based on <a
-			href="https://github.com/CSSEGISandData/COVID-19" target="_blank">data of Johns Hopkins University Center
+			href="https://github.com/CSSEGISandData/COVID-19" target="_blank">data of Johns Hopkins University
+			Center
 			for Systems Science and Engineering (JHU CSSE)</a> </p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -1260,8 +1272,8 @@
 		promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
 
 	</script>
-	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.tsv"
+	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found in
+		<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.tsv"
 			target="_blank">countries-latest-all.tsv</a> / <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.json"
 			target="_blank">countries-latest-all.json</a></small>
@@ -1281,9 +1293,11 @@
 
 	<p>Nomenclature</p>
 	<ul>
-		<li><b>Cases</b> means positively tested on COVID-19 and reported to JHU. Note: I do not trust <b>Cases</b> data
+		<li><b>Cases</b> means positively tested on COVID-19 and reported to JHU. Note: I do not trust <b>Cases</b>
+			data
 			for international comparison too much, as it strongly depends on testing and reporting.</li>
-		<li><b>Deaths</b> are much more reliable than <b>Cases</b>, I suppose. <b>Deaths</b> are furthermore stronger
+		<li><b>Deaths</b> are much more reliable than <b>Cases</b>, I suppose. <b>Deaths</b> are furthermore
+			stronger
 			related to the hospital workload.</li>
 		<li><b>Per Million</b> means scaled per million population. These series should be used when comparing
 			countries. </li>
@@ -1339,7 +1353,8 @@
 				</td>
 				<td> <select id="sel_y_axis_scale" name="sel_y_axis_scale" style="width:200px"> </select>
 				</td>
-				<td> <select id="sel_sorting_Countries" name="sel_sorting_Countries" style="width:200px"></select></td>
+				<td> <select id="sel_sorting_Countries" name="sel_sorting_Countries" style="width:200px"></select>
+				</td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
@@ -1365,10 +1380,11 @@
 
 	<h4><a id="CountriesCustomChart"></a>3. Chart</h4>
 	<div id="div_eChartsCountryContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
-	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
+	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in
+		<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
 			target="_blank">country-XX.tsv / .json</a>
-		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version of
+		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version
+		of
 		the select data logic!</small>
 	<!-- 
 		JS for eCharts Countries
@@ -1459,7 +1475,8 @@
 
 	<h3><a id="CountriesDoublingTime"></a>Doubling Time of New Infections</h3>
 
-	<p> In the following the exponential growth of the new infections is analyzed. If an increase is found, I fitted the
+	<p> In the following the exponential growth of the new infections is analyzed. If an increase is found, I fitted
+		the
 		data with an exponential function to drive the new cases doubling time. As data I used the "Cases Last Week"
 		series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new
 		cases, shorter is worse, of cause. Color coded is the value of "Cases Last Week Per Million" as additional
@@ -1550,7 +1567,8 @@
 
 	<p>I made the following simplifications for this rough model</p>
 	<ul>
-		<li> The number of new infections per week is approximated by the number of currently infectious people. This is
+		<li> The number of new infections per week is approximated by the number of currently infectious people.
+			This is
 			supported by the<a
 				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11"
 				target="_blank"> German RKI, stating an average duration of infection of 8 -9 days </a>. </li>
@@ -1559,14 +1577,16 @@
 				target="_blank"> RKI expects a range of 4.5-11.1</a>. The more tests are performed, the lower this
 			number should be.</li>
 		<li> Quarantine is not taken into account. This could be accounted for by reducing the factor of unreported
-			cases by up to 1 (only the infected and walking around are a threat to their surroundings). However, many
+			cases by up to 1 (only the infected and walking around are a threat to their surroundings). However,
+			many
 			people retrieve their test results when they are already infectious and are still around others. </li>
 		<li> The infectious people are assumed to be evenly distributed across the entire population and not
 			differentiated according to age groups, etc. </li>
 	</ul>
 
 	<p>Comment on the result: The likelihood that an infection will occur depends additionally on many other factors
-		such as duration, environment and protective measures taken and is very difficult to estimate as a probability
+		such as duration, environment and protective measures taken and is very difficult to estimate as a
+		probability
 		in %. I am grateful for ideas and hints, here you can <a href="/contact.php?origin=COVID-19">contact</a> me.
 	</p>
 
@@ -1595,7 +1615,8 @@
 
 	</script>
 
-	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their
+	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding
+		their
 		total cases (series "Cases per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
@@ -1618,7 +1639,8 @@
 
 	<h4><a id="CountriesLatestDeaths"></a>Deaths</h4>
 
-	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their current new
+	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their current
+		new
 		deaths (series "Deaths Last Week per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
@@ -1720,7 +1742,8 @@
 	<br />
 
 	<p> Now weekly new deaths per million population. I decided to use this delta of the last 7 days (rolling week)
-		instead of daily new deaths values, since there are strong weekend and other effects present, leading to wrong
+		instead of daily new deaths values, since there are strong weekend and other effects present, leading to
+		wrong
 		conclusions.
 		<!-- Note: for here the data is smoothed using a Bézier curve. -->
 	</p>
@@ -1772,7 +1795,8 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.tagesschau.de/inland/drogen-119.html" target="_blank"> DE: drug overdose 2019</a>
+				<a href="https://www.tagesschau.de/inland/drogen-119.html" target="_blank"> DE: drug overdose
+					2019</a>
 			</td>
 			<td style="text-align: right">1398</td>
 			<td style="text-align: right">17</td>
@@ -1842,7 +1866,8 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="https://en.wikipedia.org/wiki/Motor_vehicle_fatality_rate_in_U.S._by_year" target="_blank"> US:
+				<a href="https://en.wikipedia.org/wiki/Motor_vehicle_fatality_rate_in_U.S._by_year" target="_blank">
+					US:
 					traffic deaths 2018</a>
 			</td>
 			<td style="text-align: right">36560</td>
@@ -1907,10 +1932,12 @@
 	</ul> -->
 
 	<h3>
-		<a id="CountriesDeathTimeSeries"></a>Time series, Doubling time calculation and forecast for selected countries
+		<a id="CountriesDeathTimeSeries"></a>Time series, Doubling time calculation and forecast for selected
+		countries
 	</h3>
 
-	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter has
+	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter
+		has
 		been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
 	<!-- 
 		Footer
