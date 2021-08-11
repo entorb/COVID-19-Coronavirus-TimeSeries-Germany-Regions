@@ -31,7 +31,7 @@ import math
 import numpy as np
 # curve-fit() function imported from scipy
 from scipy.optimize import curve_fit
-
+import pandas as pd
 
 # ensure all output folders are present
 os.makedirs('cache', exist_ok=True)
@@ -110,6 +110,25 @@ def convert_timestamp_to_date_str(ts: int) -> str:
 
 def date_format(y: int, m: int, d: int) -> str:
     return "%04d-%02d-%02d" % (y, m, d)
+
+#
+# Pandas Helper
+
+
+def pandas_set_date_index(df, date_column: str):
+    """use date as index"""
+    df[date_column] = pd.to_datetime(df[date_column], format='%Y-%m-%d')
+    df.set_index([date_column], inplace=True)
+    return df
+
+
+def pandas_calc_roll_av(df, column: str, days: int = 7):
+    """calc rolling average over column"""
+    df[column + '_roll_av'] = df[column].rolling(
+        window=days, min_periods=1).mean().round(1)
+    return df
+#
+
 
 #
 # COVID-19 Helpers

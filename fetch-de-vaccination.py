@@ -16,10 +16,12 @@ import urllib.request
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 import locale
 
 # my helper modules
 import helper
+
 
 # DE date format: Okt instead of Oct
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
@@ -35,23 +37,31 @@ if not helper.check_cache_file_available_and_recent(fname=dataFileSource, max_ag
 
 
 df = pd.read_csv(dataFileSource, sep=",")
-
-# use date as index
-df['Impfdatum'] = pd.to_datetime(df['Impfdatum'], format='%Y-%m-%d')
-df.set_index(['Impfdatum'], inplace=True)
+df = helper.pandas_set_date_index(df=df, date_column="Impfdatum")
 
 sum_doses = df['Anzahl'].sum()
 
-# use date as index
-df_doses_per_day = df.groupby(['Impfdatum'])['Anzahl'].sum().reset_index()
-df_doses_per_day['Impfdatum'] = pd.to_datetime(
-    df_doses_per_day['Impfdatum'], format='%Y-%m-%d')
-df_doses_per_day.set_index(['Impfdatum'], inplace=True)
+# gefiltert auf Erstimpfungen
+df1 = df[df["Impfserie"] == 1]
+df1 = df1.groupby(
+    ['Impfdatum'])['Anzahl'].sum().reset_index()
+df1 = helper.pandas_set_date_index(df=df1, date_column="Impfdatum")
 
-# print(df_doses_per_day.head(14))
-df_doses_per_day['Anzahl_rolling_av'] = df_doses_per_day['Anzahl'].rolling(
-    window=7, min_periods=1).mean().round(1)
-# print(df_doses_per_day.head(14))
+# sum
+df_doses_per_day = df.groupby(['Impfdatum'])['Anzahl'].sum().reset_index()
+df_doses_per_day = helper.pandas_set_date_index(
+    df=df_doses_per_day, date_column="Impfdatum")
+
+# add first-vac only
+df_doses_per_day['Anzahl1'] = df1['Anzahl']
+
+# add rolling averages
+df_doses_per_day = helper.pandas_calc_roll_av(
+    df=df_doses_per_day, column="Anzahl", days=7)
+df_doses_per_day = helper.pandas_calc_roll_av(
+    df=df_doses_per_day, column="Anzahl1", days=7)
+
+# print(df_doses_per_day.tail(7))
 
 
 # initialize plot (
@@ -62,7 +72,11 @@ fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True  # , figsize=(6, 8)  #
 fig.suptitle(f"COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
 
 # plot
-df_doses_per_day.Anzahl_rolling_av.plot(
+df_doses_per_day["Anzahl_roll_av"].plot(
+    ax=axes[0],
+    # color=colors[0][0],
+    legend=False, secondary_y=False, zorder=2, linewidth=2.0)
+df_doses_per_day["Anzahl1_roll_av"].plot(
     ax=axes[0],
     # color=colors[0][0],
     legend=False, secondary_y=False, zorder=2, linewidth=2.0)
@@ -77,6 +91,11 @@ axes[0].grid(zorder=0)
 # add text to bottom right
 plt.gcf().text(1.0, 0.5, s="by Torben https://entorb.net , based on RKI data", fontsize=8,
                horizontalalignment='right', verticalalignment='center', rotation='vertical')
+
+plt.legend(("gesamt", "Erstimpfungen"))
+
+axes[0].get_yaxis().set_major_formatter(
+    matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
 fig.tight_layout()
 
