@@ -99,11 +99,10 @@ def get_lk_name_from_lk_id(lk_id: str) -> str:
     return name
 
 
-def fetch_json_as_dict_from_url_and_reduce_to_list(url: str) -> list:
+def flatten_json(d_json: dict) -> list:
     """
     removes some of the returned structure
     """
-    d_json = helper.fetch_json_as_dict_from_url(url)
     l2 = d_json['features']
     l3 = [v['attributes'] for v in l2]
     return l3
@@ -124,7 +123,8 @@ def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str, readFrom
         with open(file_cache, mode='r', encoding='utf-8') as json_file:
             json_cont = json.load(json_file)
     elif readFromCache == False:  # fetch and write to cache
-        json_cont = fetch_json_as_dict_from_url_and_reduce_to_list(url)
+        d_json = helper.fetch_json_as_dict_from_url(url)
+        json_cont = flatten_json(d_json)
         with open(file_cache, mode='w', encoding='utf-8', newline='\n') as fh:
             json.dump(json_cont, fh, ensure_ascii=False)
     return json_cont
