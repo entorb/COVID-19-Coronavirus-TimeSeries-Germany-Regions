@@ -34,25 +34,19 @@ def flatten_json(d_json: dict) -> list:
     return l3
 
 
-def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str, readFromCache: bool = True):
-    """
-    readFromCache=True -> not calling the API, but returning cached data
-    readFromCache=False -> calling the API, and writing cache to filesystem
-    """
-    if readFromCache:
-        readFromCache = helper.check_cache_file_available_and_recent(
-            fname=file_cache, max_age=1800, verbose=False)
+# def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str):
+#     """
+#     readFromCache=True -> not calling the API, but returning cached data
+#     readFromCache=False -> calling the API, and writing cache to filesystem
+#     """
 
-    json_cont = []
-    if readFromCache == True:  # read from cache
-        with open(file_cache, mode='r', encoding='utf-8') as json_file:
-            json_cont = json.load(json_file)
-    elif readFromCache == False:  # fetch and write to cache
-        d_json = helper.fetch_json_as_dict_from_url(url)
-        json_cont = flatten_json(d_json)
-        with open(file_cache, mode='w', encoding='utf-8', newline='\n') as fh:
-            json.dump(json_cont, fh, ensure_ascii=False)
-    return json_cont
+#     cont = helper.read_url_or_cachefile(
+#         url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+#     json_cont = json.loads(cont)
+#     # flatten the json structure
+#     l2 = json_cont['features']
+#     l3 = [v['attributes'] for v in l2]
+#     return l3
 
 
 def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list:
@@ -96,9 +90,12 @@ def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list
         "&sqlFormat=none" +\
         "&token="
 
-    l_time_series = helper_read_from_cache_or_fetch_from_url(
-        url=url, file_cache=file_cache, readFromCache=readFromCache)
-
+    cont = helper.read_url_or_cachefile(
+        url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+    json_cont = json.loads(cont)
+    # flatten the json structure
+    l2 = json_cont['features']
+    l_time_series = [v['attributes'] for v in l2]
     assert len(l_time_series) < max_allowed_rows_to_fetch
     return l_time_series
 
@@ -113,6 +110,8 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
     l_time_series_fetched = fetch_bundesland_time_series(
         bl_id=bl_id, readFromCache=True)
 
+    code = helper.BL_code_from_BL_ID(bl_id)
+
     l_time_series = []
 
     # entry = one data point
@@ -121,9 +120,6 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
         # covert to int
         d['Cases'] = int(entry['SumAnzahlFall'])
         d['Deaths'] = int(entry['SumAnzahlTodesfall'])
-        # these are calculated below
-        # d['Cases_New'] = int(entry['AnzahlFall'])
-        # d['Deaths_New'] = int(entry['AnzahlTodesfall'])
         # Rename 'Meldedatum' (ms) -> Timestamp (s)
         d['Timestamp'] = int(entry['Meldedatum'] / 1000)
 
@@ -134,51 +130,25 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
         l_time_series.append(d)
 
     l_time_series = helper.prepare_time_series(l_time_series)
-
-    # for i in range(len(l_time_series)):
-    #     d = l_time_series[i]
-    #     # _Per_Million
-    #     d = helper.add_per_million_via_lookup(d, d_ref_landkreise, lk_id)
-    #     l_time_series[i] = d
-
-    #     data_t.append(d['Days_Past'])
-    #     data_cases.append(d['Cases'])
-    #     data_deaths.append(d['Deaths'])
-    #     data_cases_new.append((d['Days_Past'], d['Cases_New']))
-    #     data_deaths_new.append((d['Days_Past'], d['Deaths_New']))
-
-    # # perform fit for last 7 days to obtain doubling time
-    # data = list(zip(data_t, data_cases))
-    # fit_series_res = helper.series_of_fits(
-    #     data, fit_range=7, max_days_past=14)
-
-    # for i in range(len(l_time_series)):
-    #     entry = l_time_series[i]
-    #     this_doubling_time = ""
-    #     this_days_past = entry['Days_Past']
-    #     if this_days_past in fit_series_res:
-    #         this_doubling_time = fit_series_res[this_days_past]
-    #     entry['Cases_Doubling_Time'] = this_doubling_time
-    #     l_time_series[i] = entry
-
+    for i in range(len(l_time_series)):
+        d = l_time_series[i]
+        # add per Million rows
+        d = helper.add_per_million_via_lookup(d, d_ref_states, code)
     return l_time_series
 
 
 def download_all_data():
     d_states_data = {}
 
-    # l2 = ('16068',)
-    # for lk_id in d_ref_landkreise.keys():
-    # for lk_id in tqdm(('09562',)):
-
     for bl_id in range(1, 17):
         code = helper.BL_code_from_BL_ID(bl_id)
         print(code)
 
         l_time_series = fetch_and_prepare_bl_time_series(bl_id)
-        d_states_data[bl_id] = l_time_series
+        d_states_data[code] = l_time_series
 
     return d_states_data
 
 
+d_ref_states = helper.read_ref_data_de_states()
 download_all_data()

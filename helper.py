@@ -55,7 +55,7 @@ os.makedirs('maps/out/de-districts/', exist_ok=True)
 #
 
 
-def read_url_or_cachefile(url: str, cachefile: str, request_type: str = 'get', payload: dict = {}, cache_max_age: int = 15, verbose: bool = True) -> str:
+def read_url_or_cachefile(url: str, cachefile: str, request_type: str = 'get', payload: dict = {}, cache_max_age: int = 1800, verbose: bool = True) -> str:
     b_cache_is_recent = check_cache_file_available_and_recent(
         fname=cachefile, max_age=cache_max_age, verbose=verbose)
     if not b_cache_is_recent:

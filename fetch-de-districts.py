@@ -108,28 +108,6 @@ def flatten_json(d_json: dict) -> list:
     return l3
 
 
-# TODO: remove by helper.read_url_or_cachefile
-def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str, readFromCache: bool = True):
-    """
-    readFromCache=True -> not calling the API, but returning cached data
-    readFromCache=False -> calling the API, and writing cache to filesystem
-    """
-    if readFromCache:
-        readFromCache = helper.check_cache_file_available_and_recent(
-            fname=file_cache, max_age=1800, verbose=False)
-
-    json_cont = []
-    if readFromCache == True:  # read from cache
-        with open(file_cache, mode='r', encoding='utf-8') as json_file:
-            json_cont = json.load(json_file)
-    elif readFromCache == False:  # fetch and write to cache
-        d_json = helper.fetch_json_as_dict_from_url(url)
-        json_cont = flatten_json(d_json)
-        with open(file_cache, mode='w', encoding='utf-8', newline='\n') as fh:
-            json.dump(json_cont, fh, ensure_ascii=False)
-    return json_cont
-
-
 # Code functions
 
 def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
@@ -160,10 +138,14 @@ def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
         '&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=' +\
         '&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&token='
 
-    l_landkreise = helper_read_from_cache_or_fetch_from_url(
-        url=url, file_cache=file_cache, readFromCache=readFromCache)
-
-    return l_landkreise
+    cont = helper.read_url_or_cachefile(
+        url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+    json_cont = json.loads(cont)
+    # flatten the json structure
+    l2 = json_cont['features']
+    l_time_series = [v['attributes'] for v in l2]
+    assert len(l_time_series) < max_allowed_rows_to_fetch
+    return l_time_series
 
 
 def fetch_and_prepare_ref_landkreise() -> dict:
@@ -272,8 +254,12 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
     # get more stuff
     # "&outFields=*" + \
 
-    l_time_series = helper_read_from_cache_or_fetch_from_url(
-        url=url, file_cache=file_cache, readFromCache=readFromCache)
+    cont = helper.read_url_or_cachefile(
+        url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+    json_cont = json.loads(cont)
+    # flatten the json structure
+    l2 = json_cont['features']
+    l_time_series = [v['attributes'] for v in l2]
 
     assert len(l_time_series) < max_allowed_rows_to_fetch
     return l_time_series
