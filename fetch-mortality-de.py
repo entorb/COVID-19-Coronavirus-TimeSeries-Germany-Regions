@@ -28,23 +28,30 @@ import urllib.request
 # my helper modules
 import helper
 
-# 1. read my covid data, drop starting empty 2 days from feb, prepend 31+28=59 empty rows for matching
 
-# Jan und Feb values are missing for Covid Deaths series, so I need a couple of empty rows
-l = [None] * 59
+# 1. read my covid data
+# 1.1 after de-states-V2 only 1 day is missing: add 0 data for missing 01.01.2020
+l = [0] * 1  # 1 day
 df1 = pd.DataFrame(data={'Deaths_Covid_2020': l})
 
+# read my data
 df0 = pd.read_csv('data/de-states/de-state-DE-total.tsv', sep="\t")
+
+# extract only date and Death_New columns
 df2 = pd.DataFrame()
 df2['Date'] = df0['Date']
 df2['Deaths_Covid_2020'] = df0['Deaths_New']
 del df0
 
-# ensure first row is from 28.2
+# old
+# assert (df2.iloc[0]['Date'] ==
+#         '2020-02-28'), "Error of start date, expecting 2020-02-28"
+# # drop the 2 Feb data rows (of 0 deaths)
+# df2.drop([0, 1], inplace=True)
+
+# ensure first row is from 02.01. (for prepending only 1 missing day)
 assert (df2.iloc[0]['Date'] ==
-        '2020-02-28'), "Error of start date, expecting 2020-02-28"
-# drop the 2 Feb data rows (of 0 deaths)
-df2.drop([0, 1], inplace=True)
+        '2020-01-02'), "Error of start date, expecting 2020-01-02, got : " + df2.iloc[0]['Date']
 
 df_covid_2020 = pd.DataFrame()
 df_covid_2020['Deaths_Covid_2020'] = df1['Deaths_Covid_2020'].append(
@@ -53,7 +60,6 @@ df_covid_2020['Deaths_Covid_2020_roll'] = df_covid_2020['Deaths_Covid_2020'].rol
     window=7, min_periods=1).mean().round(1)
 # print(df_covid_2020.tail())
 del df1, df2
-
 
 # 2. fetch and parse Excel of mortality data from Destatis
 
