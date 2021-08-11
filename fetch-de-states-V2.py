@@ -11,42 +11,11 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import time
-import datetime
 import csv
 import json
 
-
-# process bar
-from tqdm import tqdm
-
 # my helper modules
 import helper
-
-
-def flatten_json(d_json: dict) -> list:
-    """
-    removes some of the returned structure
-    """
-    l2 = d_json['features']
-    l3 = [v['attributes'] for v in l2]
-    return l3
-
-
-# def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str):
-#     """
-#     readFromCache=True -> not calling the API, but returning cached data
-#     readFromCache=False -> calling the API, and writing cache to filesystem
-#     """
-
-#     cont = helper.read_url_or_cachefile(
-#         url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
-#     json_cont = json.loads(cont)
-#     # flatten the json structure
-#     l2 = json_cont['features']
-#     l3 = [v['attributes'] for v in l2]
-#     return l3
 
 
 def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list:
@@ -130,11 +99,6 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
         l_time_series.append(d)
 
     l_time_series = helper.prepare_time_series(l_time_series)
-    # for i in range(len(l_time_series)):
-    #     d = l_time_series[i]
-    #     # add per Million rows
-    #     d = helper.add_per_million_via_lookup(d, d_ref_states, code)
-    #     l_time_series[i] = d
     return l_time_series
 
 
@@ -274,14 +238,6 @@ def export_data(d_states_data: dict):
 def export_latest_data(d_ref_states, d_states_data: dict):
     d_states_latest = helper.extract_latest_data(d_ref_states, d_states_data)
 
-    # # d_states_latest = dict(d_ref_states)
-    # for code in d_states_latest.keys():
-    #     assert code in d_states_data.keys()
-    #     l_state = d_states_data[code]
-    #     d_latest = l_state[-1]
-    #     d_states_latest[code]['Date_Latest'] = d_latest['Date']
-    #     for key in ('Cases', 'Deaths', 'Cases_New', 'Deaths_New', 'Cases_Per_Million', 'Deaths_Per_Million'):
-    #         d_states_latest[code][key] = d_latest[key]
     with open('data/de-states/de-states-latest.tsv', mode='w', encoding='utf-8', newline='\n') as fh:
         csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore',
                                    fieldnames=('State', 'Code', 'Population', 'Pop Density',
