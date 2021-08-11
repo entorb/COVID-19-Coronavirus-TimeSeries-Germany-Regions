@@ -130,11 +130,11 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
         l_time_series.append(d)
 
     l_time_series = helper.prepare_time_series(l_time_series)
-    for i in range(len(l_time_series)):
-        d = l_time_series[i]
-        # add per Million rows
-        d = helper.add_per_million_via_lookup(d, d_ref_states, code)
-        l_time_series[i] = d
+    # for i in range(len(l_time_series)):
+    #     d = l_time_series[i]
+    #     # add per Million rows
+    #     d = helper.add_per_million_via_lookup(d, d_ref_states, code)
+    #     l_time_series[i] = d
     return l_time_series
 
 
@@ -148,10 +148,41 @@ def download_all_data():
         l_time_series = fetch_and_prepare_bl_time_series(bl_id)
         d_states_data[code] = l_time_series
 
+    # add to German sum
+    d_german_sums = {}
+    for code, l_time_series in d_states_data.items():
+        for d in l_time_series:
+            if d['Date'] not in d_german_sums:
+                d2 = {}
+                d2['Cases'] = d['Cases']
+                d2['Deaths'] = d['Deaths']
+            else:
+                d2 = d_german_sums[d['Date']]
+                d2['Cases'] += d['Cases']
+                d2['Deaths'] += d['Deaths']
+            d2['Date'] = d['Date']
+            d_german_sums[d['Date']] = d2
+
+    # German sum -> same dict
+    l_time_series_de = []
+    for date in sorted(d_german_sums.keys()):
+        d = d_german_sums[date]
+        l_time_series_de.append(d)
+    d_states_data['DE-total'] = helper.prepare_time_series(l_time_series_de)
+    del d_german_sums, d, l_time_series_de
+
+    # add per Million rows
+    for code, l_time_series in d_states_data.items():
+        for i in range(len(l_time_series)):
+            d = l_time_series[i]
+            # add per Million rows
+            d = helper.add_per_million_via_lookup(d, d_ref_states, code)
+            l_time_series[i] = d
+        d_states_data[code] = l_time_series
     return d_states_data
 
 
-# old code
+# old functions from V1
 def fit_doubling_or_halftime(d_states_data) -> dict:
     for code, l_time_series in d_states_data.items():
         print(f'fitting doubling time for {code}')
