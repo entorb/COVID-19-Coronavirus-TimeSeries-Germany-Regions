@@ -99,15 +99,6 @@ def get_lk_name_from_lk_id(lk_id: str) -> str:
     return name
 
 
-def flatten_json(d_json: dict) -> list:
-    """
-    removes some of the returned structure
-    """
-    l2 = d_json['features']
-    l3 = [v['attributes'] for v in l2]
-    return l3
-
-
 # Code functions
 
 def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
@@ -172,8 +163,8 @@ def fetch_and_prepare_ref_landkreise() -> dict:
 
     del d_this_landkreis
 
-    with open(file_out+'.json', mode='w', encoding='utf-8', newline='\n') as fh:
-        json.dump(d_landkreise, fh, ensure_ascii=False)
+    helper.write_json(filename=file_out+'.json',
+                      d=d_landkreise, sort_keys=True, indent=1)
 
     with open(file_out+'.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
         csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
