@@ -116,6 +116,32 @@ def date_format(y: int, m: int, d: int) -> str:
 #
 
 
+def BL_code_from_BL_ID(bl_id: int) -> str:
+    """
+    converts Bundesland/ BL_IDs to Codes: 01 -> 1 -> SH
+    """
+    bl_id = int(bl_id)  # for security
+    d = {
+        1: 'SH',
+        2: 'HH',
+        3: 'NI',
+        4: 'HB',
+        5: 'NW',
+        6: 'HE',
+        7: 'RP',
+        8: 'BW',
+        9: 'BY',
+        10: 'SL',
+        11: 'BE',
+        12: 'BB',
+        13: 'MV',
+        14: 'SN',
+        15: 'ST',
+        16: 'TH'
+    }
+    return d[bl_id]
+
+
 def prepare_time_series(l_time_series: list) -> list:
     """
     assumes items in l_time_series are dicts having the following keys: Date, Cases, Deaths

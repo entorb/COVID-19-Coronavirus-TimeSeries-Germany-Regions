@@ -109,32 +109,6 @@ def fetch_json_as_dict_from_url_and_reduce_to_list(url: str) -> list:
     return l3
 
 
-def BL_code_from_BL_ID(bl_id: str) -> str:
-    # TODO: should be moved to helper.py
-    """
-    converts BL IDs to Codes: 01 -> SH
-    """
-    d = {
-        '1': 'SH',
-        '2': 'HH',
-        '3': 'NI',
-        '4': 'HB',
-        '5': 'NW',
-        '6': 'HE',
-        '7': 'RP',
-        '8': 'BW',
-        '9': 'BY',
-        '10': 'SL',
-        '11': 'BE',
-        '12': 'BB',
-        '13': 'MV',
-        '14': 'SN',
-        '15': 'ST',
-        '16': 'TH'
-    }
-    return d[bl_id]
-
-
 # TODO: remove by helper.read_url_or_cachefile
 def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str, readFromCache: bool = True):
     """
@@ -208,7 +182,8 @@ def fetch_and_prepare_ref_landkreise() -> dict:
         d['Population'] = d_this_landkreis['EWZ']
         assert type(d['Population']) == int
         d['BL_Name'] = d_this_landkreis['BL']
-        d['BL_Code'] = BL_code_from_BL_ID(d_this_landkreis['BL_ID'])
+        d['BL_Code'] = helper.BL_code_from_BL_ID(
+            int(d_this_landkreis['BL_ID']))
         d['LK_Name'] = d_this_landkreis['GEN']
         d['LK_Typ'] = d_this_landkreis['BEZ']
         d_landkreise[lk_id] = d

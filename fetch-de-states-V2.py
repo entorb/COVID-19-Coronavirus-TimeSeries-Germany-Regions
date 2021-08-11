@@ -24,37 +24,9 @@ from tqdm import tqdm
 # my helper modules
 import helper
 
-# TODO: remove by helper.read_url_or_cachefile
-
-
-def BL_code_from_BL_ID(bl_id: str) -> str:
-    # TODO: should be moved to helper.py
-    """
-    converts BL IDs to Codes: 01 -> 1 -> SH
-    """
-    bl_id = int(bl_id)
-    d = {
-        1: 'SH',
-        2: 'HH',
-        3: 'NI',
-        4: 'HB',
-        5: 'NW',
-        6: 'HE',
-        7: 'RP',
-        8: 'BW',
-        9: 'BY',
-        10: 'SL',
-        11: 'BE',
-        12: 'BB',
-        13: 'MV',
-        14: 'SN',
-        15: 'ST',
-        16: 'TH'
-    }
-    return d[bl_id]
-
 
 def fetch_json_as_dict_from_url_and_reduce_to_list(url: str) -> list:
+    # TODO: replace by helper.read_url_or_cachefile
     """
     removes some of the returned structure
     """
@@ -99,7 +71,7 @@ def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list
 
     returns data as list, ordered by date
     """
-    code = BL_code_from_BL_ID(bl_id)
+    code = helper.BL_code_from_BL_ID(int(bl_id))
     file_cache = f"cache/de-states/state_timeseries-{code}.json"
 
     max_allowed_rows_to_fetch = 2000
@@ -201,7 +173,7 @@ def download_all_data():
     # for lk_id in tqdm(('09562',)):
 
     for bl_id in range(1, 17):
-        code = BL_code_from_BL_ID(bl_id)
+        code = helper.BL_code_from_BL_ID(bl_id)
         print(code)
 
         l_time_series = fetch_and_prepare_bl_time_series(bl_id)
