@@ -46,6 +46,7 @@ Endpoint: RKI_Landkreisdaten
 https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0
 
 f=json or f=html
+via f=html can be experimented using a nice form
 
 resultRecordCount: max=2000 -> multiple calls needed
 
@@ -109,6 +110,7 @@ def fetch_json_as_dict_from_url_and_reduce_to_list(url: str) -> list:
 
 
 def BL_code_from_BL_ID(bl_id: str) -> str:
+    # TODO: should be moved to helper.py
     """
     converts BL IDs to Codes: 01 -> SH
     """
@@ -133,6 +135,7 @@ def BL_code_from_BL_ID(bl_id: str) -> str:
     return d[bl_id]
 
 
+# TODO: remove by helper.read_url_or_cachefile
 def helper_read_from_cache_or_fetch_from_url(url: str, file_cache: str, readFromCache: bool = True):
     """
     readFromCache=True -> not calling the API, but returning cached data
