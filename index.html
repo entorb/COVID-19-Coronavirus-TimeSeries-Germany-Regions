@@ -366,8 +366,8 @@
 				target="_blank">RKI: COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
 		</li>
 		<li> Skript Quellcode: ist in meinem <a
-				href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/gen-map-de-districts.py"
-				target="_blank">GitHub Repository</a> zu finden. Es basiert zum Großteil auf der Arbeit von <a
+				href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/gen-de-districts-map.py"
+				target="_blank">gen-de-districts-map.py</a>. Es basiert zum Großteil auf der Arbeit von <a
 				href="https://github.com/ythlev/covid-19" target="_blank">ythlev</a>. </li>
 	</ul>
 	<!-- <p>siehe <a href="maps/">hier</a></p> -->
@@ -391,6 +391,12 @@
 	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="640" height="480"> <br />
 	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="640" height="480">
 	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-districts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/de-districts-zero_cases_last_week.tsv" target="_blank">de-districts-zero_cases_last_week.tsv</a></small> -->
+
+	<small>generated via Python<a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-districts-increase-histogram.py"
+			target="_blank">plot-de-districts-increase-histogram.py</a>
+	</small>
+
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -1115,6 +1121,14 @@
 	<img src="plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week_per_million.png"
 		alt="shift-deaths-to-match-cases_DE_last-week_per_million.png" width="640" height="480">
 
+	<br />
+	<small>generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/plot-de-shift-deaths-to-match-cases.gp"
+			target="_blank">plot-de-shift-deaths-to-match-cases.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv"
+			target="_blank">de-state-DE-total.tsv</a>
+	</small>
+
 	<p>Ergebnis vom 28.10.2020: Im Frühjahr 2020 war die Verzögerung zwischen Infektion und Tod etwa 14 Tage mit einer
 		Skalierung von 4.3%. Im Sommer 2020 liegt die Kurve der Neu-Infizierten bei dieser Skalierung oberhalb der Kurve
 		der Opferzahlen. Gründe dafür könnten in der Anzahl der durchgeführten Tests und im Altersprofil der Infizierten
@@ -1188,6 +1202,11 @@
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
 	<img src="plots-python\de-vaccination.png" height="480px" /> <br />
+	<small>generated via Python <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
+			target="_blank">fetch-de-vaccination.py</a>
+	</small>
+
 	<ul>
 		<li>
 			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
