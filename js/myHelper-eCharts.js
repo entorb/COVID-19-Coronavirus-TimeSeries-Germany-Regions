@@ -121,7 +121,6 @@ for (let i = 0; i < list_of_codes_to_plot_countries.length; i++) {
 const options_xAxisProperty = [
     "Date",
     "Days_Since_2nd_Death",
-    "Days_Past",
     "Deaths_Per_Million",
     "Deaths_Last_Week_Per_Million",
     "Deaths_New_Per_Million",
@@ -411,13 +410,13 @@ function refreshCountryChart(
 
 
     // disable time selection for non-time series 
-    if (select_xAxisProperty.value == "Date" || select_xAxisProperty.value == "Days_Past") {
+    if (select_xAxisProperty.value == "Date") { 
         select_xAxisTimeRange.disabled = false;
     } else {
         select_xAxisTimeRange.disabled = true;
     }
     // disable logscale for time series
-    if (select_xAxisProperty.value == "Date" || select_xAxisProperty.value == "Days_Past") {
+    if (select_xAxisProperty.value == "Date") {
         select_xAxisScale.disabled = true;
         select_xAxisScale.value = 'linscale';
     } else {
@@ -560,11 +559,7 @@ function refreshCountryChart(
     if (select_xAxisTimeRange.value == "4weeks") {
         const daysOffset = - 4 * 7;
         const daysInterval = 7;
-        if (select_xAxisProperty.value == "Days_Past") {
-            option.xAxis.min = daysOffset;
-            option.xAxis.interval = daysInterval;
-        }
-        else if (select_xAxisProperty.value == "Date") {
+        if (select_xAxisProperty.value == "Date") {
             // fetch latest date of first data series as basis
             const s_data_last_date = option.series[0].data[option.series[0].data.length - 1][0];
             const ts_last_date = Date.parse(s_data_last_date);
@@ -576,11 +571,7 @@ function refreshCountryChart(
     } else if (select_xAxisTimeRange.value == "12weeks") {
         const daysOffset = - 12 * 7;
         const daysInterval = 14;
-        if (select_xAxisProperty.value == "Days_Past") {
-            option.xAxis.min = daysOffset;
-            option.xAxis.interval = daysInterval;
-        }
-        else if (select_xAxisProperty.value == "Date") {
+        if (select_xAxisProperty.value == "Date") {
             // fetch latest date of first data series as basis
             const s_data_last_date = option.series[0].data[option.series[0].data.length - 1][0];
             const ts_last_date = Date.parse(s_data_last_date);

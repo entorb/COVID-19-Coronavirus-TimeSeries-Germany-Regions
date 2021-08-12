@@ -238,8 +238,8 @@ unset output
 
 #set yrange [1:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [1:2500]
-set y2range [1:2500]
+set yrange [1:3000]
+set y2range [1:3000]
 
 set logscale y
 set logscale y2
@@ -325,8 +325,8 @@ set title title
 set ylabel "Wöchentlich Verstorbene pro 1 Mill. Einwohner"
 #set yrange [0:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [0:200]
-set y2range [0:200]
+set yrange [0:300]
+set y2range [0:300]
 
 output = '../plots-gnuplot/de-states/deaths-de-last_week-per-million.png'
 set output output
