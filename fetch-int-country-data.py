@@ -296,7 +296,8 @@ def export_time_series_all_countries():
 
         with open(f'data/int/country-{country_code}.tsv', mode='w', encoding='utf-8', newline='\n') as fh:
             csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=[
-                'Days_Past', 'Date',
+                # 'Days_Past',
+                'Date',
                 'Cases', 'Deaths',
                 'Cases_New', 'Deaths_New',
                 'Cases_Per_Million', 'Deaths_Per_Million',
@@ -311,24 +312,7 @@ def export_time_series_all_countries():
 
             for d in l_country_data:
                 d2 = d
-                # d2[]
-                # this_Cases_Doubling_Time = None
-                # this_Deaths_Doubling_Time = None
-                # if 'Cases_Doubling_Time' in d:
-                #     this_Cases_Doubling_Time = d['Cases_Doubling_Time']
-                # if 'Deaths_Doubling_Time' in d:
-                #     this_Deaths_Doubling_Time = d['Deaths_Doubling_Time']
                 csvwriter.writerow(d2)
-                # (
-                #     d['Days_Past'], d['Date'],
-                #     d['Cases'], d['Deaths'],
-                #     d['Cases_New'], d['Deaths_New'],
-                #     d['Cases_Per_Million'], d['Deaths_Per_Million'],
-                #     d['Cases_New_Per_Million'], d['Deaths_New_Per_Million'],
-                #     this_Cases_Doubling_Time, this_Deaths_Doubling_Time,
-                #     d['Cases_Change_Factor'], d['Deaths_Change_Factor'],
-                #     d['Days_Since_2nd_Death']
-                # )
 
     # export all to one file
     # helper.write_json('TODO.json', d_countries, sort_keys=True)

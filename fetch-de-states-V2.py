@@ -135,6 +135,8 @@ def download_all_data():
     d_states_data['DE-total'] = helper.prepare_time_series(l_time_series_de)
     del d_german_sums, d, l_time_series_de
 
+    # for German sum: add
+
     # add per Million rows
     for code, l_time_series in d_states_data.items():
         for i in range(len(l_time_series)):
@@ -208,28 +210,40 @@ def join_with_divi_data(d_states_data) -> dict:
 
 def export_data(d_states_data: dict):
     # export JSON and CSV
-    for code in d_states_data.keys():
-        outfile = f'data/de-states/de-state-{code}.tsv'
-        l_time_series = d_states_data[code]
 
+    # delete column  Days_Past since it is daily changeing and hence making git changes very huge
+    for code, l_time_series in d_states_data.items():
+        if code != "DE-total":
+            for i in range(len(l_time_series)):
+                d = l_time_series[i]
+                if 'Days_Past' in d:
+                    del d['Days_Past']
+                l_time_series[i] = d
+            d_states_data[code] = l_time_series
+
+    for code, l_time_series in d_states_data.items():
+        outfile = f'data/de-states/de-state-{code}.tsv'
         helper.write_json(
             f'data/de-states/de-state-{code}.json', d=l_time_series, sort_keys=True)
 
+        fields_for_csv = [
+            'Date',
+            'Cases', 'Deaths',
+            'Cases_New', 'Deaths_New',
+            'Cases_Last_Week', 'Deaths_Last_Week',
+            'Cases_Per_Million', 'Deaths_Per_Million',
+            'Cases_New_Per_Million', 'Deaths_New_Per_Million',
+            'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
+            'Cases_Last_Week_Per_100000',
+            'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent',
+            'Cases_Last_Week_Doubling_Time', 'Cases_Last_Week_7Day_Percent'
+        ]
+        if code == "DE-total":
+            fields_for_csv.append('Days_Past')
+
         with open(outfile, mode='w', encoding='utf-8', newline='\n') as fh:
-            csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=[
-                'Days_Past', 'Date',
-                'Cases', 'Deaths',
-                'Cases_New', 'Deaths_New',
-                'Cases_Last_Week', 'Deaths_Last_Week',
-                'Cases_Per_Million', 'Deaths_Per_Million',
-                'Cases_New_Per_Million', 'Deaths_New_Per_Million',
-                'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
-                'Cases_Last_Week_Per_100000',
-                #                'Cases_Doubling_Time', 'Deaths_Doubling_Time',
-                'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent',
-                'Cases_Last_Week_Doubling_Time', 'Cases_Last_Week_7Day_Percent'
-            ]
-            )
+            csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=fields_for_csv
+                                       )
             csvwriter.writeheader()
             for d in l_time_series:
                 csvwriter.writerow(d)
@@ -280,5 +294,5 @@ d_states_data = download_all_data()
 
 d_states_data = fit_doubling_or_halftime(d_states_data)
 d_states_data = join_with_divi_data(d_states_data)
-export_data(d_states_data)
 export_latest_data(d_ref_states, d_states_data)
+export_data(d_states_data)

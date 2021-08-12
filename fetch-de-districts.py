@@ -486,14 +486,13 @@ def export_data(d_districts_data: dict):
 
         with open(file_out+'.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
             csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
-                'Days_Past', 'Date',
+                'Date',
                 'Cases', 'Deaths',
                 'Cases_New', 'Deaths_New',
                 'Cases_Last_Week', 'Deaths_Last_Week',
                 'Cases_Per_Million', 'Deaths_Per_Million',
                 'Cases_New_Per_Million', 'Deaths_New_Per_Million',
                 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
-                # 'Cases_Doubling_Time', 'Deaths_Doubling_Time',
                 'DIVI_Intensivstationen_Covid_Prozent',
                 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'Cases_Last_Week_7Day_Percent'
             ]
