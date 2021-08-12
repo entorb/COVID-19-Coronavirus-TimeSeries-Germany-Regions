@@ -74,12 +74,11 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
     calles fetch_landkreis_time_series
     convert and add fields of time series list
     returns list
-    writes json and tsv to filesystem
     """
     l_time_series_fetched = fetch_bundesland_time_series(
         bl_id=bl_id, readFromCache=True)
 
-    code = helper.BL_code_from_BL_ID(bl_id)
+    # code = helper.BL_code_from_BL_ID(bl_id)
 
     l_time_series = []
 
@@ -89,15 +88,11 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
         # covert to int
         d['Cases'] = int(entry['SumSummeFall'])
         d['Deaths'] = int(entry['SumSummeTodesfall'])
-        # Rename 'Meldedatum' (ms) -> Timestamp (s)
-        d['Timestamp'] = int(entry['Meldedatum'] / 1000)
-
-        # add Date
+        # calc Date from 'Meldedatum' (ms)
         d['Date'] = helper.convert_timestamp_to_date_str(
-            d['Timestamp'])
-
+            int(entry['Meldedatum'] / 1000)
+        )
         l_time_series.append(d)
-
     l_time_series = helper.prepare_time_series(l_time_series)
     return l_time_series
 
@@ -209,19 +204,10 @@ def join_with_divi_data(d_states_data) -> dict:
 
 
 def export_data(d_states_data: dict):
-    # export JSON and CSV
-
-    # delete column  Days_Past since it is daily changeing and hence making git changes very huge
+    """export timeseries as JSON and CSV"""
     for code, l_time_series in d_states_data.items():
-        if code != "DE-total":
-            for i in range(len(l_time_series)):
-                d = l_time_series[i]
-                if 'Days_Past' in d:
-                    del d['Days_Past']
-                l_time_series[i] = d
-            d_states_data[code] = l_time_series
-
-    for code, l_time_series in d_states_data.items():
+        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
+            l_time_series)
         outfile = f'data/de-states/de-state-{code}.tsv'
         helper.write_json(
             f'data/de-states/de-state-{code}.json', d=l_time_series, sort_keys=True)
@@ -235,7 +221,8 @@ def export_data(d_states_data: dict):
             'Cases_New_Per_Million', 'Deaths_New_Per_Million',
             'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
             'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent',
-            'Cases_Last_Week_Doubling_Time', 'Cases_Last_Week_7Day_Percent'
+            'Cases_Last_Week_Doubling_Time',
+            'Cases_Last_Week_7Day_Percent'
         ]
         if code == "DE-total":
             fields_for_csv.append('Days_Past')

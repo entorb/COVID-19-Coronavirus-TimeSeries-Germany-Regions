@@ -167,7 +167,6 @@ def prepare_time_series(l_time_series: list) -> list:
     sorts l_time_series by Date
     if cases at last entry equals 2nd last entry, than remove last entry, as sometime the source has a problem.
     loops over l_time_series and calculates the
-      Days_Past
       _New values per item/day
       _Last_Week
     """
@@ -248,16 +247,6 @@ def prepare_time_series(l_time_series: list) -> list:
         if (d['Deaths_Last_Week'] < 0):
             d['Deaths_Last_Week'] = 0
 
-        # Change Factors
-        # d['Cases_Change_Factor'] = None
-        # if last_cases >= 100:
-        #     d['Cases_Change_Factor'] = round(
-        #         d['Cases']/last_cases, 3)
-        # d['Deaths_Change_Factor'] = None
-        # if last_deaths >= 10:
-        #     d['Deaths_Change_Factor'] = round(
-        #         d['Deaths']/last_deaths, 3)
-
         # Deaths_Per_Cases
         d['Deaths_Per_Cases'] = None
         if d['Cases'] > 0 and d['Deaths'] > 0:
@@ -273,6 +262,17 @@ def prepare_time_series(l_time_series: list) -> list:
 
         l_time_series[i] = d
 
+    return l_time_series
+
+
+def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
+    keys_to_drop = ('Days_Past', )
+    for i in range(len(l_time_series)):
+        d = l_time_series[i]
+        for key in keys_to_drop:
+            if key in d:
+                del d[key]
+        l_time_series[i] = d
     return l_time_series
 
 

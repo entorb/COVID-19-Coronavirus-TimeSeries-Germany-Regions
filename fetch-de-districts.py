@@ -261,7 +261,6 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
     calles fetch_landkreis_time_series
     convert and add fields of time series list
     returns list
-    writes json and tsv to filesystem
     """
     l_time_series_fetched = fetch_landkreis_time_series(
         lk_id=lk_id, readFromCache=True)
@@ -274,18 +273,11 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
         # covert to int
         d['Cases'] = int(entry['SummeFall'])
         d['Deaths'] = int(entry['SummeTodesfall'])
-        # these are calculated below
-        # d['Cases_New'] = int(entry['AnzahlFall'])
-        # d['Deaths_New'] = int(entry['AnzahlTodesfall'])
-        # Rename 'Meldedatum' (ms) -> Timestamp (s)
-        d['Timestamp'] = int(entry['Meldedatum'] / 1000)
-
-        # add Date
+        # calc Date from 'Meldedatum' (ms)
         d['Date'] = helper.convert_timestamp_to_date_str(
-            d['Timestamp'])
-
+            int(entry['Meldedatum'] / 1000)
+        )
         l_time_series.append(d)
-
     l_time_series = helper.prepare_time_series(l_time_series)
 
     for i in range(len(l_time_series)):
@@ -478,9 +470,11 @@ def join_with_divi_data(d_districts_data: dict) -> dict:
 
 
 def export_data(d_districts_data: dict):
+    """export timeseries as JSON and CSV"""
     for lk_id, l_time_series in d_districts_data.items():
+        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
+            l_time_series)
         file_out = f'data/de-districts/de-district_timeseries-{lk_id}'
-        # Export data as JSON
         helper.write_json(
             file_out+'.json', d=l_time_series, sort_keys=True)
 

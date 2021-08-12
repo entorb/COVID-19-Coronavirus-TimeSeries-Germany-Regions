@@ -265,54 +265,33 @@ def fit_doubling_time():
 
 def export_time_series_all_countries():
     for country in d_countries_timeseries.keys():
-        # for country in d_selected_countries.keys():
-        country_code = read_country_code(country)
-        if not country_code:
+        code = read_country_code(country)
+        if not code:
             continue
-        # country_code = d_selected_countries[country]['Code']
-        l_country_data = d_countries_timeseries[country]
-        #     pop_in_Mill = d_selected_countries[country]['Population'] / 1000000
+        l_time_series = d_countries_timeseries[country]
+        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
+            l_time_series)
 
         helper.write_json(
-            f'data/int/country-{country_code}.json', l_country_data)
+            f'data/int/country-{code}.json', l_time_series)
 
-        with open(f'data/int/country-{country_code}.tsv', mode='w', encoding='utf-8', newline='\n') as fh:
+        with open(f'data/int/country-{code}.tsv', mode='w', encoding='utf-8', newline='\n') as fh:
             csvwriter = csv.DictWriter(fh, delimiter='\t', extrasaction='ignore', fieldnames=[
-                # 'Days_Past',
                 'Date',
                 'Cases', 'Deaths',
                 'Cases_New', 'Deaths_New',
+                'Cases_Last_Week', 'Deaths_Last_Week',
                 'Cases_Per_Million', 'Deaths_Per_Million',
                 'Cases_New_Per_Million', 'Deaths_New_Per_Million',
+                'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
                 'Cases_Doubling_Time', 'Deaths_Doubling_Time',
-                'Cases_Change_Factor', 'Deaths_Change_Factor',
                 'Days_Since_2nd_Death',
-                'Cases_Last_Week_Per_Million',
-                'Deaths_Last_Week_Per_Million'
             ])
             csvwriter.writeheader()
 
-            for d in l_country_data:
+            for d in l_time_series:
                 d2 = d
                 csvwriter.writerow(d2)
-
-    # export all to one file
-    # helper.write_json('TODO.json', d_countries, sort_keys=True)
-
-
-# def get_ref_country_dict(country_name: str) -> dict:
-#     global d_ref_country_database
-#     d = {}
-#     if country_name == 'Congo (Brazzaville)':
-#         d = d_ref_country_database['Republic of the Congo']
-#     elif country_name == 'Congo (Kinshasa)':
-#         d = d_ref_country_database['Democratic Republic of the Congo']
-#     else:
-#         for ref_country_name in d_ref_country_database.keys():
-#             if country_name == ref_country_name:
-#                 d = d_ref_country_database[country_name]
-#                 break
-#     return d
 
 
 def read_population(country_name: str, verbose: bool = False) -> int:
