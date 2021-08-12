@@ -80,7 +80,7 @@ set xtic add (date_last 0)
 #set logscale y
 set xrange [-35:0]
 set yrange  [0:]
-# set samples 300
+# set samples 300md
 set output '../plots-gnuplot/de-states/calc-cases-from-deaths-DE-total.png'
 plot data using (column("Days_Past")-death_offset):(column("Deaths")*100) title "geschätze Infizierte" with linespoints ls 1 ,\
      data using (column("Days_Past")):(column("Cases")) title "positiv getestet" with linespoints ls 2 ,\
