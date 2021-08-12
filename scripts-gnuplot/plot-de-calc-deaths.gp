@@ -5,6 +5,7 @@
 
 # 17.10.2020: Umstellung von Exp Fit auf Lin Fit, da exp Anstieg der Gesamtzahl keinen Sinn mehr macht
 
+# TODO: use  (timecolumn(1)-14*24*3600) instead of Days_Past
 
 load "header.gp"
 
@@ -27,9 +28,9 @@ set xtics 7
 
 data = '../data/de-states/de-state-DE-total.tsv'
 
-date_last = system("tail -1 " . data . " | cut -f2")
-cases_last = ( system("tail -1 " . data . " | cut -f3") + 0)
-deaths_last = ( system("tail -1 " . data . " | cut -f4") + 0)
+date_last = system("tail -1 " . data . " | cut -f1")
+cases_last = ( system("tail -1 " . data . " | cut -f2") + 0)
+deaths_last = ( system("tail -1 " . data . " | cut -f3") + 0)
 
 
 f_exp(x)=N0 * exp(x * log(2)/T)

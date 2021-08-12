@@ -10,10 +10,10 @@ set title title
 data = '../data/de-states/de-state-'.short_name.'.tsv'
 
 # fetch data from last row of data
-x_min = ( system("head -n 2 " . data . " | tail -1 | cut -f1") + 0 )
-x_max = ( system("tail -1 " . data . " | cut -f1") + 0 )
-date_last = system("tail -1 " . data . " | cut -f2")
-y_last = ( system("tail -1 " . data . " | cut -f3") + 0)
+# x_min = ( system("head -n 2 " . data . " | tail -1 | cut -f1") + 0 )
+# x_max = ( system("tail -1 " . data . " | cut -f1") + 0 )
+date_last = system("tail -1 " . data . " | cut -f1")
+# y_last = ( system("tail -1 " . data . " | cut -f3") + 0)
 set label 1 label1_text_right." based on RKI data of ".date_last
 
 # set xtic add (date_last 0) 

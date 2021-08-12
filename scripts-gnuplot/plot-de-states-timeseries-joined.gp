@@ -26,7 +26,7 @@ set colorsequence default
 unset style # reset line styles/types to default
 
 
-date_last = system("tail -1 '../data/de-states/de-state-BW.tsv' | cut -f2")
+date_last = system("tail -1 ../data/de-states/de-state-BW.tsv | cut -f1")
 set label 1 label1_text_right." based on RKI data of ".date_last
 
 title = "Infizierte in absoluten Zahlen"
@@ -203,8 +203,9 @@ set title title
 set ylabel "Verstorbene pro 1 Mill. Einwohner"
 #set yrange [0:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [0:2500]
-set y2range [0:2500]
+y_max = 3000
+set yrange [0:y_max]
+set y2range [0:y_max]
 output = '../plots-gnuplot/de-states/deaths-de-per-million.png'
 set output output
 plot \
@@ -238,8 +239,8 @@ unset output
 
 #set yrange [1:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [1:3000]
-set y2range [1:3000]
+set yrange [1:y_max]
+set y2range [1:y_max]
 
 set logscale y
 set logscale y2
@@ -265,7 +266,8 @@ set key top right at graph 1, graph 1
 title = "Täglich Verstorbene pro 1 Mill. Einwohner"
 set title title
 set ylabel "Täglich Verstorbene pro 1 Mill. Einwohner"
-set yrange [0:]
+y_max = 50
+set yrange [0:y_max]
 output = '../plots-gnuplot/de-states/deaths-de-new-per-million.png'
 set output output
 plot \
@@ -297,7 +299,7 @@ unset output
 
 set y2tics add ("DE HIV\n2018" 5.0/365, "DE Drogen\n2019" 17.0/365, "DE Verkehr\n2019" 39.0/365)
 
-set yrange [0.1:]
+set yrange [0.1:y_max]
 set logscale y
 set logscale y2
 set title title ." - log. skaliert"
@@ -325,8 +327,9 @@ set title title
 set ylabel "Wöchentlich Verstorbene pro 1 Mill. Einwohner"
 #set yrange [0:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [0:300]
-set y2range [0:300]
+y_max = 300
+set yrange [0:y_max]
+set y2range [0:y_max]
 
 output = '../plots-gnuplot/de-states/deaths-de-last_week-per-million.png'
 set output output
@@ -361,8 +364,8 @@ set y2tics add ("DE HIV\n2018" 5.0/7)
 
 #set yrange [0.1:]
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
-set yrange [0.1:200]
-set y2range [0.1:200]
+set yrange [0.1:y_max]
+set y2range [0.1:y_max]
 
 set logscale y
 set logscale y2

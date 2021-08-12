@@ -19,7 +19,7 @@ set style line 3 linetype 7 dt "-" lw 3 linecolor rgb 'red'
 data = '../data/de-states/de-state-DE-total.tsv'
 # data = '../data/int/country-DE.tsv'
 
-date_last = system("tail -1 " . data . " | cut -f2")
+date_last = system("tail -1 " . data . " | cut -f1")
 
 set label 1 label1_text_right." based on RKI data of ".date_last
 # set label 1 label1_text_right." based on JHU data of ".date_last
@@ -64,7 +64,7 @@ output ='../plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week.png
 set output output
 plot data u (column("Date")):(column("Cases_Last_Week")) t "Infizierte" with lines ls 1, \
      data u (column("Date")):(column("Deaths_Last_Week")) t "Tote" axes x1y2 with lines ls 2, \
-     data u (timecolumn(2)-14*24*3600):(column("Deaths_Last_Week")) t "Tote verschoben um 14 Tage" axes x1y2 with lines ls 3
+     data u (timecolumn(1)-14*24*3600):(column("Deaths_Last_Week")) t "Tote verschoben um 14 Tage" axes x1y2 with lines ls 3
 unset output
 # replot using correct y2 scale
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
@@ -86,7 +86,7 @@ output = '../plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week_pe
 set output output
 plot data u (column("Date")):(column("Cases_Last_Week_Per_Million")) t "Infizierte" with lines ls 1, \
      data u (column("Date")):(column("Deaths_Last_Week_Per_Million")) t "Tote" axes x1y2 with lines ls 2, \
-     data u (timecolumn(2)-14*24*3600):(column("Deaths_Last_Week_Per_Million")) t "Tote verschoben um 14 Tage" axes x1y2 with lines ls 3
+     data u (timecolumn(1)-14*24*3600):(column("Deaths_Last_Week_Per_Million")) t "Tote verschoben um 14 Tage" axes x1y2 with lines ls 3
 unset output
 # replot using correct y2 scale
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
