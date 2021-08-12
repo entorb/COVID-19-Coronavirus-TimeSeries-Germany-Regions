@@ -286,97 +286,7 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
         d = helper.add_per_million_via_lookup(d, d_ref_landkreise, lk_id)
         l_time_series[i] = d
 
-    #     data_t.append(d['Days_Past'])
-    #     data_cases.append(d['Cases'])
-    #     data_deaths.append(d['Deaths'])
-    #     data_cases_new.append((d['Days_Past'], d['Cases_New']))
-    #     data_deaths_new.append((d['Days_Past'], d['Deaths_New']))
-
-    # # perform fit for last 7 days to obtain doubling time
-    # data = list(zip(data_t, data_cases))
-    # fit_series_res = helper.series_of_fits(
-    #     data, fit_range=7, max_days_past=14)
-
-    # for i in range(len(l_time_series)):
-    #     entry = l_time_series[i]
-    #     this_doubling_time = ""
-    #     this_days_past = entry['Days_Past']
-    #     if this_days_past in fit_series_res:
-    #         this_doubling_time = fit_series_res[this_days_past]
-    #     entry['Cases_Doubling_Time'] = this_doubling_time
-    #     l_time_series[i] = entry
-
     return l_time_series
-
-
-# def plot_lk_fit(lk_id: str, data: list, d_fit_results: dict):
-#     """
-#     plots a 4 week history as log plot
-#     1-day forcase
-#     TODO: format and re-structrue this dirty code
-#     """
-
-#     lk_name = get_lk_name_from_lk_id(lk_id)
-
-#     dt_latest_date = datetime.datetime.fromtimestamp(
-#         l_lk_time_series[-1]['Timestamp'])
-
-#     # print(
-#     #     f"=== Zeitverlauf für {l_lk_time_series[-1]['Bundesland']}: {l_lk_time_series[-1]['Landkreis']}, vom {l_lk_time_series[-1]['Datenstand']} ===")
-
-#     # these will be used for plotting, and partly for fitting
-
-#     # print(
-#     #     f"{s_this_date}\t{i_days_past}\t{entry['SummeFall']}\t{entry['SummeTodesfall']}\t{entry['AnzahlFall']}\t{entry['AnzahlTodesfall']}")
-
-#     # print(f"Coefficients:\n{param}")
-#     # print(f"Covariance of coefficients:\n{param_cov}")
-
-#     # print("Tomorrow it could be: %d , that is a factor of %.3f" %
-#     #   (y_next_day, factor_increase_next_day))
-
-#     #
-#     (data_x, data_y) = helper.extract_x_and_y_data(data)
-
-#     fit_range_x = d_fit_results['fit_set_x_range']
-#     fit_range_y = d_fit_results['fit_set_y_range']
-
-#     (data_x_for_fit, data_y_for_fit) = helper.extract_data_according_to_fit_ranges(
-#         data, fit_range_x, fit_range_y)
-
-#     data_y_fitted = []
-#     for x in data_x_for_fit:
-#         y = helper.fit_function_exp_growth(x, *d_fit_results['fit_res'])
-#         data_y_fitted.append(y)
-
-#     plt.title(f"{lk_name}\n%d new cases expected\nfactor:%.2f" %
-#               (d_fit_results['forcast_y_at_x+1'], d_fit_results['factor_increase_x+1']))
-#     range_x = (-28, 1)
-#     plt.plot(data_x, data_y, 'o', color='red', label="data")
-#     plt.plot(data_x_for_fit, data_y_fitted,
-#              '--', color='blue', label="fit")
-#     plt.legend()
-#     plt.grid()
-#     # plt.xticks(np.arange(min(data_x), 0, 7.0))
-#     axes = plt.gca()
-#     axes.tick_params(direction='in', bottom=True,
-#                      top=True, left=True, right=True)
-#     plt.yscale('log')
-#     x_ticks = np.arange(range_x[0], range_x[1], 7)
-#     axes.set_xlim([range_x[0], range_x[1]])
-#     plt.xticks(x_ticks)
-
-#     # axes.set_ylim([ymin,ymax])
-#     fileout = f'plots-python/de-cases-fit-region-{lk_id}.png'
-#     # .replace(" ", "_")
-#     plt.savefig(fileout)
-#     # plt.show()
-#     plt.clf()  # clear plot
-
-#     # fetch_fit_and_plot_lk('SK Fürth')
-#     # fetch_fit_and_plot_lk('SK Erlangen')
-#     # fetch_fit_and_plot_lk('SK Hamburg')
-#     # fetch_fit_and_plot_lk('LK Harburg')
 
 
 def download_all_data():
@@ -405,41 +315,6 @@ def download_all_data():
 
     return d_districts_data
 
-
-# def weg():
-#     if 1 == 2:
-#         # d_fit_results = helper.fit_routine(data, mode="exp", fit_range_x=(-6, 0))
-#         d = {
-#             'Bundesland': d_ref_landkreise[lk_id]['BL_Name'],  # Bundesland
-#             'Landkreis': lk_name,
-#             'LK_Einwohner': d_ref_landkreise[lk_id]['Population'],  # Einwohner
-#             'Cases': last_entry['Cases'],
-#             'Cases_Per_Million': last_entry['Cases_Per_Million'],
-#             'Deaths': last_entry['Deaths'],
-#             'Deaths_Per_Million': last_entry['Deaths_Per_Million'],
-#             'Date': last_entry['Date'],
-#             'Cases_Last_Week': last_entry['Cases_Last_Week'],
-#             'Cases_Last_Week_Per_Million': last_entry['Cases_Last_Week_Per_Million'],
-#             'Deaths_Last_Week': last_entry['Deaths_Last_Week'],
-#             'Deaths_Last_Week_Per_Million': last_entry['Deaths_Last_Week_Per_Million']
-#         }
-    # if d_fit_results != {}:
-    #     d['fit_res_N0'] = round(d_fit_results['fit_res'][0], 3)
-    #     d['fit_res_T'] = round(d_fit_results['fit_res'][1], 3)
-    #     d['fit_used_x_range'] = d_fit_results['fit_used_x_range']
-    #     d['Cases_Forecast_Tomorrow'] = round(
-    #         d_fit_results['forcast_y_at_x+1'], 3)
-    #     d['Cases_Forecast_Tomorrow_Factor'] = round(
-    #         d_fit_results['factor_increase_x+1'], 3)
-
-    # d_for_export_V2 = d
-    # for key in ('Cases_Per_Million', 'Deaths_Per_Million', 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million'):
-    #     if d_for_export_V2[key]:
-    #         d_for_export_V2[key] = round(d[key], 0)
-
-    # TODO:
-    # plot_lk_fit(lk_id, data, d_fit_results)
-    # break
 
 def join_with_divi_data(d_districts_data: dict) -> dict:
     d_divi_data = helper.read_json_file('cache/de-divi/de-divi-V3.json')
@@ -527,12 +402,6 @@ def export_latest_data(d_districts_data: dict):
     helper.write_json(
         filename='data/de-districts/de-districts-results-V2.json', d=l_for_export_V2, sort_keys=True)
 
-    # not in use, so removed
-    # # 1 files per district
-    # for d in (l_for_export_V2):
-    #     helper.write_json(
-    #         filename=f"data/de-districts/latest/{d['LK_ID']}.json", d=d, sort_keys=True)
-
     # Export as CSV
     with open('data/de-districts/de-districts-results.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
         csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
@@ -545,53 +414,6 @@ def export_latest_data(d_districts_data: dict):
 
         for lk_id, d in d_for_export_V1.items():
             csvwriter.writerow(d)
-            # d2 = d
-            # # d2['Population'] = d['LK_Einwohner']
-
-            # # this_Cases_Forecast_Tomorrow_Factor = None
-            # # if 'Cases_Forecast_Tomorrow_Factor' in d2:
-            # #     d2['Forecase Cases Tomorrow (%)'] = round(
-            # #         100 * (d2['Cases_Forecast_Tomorrow_Factor'] - 1), 1)
-            # if d2['Cases_Per_Million']:
-            #     d2['Cases_Per_Million'] = round(
-            #         d2['Cases_Per_Million'], 0)
-            # if d2['Deaths_Per_Million']:
-            #     d2['Deaths_Per_Million'] = round(
-            #         d2['Deaths_Per_Million'], 0)
-
-
-# def count_zero_cases_last_week(d_districts_data):
-#     # calc number of districts with Cases_Last_Week == 0
-#     d_count_districts_with_zero_cases_last_week_per_date = {}
-#     d_count_districts_with_50_cases_last_week_per_date = {}
-#     for lk_id, l_time_series in d_districts_data.items():
-#         for d in l_time_series:
-#             date = d["Date"]
-#             if date not in d_count_districts_with_zero_cases_last_week_per_date:
-#                 d_count_districts_with_zero_cases_last_week_per_date[date] = 0
-#             if date not in d_count_districts_with_50_cases_last_week_per_date:
-#                 d_count_districts_with_50_cases_last_week_per_date[date] = 0
-#             if d["Cases_Last_Week_Per_100000"] != 0:
-#                 d_count_districts_with_zero_cases_last_week_per_date[date] += 1
-#             if d["Cases_Last_Week_Per_100000"] >= 50:
-#                 d_count_districts_with_50_cases_last_week_per_date[date] += 1
-
-#     # Export as CSV
-#     with open('data/de-districts/de-districts-zero_cases_last_week.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
-#         csvwriter = csv.writer(fh_csv, delimiter='\t')
-#         csvwriter.writerow(
-#             ("Date", "Landkreise mit Neu-Infektionen in 7 Tagen"))
-#         for date in sorted(d_count_districts_with_zero_cases_last_week_per_date.keys()):
-#             csvwriter.writerow(
-#                 (date, d_count_districts_with_zero_cases_last_week_per_date[date]))
-#     # Export as CSV
-#     with open('data/de-districts/de-districts-50_cases_last_week.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
-#         csvwriter = csv.writer(fh_csv, delimiter='\t')
-#         csvwriter.writerow(
-#             ("Date", "Landkreise mit Inzidenz (Cases_Last_Week_Per_100000) > 50"))
-#         for date in sorted(d_count_districts_with_50_cases_last_week_per_date.keys()):
-#             csvwriter.writerow(
-#                 (date, d_count_districts_with_50_cases_last_week_per_date[date]))
 
 
 d_ref_landkreise = fetch_and_prepare_ref_landkreise()

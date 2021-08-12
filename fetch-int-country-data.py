@@ -374,18 +374,8 @@ if not helper.check_cache_file_available_and_recent(fname=file_cache, max_age=18
     download_new_data()
 
 d_countries_timeseries = read_json_data()
-
 check_for_further_interesting_countries()
-
-# TODO: deprecated
-# fit_doubling_time()
-
 extract_latest_date_data()
-
-# deprecated: extract_latest_date_data_selected()
-
-
 export_time_series_all_countries()
-
 print(
     f"int: countries: latest date in DE set: {d_countries_timeseries['Germany'][-1]['Date']}")

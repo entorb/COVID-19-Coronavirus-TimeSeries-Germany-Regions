@@ -89,13 +89,6 @@ def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 1):
                   sort_keys=sort_keys, indent=indent)
 
 
-# def read_command_line_parameters() -> dict:
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("-s", "--sleep", help="sleep 1 second after each item",
-#                         default=False, action="store_true")  # store_true -> Boolean Value
-#     return vars(parser.parse_args())
-
-
 def convert_timestamp_to_date_str(ts: int) -> str:
     """
     converts a ms timestand to date string (without time)
@@ -379,26 +372,6 @@ def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_rang
     return (data_x_for_fit, data_y_for_fit)
 
 
-# def calc_7_day_change_percent(l_time_series: list) -> dict:
-#     # TODO: instead of only performing it for the last day, calculate the 7 day change for each day
-#     """
-#     calculates the % increase between today and today -7 days
-#     in %, with respect to the value of 7 days back
-#     returns dict with 2 keys: "Cases_Last_Week_Per_Million_7Day_Percent" and "Deaths_Last_Week_Per_Million_7Day_Percent"
-#     """
-#     d0 = l_time_series[-1]
-#     d7 = l_time_series[-8]
-#     cases_percent = 0
-#     if d7['Cases_Last_Week'] > 0:
-#         cases_percent = (d0['Cases_Last_Week']-d7['Cases_Last_Week']) / \
-#             d7['Cases_Last_Week'] * 100
-#     deaths_percent = 0
-#     if d7['Deaths_Last_Week'] > 0:
-#         deaths_percent = (d0['Deaths_Last_Week']-d7['Deaths_Last_Week']) / \
-#             d7['Deaths_Last_Week'] * 100
-#     return {'Cases_Last_Week_Per_Million_7Day_Percent': cases_percent, 'Deaths_Last_Week_Per_Million_7Day_Percent': deaths_percent, }
-
-
 def fit_slopes(l_time_series: list) -> dict:
     """
     fit data of !only! last 7 days via linear regression: y=m*x+b , b = last value
@@ -657,37 +630,6 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
         #         f"debugging: last day={last_day_for_fit}, data={data_y_for_fit}")
 
     return fit_series_res
-
-
-# def series_of_fits_multi_threading(data: list, fit_range: int = 7, max_days_past=14) -> list:
-#     # This does not speedup the process, so not used
-#     # from https://docs.python.org/3/library/concurrent.futures.html
-#     fit_series_res = {}
-#     l_last_days_for_fit = range(0, -max_days_past, -1)
-#     with concurrent.futures.ThreadPoolExecutor(max_workers=mp.cpu_count()) as executor:
-#         # Start the load operations and mark each future with its data set
-#         list_future = {executor.submit(
-#             series_of_fits_worker_thread, data, fit_range, last_day_for_fit): last_day_for_fit for last_day_for_fit in l_last_days_for_fit}
-#         for future in concurrent.futures.as_completed(list_future):
-#             last_day_for_fit = list_future[future]
-#             d_this_fit_result = {}
-#             try:
-#                 d_this_fit_result = future.result()
-#             except Exception as exc:
-#                 print('%r generated an exception: %s' %
-#                       (last_day_for_fit, exc))
-#             if len(d_this_fit_result) != 0:
-#                 fit_series_res[last_day_for_fit] = round(
-#                     d_this_fit_result['fit_res'][1], 1)
-
-#     return fit_series_res
-
-
-# def series_of_fits_worker_thread(data: list, fit_range: int, last_day_for_fit: int):
-#     # print(threading.currentThread().getName(), 'Starting')
-#     d = fit_routine(
-#         data=data, mode="exp", fit_range_x=(last_day_for_fit-fit_range, last_day_for_fit))
-#     return d
 
 
 def read_ref_data_de_states() -> dict:
