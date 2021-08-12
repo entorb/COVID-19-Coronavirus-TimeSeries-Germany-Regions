@@ -6,6 +6,7 @@
 # 17.10.2020: Umstellung von Exp Fit auf Lin Fit, da exp Anstieg der Gesamtzahl keinen Sinn mehr macht
 
 # TODO: use  (timecolumn(1)-14*24*3600) instead of Days_Past
+ # how to the fitting than???
 
 load "header.gp"
 
@@ -29,6 +30,8 @@ set xtics 7
 data = '../data/de-states/de-state-DE-total.tsv'
 
 date_last = system("tail -1 " . data . " | cut -f1")
+date_death_offset = system("tail -".death_offset." " . data . " | head -1 | cut -f1")
+
 cases_last = ( system("tail -1 " . data . " | cut -f2") + 0)
 deaths_last = ( system("tail -1 " . data . " | cut -f3") + 0)
 
@@ -41,10 +44,14 @@ f_lin(x)= b + m*x
 m = 1000.0
 b = deaths_last + 0.0
 
-
 # use only last 7 days (shifted by 14 days) for fit and require the number to be at least 2
 xmin_for_fit = -(death_offset+fit_days-0.75)
 set xrange [xmin_for_fit:-(death_offset+0.25)]
+
+# set timefmt '%Y-%m-%d' # %d.%m.%Y %H:%M
+# set format x '%d.%m'
+# set xdata time
+# set xrange [date_death_offset:date_last]
 
 fit f_exp(x) data using (column("Days_Past")-death_offset):(column("Deaths")*100) via N0, T
 fit f_lin(x) data using (column("Days_Past")-death_offset):(column("Deaths")*100) via b,m
