@@ -150,7 +150,7 @@ del code, fh, l, d
 # Ranking of worst Landkreise
 d_id_cases_DeDistricts = {}
 for id, d in d_data_DeDistricts.items():
-    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_100000"]
+    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"]/10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
 for id, value in sorted(d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True):
@@ -161,11 +161,11 @@ del d_id_cases_DeDistricts, id
 d_id_cases_DeStates = {}
 for id, d in d_data_DeStates.items():
     if id == 'DE-total':
-        cases_DE_last_week_100k = d["Cases_Last_Week_Per_100000"]
+        cases_DE_last_week_100k = d["Cases_Last_Week_Per_Million"]/10
         slope_DE = get_slope_text_from_dict(d)
 
     else:
-        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_100000"]
+        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_Million"]/10
         d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
 for id, value in sorted(d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True):
@@ -175,7 +175,7 @@ del d_id_cases_DeStates, id
 # Ranking of worst Countries
 d_id_cases_Countries = {}
 for id, d in d_data_Countries.items():
-    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_100000"]
+    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_Million"]/10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
 for id, value in sorted(d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True):
@@ -191,7 +191,7 @@ for id in l_worst_lk_ids:
     count += 1
     d = d_data_DeDistricts[id]
     s_worst_lk += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
         slope_arrow=d["Slope"]
@@ -204,7 +204,7 @@ s_worst_bl = ""
 for id in l_worst_bl_ids:
     d = d_data_DeStates[id]
     s_worst_bl += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['State']}",
         slope_arrow=d["Slope"]
@@ -218,7 +218,7 @@ for id in l_worst_country_ids:
     count += 1
     d = d_data_Countries[id]
     s_worst_countries += format_line_only_rel(
-        cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
         location=f"{d['Country']}",
         slope_arrow=d["Slope"]
     )
@@ -241,7 +241,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for sorting by value
     d_this_regions_cases_100k = {}
     for lk_id in l_this_regions:
-        d_this_regions_cases_100k[lk_id] = d_data_DeDistricts[lk_id]["Cases_Last_Week_Per_100000"]
+        d_this_regions_cases_100k[lk_id] = d_data_DeDistricts[lk_id]["Cases_Last_Week_Per_Million"]/10
 
     toSend = False
     reason_for_sending = ""
@@ -267,7 +267,7 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
         for lk_id, value in sorted(d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True):
             d = d_data_DeDistricts[lk_id]
             mailBody += format_line(
-                cases_lw_100k=d["Cases_Last_Week_Per_100000"],
+                cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
                 cases_lw=d["Cases_Last_Week"],
                 location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
                 slope_arrow=d["Slope"]

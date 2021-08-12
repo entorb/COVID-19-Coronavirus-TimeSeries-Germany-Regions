@@ -33,16 +33,24 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     # Read and setup data
     #
     df = pd.read_csv(datafile, sep="\t")
-    df = df[["Date", "Cases_Last_Week_Per_100000",
-             "Cases_Last_Week_7Day_Percent", "Deaths_Last_Week_Per_Million", "DIVI_Intensivstationen_Covid_Prozent"]]
+    df = df[["Date",
+             "Cases_Last_Week_Per_Million",
+             "Cases_Last_Week_7Day_Percent",
+             "Deaths_Last_Week_Per_Million",
+             "DIVI_Intensivstationen_Covid_Prozent"]]
+
     # use date/current as index
     df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
     df.set_index(['Date'], inplace=True)
 
+    df["Inzidenz"] = df["Cases_Last_Week_Per_Million"]/10
+    df.drop("Cases_Last_Week_Per_Million", axis=1, inplace=True)
     # nicer names for the data colums
-    df = df.rename(columns={"Cases_Last_Week_Per_100000": "Inzidenz", "Cases_Last_Week_7Day_Percent": "Inzidenzanstieg",
-                   "Deaths_Last_Week_Per_Million": "Tote", "DIVI_Intensivstationen_Covid_Prozent": "Intensivstationsbelegung"}, errors="raise")
-
+    df = df.rename({
+        "Cases_Last_Week_7Day_Percent": "Inzidenzanstieg",
+        "Deaths_Last_Week_Per_Million": "Tote",
+        "DIVI_Intensivstationen_Covid_Prozent": "Intensivstationsbelegung"
+    }, axis=1, errors="raise")
     # negative values -> 0
     df[df < 0] = 0
 
@@ -63,13 +71,13 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     #
     # plot the data
     #
-    df.Inzidenz.plot(ax=axes[0], color=colors[0][0], legend=False,
-                     secondary_y=False, zorder=2, linewidth=2.0)
-    df.Inzidenzanstieg.plot.area(
+    df["Inzidenz"].plot(ax=axes[0], color=colors[0][0], legend=False,
+                        secondary_y=False, zorder=2, linewidth=2.0)
+    df["Inzidenzanstieg"].plot.area(
         ax=axes[0], color=colors[0][1], legend=False, secondary_y=True, zorder=1)
-    df.Tote.plot(ax=axes[1], color=colors[1][0], legend=False,
-                 secondary_y=False, zorder=2, linewidth=2.0)
-    df.Intensivstationsbelegung.plot.area(
+    df["Tote"].plot(ax=axes[1], color=colors[1][0], legend=False,
+                    secondary_y=False, zorder=2, linewidth=2.0)
+    df["Intensivstationsbelegung"].plot.area(
         ax=axes[1], color=colors[1][1], legend=False, secondary_y=True, zorder=1, linewidth=2.0)
 
     #

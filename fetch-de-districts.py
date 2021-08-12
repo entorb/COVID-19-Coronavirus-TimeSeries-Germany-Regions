@@ -494,7 +494,8 @@ def export_data(d_districts_data: dict):
                 'Cases_New_Per_Million', 'Deaths_New_Per_Million',
                 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
                 'DIVI_Intensivstationen_Covid_Prozent',
-                'DIVI_Intensivstationen_Betten_belegt_Prozent', 'Cases_Last_Week_7Day_Percent'
+                'DIVI_Intensivstationen_Betten_belegt_Prozent',
+                'Cases_Last_Week_7Day_Percent'
             ]
             )
             csvwriter.writeheader()

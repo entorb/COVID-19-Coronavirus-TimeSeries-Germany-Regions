@@ -234,7 +234,6 @@ def export_data(d_states_data: dict):
             'Cases_Per_Million', 'Deaths_Per_Million',
             'Cases_New_Per_Million', 'Deaths_New_Per_Million',
             'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
-            'Cases_Last_Week_Per_100000',
             'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent',
             'Cases_Last_Week_Doubling_Time', 'Cases_Last_Week_7Day_Percent'
         ]
@@ -259,7 +258,8 @@ def export_latest_data(d_ref_states, d_states_data: dict):
                                                'Cases', 'Deaths',
                                                'Cases_New', 'Deaths_New',
                                                'Cases_Per_Million',
-                                               'Deaths_Per_Million', 'DoublingTime_Cases_Last_Week_Per_100000', 'Slope_Cases_Last_Week_Percent', 'Slope_Deaths_Last_Week_Percent', 'Cases_Last_Week_7Day_Percent')
+                                               'Deaths_Per_Million',
+                                               'DoublingTime_Cases_Last_Week_Per_100000', 'Slope_Cases_Last_Week_Percent', 'Slope_Deaths_Last_Week_Percent', 'Cases_Last_Week_7Day_Percent')
                                    )
         csvwriter.writeheader()
         for code in sorted(d_states_latest.keys()):

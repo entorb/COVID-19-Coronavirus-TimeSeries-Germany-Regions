@@ -158,27 +158,9 @@ def extract_latest_date_data():
         csvwriter.writeheader()
 
         for country in sorted(d_countries_latest.keys(), key=str.casefold):
-            # l_time_series = d_countries_timeseries[country]
-            # d = l_time_series[-1]  # last entry (=>latest date)
-            # pop = read_population(country)
-
             d2 = d_countries_latest[country]
             d2['Country'] = country
-            # d2['Code'] = read_country_code(d2['Country'])
-            # d2['Continent'] = read_continent(d2['Country'])
-            # d2['Population'] = pop
-            # if d2['Cases_Per_Million']:
-            #     d2['Cases_Per_Million'] = round(
-            #         d['Cases_Per_Million'], 0)
-            # if d2['Deaths_Per_Million']:
-            #     d2['Deaths_Per_Million'] = round(
-            #         d['Deaths_Per_Million'], 0)
-            # if d2['Cases_Last_Week_Per_Million']:
-            #     d2['Cases_Last_Week_Per_Million'] = round(
-            #         d['Cases_Last_Week_Per_Million'], 0)
-            # if d2['Deaths_Last_Week_Per_Million']:
-            #     d2['Deaths_Last_Week_Per_Million'] = round(
-            #         d['Deaths_Last_Week_Per_Million'], 0)
+
             csvwriter.writerow(d2)
             l_for_export.append(d2)
 

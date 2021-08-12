@@ -19,7 +19,7 @@ set label 1 label1_text_right." based on RKI data of ".date_last
 # set xtic add (date_last 0) 
 
 set output '../plots-gnuplot/de-states/cases-de-doubling-'.short_name.'.png'
-plot data using (column("Date")):(column("Cases_Last_Week_Per_100000")) title "Infektionen" with lines lw 2 dt 1 lc "blue" \
+plot data using (column("Date")):(column("Cases_Last_Week_Per_Million")/10) title "Infektionen" with lines lw 2 dt 1 lc "blue" \
 , data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")>0?column("Cases_Last_Week_Doubling_Time"):1/0) title "Verdopplungszeit" axis x1y2 with lines ls 5 dt "-" linecolor rgb "red" \
 , data using (column("Date")):(column("Cases_Last_Week_Doubling_Time")<0?-column("Cases_Last_Week_Doubling_Time"):1/0) title "Halbwertszeit" axis x1y2 with lines ls 5 dt "." linecolor rgb "sea-green"
 unset output
