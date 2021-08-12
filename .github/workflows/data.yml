@@ -64,10 +64,10 @@ jobs:
       run: python3 fetch-de-districts.py
     
     - name: calc-increase-histogram
-      run: python3 calc-increase-histogram.py
+      run: python3 plot-de-districts-increase-histogram.py
       
     - name: fetch-mortality-de
-      run: python3 fetch-mortality-de.py
+      run: python3 fetch-de-mortality.py
 
     - name: fetch-de-vaccination
       run: python3 fetch-de-vaccination.py
