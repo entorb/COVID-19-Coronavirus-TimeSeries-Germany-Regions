@@ -165,22 +165,22 @@ set ylabel "Increase Deaths per Day"
 # unset output
 set ytics autofreq format "%g" 
 
-# combining the duplications until reaching IT level from countries-latest-selected.tsv and the duplication time from countries-gnuplot-fit.tsv
-# this needs the python script join-country-latest-and-fit-data.py to run first after plotting
-set title "Days until hitting Italy's deaths per capita\nbased on current deaths and fitted duplication time"
-set ylabel "Days (estimated)"
-set yrange [0:28]
-set ytics 0,7
-out = system ("cd .. ; python3 join-country-latest-and-fit-data.py ; cd scripts-gnuplot")
-print out
-data = '../data/int/countries-joined_selected_and_gnuplot_fit.tsv'
-# TODO
-# set output '../plots-gnuplot/int/countries-days-until-IT-level-of-deaths.png'
-# plot data u (column("Days till deaths/pop of Italy")):xticlabels(1) with boxes ls 11
-# unset output
-unset yrange
-set ytics autofreq
-# plot and fit time series
+# # combining the duplications until reaching IT level from countries-latest-selected.tsv and the duplication time from countries-gnuplot-fit.tsv
+# # this needs the python script join-country-latest-and-fit-data.py to run first after plotting
+# set title "Days until hitting Italy's deaths per capita\nbased on current deaths and fitted duplication time"
+# set ylabel "Days (estimated)"
+# set yrange [0:28]
+# set ytics 0,7
+# out = system ("cd .. ; python3 join-country-latest-and-fit-data.py ; cd scripts-gnuplot")
+# print out
+# data = '../data/int/countries-joined_selected_and_gnuplot_fit.tsv'
+# # TODO
+# # set output '../plots-gnuplot/int/countries-days-until-IT-level-of-deaths.png'
+# # plot data u (column("Days till deaths/pop of Italy")):xticlabels(1) with boxes ls 11
+# # unset output
+# unset yrange
+# set ytics autofreq
+# # plot and fit time series
 
 
 
