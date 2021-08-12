@@ -206,11 +206,7 @@ def join_with_divi_data(d_states_data) -> dict:
 def export_data(d_states_data: dict):
     """export timeseries as JSON and CSV"""
     for code, l_time_series in d_states_data.items():
-        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
-            l_time_series)
         outfile = f'data/de-states/de-state-{code}.tsv'
-        helper.write_json(
-            f'data/de-states/de-state-{code}.json', d=l_time_series, sort_keys=True)
 
         fields_for_csv = [
             'Date',
@@ -233,6 +229,11 @@ def export_data(d_states_data: dict):
             csvwriter.writeheader()
             for d in l_time_series:
                 csvwriter.writerow(d)
+
+        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
+            l_time_series)
+        helper.write_json(
+            f'data/de-states/de-state-{code}.json', d=l_time_series, sort_keys=True)
 
 
 def export_latest_data(d_ref_states, d_states_data: dict):
