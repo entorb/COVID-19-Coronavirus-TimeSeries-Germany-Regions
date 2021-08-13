@@ -1,0 +1,179 @@
+name: Update Data All
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:  
+  schedule:
+    - cron: "07 5,6 * * *" 
+  workflow_dispatch:
+# TODO
+#  push: 
+#    branches: [ master ]
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  job_1:
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+    - name: Setup environment 
+      run: |
+        cd /usr/share/locales
+        sudo ./install-language-pack de_DE.UTF-8
+
+    - name: Python Setup
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    
+    - name: Python Cached pip
+      uses: actions/cache@v2
+      with:
+        # This path is specific to Ubuntu
+        path: ~/.cache/pip
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-pip-${{ hashFiles('py-requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          ${{ runner.os }}-
+
+    - name: Python Install requirements
+      run: pip install -r py-requirements.txt
+
+# Fetch new data
+    - name: fetch-de-divi
+      run: python3 fetch-de-divi-V3.py
+      
+    - name: fetch-de-states
+      run: |
+        python3 fetch-de-states-V2.py
+        python3 plot-de-states-V2.py
+
+# this is now extrated to an action of its own
+#    - name: fetch-int-country-data
+#      run: python3 fetch-int-country-data.py
+      
+    - name: fetch-de-districts
+      run: python3 fetch-de-districts.py
+    
+    - name: calc-increase-histogram
+      run: python3 plot-de-districts-increase-histogram.py
+      
+    - name: fetch-mortality-de
+      run: python3 fetch-de-mortality.py
+
+    - name: fetch-de-vaccination
+      run: python3 fetch-de-vaccination.py
+
+    - name: data show dates
+      run: bash show_data_dates.sh
+
+    - name: data commit new files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/*
+        git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
+
+    - name: data push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        directory: data
+
+    - name: data show dates
+      run: bash show_data_dates.sh
+
+    - name: data zipping
+      run: |
+        cd data
+        tar cfz ../cache/data.tgz *
+        ls -l ../cache/data.tgz
+        cd ..
+ 
+    - name: data upload data artifact via tip
+      uses: eine/tip@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          cache/data.tgz
+
+# Gnuplot plotting
+    - name: Gnuplot Install 
+      run: |
+        sudo apt-get update > /dev/null
+        sudo apt-get install gnuplot > /dev/null
+    - name: Gnuplot plotting
+      run: |
+        cd scripts-gnuplot
+        gnuplot all.gp
+        cd ..
+    - name: Gnuplot zipping plots
+      run: |
+        cd plots-gnuplot
+        tar cfz ../cache/plots-gnuplot.tgz *
+        cd ..
+    - name: Gnuplot upload artifact via tip
+      uses: eine/tip@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          cache/plots-gnuplot.tgz
+
+    - name: Matplotlib zipping plots
+      run: |
+        cd plots-python
+        tar cfz ../cache/plots-python.tgz *
+        cd ..
+    - name: Matplotlib upload artifact via tip
+      uses: eine/tip@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          cache/plots-python.tgz
+
+
+# moved as a separate action, as it takes quite long
+# Generate maps
+#    - name: Generate + zip maps
+#      run: | 
+#        # sudo apt-get update > /dev/null
+#        # sudo apt-get install imagemagick > /dev/null
+#        python3 gen-map-de-districts.py
+#        cd maps
+#        tar cfz ../cache/maps.tgz *.gif
+
+# old stuff
+
+# Create pre-releases of tgz files
+
+
+# not accessable anonymously
+#    - name: Upload data artifact
+#      uses: actions/upload-artifact@v1
+#      with:
+#        name: data
+#        path: cache/data.tgz
+
+
+# https://github.com/marketplace/actions/deploy-nightly
+#    - name: Upload data artifact via deploy-nightly
+#      uses: WebFreak001/deploy-nightly@v1.0.3
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided by github actions
+#      with:
+#        upload_url: https://uploads.github.com/repos/entorb/COVID-19-Coronavirus-German-Regions/releases/27395320/assets{?name,label} 
+## find out this value by opening https://api.github.com/repos/<owner>/<repo>/releases in your browser and copy the full "upload_url" value including the {?name,label} part
+#        release_id: 27395320 # same as above (id can just be taken out the upload_url, it's used to find old releases)
+#        asset_path: cache/data.tgz # path to archive to upload
+#        asset_name: data.tgz # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
+#        asset_content_type: application/tgz # required by GitHub API
+##        max_releases: 7 # optional, if there are more releases than this matching the asset_name, the oldest ones are going to be deleted  

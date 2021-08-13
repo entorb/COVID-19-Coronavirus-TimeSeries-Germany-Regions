@@ -1,0 +1,70 @@
+name: Update Maps
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:  
+  schedule:
+    - cron: "15 22 * * 1"
+# TODO       
+#  push:
+#    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  
+  # This workflow contains a single job
+  job1:
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+
+    steps:
+    
+    - name: Checkout Repositiry
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+    - name: Fix ImageMagick cache size problem
+      run: |
+        sudo cp imagemagick6-policy.xml /etc/ImageMagick-6/policy.xml
+
+    - name: Python Setup
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    
+    - name: Python Cached pip
+      uses: actions/cache@v2
+      with:
+        # This path is specific to Ubuntu
+        path: ~/.cache/pip
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-pip-${{ hashFiles('py-requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          ${{ runner.os }}-
+    - name: Install dependencies
+      run: pip install -r py-requirements.txt
+
+    - name: install Ubuntu packages
+      run: | 
+        sudo apt-get update > /dev/null
+        # sudo apt-get install imagemagick > /dev/null
+        sudo apt-get install ghostscript gsfonts > /dev/null
+        sudo apt-get install ffmpeg > /dev/null
+
+    - name: Generate + zip maps
+      run: | 
+        python3 plot-map-de-districts.py
+        cd maps
+        tar cfz ../cache/maps.tgz *.gif *.mp4
+        cd ..
+
+
+    - name: Map upload artifact via tip
+      uses: eine/tip@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          cache/maps.tgz

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <title>COVID-19 Landkreis Benachrichtigung - Konfiguration</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Dr. Torben Menke">
+  <link rel="stylesheet" href="/style.css" />
+  <script src="./newsletter-frontend.js"></script>
+  <script src="./js/jquery-3.5.0.min.js"></script>
+  <!-- Polyfiles for IE, suggested by Tabulator : http://tabulator.info/docs/4.6/browsers#ie -->
+  <script src="./js/tabulator-polyfill.min.js"></script>
+  <script src="./js/tabulator-fetch.umd.js"></script>
+  <!-- Tabulator -->
+  <link href="./js/tabulator.min.css" rel="stylesheet">
+  <script src="./js/tabulator-4.6.min.js"></script>
+  <script>
+
+    // from https://stackoverflow.com/questions/4297765/make-a-javascript-array-from-url 
+    // needed as 
+    // const urlParams = new URLSearchParams(window.location.search); 
+    // is not available in Edge and IE :-(
+  </script>
+</head>
+
+<body onload="refresh_userdata()">
+  <script>
+    var hash;
+    var urlParams = [];
+    ensureHashIsValid()
+  </script>
+
+  <h1>COVID-19 Landkreis Benachrichtigung - Konfiguration</h1>
+  <table>
+    <tr>
+      <th>E-Mail</th>
+      <!-- <th>verified</th> -->
+      <th>Sende-<br />Häufigkeit</th>
+      <th>Schwellwert*</th>
+      <!-- <th>Landkreise</th> -->
+      <th>&nbsp;</th>
+    </tr>
+    <tr>
+      <td><input type="email" id="email" name="email" readonly></td>
+      <td>
+        <select id="frequency" name="frequency" onchange="setFrequency()">
+          <option value="0">Schwellwertüberschreitung</option>
+          <option value="1">täglich</option>
+          <option value="7">wöchentlich (Sonntags)</option>
+        </select>
+      </td>
+      <td><input type="number" id="threshold" name="threshold" min="5" max="50" step="1" value="30"></td>
+      <!-- <td><input type="checkbox" id="verified" name="verified" value="verified" disabled readonly></td> -->
+      <!-- <td><input type="text" id="regions" name="regions" readonly></td> -->
+      <td><button onclick="refresh_userdata()">Reload</button> </td>
+    </tr>
+  </table>
+  <small>*Schwellwert bezieht sich auf Neu-Infizierte letzte 7 Tage pro 100000 EW.<br />Enter zum Speichern</small>
+
+  <h2>Landkreisauswahl</h2>
+
+  <p>Weitere Daten zu den Landkreisen siehe die <a href="https://entorb.net/COVID-19-coronavirus/#DeDistrictTable" target="_blank">Landkreistabelle</a> in meinen Auswertungen.</p>
+  <!-- Start Table -->
+  <div id="div_table-de-districts"></div>
+
+  <p> <button onclick="unsubscribe()">Die Benachrichtigung abbestellen</button></p>
+  <!-- Start Footer -->
+  <hr>
+  <a href="/">Home</a> - <a href="/contact.php?origin=COVID-19">Contact</a> - <a href="/impressum.php">Impressum</a>
+  <!--  
+    Start JavaScript  
+  -->
+  <script>
+    // variables
+    const promises = []; // array of promises for async fetching
+    var l_my_regions;
+
+    // logic for form elements
+    var input_email = document.getElementById("email");
+    var input_frequency = document.getElementById("frequency");
+    // var input_verified = document.getElementById("verified");
+    // var input_regions = document.getElementById("regions");
+    var input_threshold = document.getElementById("threshold");
+    input_threshold.addEventListener("keydown", function (e) {
+      // Enter is pressed
+      if (e.keyCode === 13) {
+        event.preventDefault();
+        setThreshold();
+      }
+    }, false);
+
+    // handling of action=verify
+    if ('action' in urlParams && urlParams.action == "verify") {
+      setVerified();
+    }
+    // handling of action=verify
+    else if ('action' in urlParams && urlParams.action == "unsubscribe") {
+      unsubscribe();
+    }
+
+    // define and populate table
+    var table = defineTable();
+    promises.push(fetch_table_data());
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+name: Test
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:  
+  push: 
+#    branches: [ master ]
+    branches-ignore:
+      - '**'
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  job_1:
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    steps:  
+    - name: test locale
+      run: |
+        locale -a
+        # sudo apt-get install -y locales
+        # locale -a
+        cd /usr/share/locales
+        sudo ./install-language-pack de_DE.UTF-8
+        locale -a
+        
