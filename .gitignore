@@ -1,6 +1,6 @@
 # dirs
-__pycache__/
 .vscode/
+__pycache__/
 cache/
 plots-gnuplot/
 plots-python/
