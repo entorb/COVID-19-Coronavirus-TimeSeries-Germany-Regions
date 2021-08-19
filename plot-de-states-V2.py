@@ -85,9 +85,9 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     #
 
     # axes[0].autoscale()
-    axes[0].set_ylim(0, )
+    axes[0].set_ylim(0, 550)
     axes[0].right_ax.set_ylim(0, 200)
-    axes[1].set_ylim(0, )
+    axes[1].set_ylim(0, 250)
     axes[1].right_ax.set_ylim(0, 50)
 
     axes[0].set_ylabel('Inzidenz (7 Tage)')
