@@ -57,7 +57,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     #
     # initialize plot
     #
-    fig, axes = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(6, 8)  # default = 6.4,4.8
+    fig, axes = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(8, 8)  # default = 6.4,4.8
                              , dpi=100
                              )
 
