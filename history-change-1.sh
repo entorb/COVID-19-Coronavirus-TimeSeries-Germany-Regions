@@ -1,9 +1,11 @@
 #!/bun/bash
-myFilePath=data/de-districts/de-district_timeseries-09562.tsv
-# 02000 : HH
-# 09562 : ER
+myFilePath=data/de-districts/de-district_timeseries-03353.tsv
+# 02000 : Hamburg
+# 09162 : München
+# 09562 : Erlangen
+# 03353 : Harburg
 
-myDateToInvestigate=2021-07-09
+myDateToInvestigate=2021-08-12
 
 myFileName=$(basename -- "$myFilePath")
 myFileExt="${myFileName##*.}"
@@ -50,5 +52,6 @@ git checkout $myFilePath
 # 3. extract data for specific date from old versions of file
 # TODO: do this in Python, as the column order was changed on 2021-08-13
 #
-echo -e "filedate\t"$(head -n 1 $myFilePath | cut -f1,2,3,4,5,6,7,8) > history-change.tsv
-grep -H "$myDateToInvestigate" cache/history-change/${myFileName}* | sed "s/cache\/history-change\/${myFileName}_//" | sed "s/.tsv:/\t/" | cut -f1,2,3,4,5,6,7,8,9 >> history-change.tsv
+fileResults=history-change-$myFileName-$myDateToInvestigate.tsv
+echo -e "filedate\t"$(head -n 1 $myFilePath | cut -f1,2,3,4,5,6,7,12) > $fileResults
+grep -H "$myDateToInvestigate" cache/history-change/${myFileName}* | sed "s/cache\/history-change\/${myFileName}_//" | sed "s/.tsv:/\t/" | cut -f1,2,3,4,5,6,7,8,13 >> $fileResults
