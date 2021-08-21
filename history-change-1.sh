@@ -1,9 +1,11 @@
-#!/bun/bash
-myFilePath=data/de-districts/de-district_timeseries-03353.tsv
+#!/bin/bash
+myFilePath=data/de-districts/de-district_timeseries-09562.tsv
+# myFilePath=data/de-states/de-state-MV.tsv
 # 02000 : Hamburg
 # 09162 : München
 # 09562 : Erlangen
 # 03353 : Harburg
+# 09563 : Fürth
 
 myDateToInvestigate=2021-08-12
 
@@ -27,7 +29,7 @@ git log --no-decorate --pretty=format:"%h%x09%ad%x09%an%x09%s" --date=short -- $
 echo "" >> $myCommitLogFile
 
 #
-# 2. revert old versions from commits
+# 2. revert and copy old versions from commits
 #
 
 # loop over all commits/changes for that file
@@ -50,7 +52,7 @@ git checkout $myFilePath
 
 #
 # 3. extract data for specific date from old versions of file
-# TODO: do this in Python, as the column order was changed on 2021-08-13
+# TODO: do this in Python, as the column order was changed on 2021-08-13 (and this code is quite ugly)
 #
 fileResults=history-change-$myFileName-$myDateToInvestigate.tsv
 echo -e "filedate\t"$(head -n 1 $myFilePath | cut -f1,2,3,4,5,6,7,12) > $fileResults
