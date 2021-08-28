@@ -6,6 +6,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import locale
+from math import log
+
 # import numpy as np
 
 import helper  # my helper modules
@@ -20,6 +22,15 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 d_nameToCode = {
     'BW': "Baden-Württemberg", 'BY': "Bayern", 'BE': "Berlin", 'BB': "Brandenburg", 'HB': "Bremen", 'HH': "Hamburg", 'HE': "Hessen", 'MV': "Mecklenburg-Vorpommern", 'NI': "Niedersachsen", 'NW': "Nordrhein-Westfalen", 'RP': "Rheinland-Pfalz", 'SL': "Saarland", 'SN': "Sachsen", 'ST': "Sachsen-Anhalt", 'SH': "Schleswig-Holstein", 'TH': "Thüringen", 'DE-total': "Deutschland"
 }
+
+
+def calc_doubling_time(percent_7day: float) -> float:
+    """ convert 7-day-increase of incidence into doubling time"""
+    tD = -7/log((1/(percent_7day+1)), 2)
+    return tD
+
+
+assert calc_doubling_time(1.00) == 7
 
 
 for datafile in glob.glob("data/de-states/de-state-*.tsv"):
@@ -84,10 +95,13 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     # Axis layout, text and range
     #
 
-    # axes[0].autoscale()
-    axes[0].set_ylim(0, 550)
-    axes[0].right_ax.set_ylim(0, 200)
-    axes[1].set_ylim(0, 250)
+    axes[0].autoscale()
+    # axes[0].set_ylim(0, 550)
+    axes[0].right_ax.set_ylim(0, 150)
+    # wrong syntax
+    # axes[0].right_ax.set_ticks(range(0, 175, 25))
+    axes[1].autoscale()
+    # axes[1].set_ylim(0, 250)
     axes[1].right_ax.set_ylim(0, 50)
 
     axes[0].set_ylabel('Inzidenz (7 Tage)')
@@ -96,7 +110,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     axes[1].set_ylabel('Tote (7 Tage pro Millionen)')
     axes[1].yaxis.label.set_color(colors[1][0])
     axes[1].tick_params(axis='y', colors=colors[1][0])
-    axes[1].grid(zorder=0)
+#    axes[1].grid(zorder=0)
 
     axes[0].right_ax.set_ylabel(
         'Inzidenzanstieg (7 Tage)')
@@ -137,6 +151,12 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     # add text to bottom right
     plt.gcf().text(1.0, 0.5, s="by Torben https://entorb.net , based on RKI and DIVI data", fontsize=8,
                    horizontalalignment='right', verticalalignment='center', rotation='vertical')
+
+    plt.gcf().text(0.97, 0.5, s=("Verdopplungszeit: 25%% : %d Tage, 50%% : %d Tage, 100%% : 7 Tage" %
+                                 (round(calc_doubling_time(0.25), 0),
+                                  round(calc_doubling_time(0.5), 0))
+                                 ),
+                   fontsize=8, horizontalalignment='right', verticalalignment='center', color=colors[0][1])
 
     fig.tight_layout()
     # plt.show()
