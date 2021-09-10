@@ -4,7 +4,7 @@ name: Update Data All
 # events but only for the master branch
 on:  
   schedule:
-    - cron: "07 5,6 * * *" 
+    - cron: "07 4,5 * * *" 
   workflow_dispatch:
 # TODO
 #  push: 
@@ -103,6 +103,7 @@ jobs:
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tip
         files: |
           cache/data.tgz
 
@@ -137,6 +138,7 @@ jobs:
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tip
         files: |
           cache/plots-python.tgz
 
