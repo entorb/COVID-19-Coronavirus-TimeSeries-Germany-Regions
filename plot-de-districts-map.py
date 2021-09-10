@@ -136,7 +136,7 @@ for f in glob.glob('data/de-districts/de-district_timeseries-*.json'):
                 l_month.append(thisMonth)
         if not d['Date'] in d_all_date_data:
             d_all_date_data[d['Date']] = {}
-        del d['Timestamp'], d['Date'], d['Days_Past'], d['Days_Since_2nd_Death']
+        # del d['Timestamp'], d['Date'], d['Days_Past'], d['Days_Since_2nd_Death']
         d_all_date_data[date][lk_id] = d
 del f, d, l, count
 
