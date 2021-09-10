@@ -70,9 +70,9 @@ jobs:
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tip
         files: |
           cache/data.tgz
-        tag: tip
           
 # Gnuplot plotting
     - name: Gnuplot Install 
@@ -93,5 +93,6 @@ jobs:
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tip
         files: |
           cache/plots-gnuplot.tgz
