@@ -66,12 +66,14 @@ jobs:
         tar cfz ../cache/data.tgz *
         cd ..
  
-    - name: data upload data artifact via tip
+    - name: data upload via tip
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
           cache/data.tgz
+        tag: tip
+          
 # Gnuplot plotting
     - name: Gnuplot Install 
       run: |
