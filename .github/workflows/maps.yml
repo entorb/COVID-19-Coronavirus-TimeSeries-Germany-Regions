@@ -67,5 +67,6 @@ jobs:
       uses: eine/tip@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tip
         files: |
           cache/maps.tgz
