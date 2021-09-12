@@ -4,7 +4,7 @@ name: Update Data int-countries
 # events but only for the master branch
 on:  
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 3 * * *"
   workflow_dispatch:    
 # TODO       
 #  push: 
