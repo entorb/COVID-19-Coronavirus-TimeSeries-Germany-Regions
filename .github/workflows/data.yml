@@ -4,7 +4,7 @@ name: Update Data All
 # events but only for the master branch
 on:  
   schedule:
-    - cron: "07 4,5 * * *" 
+    - cron: "0 4,5 * * *" 
   workflow_dispatch:
 # TODO
 #  push: 
