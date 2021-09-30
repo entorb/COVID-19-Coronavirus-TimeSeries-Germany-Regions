@@ -80,11 +80,15 @@ def plot_layout(fig, axes: list, colors: list):
     # 1. per axis
     # 2. per series in axis including grid
     # Problem: can't solve the problem, that data of the secondary y axis is plotted below the grid of the 1st axis
-    axes[0].grid(zorder=-1)
+    axes[0].grid(axis='both')
     axes[0].set_zorder(axes[0].right_ax.get_zorder()+1)
+    axes[0].set_axisbelow(True)  # for grid below the lines
+    axes[0].right_ax.set_axisbelow(True)  # for grid below the lines
     axes[0].patch.set_visible(False)
-    axes[1].grid(zorder=-1)
+    axes[1].set_axisbelow(True)  # for grid below the lines
+    axes[1].grid(axis='both')
     axes[1].set_zorder(axes[1].right_ax.get_zorder()+1)
+    axes[1].right_ax.set_axisbelow(True)  # for grid below the lines
     axes[1].patch.set_visible(False)
 
     # add label text to bottom right
