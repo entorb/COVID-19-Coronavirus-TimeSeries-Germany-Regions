@@ -150,6 +150,8 @@ del code, fh, l, d
 # Ranking of worst Landkreise
 d_id_cases_DeDistricts = {}
 for id, d in d_data_DeDistricts.items():
+    if id not in d_id_cases_DeDistricts:  # handling of missing disticts from API response
+        continue
     d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"]/10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
@@ -266,6 +268,8 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
         # table body
         for lk_id, value in sorted(d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True):
             d = d_data_DeDistricts[lk_id]
+            if "Slope" not in d:  # handling of missing disticts from API response
+                continue
             mailBody += format_line(
                 cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
                 cases_lw=d["Cases_Last_Week"],
