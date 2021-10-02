@@ -163,6 +163,10 @@ def prepare_time_series(l_time_series: list) -> list:
       _New values per item/day
       _Last_Week
     """
+    # if no data is fetched, return empty list
+    if len(l_time_series) == 0:
+        return []
+
     # some checks
     d = l_time_series[0]
     assert 'Date' in d
@@ -273,6 +277,8 @@ def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
     d_data_latest = dict(d_ref_data)
     for code, l_time_series in d_data_all .items():
         assert code in d_data_latest.keys()
+        if len(l_time_series) == 0:  # handling of empty data set
+            continue
         d = l_time_series[-1]
         d_data_latest[code]['Date_Latest'] = d['Date']
         for key in ('Cases', 'Deaths', 'Cases_New', 'Deaths_New', 'Cases_Per_Million', 'Deaths_Per_Million', 'Cases_Last_Week', 'Deaths_Last_Week', 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Last_Week_7Day_Percent', 'Deaths_Last_Week_7Day_Percent'):

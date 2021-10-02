@@ -378,6 +378,8 @@ def export_latest_data(d_districts_data: dict):
     d_for_export_V1 = d_districts_latest
     l_for_export_V2 = []
     for lk_id, d in d_districts_latest.items():
+        if len(d_districts_data[lk_id]) == 0:  # handling of empty data set
+            continue
         # V1: dict (lk_id) -> dict
         # V2: list of ficts
         # d_for_export_V1[lk_id] = d
