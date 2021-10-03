@@ -1,27 +1,15 @@
 name: Test
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on: 
   workflow_dispatch:
   # push:
 
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   job1:
     runs-on: ubuntu-20.04
     steps:  
-#    - name: test locale
-#      run: |
-#        locale -a
-#        # sudo apt-get install -y locales
-#        # locale -a
-#        cd /usr/share/locales
-#        sudo ./install-language-pack de_DE.UTF-8
-#        locale -a
 
-      - name: build
+    - name: build
         run: |
           mkdir -p data2
           mkdir -p cache
@@ -30,10 +18,19 @@ jobs:
           tar cfz  ../cache/test.tgz *
           cd ..
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: tip
-          prerelease: true
-          files: 
-            cache/*.tgz
+#      - name: Release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          tag_name: tip
+#          prerelease: true
+#          files: 
+#            cache/*.tgz
+
+#    - name: test locale
+#      run: |
+#        locale -a
+#        # sudo apt-get install -y locales
+#        # locale -a
+#        cd /usr/share/locales
+#        sudo ./install-language-pack de_DE.UTF-8
+#        locale -a
