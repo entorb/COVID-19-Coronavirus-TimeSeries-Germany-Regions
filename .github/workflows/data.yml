@@ -62,36 +62,36 @@ jobs:
 #    - name: data fetch-int-country-data
 #      run: python3 fetch-int-country-data.py
       
-    - name: data fetch-de-districts
+    - name: Data fetch-de-districts
       run: python3 fetch-de-districts.py
     
-    - name: data calc-increase-histogram
+    - name: Data calc-increase-histogram
       run: python3 plot-de-districts-increase-histogram.py
       
-    - name: data fetch-mortality-de
+    - name: Data fetch-mortality-de
       run: python3 fetch-de-mortality.py
 
-    - name: data fetch-de-vaccination
+    - name: Data fetch-de-vaccination
       run: python3 fetch-de-vaccination.py
 
-    - name: data show dates
+    - name: Data show dates
       run: bash show_data_dates.sh
 
-    - name: data commit new files
+    - name: Data commit new files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add data/*
         git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
 
-    - name: data push
+    - name: Data push
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         directory: data
 
-    - name: data zipping data/
+    - name: Data zipping data/
       run: |
         cd data
         tar cfz ../cache/data.tgz *
