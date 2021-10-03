@@ -5,7 +5,7 @@ name: Test
 on:  
   workflow_dispatch:   
   push: 
-#    branches: [ master ]
+    branches: [ master ]
     branches-ignore:
       - '**'
 
@@ -41,7 +41,8 @@ jobs:
       with:
         # upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         # upload_url: https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip
-        upload_url: https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/tip/plots-gnuplot.tgz
+        # upload_url: https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/tip/plots-gnuplot.tgz
+        upload_url:  ${{ github.event.release.upload_url }}
         asset_path: cache/test.tgz
         asset_name: test.tgz
         asset_content_type: application/gzip
