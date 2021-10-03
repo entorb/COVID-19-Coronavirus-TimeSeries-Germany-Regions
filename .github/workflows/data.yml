@@ -13,10 +13,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  job_1:
+  job1:
     # runs-on: ubuntu-latest
     runs-on: ubuntu-20.04
     steps:
+
+# Initialize    
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
@@ -28,12 +30,12 @@ jobs:
         cd /usr/share/locales
         sudo ./install-language-pack de_DE.UTF-8
 
-    - name: Python Setup
+    - name: Python setup
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
     
-    - name: Python Cached pip
+    - name: Python cached pip
       uses: actions/cache@v2
       with:
         # This path is specific to Ubuntu
@@ -44,32 +46,32 @@ jobs:
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
 
-    - name: Python Install requirements
+    - name: Python install requirements
       run: pip install -r py-requirements.txt
 
-# Fetch new data
-    - name: fetch-de-divi
+# Update data
+    - name: data fetch-de-divi
       run: python3 fetch-de-divi-V3.py
       
-    - name: fetch-de-states
+    - name: data fetch-de-states
       run: |
         python3 fetch-de-states-V2.py
         python3 plot-de-states-V2.py
 
 # this is now extrated to an action of its own
-#    - name: fetch-int-country-data
+#    - name: data fetch-int-country-data
 #      run: python3 fetch-int-country-data.py
       
-    - name: fetch-de-districts
+    - name: data fetch-de-districts
       run: python3 fetch-de-districts.py
     
-    - name: calc-increase-histogram
+    - name: data calc-increase-histogram
       run: python3 plot-de-districts-increase-histogram.py
       
-    - name: fetch-mortality-de
+    - name: data fetch-mortality-de
       run: python3 fetch-de-mortality.py
 
-    - name: fetch-de-vaccination
+    - name: data fetch-de-vaccination
       run: python3 fetch-de-vaccination.py
 
     - name: data show dates
@@ -82,65 +84,63 @@ jobs:
         git add data/*
         git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
 
-    - name: data push changes
+    - name: data push
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         directory: data
 
-    - name: data show dates
-      run: bash show_data_dates.sh
-
-    - name: data zipping
+    - name: data zipping data/
       run: |
         cd data
         tar cfz ../cache/data.tgz *
-        ls -l ../cache/data.tgz
         cd ..
- 
-    - name: data upload data artifact via tip
-      uses: eine/tip@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: tip
-        files: |
-          cache/data.tgz
 
-# Gnuplot plotting
-    - name: Gnuplot Install 
+# Update Charts
+    - name: Gnuplot install 
       run: |
         sudo apt-get update > /dev/null
         sudo apt-get install gnuplot > /dev/null
+
     - name: Gnuplot plotting
       run: |
         cd scripts-gnuplot
         gnuplot all.gp
         cd ..
-    - name: Gnuplot zipping plots
+
+    - name: Gnuplot zipping plots-gnuplot/
       run: |
         cd plots-gnuplot
         tar cfz ../cache/plots-gnuplot.tgz *
         cd ..
-    - name: Gnuplot upload artifact via tip
-      uses: eine/tip@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          cache/plots-gnuplot.tgz
 
-    - name: Matplotlib zipping plots
+    - name: Matplotlib zipping plots-python/
       run: |
         cd plots-python
         tar cfz ../cache/plots-python.tgz *
         cd ..
-    - name: Matplotlib upload artifact via tip
-      uses: eine/tip@master
+
+# Publish to release       
+    - name: Upload to realase
+      uses: softprops/action-gh-release@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: tip
-        files: |
-          cache/plots-python.tgz
+        tag_name: tip
+        prerelease: true
+        files: 
+          cache/*.tgz
+
+
+# old stuff
+
+
+#    - name: data upload via tip
+#      uses: eine/tip@master
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        tag: tip
+#        files: |
+#          cache/data.tgz
 
 
 # moved as a separate action, as it takes quite long
@@ -153,7 +153,8 @@ jobs:
 #        cd maps
 #        tar cfz ../cache/maps.tgz *.gif
 
-# old stuff
+
+
 
 # Create pre-releases of tgz files
 
