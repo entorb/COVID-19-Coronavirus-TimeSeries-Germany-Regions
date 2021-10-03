@@ -96,3 +96,10 @@ jobs:
         tag: tip
         files: |
           cache/plots-gnuplot.tgz
+
+# Upload via upload-artifact@v2
+    - name: publish via upload-artifact@v2
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: cache/*.tgz
