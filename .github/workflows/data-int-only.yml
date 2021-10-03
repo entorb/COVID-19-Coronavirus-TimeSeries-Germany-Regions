@@ -49,24 +49,24 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-    - name: data fetch-int-country-data
+    - name: Data fetch-int-country-data
       run: python3 fetch-int-country-data.py
 
-    - name: data commit new files
+    - name: Data commit new files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add data/*
         git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
 
-    - name: data push
+    - name: Data push
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         directory: data
 
-    - name: data zipping data/
+    - name: Data zipping data/
       run: |
         cd data
         tar cfz ../cache/data.tgz *
