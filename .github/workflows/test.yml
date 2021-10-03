@@ -27,8 +27,9 @@ jobs:
     - name: test
       run: |
         mkdir -p data2
+        mkdir -p cache
+        echo asdf > data2/test.txt
         cd data2
-        touch test.txt
         tar cfz  ../cache/test.tgz *
         cd ..
 
@@ -42,5 +43,5 @@ jobs:
         # upload_url: https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip
         upload_url: https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/tip/plots-gnuplot.tgz
         asset_path: cache/test.tgz
-        asset_name: test.
+        asset_name: test.tgz
         asset_content_type: application/gzip
