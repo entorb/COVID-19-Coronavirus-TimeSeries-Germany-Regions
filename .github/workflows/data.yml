@@ -125,7 +125,7 @@ jobs:
     - name: Upload to realase
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: tip
+        tag_name: data-for-entorb.net
         prerelease: true
         files: 
           cache/*.tgz
