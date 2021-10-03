@@ -6,8 +6,8 @@ on:
   workflow_dispatch:   
   push: 
     branches: [ master ]
-    branches-ignore:
-      - '**'
+#    branches-ignore:
+#      - '**'
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
