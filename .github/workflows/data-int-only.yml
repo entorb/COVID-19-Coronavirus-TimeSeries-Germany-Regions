@@ -15,8 +15,9 @@ jobs:
   job1:
     # runs-on: ubuntu-latest
     runs-on: ubuntu-20.04
-
     steps:
+
+# Initialize
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
@@ -42,9 +43,8 @@ jobs:
     - name: Python Install requirements
       run: pip install -r py-requirements.txt
 
-# Fetch new data
-     
-    - name: fetch-int-country-data
+# Update data
+    - name: data fetch-int-country-data
       run: python3 fetch-int-country-data.py
 
     - name: data commit new files
@@ -53,19 +53,47 @@ jobs:
         git config --local user.name "GitHub Action"
         git add data/*
         git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
-    - name: data push changes
+
+    - name: data push
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
         directory: data
 
-    - name: data zipping
+    - name: data zipping data/
       run: |
         cd data
         tar cfz ../cache/data.tgz *
         cd ..
- 
+
+# Update Charts
+    - name: Gnuplot install 
+      run: |
+        sudo apt-get update > /dev/null
+        sudo apt-get install gnuplot > /dev/null
+
+    - name: Gnuplot plotting
+      run: |
+        cd scripts-gnuplot
+        gnuplot all.gp
+        cd ..
+
+    - name: Gnuplot zipping plots-gnuplot/
+      run: |
+        cd plots-gnuplot
+        tar cfz ../cache/plots-gnuplot.tgz *
+        cd ..       
+
+# Publish to release       
+    - name: Upload to realase
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: tip
+        prerelease: true
+        files: 
+          cache/*.tgz
+
 #    - name: data upload via tip
 #      uses: eine/tip@master
 #      with:
@@ -73,35 +101,3 @@ jobs:
 #        tag: tip
 #        files: |
 #          cache/data.tgz
-          
-# Gnuplot plotting
-    - name: Gnuplot Install 
-      run: |
-        sudo apt-get update > /dev/null
-        sudo apt-get install gnuplot > /dev/null
-    - name: Gnuplot plotting
-      run: |
-        cd scripts-gnuplot
-        gnuplot all.gp
-        cd ..
-    - name: Gnuplot zipping plots
-      run: |
-        cd plots-gnuplot
-        tar cfz ../cache/plots-gnuplot.tgz *
-        cd ..       
-#    - name: Gnuplot upload artifact via tip
-#      uses: eine/tip@master
-#      with:
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        tag: tip
-#        files: |
-#          cache/plots-gnuplot.tgz
-    - name: upload artifacts via softprops/action-gh-release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: tip
-        prerelease: true
-        files: 
-#          cache/*.tgz
-          cache/data.tgz
-          cache/plots-gnuplot.tgz
