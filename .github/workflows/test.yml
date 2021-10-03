@@ -30,6 +30,7 @@ jobs:
         cd data2
         touch test.txt
         tar cfz  ../cache/test.tgz *
+        cd ..
 
     - name: Upload Release Asset
       id: upload-release-asset 
