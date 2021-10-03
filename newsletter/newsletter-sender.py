@@ -150,7 +150,9 @@ del code, fh, l, d
 # Ranking of worst Landkreise
 d_id_cases_DeDistricts = {}
 for id, d in d_data_DeDistricts.items():
-    if id not in d_id_cases_DeDistricts:  # handling of missing disticts from API response
+    # handling of missing disticts from API response
+    if id not in d_data_DeDistricts or "Cases_Last_Week_Per_Million" not in d:
+        # print(id, d)
         continue
     d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"]/10
     d["Slope"] = get_slope_text_from_dict(d)
