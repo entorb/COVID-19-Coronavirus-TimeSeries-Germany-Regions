@@ -59,4 +59,4 @@ jobs:
           tag_name: tip
           prerelease: true
           files: 
-            cache/test.tgz
+            cache/*.tgz
