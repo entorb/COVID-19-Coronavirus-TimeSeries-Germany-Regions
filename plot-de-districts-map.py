@@ -152,7 +152,7 @@ del dates
 l_subprocesses = []
 d_latest_svg_file = {}  # store the last generated file per property
 # for property_to_plot in ('Cases_Per_Million',):
-for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'DIVI_Intensivstationen_Covid_Prozent'):
+for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'Deaths_Per_Million', 'DIVI_Intensivstationen_Covid_Prozent'):
     print(f"=== start {property_to_plot}")
 
     # # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
@@ -174,7 +174,7 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
         meta = {"colour": d_color_scales['red']}
     elif property_to_plot == 'DIVI_Intensivstationen_Covid_Prozent':
         meta = {"colour": d_color_scales['purple']}
-    elif property_to_plot == 'DIVI_Intensivstationen_Betten_belegt_Prozent':
+    elif property_to_plot == 'Deaths_Per_Million':
         meta = {"colour": d_color_scales['green']}
     else:
         assert 1 == 2, f"Error: color for {property_to_plot} is undefined"
@@ -240,6 +240,8 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     # manual setting of color scale
     if property_to_plot == 'Cases_Per_Million':
         threshold = [1, 10, 100, 1000, 10000, 50000, 100000]
+    elif property_to_plot == 'Deaths_Per_Million':
+        threshold = [100, 200, 500, 1000, 2000, 5000, 10000]
     elif property_to_plot == 'Cases_Last_Week_Per_100000':
         threshold = [1, 5, 10, 25, 50, 100, 200]
     elif property_to_plot == 'DIVI_Intensivstationen_Covid_Prozent':
@@ -347,6 +349,9 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
                             elif property_to_plot == 'Cases_Per_Million':
                                 file_out.write(row.replace(
                                     '!!!TITLE!!!', 'Infizierte pro Millionen EW.'))
+                            elif property_to_plot == 'Deaths_Per_Million':
+                                file_out.write(row.replace(
+                                    '!!!TITLE!!!', 'Tote pro Millionen EW.'))
                             elif property_to_plot == 'DIVI_Intensivstationen_Covid_Prozent':
                                 file_out.write(row.replace(
                                     '!!!TITLE!!!', 'Intensivstationen: COVID-19 Patienten'))
