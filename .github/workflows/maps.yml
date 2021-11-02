@@ -5,7 +5,7 @@ name: Update Maps
 on:  
   workflow_dispatch:
   schedule:
-    - cron: "15 22 * * 1"
+    - cron: "15 22 * * *"
 # TODO       
 #  push:
 #    branches: [ master ]
@@ -62,11 +62,20 @@ jobs:
         tar cfz ../cache/maps.tgz *.gif *.mp4
         cd ..
 
-
-    - name: Map upload artifact via tip
-      uses: eine/tip@master
+# Publish to release       
+    - name: Upload to realase
+      uses: softprops/action-gh-release@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: tip
-        files: |
-          cache/maps.tgz
+        tag_name: data-for-entorb.net
+        prerelease: true
+        files: 
+          cache/*.tgz
+
+
+#    - name: Map upload artifact via tip
+#      uses: eine/tip@master
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        tag: tip
+#        files: |
+#          cache/maps.tgz
