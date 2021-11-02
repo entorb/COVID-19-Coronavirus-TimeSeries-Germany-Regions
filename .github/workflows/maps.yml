@@ -72,6 +72,20 @@ jobs:
           cache/*.tgz
 
 
+    - name: commit new files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add maps/*
+        git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
+    - name: push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        directory: maps
+
+
 #    - name: Map upload artifact via tip
 #      uses: eine/tip@master
 #      with:
