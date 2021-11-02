@@ -153,6 +153,7 @@ l_subprocesses = []
 d_latest_svg_file = {}  # store the last generated file per property
 # for property_to_plot in ('Cases_Per_Million',):
 for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'DIVI_Intensivstationen_Covid_Prozent'):
+    print(f"=== start {property_to_plot}")
 
     # # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
     # command = ['ffmpeg', '-y', '-i', f'maps/de-districts-{property_to_plot}.gif', '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
@@ -178,18 +179,18 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     else:
         assert 1 == 2, f"Error: color for {property_to_plot} is undefined"
 
-    values = []
-    # collect all values for autoscaling
-    # TODO filter here on selected month as well?
-    for date_str, l_districts in d_all_date_data.items():
-        for lk_id, d in l_districts.items():
-            if property_to_plot in d and d[property_to_plot] != None and d[property_to_plot] > 0:
-                values.append(d[property_to_plot])
-    del d, l_districts, lk_id
+    # values = []
+    # # collect all values for autoscaling
+    # # TODO filter here on selected month as well?
+    # for date_str, l_districts in d_all_date_data.items():
+    #     for lk_id, d in l_districts.items():
+    #         if property_to_plot in d and d[property_to_plot] != None and d[property_to_plot] > 0:
+    #             values.append(d[property_to_plot])
+    # del d, l_districts, lk_id
 
-    # generate color scale range
-    threshold = [0, 0, 0, 0, 0, 0, 0]
-    print(f"{property_to_plot} min={min(values)} max={max(values)}")
+    # # generate color scale range
+    # threshold = [0, 0, 0, 0, 0, 0, 0]
+    # print(f"{property_to_plot} min={min(values)} max={max(values)}")
     # V1 taken from template
     # q = statistics.quantiles(values, n=100, method="inclusive")
     # step = math.sqrt(statistics.mean(values) - q[0]) / 3
@@ -201,29 +202,29 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     # threshold = statistics.quantiles(values, n=7+1, method="exclusive")
 
     # V3: linear distribution: very simple, but nice for % values
-    data_min = min(values)
-    data_max = max(values)
-    span = data_max-data_min
-    if property_to_plot == 'Cases_Per_Million':
-        step = span ** (1.0/8)
-        for i in range(7):
-            threshold[i] = data_min + step**(1+i)
-        # rounding of thresholds
-        for i in range(7):
-            if threshold[i] > 1000000:
-                threshold[i] = int(round(threshold[i], -5))
-            elif threshold[i] > 100000:
-                threshold[i] = int(round(threshold[i], -4))
-            elif threshold[i] > 10000:
-                threshold[i] = int(round(threshold[i], -3))
-            elif threshold[i] > 1000:
-                threshold[i] = int(round(threshold[i], -2))
-            elif threshold[i] > 100:
-                threshold[i] = int(round(threshold[i], -1))
-            elif threshold[i] > 10:
-                threshold[i] = int(round(threshold[i], 0))
-            elif threshold[i] > 1:
-                threshold[i] = int(round(threshold[i], 1))
+    # data_min = min(values)
+    # data_max = max(values)
+    # span = data_max-data_min
+    # if property_to_plot == 'Cases_Per_Million':
+    #     step = span ** (1.0/8)
+    #     for i in range(7):
+    #         threshold[i] = data_min + step**(1+i)
+    #     # rounding of thresholds
+    #     for i in range(7):
+    #         if threshold[i] > 1000000:
+    #             threshold[i] = int(round(threshold[i], -5))
+    #         elif threshold[i] > 100000:
+    #             threshold[i] = int(round(threshold[i], -4))
+    #         elif threshold[i] > 10000:
+    #             threshold[i] = int(round(threshold[i], -3))
+    #         elif threshold[i] > 1000:
+    #             threshold[i] = int(round(threshold[i], -2))
+    #         elif threshold[i] > 100:
+    #             threshold[i] = int(round(threshold[i], -1))
+    #         elif threshold[i] > 10:
+    #             threshold[i] = int(round(threshold[i], 0))
+    #         elif threshold[i] > 1:
+    #             threshold[i] = int(round(threshold[i], 1))
 
     # if property_to_plot in ('DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent'):
     #     step = span / 8
@@ -235,7 +236,10 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     #     step = span ** (1.0/8)
     #     for i in range(7):
     #         threshold[i] = data_min + step**(1+i)
-    # manual overwriting
+
+    # manual setting of color scale
+    if property_to_plot == 'Cases_Per_Million':
+        threshold = [1, 10, 100, 1000, 10000, 50000, 100000]
     elif property_to_plot == 'Cases_Last_Week_Per_100000':
         threshold = [1, 5, 10, 25, 50, 100, 200]
     elif property_to_plot == 'DIVI_Intensivstationen_Covid_Prozent':
@@ -243,11 +247,18 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     elif property_to_plot == 'DIVI_Intensivstationen_Betten_belegt_Prozent':
         threshold = [30, 40, 50, 60, 70, 80, 90]
 
+    # read template and generate image per day
     with open('maps/template_de-districts.svg', mode="r", newline="", encoding="utf-8") as file_in:
         # plot loop for each date
         # date_str = '2020-04-24'
         # l_districts = d_all_date_data[date_str]
+        print(f"generating SVGs")
         for date_str, l_districts in d_all_date_data.items():
+            # skip date if for this month I already have a month .gif
+            thisMonth = date_str[0:7]
+            if os.path.isfile(f'maps/out/de-districts/{property_to_plot}-{thisMonth}.gif'):
+                continue
+
             file_in.seek(0, 0)  # reset file pointer
             main = {}
             at_least_one_value_found = False
@@ -265,7 +276,7 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
                 continue
 
             outfile = f'maps/out/de-districts/{property_to_plot}-{date_str}.svg'
-            # overwrittin per date, until it holds the latest file
+            # overwritting per date, until it holds the latest file
             d_latest_svg_file[property_to_plot] = outfile
 
             # skip svg generation if I have not cleaned up, for faster gif generation debugging
@@ -350,10 +361,13 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
         #     break
         # break
     l_subprocesses = []
-    # svg -> month-gif
+    print(f"svg -> month-gif")
     for month in l_month:
         if f"{property_to_plot}-{month}" in ['DIVI_Intensivstationen_Betten_belegt_Prozent-2020-03', 'DIVI_Intensivstationen_Covid_Prozent-2020-03']:
             # we do not have DIVI data for 03/2020
+            continue
+        l = glob.glob(f'maps/out/de-districts/{property_to_plot}-{month}*.svg')
+        if len(l) == 0:
             continue
         # convert -size 480x maps/out/de-districts/Cases_Last_Week_Per_100000-2020-03*.svg -resize 480x -coalesce -fuzz 2% +dither -layers Optimize maps/out/de-districts/Cases_Last_Week_Per_100000-2020-03.gif
         l_imagemagick_parameters = [
@@ -367,7 +381,6 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
         # single processing
         # process = run_imagemagick_convert(
         #     l_imagemagick_parameters, wait_for_finish=True)
-
 
     # wait for subprocesses to finish
     for process in l_subprocesses:
@@ -383,18 +396,22 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     ]
     run_imagemagick_convert(l_imagemagick_parameters)
 
-    # cleanup the svgs to reduce space on file system
+    # cleanup the svg to reduce space on file system
     for f in glob.glob('maps/out/de-districts/*.svg'):
         os.remove(f)
         pass
 
     outfile = f'maps/de-districts-{property_to_plot}.gif'
 
-    # join monthly gifs
+    print(f"join monthly gifs")
     l_imagemagick_parameters = [
         f'maps/out/de-districts/{property_to_plot}-*.gif', '-coalesce', '-fuzz', '2%', '+dither', '-layers', 'Optimize', outfile
     ]
     run_imagemagick_convert(l_imagemagick_parameters)
+
+    # delete gif of last month, as this is not be complete and thus shall not be commited
+    l = sorted(glob.glob(f'maps/out/de-districts/{property_to_plot}-*.gif'))
+    os.remove(l.pop())
 
     # set delay of 0.25s for all frames
     l_imagemagick_parameters = [
@@ -408,7 +425,6 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     ]
     run_imagemagick_convert(l_imagemagick_parameters)
 
-    # convert gif to mp4
     print(f'converting {property_to_plot}.gif -> .mp4')
     # from https://unix.stackexchange.com/questions/40638/how-to-do-i-convert-an-animated-gif-to-an-mp4-or-mv4-on-the-command-line
 
@@ -436,18 +452,6 @@ for property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million', 'DIV
     #     run_imagemagick_convert([
     #         outfileDelay, '(', '-clone', '-1', '-set', 'delay', '2000x1000', ')', outfileDelay
     #     ])
-
-
-
-# cleanup
-# TODO: keep all but latest month gif and commit it
-for f in glob.glob('maps/out/de-districts/*.gif'):
-    os.remove(f)
-    pass
-
-for f in glob.glob('maps/out/de-districts/*.svg'):
-    os.remove(f)
-    pass
 
 
 print("End of script reached")
