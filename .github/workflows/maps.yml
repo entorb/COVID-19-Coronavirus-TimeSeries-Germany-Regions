@@ -5,7 +5,7 @@ name: Update Maps
 on:  
   workflow_dispatch:
   schedule:
-    - cron: "15 22 * * 1"
+    - cron: "15 22 * * *"
 # TODO       
 #  push:
 #    branches: [ master ]
@@ -62,7 +62,6 @@ jobs:
         tar cfz ../cache/maps.tgz *.gif *.mp4
         cd ..
 
-
 # Publish to release       
     - name: Upload to realase
       uses: softprops/action-gh-release@v1
@@ -71,7 +70,6 @@ jobs:
         prerelease: true
         files: 
           cache/*.tgz
-
 
 
 #    - name: Map upload artifact via tip
