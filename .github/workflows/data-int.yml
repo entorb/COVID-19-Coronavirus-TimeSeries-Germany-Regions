@@ -5,7 +5,7 @@ name: Update Data Countries
 on:  
   workflow_dispatch:    
   schedule:
-    - cron: "0 3 13 * *"
+    - cron: "13 3 * * *"
 # TODO       
 #  push: 
 #    branches: [ master ]
