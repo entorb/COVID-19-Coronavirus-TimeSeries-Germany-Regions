@@ -5,7 +5,7 @@ name: Update Maps
 on:  
   workflow_dispatch:
   schedule:
-    - cron: "15 4 * * *"
+    - cron: "13 10 * * *"
 # TODO       
 #  push:
 #    branches: [ master ]
