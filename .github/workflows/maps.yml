@@ -76,7 +76,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add maps/*
+        git add maps/out/*
         git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
     - name: push
       uses: ad-m/github-push-action@master
