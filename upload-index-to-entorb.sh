@@ -5,6 +5,8 @@
 
 rsync -rvhu --delete --delete-excluded --no-perms index.html entorb@entorb.net:html/COVID-19-coronavirus/
 
+rsync -rvhu --delete --delete-excluded --no-perms newsletter/*.html entorb@entorb.net:html/COVID-19-coronavirus/
+
 rsync -rvhu --delete --delete-excluded --no-perms js/*.js entorb@entorb.net:html/COVID-19-coronavirus/js/
 
 rsync -rvhu --delete --delete-excluded --no-perms maps-de-districts.html entorb@entorb.net:html/COVID-19-coronavirus/
