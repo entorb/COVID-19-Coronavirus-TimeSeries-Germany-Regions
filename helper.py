@@ -47,6 +47,7 @@ os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
 os.makedirs('plots-gnuplot/int/', exist_ok=True)
 os.makedirs('plots-python/', exist_ok=True)
 os.makedirs('plots-python/de-states/', exist_ok=True)
+os.makedirs('plots-python/de-districts/', exist_ok=True)
 os.makedirs('maps/out/de-districts/', exist_ok=True)
 
 
