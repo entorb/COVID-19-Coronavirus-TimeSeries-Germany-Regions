@@ -86,6 +86,10 @@ def read_and_prepare_data():
 
     # loop over all districts data file and read them as data frames
     for filename in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
+        if "16056" in filename:
+            # Eisenach problem, again...
+            continue
+
         df_file = pd.read_csv(filename, sep="\t")
         df_file['Date'] = pd.to_datetime(df_file['Date'], format='%Y-%m-%d')
         df_file.set_index(['Date'], inplace=True)
@@ -178,13 +182,17 @@ def read_and_prepare_data():
         df['-75%'] += gt_m075p * 1
         df['-100%'] += gt_m100p * 1
         count += 1
+        # TODO
         # if count >= 10:
         #     break
+    # print(df.tail())
+
     df.to_csv('cache/hist-de-districts.csv')
     return df
 
 
 # TODO
+# df = read_and_prepare_data()
 # os.remove("cache/hist-de-districts.csv")
 
 if helper.check_cache_file_available_and_recent(fname='cache/hist-de-districts.csv', max_age=3600, verbose=True) == False:
@@ -223,6 +231,8 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
     # # plt.ylim(top=412)
     # plt.savefig(fname='plots-python/hist-de-districts-bar.png', format='png')
     # plt.show()
+
+    # print(df_sums_gt.head())
 
     myPlot = df_sums_gt.plot()
 
