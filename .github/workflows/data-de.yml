@@ -50,13 +50,11 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-    - name: data fetch-de-divi
+    - name: Data fetch-de-divi
       run: python3 fetch-de-divi-V3.py
       
-    - name: data fetch-de-states
-      run: |
-        python3 fetch-de-states-V2.py
-        python3 plot-de-states-V2.py
+    - name: Data fetch-de-states
+      run: python3 fetch-de-states-V2.py
 
 # this is now extrated to an action of its own
 #    - name: data fetch-int-country-data
@@ -64,14 +62,17 @@ jobs:
       
     - name: Data fetch-de-districts
       run: python3 fetch-de-districts.py
-    
-    - name: Data calc-increase-histogram
+
+    - name: Plot Python de-stats and de-districts
+      run: python3 plot-de-states-districts.py
+
+    - name: Plot Python calc-increase-histogram
       run: python3 plot-de-districts-increase-histogram.py
       
-    - name: Data fetch-mortality-de
+    - name: Data+Plot fetch-mortality-de
       run: python3 fetch-de-mortality.py
 
-    - name: Data fetch-de-vaccination
+    - name: Data + Plot fetch-de-vaccination
       run: python3 fetch-de-vaccination.py
 
     - name: Data show dates
