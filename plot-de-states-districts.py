@@ -231,7 +231,7 @@ for datafile in ("data/de-states/de-state-BY.tsv",):
 
 
 d_landkreisNames = helper.read_json_file(
-    "data\de-districts\mapping_landkreis_ID_name.json")
+    "data/de-districts/mapping_landkreis_ID_name.json")
 
 # same for districts
 for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
