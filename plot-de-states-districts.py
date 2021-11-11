@@ -217,8 +217,8 @@ df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
 
 
 # plot for states
-for datafile in ("data/de-states/de-state-BY.tsv",):
-    # for datafile in glob.glob("data/de-states/de-state-*.tsv"):
+# for datafile in ("data/de-states/de-state-BY.tsv",):
+for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[9:]
@@ -234,8 +234,8 @@ d_landkreisNames = helper.read_json_file(
     "data/de-districts/mapping_landkreis_ID_name.json")
 
 # same for districts
-for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
-    # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
+# for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
+for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):    
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[-5:]
