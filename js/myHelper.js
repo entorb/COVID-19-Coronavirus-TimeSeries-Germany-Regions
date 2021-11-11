@@ -95,6 +95,43 @@ function fetch_states_latest(array_states_latest) {
 promises.push(fetch_states_latest(array_states_latest));
 
 
+function de_district_multiplot_populate_select() {
+  const url =
+    "https://entorb.net/COVID-19-coronavirus/data/de-districts/mapping_landkreis_ID_name.json";
+  return $.getJSON(url, function (data) {
+    console.log("success: mapping_landkreis_ID_name.json");
+  })
+    .done(function (data) {
+      console.log("done: mapping_landkreis_ID_name.json");
+      de_district_multiplot_sel_kreis = document.getElementById("de_district_multiplot_sel_kreis");
+
+      // TODO: this is quite a dirty hack
+      var data2 = {};
+      // swap key and value for sorting
+      $.each(data, function (key, val) {
+        data2[val] = key;
+      });
+
+      Object.keys(data2)
+        .sort()
+        .forEach(function (v, i) {
+          var opt = document.createElement('option');
+          opt.innerHTML = v;
+          opt.value = data2[v];
+          de_district_multiplot_sel_kreis.appendChild(opt)
+        });
+
+    });
+}
+promises.push(de_district_multiplot_populate_select());
+
+function de_district_multiplot_selected() {
+  document.getElementById("de_district_multiplot_img").src =
+    "plots-python/de-districts/de-district-" +
+    document.getElementById("de_district_multiplot_sel_kreis").value
+    + ".png";
+}
+
 // -------------
 // 1. Small helpers
 // -------------
