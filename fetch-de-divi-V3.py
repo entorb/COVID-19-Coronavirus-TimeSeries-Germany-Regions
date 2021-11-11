@@ -88,7 +88,7 @@ def generate_database() -> dict:
     # d_database_states = {}  # Bundesländer
     d_database_states = {'01': {}, '02': {}, '03': {}, '04': {}, '05': {}, '06': {}, '07': {
     }, '08': {}, '09': {}, '10': {}, '11': {}, '12': {}, '13': {}, '14': {}, '15': {}, '16': {}, 'DE-total': {}}
-    for csv_file in glob.glob('data/de-divi/downloaded/*.csv'):
+    for csv_file in sorted(glob.glob('data/de-divi/downloaded/*.csv')):
         (filepath, fileName) = os.path.split(csv_file)
         (fileBaseName, fileExtension) = os.path.splitext(fileName)
         date = fileBaseName
@@ -125,11 +125,12 @@ def generate_database() -> dict:
                     "betten_belegt": int(float(row["betten_belegt"]))
                 }
                 if "faelle_covid_aktuell_beatmet" in row:
-                    d["faelle_covid_aktuell_beatmet"] = int(row["faelle_covid_aktuell_beatmet"])
+                    d["faelle_covid_aktuell_beatmet"] = int(
+                        row["faelle_covid_aktuell_beatmet"])
                 elif "faelle_covid_aktuell_invasiv_beatmet" in row:
-                    d["faelle_covid_aktuell_beatmet"] = int(row["faelle_covid_aktuell_invasiv_beatmet"])
+                    d["faelle_covid_aktuell_beatmet"] = int(
+                        row["faelle_covid_aktuell_invasiv_beatmet"])
 
-                
                 d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
                 if d["betten_ges"] > 0:
                     d["betten_belegt_proz"] = round(100 *
