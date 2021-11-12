@@ -109,7 +109,7 @@ def date_format(y: int, m: int, d: int) -> str:
 # Pandas Helper
 
 
-def pandas_set_date_index(df, date_column: str):
+def pandas_set_date_index(df, date_column: str = "Date"):
     """use date as index"""
     df[date_column] = pd.to_datetime(df[date_column], format='%Y-%m-%d')
     df.set_index([date_column], inplace=True)

@@ -9,13 +9,13 @@ https://twitter.com/dpaessler/status/1458397649690927105
 
 Ziel:
 
-![0](0.png)
+![0](0_dp.png)
 
 ## Schritt 1: Fallzahlen
 Ich hole mir die Fallzahlen von Landkreis und Stadt Fürth (blau/rot) von @risklayer
  und berechne die Summe (gelb). Dann addiere ich jeweils diese Werte der letzten 20 Tage zusammen, sozusagen ein lang-laufender gleitender Mittelwert.
 
-![1](1.png)
+![1](1_dp.png)
 
 Wichtig ist hier zu sehen, wie die schwarze Linie einen “Overshoot” macht, also über die Spitze der gelben Welle hinausschießt und erst 1-2 Wochen später beginnt zu sinken. Diese Eigenschaft wird gleich noch zu einem Problem werden.
 
@@ -23,27 +23,27 @@ Wichtig ist hier zu sehen, wie die schwarze Linie einen “Overshoot” macht, a
 ## Schritt 2: Zusammenhang ITS-Belegung und 20-Tage-Fallzahlen
 Die ITS-Belegung und die 20-Tage-Fallzahlen haben einen engen Zusammenhang. Diese Quote hat sich zwar im Jahresverlauf mehrfach verändert (u.a. durch Alpha/Delta und die Impfungen).
 
-![2](2.png)
+![2](2_dp.png)
 
 Aber seit September liegt dieser Wert konstant, und steigt sogar an. Für Fürth ist er zZt ~0,066%. Es ist zu erwarten, dass Quote weiter ansteigt, durch das weitere Nachlassen der Impfwirkungen und steigende Dunkelziffer, aber gehen wir mal davon aus, dass er konstant bleibt.
 
 Der Zusammenhang von 20-Tage-Fallzahlen und ITS-Belegung ist hier auch schon zu sehen: Seit Juni können wir die Fallzahlen verwenden, um die ITS-Belegung abzubilden. Die Kurve aus dem DIVI Intensivregister (blau) passt gut dazu.
 
-![3](3.png)
+![3](3_dp.png)
 
 
 
 ## 3. Schritt: Fallzahlen-Szenarios für die nächsten 2 Wochen synthetisch herstellen
 Jetzt gehen wir von den aktuellen Fallzahlen aus, und entwickeln verschiedene Szenarios. Wir schreiben die Fallzahlen der letzten Woche mit verschiedenen Wachstums-Raten fort:
 
-![4](4.png)
+![4](4_dp.png)
 
 Die maximale gezeigte Wachstumsrate von 30% in dieser Gruppe von Szenarien ist übrigens noch eher konservativ, im Moment liegen wir in Deutschland eher über 50% (!).
 
 ## 4. Schritt: Fallzahlen in ITS-Bettenbelegung umrechnen
 Mit den oben gewonnen Erkenntnissen können wir jetzt für die sechs Szenarien die ITS-Belegungen berechnen und zeichnen:
 
-![5](5.png)
+![5](5_dp.png)
 
 Wir sehen, dass selbst wenn es zu keinem Fallzahlen-Wachstum mehr kommen würde, oder auch bei leichtem Sinken, erst um den 22.11.2021 (14 Tage später als verwendete Eingangsdaten) die Belastung aufhört zu wachsen (Das ist dieser Overshoot).
 

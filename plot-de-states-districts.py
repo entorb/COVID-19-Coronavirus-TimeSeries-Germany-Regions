@@ -235,7 +235,7 @@ d_landkreisNames = helper.read_json_file(
 
 # same for districts
 # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
-for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):    
+for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[-5:]
