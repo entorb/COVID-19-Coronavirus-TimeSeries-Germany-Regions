@@ -1,10 +1,16 @@
+from datetime import timedelta  # , date
 import os
 import pandas as pd
 from pandas.core.frame import DataFrame
 import matplotlib.pyplot as plt
 # import matplotlib.ticker as ticker
 
-from datetime import timedelta, date
+dir_out = 'icu-forecast/out/'
+os.makedirs(dir_out, exist_ok=True)
+
+# TODO:
+# continue with Fuerth according to howto
+# switch data source to Risklayer?
 
 
 def load_lk_data(l_lkids: list) -> DataFrame:
@@ -73,7 +79,7 @@ def plot_1_cases(df: DataFrame, filename: str):
     plot 1.png
     """
 
-    fig, axes = plt.subplots(figsize=(6, 8))
+    fig, axes = plt.subplots(figsize=(8, 6))
 
     colors = ('blue', 'black')
 
@@ -102,7 +108,7 @@ def plot_1_cases(df: DataFrame, filename: str):
     plt.savefig(fname=filename, format='png')
 
 
-plot_1_cases(df=df, filename="its-belegung/out/1.png")
+plot_1_cases(df=df, filename=f"{dir_out}/1.png")
 
 
 def plot_2_its_per_20day_cases(df: DataFrame, filename: str):
@@ -110,7 +116,7 @@ def plot_2_its_per_20day_cases(df: DataFrame, filename: str):
     plot 2.png
     """
 
-    fig, axes = plt.subplots(figsize=(6, 8))
+    fig, axes = plt.subplots(figsize=(8, 6))
 
     colors = ('blue', 'black')
 
@@ -133,7 +139,7 @@ def plot_2_its_per_20day_cases(df: DataFrame, filename: str):
     plt.savefig(fname=filename, format='png')
 
 
-plot_2_its_per_20day_cases(df=df, filename="its-belegung/out/2.png")
+plot_2_its_per_20day_cases(df=df, filename=f"{dir_out}/2.png")
 
 # print(df["quote_its_belegt_pro_Cases_New_roll_sum_20"].tail(7))
 quote = df["quote_its_belegt_pro_Cases_New_roll_sum_20"].tail(7).mean()
@@ -144,7 +150,7 @@ def plot_3_cases(df: DataFrame, filename: str):
     plot 3.png
     """
 
-    fig, axes = plt.subplots(figsize=(6, 8))
+    fig, axes = plt.subplots(figsize=(8, 6))
 
     colors = ('blue', 'black', 'lightskyblue')
 
@@ -176,7 +182,7 @@ def plot_3_cases(df: DataFrame, filename: str):
     plt.savefig(fname=filename, format='png')
 
 
-plot_3_cases(df=df, filename="its-belegung/out/3.png")
+plot_3_cases(df=df, filename=f"{dir_out}/3.png")
 
 
 # Fälle der 1 Woche für 3 Wochen fortschreiben
