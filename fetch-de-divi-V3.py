@@ -84,6 +84,128 @@ def fetch_latest_csvs():
 
 
 def generate_database() -> dict:
+    """ from 2021-10-29 on Divi publisheds all data in the latest file"""
+    d_database = {}
+    # d_database_states = {}  # Bundesländer
+    d_database_states = {'01': {}, '02': {}, '03': {}, '04': {}, '05': {}, '06': {}, '07': {
+    }, '08': {}, '09': {}, '10': {}, '11': {}, '12': {}, '13': {}, '14': {}, '15': {}, '16': {}, 'DE-total': {}}
+
+    csv_file = sorted(glob.glob('data/de-divi/downloaded/*.csv'))[-1]
+    (filepath, fileName) = os.path.split(csv_file)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    del filepath, fileName, fileBaseName, fileExtension
+
+# file 2020-04-24.csv:
+# bundesland,kreis,anzahl_standorte,betten_frei,betten_belegt,faelle_covid_aktuell_im_bundesland
+# file 2020-04-26.csv:
+# gemeindeschluessel,anzahl_meldebereiche,faelle_covid_aktuell,faelle_covid_aktuell_beatmet,anzahl_standorte,betten_frei,betten_belegt,bundesland
+# 2020-04-28.csv
+# gemeindeschluessel,anzahl_meldebereiche,faelle_covid_aktuell,faelle_covid_aktuell_beatmet,anzahl_standorte,betten_frei,betten_belegt,bundesland,daten_stand
+# file 2020-06-28.csv
+# bundesland,gemeindeschluessel,anzahl_meldebereiche,faelle_covid_aktuell,faelle_covid_aktuell_beatmet,anzahl_standorte,betten_frei,betten_belegt,daten_stand
+# file 2021-10-29.csv
+# date,bundesland,gemeindeschluessel,anzahl_standorte,anzahl_meldebereiche,faelle_covid_aktuell,faelle_covid_aktuell_invasiv_beatmet,betten_frei,betten_belegt,betten_belegt_nur_erwachsen,betten_frei_nur_erwachsen
+
+    with open(csv_file, mode='r', encoding='utf-8') as f:
+        csv_reader = csv.DictReader(f, delimiter=",")
+        for row in csv_reader:
+            assert len(row) >= 8, "Error: too few rows found"
+            date = row["date"]
+            bl_id = row["bundesland"]
+            lk_id = row["gemeindeschluessel"]
+            d = {
+                # "bl_id": row["bundesland"],
+                # "lk_id": row["gemeindeschluessel"],
+                "Date": date,
+                "anzahl_meldebereiche": int(row["anzahl_meldebereiche"]),
+                "faelle_covid_aktuell": int(row["faelle_covid_aktuell"]),
+                "anzahl_standorte": int(row["anzahl_standorte"]),
+                "betten_frei": int(float(row["betten_frei"])),
+                "betten_belegt": int(float(row["betten_belegt"]))
+            }
+            if "faelle_covid_aktuell_beatmet" in row:
+                d["faelle_covid_aktuell_beatmet"] = int(
+                    row["faelle_covid_aktuell_beatmet"])
+            elif "faelle_covid_aktuell_invasiv_beatmet" in row:
+                d["faelle_covid_aktuell_beatmet"] = int(
+                    row["faelle_covid_aktuell_invasiv_beatmet"])
+
+            d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
+            if d["betten_ges"] > 0:
+                d["betten_belegt_proz"] = round(100 *
+                                                d["betten_belegt"] / d["betten_ges"], 1)
+                d["faelle_covid_aktuell_proz"] = round(100*d["faelle_covid_aktuell"] /
+                                                       d["betten_ges"], 1)
+            else:
+                d["betten_belegt_proz"] = None
+                d["faelle_covid_aktuell_proz"] = None
+            if d["faelle_covid_aktuell"] > 0:
+                d["faelle_covid_aktuell_beatmet_proz"] = round(
+                    100*d["faelle_covid_aktuell_beatmet"] / d["faelle_covid_aktuell"], 1)
+            else:
+                d["faelle_covid_aktuell_beatmet_proz"] = 0
+
+            # if "daten_stand" in row:
+            #     d["daten_stand"] = row["daten_stand"]
+            # else:
+            #     d["daten_stand"] = date
+
+            if lk_id not in d_database:
+                d_database[lk_id] = []
+            d_database[lk_id].append(d)
+
+            # calc de_states_sum
+            d2 = dict(d)
+            del d2['Date'], d2['betten_ges'], d2['betten_belegt_proz'], d2['faelle_covid_aktuell_proz'], d2['faelle_covid_aktuell_beatmet_proz']
+            if date not in d_database_states[bl_id]:
+                d_database_states[bl_id][date] = d2
+            else:
+                for k in d2.keys():
+                    d_database_states[bl_id][date][k] += d2[k]
+            # 'DE-total'
+            if date not in d_database_states['DE-total']:
+                d_database_states['DE-total'][date] = d2
+            else:
+                for k in d2.keys():
+                    d_database_states['DE-total'][date][k] += d2[k]
+
+                # print(d_database_states[bl_id][date])
+
+    helper.write_json('cache/de-divi/de-divi-V3.json',
+                      d_database, sort_keys=True, indent=1)
+
+    d_database_states2 = {}
+    for bl_id in d_database_states.keys():
+        bl_code = d_bl_id2code[bl_id]
+        d_database_states2[bl_code] = []
+        for date, d in d_database_states[bl_id].items():
+            d['Date'] = date
+            # copy from above:
+            d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
+            if d["betten_ges"] > 0:
+                d["betten_belegt_proz"] = round(100 *
+                                                d["betten_belegt"] / d["betten_ges"], 1)
+                d["faelle_covid_aktuell_proz"] = round(100*d["faelle_covid_aktuell"] /
+                                                       d["betten_ges"], 1)
+            else:
+                d["betten_belegt_proz"] = None
+                d["faelle_covid_aktuell_proz"] = None
+            if d["faelle_covid_aktuell"] > 0:
+                d["faelle_covid_aktuell_beatmet_proz"] = round(
+                    100*d["faelle_covid_aktuell_beatmet"] / d["faelle_covid_aktuell"], 1)
+            else:
+                d["faelle_covid_aktuell_beatmet_proz"] = 0
+
+            d_database_states2[bl_code].append(d)
+    del d_database_states
+
+    helper.write_json('cache/de-divi/de-divi-V3-states.json',
+                      d_database_states2, sort_keys=True, indent=1)
+
+    return d_database
+
+
+def generate_database_old() -> dict:
     d_database = {}
     # d_database_states = {}  # Bundesländer
     d_database_states = {'01': {}, '02': {}, '03': {}, '04': {}, '05': {}, '06': {}, '07': {
