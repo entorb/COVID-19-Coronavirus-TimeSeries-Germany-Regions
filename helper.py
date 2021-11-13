@@ -13,7 +13,7 @@ __license__ = "GPL"
 import os
 import os.path
 import time
-import datetime
+import datetime as dt
 # import argparse
 import csv
 import json
@@ -32,6 +32,8 @@ import numpy as np
 # curve-fit() function imported from scipy
 from scipy.optimize import curve_fit
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 # ensure all output folders are present
 os.makedirs('cache', exist_ok=True)
@@ -95,7 +97,7 @@ def convert_timestamp_to_date_str(ts: int) -> str:
     converts a ms timestand to date string (without time)
     format: 2020-03-29
     """
-    d = datetime.datetime.fromtimestamp(ts)
+    d = dt.datetime.fromtimestamp(ts)
     # s = f"{d}"
     # 2020-03-29 01:00:00
     s = d.strftime("%Y-%m-%d")
@@ -107,6 +109,7 @@ def date_format(y: int, m: int, d: int) -> str:
 
 #
 # Pandas Helper
+#
 
 
 def pandas_set_date_index(df, date_column: str = "Date"):
@@ -121,8 +124,15 @@ def pandas_calc_roll_av(df, column: str, days: int = 7):
     df[column + '_roll_av'] = df[column].rolling(
         window=days, min_periods=1).mean().round(1)
     return df
+
+#
+# Matplotlib Helper
 #
 
+
+def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = dt.date.today()):
+    plt.gcf().text(1.0, 0.0, s=f"by Torben https://entorb.net , based on {source} data of {date}", fontsize=8,
+                   horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
 
 #
 # COVID-19 Helpers
@@ -220,7 +230,7 @@ def prepare_time_series(l_time_series: list) -> list:
     assert isinstance(d['Date'], str)
     assert isinstance(d['Cases'], int)
     assert isinstance(d['Deaths'], int)
-    last_date = datetime.datetime.strptime(
+    last_date = dt.datetime.strptime(
         l_time_series[-1]['Date'], "%Y-%m-%d")
 
     # ensure sorting by date
@@ -246,7 +256,7 @@ def prepare_time_series(l_time_series: list) -> list:
         assert d['Date'] not in l_dates_processed
         l_dates_processed.append(d['Date'])
 
-        this_date = datetime.datetime.strptime(d['Date'], "%Y-%m-%d")
+        this_date = dt.datetime.strptime(d['Date'], "%Y-%m-%d")
         d['Days_Past'] = (this_date-last_date).days
 
         # days_since_2_deaths

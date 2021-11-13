@@ -190,105 +190,6 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
 #
 
 
-def plot_1_cases(df: DataFrame, filename: str, landkreis_name: str):
-    """
-    plot 1.png
-    """
-
-    fig, axes = plt.subplots(figsize=(8, 6))
-
-    colors = ('blue', 'black')
-
-    myPlot = df['Cases_New'].plot(
-        linewidth=1.0, legend=False, zorder=1, color=colors[0])
-    df['Cases_New_roll_sum_20'].plot(
-        linewidth=2.0, legend=False, zorder=2, color=colors[1], secondary_y=True)
-
-    axes.set_ylim(0, )
-    axes.right_ax.set_ylim(0, )
-
-    plt.title(f'{landkreis_name}: Fallzahlen und 20-Tagessumme')
-    axes.set_xlabel("")
-    axes.set_ylabel('Fälle täglich')
-    axes.right_ax.set_ylabel('Fälle 20-Tage-Summe')
-    # color of label and ticks
-    axes.yaxis.label.set_color(colors[0])
-    axes.right_ax.yaxis.label.set_color(colors[1])
-    axes.tick_params(axis='y', colors=colors[0])
-    axes.right_ax.tick_params(axis='y', colors=colors[1])
-    # grid
-    axes.set_axisbelow(True)  # for grid below the lines
-    axes.grid(zorder=-1)
-
-    plt.tight_layout()
-    plt.savefig(fname=filename, format='png')
-
-
-def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
-    """
-    plot 2.png
-    """
-
-    fig, axes = plt.subplots(figsize=(8, 6))
-
-    colors = ('blue', 'black')
-
-    myPlot = df['quote_its_belegt_pro_Cases_New_roll_sum_20'].plot(
-        linewidth=2.0, legend=False, zorder=1, color=colors[0])
-
-    axes.set_ylim(0, 0.030)
-
-    plt.title(f'{landkreis_name}: Quote ITS-Belegung pro 20-Tage-Fallzahl')
-    axes.set_xlabel("")
-    axes.set_ylabel('')
-    # color of label and ticks
-    axes.yaxis.label.set_color(colors[0])
-    axes.tick_params(axis='y', colors=colors[0])
-    # grid
-    axes.set_axisbelow(True)  # for grid below the lines
-    axes.grid(zorder=-1)
-
-    plt.tight_layout()
-    plt.savefig(fname=filename, format='png')
-
-
-def plot_3_betten_belegt(df: DataFrame, filename: str, landkreis_name: str):
-    """
-    plot 3.png
-    """
-
-    fig, axes = plt.subplots(figsize=(8, 6))
-
-    colors = ('blue', 'black', 'lightskyblue')
-
-    myPlot = df['betten_belegt'].plot(
-        linewidth=1.0, legend=False, zorder=1, color=colors[2])
-    df['betten_belegt_roll'].plot(
-        linewidth=2.0, legend=False, zorder=1, color=colors[0])
-
-    df['Cases_New_roll_sum_20'].plot(
-        linewidth=2.0, legend=False, zorder=2, color=colors[1], secondary_y=True)
-
-    axes.set_ylim(0, )
-    axes.right_ax.set_ylim(0, )
-
-    plt.title(f'{landkreis_name}: ICU Bettenbelegung')
-    axes.set_xlabel("")
-    axes.set_ylabel('Betten belegt')
-    axes.right_ax.set_ylabel('Fälle 20-Tage-Summe')
-    # color of label and ticks
-    axes.yaxis.label.set_color(colors[0])
-    axes.right_ax.yaxis.label.set_color(colors[1])
-    axes.tick_params(axis='y', colors=colors[0])
-    axes.right_ax.tick_params(axis='y', colors=colors[1])
-    # grid
-    axes.set_axisbelow(True)  # for grid below the lines
-    axes.grid(zorder=-1)
-
-    plt.tight_layout()
-    plt.savefig(fname=filename, format='png')
-
-
 def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, filepath: str, landkreis_name: str):
     fig, axes = plt.subplots(figsize=(8, 6))
 
@@ -324,8 +225,7 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
-    plt.gcf().text(1.0, 0.0, s=f"by Torben https://entorb.net , based on RKI and DIVI data of {date_today}", fontsize=8,
-                   horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
+    helper.mpl_add_text_source(date=date_today)
 
     plt.legend(title='Inzidenz-Prognose')
     # axes.locstr = 'lower left'
@@ -426,64 +326,162 @@ d_lkid2name = helper.read_json_file(
 #
 # Landkreise oder Landkreisgruppe auswählen
 #
-
-# l_groupes = []
-# l_groupes.append(("Fürth Stadt + LK", ("09563", "09573")))
-# l_groupes.append(("Erlangen und ERH", ("09562", "09572")))
-# l_groupes.append(("Harburg und Lüneburg", ("03353", "03355")))
-
+# generated via icu-groups.py
 
 l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
 
 # loop over grouped landkreise
 for d in l_groupes:
     landkreis_name = d["title"]
+    print(landkreis_name)
     id = d["id"]
     l_lkids = d["lkids"]
     doit(landkreis_name=landkreis_name, l_lkids=l_lkids,
          mode="district-group", filename=str(d["id"]))
 
 
-# # loop over all district that have Divi data
-# for file in glob.glob("data/de-divi/tsv/*.tsv"):
-#     (filepath, fileName) = os.path.split(file)
-#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#     lkid = fileBaseName
-#     if (lkid == "16056"):  # Eisenach
-#         continue
-#     if lkid == "11000":
-#         landkreis_name = "Berlin"
-#     else:
-#         landkreis_name = d_lkid2name[lkid]
-#     doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
+# loop over all district that have Divi data
+for file in glob.glob("data/de-divi/tsv/*.tsv"):
+    (filepath, fileName) = os.path.split(file)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    lkid = fileBaseName
+    if (lkid == "16056"):  # Eisenach
+        continue
+    if lkid == "11000":
+        landkreis_name = "Berlin"
+    else:
+        landkreis_name = d_lkid2name[lkid]
+    doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
 
-# # sum up districts to bundeslaender
-# for i in range(1, 16+1):
-#     # blid = 02 für HH etc
-#     blid = "%02d" % i
-#     l_lkids = []
-#     for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
-#         (filepath, fileName) = os.path.split(file)
-#         (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#         lkid = fileBaseName
-#         l_lkids.append(lkid)
-#     landkreis_name = helper.d_BL_code_from_BL_ID(int(blid))
-#     doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
+# sum up districts to bundeslaender
+for i in range(1, 16+1):
+    # blid = 02 für HH etc
+    blid = "%02d" % i
+    l_lkids = []
+    for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
+        (filepath, fileName) = os.path.split(file)
+        (fileBaseName, fileExtension) = os.path.splitext(fileName)
+        lkid = fileBaseName
+        l_lkids.append(lkid)
+    landkreis_name = helper.d_BL_code_from_BL_ID(int(blid))
+    doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
 
-# # sum up DE-total
-# l_lkids = []
-# for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
-#     (filepath, fileName) = os.path.split(file)
-#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#     lkid = fileBaseName
-#     l_lkids.append(lkid)
-# landkreis_name = "Deutschland gesamt"
-# doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
+# sum up DE-total
+l_lkids = []
+for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
+    (filepath, fileName) = os.path.split(file)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    lkid = fileBaseName
+    l_lkids.append(lkid)
+landkreis_name = "Deutschland gesamt"
+doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
 
 
-# l_lkids = ("09563",)
-# "09563": "Fürth (Kreisfreie Stadt)",
-# "09573": "Fürth (Landkreis)",
+#
+#
+#
+# old stuff
+#
+
+
+# def plot_1_cases(df: DataFrame, filename: str, landkreis_name: str):
+#     """
+#     plot 1.png
+#     """
+
+#     fig, axes = plt.subplots(figsize=(8, 6))
+
+#     colors = ('blue', 'black')
+
+#     myPlot = df['Cases_New'].plot(
+#         linewidth=1.0, legend=False, zorder=1, color=colors[0])
+#     df['Cases_New_roll_sum_20'].plot(
+#         linewidth=2.0, legend=False, zorder=2, color=colors[1], secondary_y=True)
+
+#     axes.set_ylim(0, )
+#     axes.right_ax.set_ylim(0, )
+
+#     plt.title(f'{landkreis_name}: Fallzahlen und 20-Tagessumme')
+#     axes.set_xlabel("")
+#     axes.set_ylabel('Fälle täglich')
+#     axes.right_ax.set_ylabel('Fälle 20-Tage-Summe')
+#     # color of label and ticks
+#     axes.yaxis.label.set_color(colors[0])
+#     axes.right_ax.yaxis.label.set_color(colors[1])
+#     axes.tick_params(axis='y', colors=colors[0])
+#     axes.right_ax.tick_params(axis='y', colors=colors[1])
+#     # grid
+#     axes.set_axisbelow(True)  # for grid below the lines
+#     axes.grid(zorder=-1)
+
+#     plt.tight_layout()
+#     plt.savefig(fname=filename, format='png')
+
+
+# def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
+#     """
+#     plot 2.png
+#     """
+
+#     fig, axes = plt.subplots(figsize=(8, 6))
+
+#     colors = ('blue', 'black')
+
+#     myPlot = df['quote_its_belegt_pro_Cases_New_roll_sum_20'].plot(
+#         linewidth=2.0, legend=False, zorder=1, color=colors[0])
+
+#     axes.set_ylim(0, 0.030)
+
+#     plt.title(f'{landkreis_name}: Quote ITS-Belegung pro 20-Tage-Fallzahl')
+#     axes.set_xlabel("")
+#     axes.set_ylabel('')
+#     # color of label and ticks
+#     axes.yaxis.label.set_color(colors[0])
+#     axes.tick_params(axis='y', colors=colors[0])
+#     # grid
+#     axes.set_axisbelow(True)  # for grid below the lines
+#     axes.grid(zorder=-1)
+
+#     plt.tight_layout()
+#     plt.savefig(fname=filename, format='png')
+
+
+# def plot_3_betten_belegt(df: DataFrame, filename: str, landkreis_name: str):
+#     """
+#     plot 3.png
+#     """
+
+#     fig, axes = plt.subplots(figsize=(8, 6))
+
+#     colors = ('blue', 'black', 'lightskyblue')
+
+#     myPlot = df['betten_belegt'].plot(
+#         linewidth=1.0, legend=False, zorder=1, color=colors[2])
+#     df['betten_belegt_roll'].plot(
+#         linewidth=2.0, legend=False, zorder=1, color=colors[0])
+
+#     df['Cases_New_roll_sum_20'].plot(
+#         linewidth=2.0, legend=False, zorder=2, color=colors[1], secondary_y=True)
+
+#     axes.set_ylim(0, )
+#     axes.right_ax.set_ylim(0, )
+
+#     plt.title(f'{landkreis_name}: ICU Bettenbelegung')
+#     axes.set_xlabel("")
+#     axes.set_ylabel('Betten belegt')
+#     axes.right_ax.set_ylabel('Fälle 20-Tage-Summe')
+#     # color of label and ticks
+#     axes.yaxis.label.set_color(colors[0])
+#     axes.right_ax.yaxis.label.set_color(colors[1])
+#     axes.tick_params(axis='y', colors=colors[0])
+#     axes.right_ax.tick_params(axis='y', colors=colors[1])
+#     # grid
+#     axes.set_axisbelow(True)  # for grid below the lines
+#     axes.grid(zorder=-1)
+
+#     plt.tight_layout()
+#     plt.savefig(fname=filename, format='png')
+
 
 # model test plots, to verify my coding against Dirk's
 # plot_1_cases(
