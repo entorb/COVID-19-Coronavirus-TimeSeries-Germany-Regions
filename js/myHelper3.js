@@ -139,6 +139,41 @@ function de_district_multiplot_selected() {
     + ".png";
 }
 
+
+
+// populates
+// icu_forecast_sel_de_district_group
+function icu_forecast_sel_de_district_group_populate_select() {
+  const url =
+    "https://entorb.net/COVID-19-coronavirus/data/de-divi/lk-groups.json";
+  return $.getJSON(url, function (data) {
+    console.log("success: de-divi/lk-groups.json");
+  })
+    .done(function (data) {
+      console.log("done: de-divi/lk-groups.json");
+      icu_forecast_sel_de_district_group = document.getElementById("icu_forecast_sel_de_district_group");
+
+      var data2 = {};
+
+      for (const d of data) {
+        val = d["title"]
+        key = d["id"]
+        data2[val] = key;
+      }
+
+      Object.keys(data2)
+        .sort()
+        .forEach(function (v, i) {
+          var opt2 = document.createElement('option');
+          opt2.innerHTML = v;
+          opt2.value = data2[v];
+          icu_forecast_sel_de_district_group.appendChild(opt2);
+        });
+    });
+}
+
+
+
 function icu_forecast_sel_de_states_selected() {
   document.getElementById("icu_forecast_img").src =
     "plots-python/icu-forecast/de-states/" +
@@ -158,6 +193,17 @@ function icu_forecast_sel_de_districts_selected() {
   document.getElementById("icu_forecast_img_zoom").src =
     "plots-python/icu-forecast/single/" +
     document.getElementById("icu_forecast_sel_de_districts").value
+    + "-zoom.png";
+}
+
+function icu_forecast_sel_de_district_group_selected() {
+  document.getElementById("icu_forecast_img").src =
+    "plots-python/icu-forecast/de-district-group/" +
+    document.getElementById("icu_forecast_sel_de_district_group").value
+    + ".png";
+  document.getElementById("icu_forecast_img_zoom").src =
+    "plots-python/icu-forecast/de-district-group/" +
+    document.getElementById("icu_forecast_sel_de_district_group").value
     + "-zoom.png";
 }
 

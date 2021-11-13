@@ -319,10 +319,11 @@
 			<a href="https://risklayer-explorer.com/event/100/detail" target="_blank">Risklayer Explorer</a>
 		</li>
 		<li>
-			<a href="https://www.kbv.de/html/corona-report.php" target="_blank">Corona Report der Kassenärztlichen Vereinigung</a>
+			<a href="https://www.kbv.de/html/corona-report.php" target="_blank">Corona Report der Kassenärztlichen
+				Vereinigung</a>
 		</li>
-		
-		
+
+
 	</ul>
 
 	<h2><a id="Germany"></a>Germany / Deutschland</h2>
@@ -731,13 +732,17 @@
 			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
 		Bedarf an Intensivbetten für die Landkreise und Bundesländer erstellt. Eingangsparameter der Prognose ist die
 		Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten Woche für 2 Wochen fortgeschrieben. Blau
-		ist die Historie der gemeldeten ICU Betten.<br />
+		ist die Historie der gemeldeten ITS Betten.
+	</p>
+
+	<p>
 		Hier die Region auswählen:
 	</p>
 	<table>
 		<tr>
 			<th>Bundesland</th>
 			<th>Landkreis</th>
+			<th>Gruppierung</th>
 		</tr>
 		<tr>
 			<td>
@@ -766,15 +771,21 @@
 				<select id="icu_forecast_sel_de_districts" style="width:200px"
 					onchange="icu_forecast_sel_de_districts_selected()">
 					<option value="0" selected>Auswählen</option>
-					</select>
-
+				</select>
+			</td>
+			<td>
+				<select id="icu_forecast_sel_de_district_group" style="width:200px"
+					onchange="icu_forecast_sel_de_district_group_selected()">
+					<option value="0" selected>Auswählen</option>
+				</select>
 			</td>
 		</tr>
 	</table>
 
-	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="keine Daten gefunden" width="800"
-		height="600" /><br />
-	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600" alt="" /><br/>
+	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="keine Daten gefunden"
+		width="800" height="600" /><br />
+	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600"
+		alt="" /><br />
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
 			target="_blank">plot-icu-forecast.py</a>
@@ -796,11 +807,19 @@
 			target="_blank">hier</a>
 	</p> -->
 
-	<p>Eine Funktion zur Gruppierung benachbarter Landkreisen (zB Erlangen und Erlangen-Höchstadt) ist umgesetzt,
-		aber es fehlt mich noch an der dazugehörigen Datenlage. Hier freue ich mich über <a
-			href="/contact.php?origin=COVID-19">Hinweise</a>.</p>
-
-
+	<p>
+		Hinweise:
+	<ul>
+		<li>Das DIVI aktualisiert seine Daten täglich um 13:30, ich aktualisieren diese Grafiken um 14:00</li>
+		<li>Nicht alle Intensivstationen melden ihre Zahlen an das <a href="https://www.intensivregister.de/"
+				target="_blank">DIVI-Intensivregister</a> </li>
+		<li>Ich freue mich über <a href="/contact.php?origin=COVID-19">Verbesserungsvorschäge</a> und Vorschläge für
+			weitere
+			<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/icu-groups.py"
+				target="_blank">Landkreisgruppierungen</a>
+		</li>
+	</ul>
+	</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -1286,7 +1305,7 @@
 	<h4>
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
-	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png"/>
+	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png" />
 	<br />
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
@@ -1321,10 +1340,11 @@
 		CO<sub>2</sub>-Konzentration in der Luft ist ein guter Indikator dafür, dass es Zeit zum Lüften ist. Wer sich
 		beteiligen möchte kann gerne <a href="/contact.php?origin=CO2Ampel">Kontakt</a> zu mir aufnehmen. Aktueller
 		Stand: </p>
-	<img alt="ASGS-V1.jpg"
-		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg" width="1280" height="960"/><br />
+	<img alt="ASGS-V1.jpg" src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg"
+		width="1280" height="960" /><br />
 	<img alt="4xCO2-in-Holz.jpg"
-		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg"  width="1280" height="720"/>
+		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg" width="1280"
+		height="720" />
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -1975,7 +1995,9 @@
 		promises.push(fetch_countries_latest(array_countries_latest));
 		promises.push(fetch_states_latest(array_states_latest));
 		promises.push(de_district_multiplot_populate_select());
+		promises.push(icu_forecast_sel_de_district_group_populate_select());
 		promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
+
 		// Wait for all async promises to be done (all data is fetched)
 		Promise.all(promises).then(function () {
 			// console.log(array_countries_latest);
