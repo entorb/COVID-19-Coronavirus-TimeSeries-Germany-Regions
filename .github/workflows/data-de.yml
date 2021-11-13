@@ -50,8 +50,9 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-#    - name: Data fetch-de-divi
-#      run: python3 fetch-de-divi-V3.py
+# divi is needed for states
+    - name: Data fetch-de-divi
+      run: python3 fetch-de-divi-V3.py
       
     - name: Data fetch-de-states
       run: python3 fetch-de-states-V2.py
