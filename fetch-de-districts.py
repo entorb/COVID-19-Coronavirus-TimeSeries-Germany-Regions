@@ -160,8 +160,8 @@ def fetch_and_prepare_ref_landkreise() -> dict:
         d['Population'] = d_this_landkreis['EWZ']
         assert type(d['Population']) == int
         d['BL_Name'] = d_this_landkreis['BL']
-        d['BL_Code'] = helper.BL_code_from_BL_ID(
-            int(d_this_landkreis['BL_ID']))
+        d['BL_Code'] = helper.d_BL_code_from_BL_ID[
+            int(d_this_landkreis['BL_ID'])]
         d['LK_Name'] = d_this_landkreis['GEN']
         d['LK_Name'] = d['LK_Name'].replace(
             "Region Hannover", "Hannover").replace("Regionalverband ", "")

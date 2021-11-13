@@ -33,7 +33,7 @@ def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list
 
     returns data as list, ordered by date
     """
-    code = helper.BL_code_from_BL_ID(int(bl_id))
+    code = helper.d_BL_code_from_BL_ID[int(bl_id)]
     file_cache = f"cache/de-states/state_timeseries-{code}.json"
 
     max_allowed_rows_to_fetch = 2000
@@ -78,7 +78,7 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
     l_time_series_fetched = fetch_bundesland_time_series(
         bl_id=bl_id, readFromCache=True)
 
-    # code = helper.BL_code_from_BL_ID(bl_id)
+    # code = helper.d_BL_code_from_BL_ID(bl_id)
 
     l_time_series = []
 
@@ -101,8 +101,8 @@ def download_all_data():
     d_states_data = {}
 
     for bl_id in range(1, 17):
-        code = helper.BL_code_from_BL_ID(bl_id)
-        print(code)
+        code = helper.d_BL_code_from_BL_ID[bl_id]
+        # print(code)
 
         l_time_series = fetch_and_prepare_bl_time_series(bl_id)
         d_states_data[code] = l_time_series
@@ -183,8 +183,11 @@ def fit_doubling_or_halftime(d_states_data) -> dict:
 # this is based on a copy from fetch-de-districts.py
 def join_with_divi_data(d_states_data) -> dict:
     d_divi_data = helper.read_json_file('cache/de-divi/de-divi-V3-states.json')
+
     for bl_code, l_time_series in d_states_data.items():
-        assert bl_code in d_divi_data, f"Error: BL {bl_code} missing in DIVI data"
+        # assert bl_code in d_divi_data, f"Error: BL {bl_code} missing in DIVI data"
+        # in divi export the code is used
+        # s_bl_id = "%0d" % helper.d_BL_ID_from_BL_code[bl_code]
         if bl_code[0:2] != '11':
             l_divi_time_series = d_divi_data[bl_code]
         d_divi_time_series = {}

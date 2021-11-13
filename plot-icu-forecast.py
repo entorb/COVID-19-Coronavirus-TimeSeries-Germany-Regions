@@ -36,6 +36,7 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 # switch data source to Risklayer?
 # sum per bundesland: Berlin missing
 # sum total
+# use new complete DIVI dataset in data/de-divi/tsv/latest.tsv
 
 # Done
 # draw a line from max betten
@@ -392,7 +393,7 @@ def doit(landkreis_name, l_lkids, group='de-district'):
             filepath = f"{dir_out}/single/{l_lkids[0]}.png"
     elif group == "de-state":
         bl_id = l_lkids[0][0:2]
-        bl_code = helper.BL_code_from_BL_ID(int(bl_id))
+        bl_code = helper.d_BL_code_from_BL_ID(int(bl_id))
         bl_name = helper.d_BL_name_from_BL_Code[bl_code]
         landkreis_name = bl_name
         filepath = f"{dir_out}/de-states/{bl_code}.png"
@@ -449,7 +450,7 @@ for i in range(1, 16+1):
         (fileBaseName, fileExtension) = os.path.splitext(fileName)
         lkid = fileBaseName
         l_lkids.append(lkid)
-    landkreis_name = helper.BL_code_from_BL_ID(int(blid))
+    landkreis_name = helper.d_BL_code_from_BL_ID(int(blid))
     doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
 
 # sum up DE-total

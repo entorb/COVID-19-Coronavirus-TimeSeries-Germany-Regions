@@ -129,57 +129,55 @@ def pandas_calc_roll_av(df, column: str, days: int = 7):
 #
 
 
-def BL_code_from_BL_ID(bl_id: int) -> str:
-    """
-    converts Bundesland/ BL_IDs to Codes: 01 -> 1 -> SH
-    """
-    bl_id = int(bl_id)  # for security
-    d = {
-        1: 'SH',
-        2: 'HH',
-        3: 'NI',
-        4: 'HB',
-        5: 'NW',
-        6: 'HE',
-        7: 'RP',
-        8: 'BW',
-        9: 'BY',
-        10: 'SL',
-        11: 'BE',
-        12: 'BB',
-        13: 'MV',
-        14: 'SN',
-        15: 'ST',
-        16: 'TH'
-    }
-    return d[bl_id]
+# def BL_code_from_BL_ID(bl_id: int) -> str:
+#     """
+#     converts Bundesland/ BL_IDs to Codes: 01 -> 1 -> SH
+#     """
+#     bl_id = int(bl_id)  # for security
+
+#     return d[bl_id]
 
 
-def BL_name_from_BL_ID(bl_id: int) -> str:
-    """
-    converts Codes to names: SH -> S
-    """
-    bl_id = int(bl_id)  # for security
-    d = {
-        1: 'SH',
-        2: 'HH',
-        3: 'NI',
-        4: 'HB',
-        5: 'NW',
-        6: 'HE',
-        7: 'RP',
-        8: 'BW',
-        9: 'BY',
-        10: 'SL',
-        11: 'BE',
-        12: 'BB',
-        13: 'MV',
-        14: 'SN',
-        15: 'ST',
-        16: 'TH'
-    }
-    return d[bl_id]
+d_BL_code_from_BL_ID = {
+    0: 'DE-total',
+    1: 'SH',
+    2: 'HH',
+    3: 'NI',
+    4: 'HB',
+    5: 'NW',
+    6: 'HE',
+    7: 'RP',
+    8: 'BW',
+    9: 'BY',
+    10: 'SL',
+    11: 'BE',
+    12: 'BB',
+    13: 'MV',
+    14: 'SN',
+    15: 'ST',
+    16: 'TH'
+}
 
+
+d_BL_ID_from_BL_code = {
+    'DE-total': 0,
+    'SH': 1,
+    'HH': 2,
+    'NI': 3,
+    'HB': 4,
+    'NW': 5,
+    'HE': 6,
+    'RP': 7,
+    'BW': 8,
+    'BY': 9,
+    'SL': 10,
+    'BE': 11,
+    'BB': 12,
+    'MV': 13,
+    'SN': 14,
+    'ST': 15,
+    'TH': 16
+}
 
 d_BL_name_from_BL_Code = {
     'BW': "Baden-Württemberg",

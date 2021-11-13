@@ -27,11 +27,6 @@ plt.ioff()
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 
-d_nameToCode = {
-    'BW': "Baden-Württemberg", 'BY': "Bayern", 'BE': "Berlin", 'BB': "Brandenburg", 'HB': "Bremen", 'HH': "Hamburg", 'HE': "Hessen", 'MV': "Mecklenburg-Vorpommern", 'NI': "Niedersachsen", 'NW': "Nordrhein-Westfalen", 'RP': "Rheinland-Pfalz", 'SL': "Saarland", 'SN': "Sachsen", 'ST': "Sachsen-Anhalt", 'SH': "Schleswig-Holstein", 'TH': "Thüringen", 'DE-total': "Deutschland"
-}
-
-
 def calc_doubling_time(percent_7day: float) -> float:
     """ convert 7-day-increase of incidence into doubling time"""
     tD = -7/log((1/(percent_7day+1)), 2)
@@ -222,7 +217,7 @@ for datafile in glob.glob("data/de-states/de-state-*.tsv"):
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[9:]
-    long_name = d_nameToCode[code]
+    long_name = helper.d_BL_name_from_BL_Code[code]
 
     df = read_data(datafile=datafile)
 
@@ -245,5 +240,5 @@ for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
 
     df = read_data(datafile=datafile)
 
-    print(code, long_name)
+    # print(code, long_name)
     plot_it(df, code, long_name, "de-districts")
