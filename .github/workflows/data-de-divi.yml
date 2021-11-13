@@ -53,10 +53,30 @@ jobs:
     - name: Data fetch-de-divi
       run: python3 fetch-de-divi-V3.py
 
+    - name: Data commit new files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/*
+        git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
+
+    - name: Data push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        directory: data
+
+    - name: Data zipping data/
+      run: |
+        cd data
+        tar cfz ../cache/data.tgz *
+        cd ..
+
     - name: Plotting plot-icu-forecast.py
       run: python3 plot-icu-forecast.py
 
-    - name: Matplotlib zipping plots-python/
+    - name: Plotting zipping plots-python/
       run: |
         cd plots-python
         tar cfz ../cache/plots-python.tgz *
