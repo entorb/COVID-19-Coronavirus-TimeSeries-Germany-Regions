@@ -31,7 +31,7 @@
 	<script src="./js/echarts-4.7.0-en.min.js"></script>
 	<script src="./js/jquery-3.5.0.min.js"></script>
 	<!-- My Helper -->
-	<script src="./js/myHelper.js"></script>
+	<script src="./js/myHelper2.js"></script>
 	<script src="./js/myHelper-tabulator.js"></script>
 	<script src="./js/myHelper-eCharts.js"></script>
 	<script src="./js/myHelper-risk-calc.js"></script>
@@ -726,50 +726,68 @@
 			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
 		Bedarf an Intensivbetten für die Landkreise und Bundesländer erstellt. Hier die Ergebnisse für die
 		Bundesländer:<br />
-		<select id="icu_forecast_sel_de_states" style="width:200px" onchange="icu_forecast_sel_de_states_selected()">
 
-			<option value="DE-total" selected>Deutschland gesamt</option>
-			<option value="BW">Baden-Württemberg</option>
-			<option value="BY">Bayern</option>
-			<option value="BE">Berlin</option>
-			<option value="BB">Brandenburg</option>
-			<option value="HB">Bremen</option>
-			<option value="HH">Hamburg</option>
-			<option value="HE">Hessen</option>
-			<option value="MV">Mecklenburg-Vorpommern</option>
-			<option value="NI">Niedersachsen</option>
-			<option value="NW">Nordrhein-Westfalen</option>
-			<option value="RP">Rheinland-Pfalz</option>
-			<option value="SL">Saarland</option>
-			<option value="SN">Sachsen</option>
-			<option value="ST">Sachsen-Anhalt</option>
-			<option value="SH">Schleswig-Holstein</option>
-			<option value="TH">Thüringen</option>
-		</select>
+	<table>
+		<tr>
+			<th>Bundesland</th>
+			<th>Landkreis</th>
+		</tr>
+		<tr>
+			<td>
+				<select id="icu_forecast_sel_de_states" style="width:200px"
+					onchange="icu_forecast_sel_de_states_selected()">
+					<option value="DE-total" selected>Deutschland gesamt</option>
+					<option value="BW">Baden-Württemberg</option>
+					<option value="BY">Bayern</option>
+					<option value="BE">Berlin</option>
+					<option value="BB">Brandenburg</option>
+					<option value="HB">Bremen</option>
+					<option value="HH">Hamburg</option>
+					<option value="HE">Hessen</option>
+					<option value="MV">Mecklenburg-Vorpommern</option>
+					<option value="NI">Niedersachsen</option>
+					<option value="NW">Nordrhein-Westfalen</option>
+					<option value="RP">Rheinland-Pfalz</option>
+					<option value="SL">Saarland</option>
+					<option value="SN">Sachsen</option>
+					<option value="ST">Sachsen-Anhalt</option>
+					<option value="SH">Schleswig-Holstein</option>
+					<option value="TH">Thüringen</option>
+				</select>
+			</td>
+			<td>
+				<select id="icu_forecast_sel_de_districts" style="width:200px"
+					onchange="icu_forecast_sel_de_districts_selected()"></select>
+
+			</td>
+		</tr>
+	</table>
 	</p>
 
-	<img id="icu_forecast_de_states_img" src="plots-python/icu-forecast/de-states/DE-total.png"
-		alt="icu_forecast_de_states_img" width="800" height="600" /><br />
-	<img id="icu_forecast_de_states_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png"
-		alt="icu_forecast_de_states_img_zoom" width="800" height="600" /><br />
+	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="icu_forecast_img" width="800"
+		height="600" /><br />
+	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png"
+		alt="icu_forecast_img_zoom" width="800" height="600" /><br />
 
 
-	<p>
+	<!-- <p>
 		Die Grafiken der Landkreise sind bisher nur über einen Direktlink unter Verwendung der Landkreis-ID zu bekommen,
+		das werde ich später mal verbessern.
 		Beispiel:<br />
-		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/05978.png" target="_blank">
-			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>05978</b>.png</a> <br />
+		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/09562.png" target="_blank">
+			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>09562</b>.png</a> <br />
 		und<br />
-		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/05978-zoom.png"
+		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/09562-zoom.png"
 			target="_blank">
-			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>05978</b>-zoom.png</a><br />
+			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>09562</b>-zoom.png</a><br />
 		Eine Liste der Landkreis-IDs gibt es <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/ref-de-districts.tsv"
 			target="_blank">hier</a>
-	</p>
+	</p> -->
 
-	<p>Eine Funktion zur Gruppierung von benachbarten Landkreisen (zB Erlangen und Erlangen-Höchstadt) ist umgesetzt,
-		aber es fehlt mich noch an der dazugehörigen Datenlage. Hier freue ich mich über Hinweise.</p>
+	<p>Eine Funktion zur Gruppierung benachbarter Landkreisen (zB Erlangen und Erlangen-Höchstadt) ist umgesetzt,
+		aber es fehlt mich noch an der dazugehörigen Datenlage. Hier freue ich mich über <a
+			href="/contact.php?origin=COVID-19">Hinweise</a>.</p>
 
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"

@@ -95,6 +95,9 @@ function fetch_states_latest(array_states_latest) {
 promises.push(fetch_states_latest(array_states_latest));
 
 
+// populates
+// de_district_multiplot_sel_kreis
+// icu_forecast_sel_de_districts
 function de_district_multiplot_populate_select() {
   const url =
     "https://entorb.net/COVID-19-coronavirus/data/de-districts/mapping_landkreis_ID_name.json";
@@ -104,6 +107,7 @@ function de_district_multiplot_populate_select() {
     .done(function (data) {
       console.log("done: mapping_landkreis_ID_name.json");
       de_district_multiplot_sel_kreis = document.getElementById("de_district_multiplot_sel_kreis");
+      icu_forecast_sel_de_districts = document.getElementById("icu_forecast_sel_de_districts");
 
       // TODO: this is quite a dirty hack
       var data2 = {};
@@ -119,6 +123,7 @@ function de_district_multiplot_populate_select() {
           opt.innerHTML = v;
           opt.value = data2[v];
           de_district_multiplot_sel_kreis.appendChild(opt)
+          icu_forecast_sel_de_districts.appendChild(opt)
         });
 
     });
@@ -132,17 +137,28 @@ function de_district_multiplot_selected() {
     + ".png";
 }
 
-
 function icu_forecast_sel_de_states_selected() {
-  document.getElementById("icu_forecast_de_states_img").src =
+  document.getElementById("icu_forecast_img").src =
     "plots-python/icu-forecast/de-states/" +
     document.getElementById("icu_forecast_sel_de_states").value
     + ".png";
-  document.getElementById("icu_forecast_de_states_img_zoom").src =
+  document.getElementById("icu_forecast_img_zoom").src =
     "plots-python/icu-forecast/de-states/" +
     document.getElementById("icu_forecast_sel_de_states").value
     + "-zoom.png";
 }
+
+function icu_forecast_sel_de_districts_selected() {
+  document.getElementById("icu_forecast_img").src =
+    "plots-python/icu-forecast/single/" +
+    document.getElementById("icu_forecast_sel_de_districts").value
+    + ".png";
+  document.getElementById("icu_forecast_img_zoom").src =
+    "plots-python/icu-forecast/single/" +
+    document.getElementById("icu_forecast_sel_de_districts").value
+    + "-zoom.png";
+}
+
 
 // -------------
 // 1. Small helpers
