@@ -415,7 +415,7 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = -1, mode='de-district', fil
             df_cases = load_bl_case_data(bl_code='BE')
         else:
             df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
-            title = helper.d_lk_name_from_lk_id[lk_id]
+            title = helper.d_lk_name_from_lk_id["%05d" % lk_id]
         filepath = f"{dir_out}/single/{lk_id}.png"
 
     elif mode == "de-district-group":
@@ -475,8 +475,6 @@ doit(mode="DE-total")
 
 print("de-states")
 for i in range(1, 16+1):
-    # bl_id = 02 für HH etc
-    # bl_id = "%02d" % i
     doit(mode="de-state", bl_id=i)
 
 
