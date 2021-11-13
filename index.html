@@ -511,7 +511,8 @@
 	<h4><a id="DeDistricts-cases-deaths-divi"></a>Infektionen, Tote und Intensivstationsauslastung pro
 		Landkreis</h4>
 
-	<p><select id="de_district_multiplot_sel_kreis" style="width:200px" onchange="de_district_multiplot_selected()">
+	<p>
+		<select id="de_district_multiplot_sel_kreis" style="width:200px" onchange="de_district_multiplot_selected()">
 		</select>
 	</p>
 
@@ -721,9 +722,10 @@
 		<a id="DeStatesIcuForecast"></a> Intensivstationsprognose
 	</h4>
 	<p>
-		Basieren auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">einfachen
-			Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognosen für den Bedarf an Intensivbetten für
-		die Landkreise und Bundesländer erstellt. Hier die Ergebnisse für die Bundesländer:<br />
+		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105"
+			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
+		Bedarf an Intensivbetten für die Landkreise und Bundesländer erstellt. Hier die Ergebnisse für die
+		Bundesländer:<br />
 		<select id="icu_forecast_sel_de_states" style="width:200px" onchange="icu_forecast_sel_de_states_selected()">
 
 			<option value="DE-total" selected>Deutschland gesamt</option>
@@ -764,8 +766,16 @@
 		Eine Liste der Landkreis-IDs gibt es <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/ref-de-districts.tsv"
 			target="_blank">hier</a>
-
 	</p>
+
+	<p>Eine Funktion zur Gruppierung von benachbarten Landkreisen (zB Erlangen und Erlangen-Höchstadt) ist umgesetzt,
+		aber es fehlt mich noch an der dazugehörigen Datenlage. Hier freue ich mich über Hinweise.</p>
+
+	<small>generated via Python <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
+			target="_blank">plot-icu-forecast.py</a>
+	</small>
+
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
