@@ -5,6 +5,7 @@ name: Update Data DE DIVI
 on:  
   workflow_dispatch:
   schedule:
+  # UTC!
     - cron: "45 12 * * *" 
 # TODO
 #  push: 
