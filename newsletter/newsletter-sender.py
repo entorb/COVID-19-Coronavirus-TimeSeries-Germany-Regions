@@ -236,13 +236,15 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #     continue
-    # mailBody += "HINWEIS: Dies ist ein Nachversand, da es eine Änderung in einer der Datenquellen gab. Ich bitte die Umstände zu entschuldigen.\nLG Torben\n\n\n"
+    mailBody += """HINWEIS: Aufgrund der aktuellen Lage habe ich eine "Prognose für Intensivstations Bettenbedarf" erstellt. Gerne an Krankenhäuser weitergeben, vielleicht hilft es für deren Planung.
+    https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
+    LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
     l_this_regions = row["regions"].split(',')
     # 16056 Eisenach was merged with 16063: LK Wartburgkreis
-    # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach    
+    # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach
     if "16056" in l_this_regions:
         l_this_regions.remove("16056")
 
