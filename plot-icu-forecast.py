@@ -466,8 +466,10 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = -1, mode='de-district', fil
         quote=quote)
 
     # TODO
-#    plot_it(
-#        df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=title)
+    plot_it(
+        df=df_data, l_df_prognosen=l_df_prognosen,
+        l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=title
+    )
 
 
 print("DE-total")
