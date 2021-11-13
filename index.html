@@ -31,10 +31,10 @@
 	<script src="./js/echarts-4.7.0-en.min.js"></script>
 	<script src="./js/jquery-3.5.0.min.js"></script>
 	<!-- My Helper -->
-	<script src="./js/myHelper2.js"></script>
+	<script src="./js/myHelper3.js"></script>
 	<script src="./js/myHelper-tabulator.js"></script>
 	<script src="./js/myHelper-eCharts.js"></script>
-	<script src="./js/myHelper-risk-calc.js"></script>
+	<script src="./js/myHelper-risk-calc3.js"></script>
 	<!-- Gallery by Alex Friedl -->
 	<script src="./js/af_gallery.js"></script>
 	<!--Gallery by Alex Friedl -->
@@ -396,7 +396,7 @@
 	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="640" height="480"> <br />
 	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="640" height="480">
 	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-districts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/de-districts-zero_cases_last_week.tsv" target="_blank">de-districts-zero_cases_last_week.tsv</a></small> -->
-	<small>generated via Python<a
+	<br /><small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-districts-increase-histogram.py"
 			target="_blank">plot-de-districts-increase-histogram.py</a>
 	</small>
@@ -997,28 +997,12 @@
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Cases_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
-	<script>
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
-		});
-	</script>
 
 	<p> Ranking der Bundesländer nach Inzidenz (Reihe "Cases Last Week per 100.000 Population") und farbkodiert die
 		Gesamtzahl der Infektionen (Reihe "Cases per Million Population"). </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Cases_Last_Week_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
-	<script>
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
-		});
-	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<!-- <h5>
@@ -1589,25 +1573,8 @@
 		<div id="div_eChart_Country_Doubling_Time" style="height: 2000px">
 		</div>
 	</div>
-	<script>
 
-
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('Country', 'div_eChart_Country_Doubling_Time', 'DoublingTime_Cases_Last_Week_Per_100000', 'Cases_Last_Week_Per_Million')
-
-		});
-
-	</script>
 	<div id="div_table-countries-doubling"></div>
-	<script>
-
-		var table_Countries = defineTable_Countries_Doubling();
-		promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
-
-	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -1703,18 +1670,7 @@
 		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
 		</div>
 	</div>
-	<script>
 
-
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('Country', 'div_eChart_Country_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
-
-		});
-
-	</script>
 
 	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their
 		total cases (series "Cases per Million Population").</p>
@@ -1724,14 +1680,6 @@
 	</div>
 	<script>
 
-
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('Country', 'div_eChart_Country_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
-
-		});
 
 	</script>
 
@@ -1745,18 +1693,6 @@
 		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
 		</div>
 	</div>
-	<script>
-
-
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('Country', 'div_eChart_Country_Deaths_Per_Million', 'Deaths_Per_Million', 'Deaths_Last_Week_Per_Million');
-
-		});
-
-	</script>
 
 	<p> Ranking countries by current new deaths (series "Deaths Last Week per Million Population") and color-coding
 		their total deaths (series "Deaths per Million Population").</p>
@@ -1764,18 +1700,6 @@
 		<div id="div_eChart_Country_Deaths_Last_Week_Per_Million" style="height: 4000px">
 		</div>
 	</div>
-	<script>
-
-
-		// Wait for all async promises to be done (all data is fetched)
-		Promise.all(promises).then(function () {
-			// console.log(array_countries_latest);
-			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
-			create_latest_data_plot('Country', 'div_eChart_Country_Deaths_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million', 'Deaths_Per_Million');
-
-		});
-
-	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -2038,6 +1962,34 @@
 	 -->
 	<hr>
 	<a href="/">Home</a> - <a href="/contact.php?origin=COVID-19">Contact</a> - <a href="/impressum.php">Impressum</a>
+
+
+	<script>
+		// fetch data and populate html Elements after fetching the page
+		promises.push(fetch_countries_latest(array_countries_latest));
+		promises.push(fetch_states_latest(array_states_latest));
+		promises.push(de_district_multiplot_populate_select());
+		promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
+		// Wait for all async promises to be done (all data is fetched)
+		Promise.all(promises).then(function () {
+			// console.log(array_countries_latest);
+			//setDataToPlot('canvas1', 'Cases_Last_Week_Per_100000', 'ASC')
+			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
+			create_latest_data_plot('DeStates', 'div_eChart_DeStates_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
+			create_latest_data_plot('Country', 'div_eChart_Country_Doubling_Time', 'DoublingTime_Cases_Last_Week_Per_100000', 'Cases_Last_Week_Per_Million')
+			create_latest_data_plot('Country', 'div_eChart_Country_Cases_Per_Million', 'Cases_Per_Million', 'Cases_Last_Week_Per_100000');
+			create_latest_data_plot('Country', 'div_eChart_Country_Cases_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Per_Million');
+			create_latest_data_plot('Country', 'div_eChart_Country_Deaths_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million', 'Deaths_Per_Million');
+			create_latest_data_plot('Country', 'div_eChart_Country_Deaths_Per_Million', 'Deaths_Per_Million', 'Deaths_Last_Week_Per_Million');
+			var table_Countries = defineTable_Countries_Doubling();
+			promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
+		});
+
+
+	</script>
+
+
+
 </body>
 
 </html>

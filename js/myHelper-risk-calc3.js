@@ -91,7 +91,6 @@ function rc_fetch_DE_states_and_populate_risk_calc_select() {
       console.log("fail: de-states-latest");
     });
 }
-promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
 
 
 function rc_sel_bundesland_selected() {

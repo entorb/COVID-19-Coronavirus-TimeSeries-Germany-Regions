@@ -69,7 +69,7 @@ function fetch_countries_latest(array_countries_latest) {
       console.log("fail: array_countries_latest");
     });
 }
-promises.push(fetch_countries_latest(array_countries_latest));
+
 
 
 function fetch_states_latest(array_states_latest) {
@@ -92,7 +92,6 @@ function fetch_states_latest(array_states_latest) {
       console.log("fail: array_states_latest");
     });
 }
-promises.push(fetch_states_latest(array_states_latest));
 
 
 // populates
@@ -119,26 +118,18 @@ function de_district_multiplot_populate_select() {
       Object.keys(data2)
         .sort()
         .forEach(function (v, i) {
-          var opt = document.createElement('option');
-          opt.innerHTML = v;
-          opt.value = data2[v];
-          de_district_multiplot_sel_kreis.appendChild(opt);
+          var opt1 = document.createElement('option');
+          opt1.innerHTML = v;
+          opt1.value = data2[v];
+          de_district_multiplot_sel_kreis.appendChild(opt1);
+          // TODO: cloning of object needed, here dirty hack
+          var opt2 = document.createElement('option');
+          opt2.innerHTML = v;
+          opt2.value = data2[v];
+          icu_forecast_sel_de_districts.appendChild(opt2);
         });
-
-      // TODO: cloning of object needed, here dirty hack
-      Object.keys(data2)
-        .sort()
-        .forEach(function (v, i) {
-          var opt = document.createElement('option');
-          opt.innerHTML = v;
-          opt.value = data2[v];
-          icu_forecast_sel_de_districts.appendChild(opt);
-        });
-
-
     });
 }
-promises.push(de_district_multiplot_populate_select());
 
 function de_district_multiplot_selected() {
   document.getElementById("de_district_multiplot_img").src =
