@@ -95,6 +95,8 @@ def load_divi_data() -> DataFrame:
 
 
 df_divi_all = load_divi_data()
+print(len(df_divi_all))
+# exit(90)
 
 
 def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
@@ -394,14 +396,14 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', fil
     # ensure lk_ids are a unique list
     l_lk_ids = list(set(l_lk_ids))
 
-    if "16056" in l_lk_ids:  # Eisenach
-        l_lk_ids.remove("16056")
+    if 16056 in l_lk_ids:  # Eisenach
+        l_lk_ids.remove(16056)
 
     if mode == "de-district":
         assert len(l_lk_ids) == 1
         lk_id = l_lk_ids[0]
         df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
-        if l_lk_ids[0] == "11000":  # Berlin
+        if l_lk_ids[0] == 11000:  # Berlin
             # Berlin as it is 1 set in DIVI, but multiple in RKI
             title = "Berlin"
             df_cases = load_bl_case_data(bl_code='BE')
@@ -479,7 +481,7 @@ l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
 for d in l_groupes:
     title = d["title"]
     id = d["id"]
-    l_lk_ids = d["lk_ids"]
+    l_lk_ids = [int(x) for x in d["lk_ids"]]
     doit(mode="de-district-group", title=title, l_lk_ids=l_lk_ids,
          filename=str(d["id"]))
 
@@ -489,6 +491,7 @@ for d in l_groupes:
 # l_lk_ids = helper.read_json_file(
 #     "data/de-divi/lkids.json")
 # for lk_id in l_lk_ids:
-#     if (lk_id == "16056"):  # Eisenach
+#     lk_id = int(lk_id)
+#     if (lk_id == 16056):  # Eisenach
 #         continue
 #     doit(mode="de-district", l_lk_ids=(lk_id,))
