@@ -132,6 +132,18 @@ function de_district_multiplot_selected() {
     + ".png";
 }
 
+
+function icu_forecast_sel_de_states_selected() {
+  document.getElementById("icu_forecast_de_states_img").src =
+    "plots-python/icu-forecast/de-states/" +
+    document.getElementById("icu_forecast_sel_de_states").value
+    + ".png";
+  document.getElementById("icu_forecast_de_states_img_zoom").src =
+    "plots-python/icu-forecast/de-states/" +
+    document.getElementById("icu_forecast_sel_de_states").value
+    + "-zoom.png";
+}
+
 // -------------
 // 1. Small helpers
 // -------------

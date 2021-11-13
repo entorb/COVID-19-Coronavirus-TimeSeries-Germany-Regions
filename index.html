@@ -154,6 +154,9 @@
 						Bundesland</a> <b>(neue Grafik)</b>
 				</li>
 				<li>
+					<a href="#DeStatesIcuForecast">Intensivstationsprognose</a> <b>(neu)</b>
+				</li>
+				<li>
 					<a href="#DeStatesCasesDoubling">Verdopplungszeit der Neu-Infektionen</a>
 				</li>
 				<li>
@@ -713,6 +716,59 @@
 	</div>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+
+	<h4>
+		<a id="DeStatesIcuForecast"></a> Intensivstationsprognose
+	</h4>
+	<p>
+		Basieren auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">einfachen
+			Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognosen für den Bedarf an Intensivbetten für
+		die Landkreise und Bundesländer erstellt. Hier die Ergebnisse für die Bundesländer:<br />
+		<select id="icu_forecast_sel_de_states" style="width:200px" onchange="icu_forecast_sel_de_states_selected()">
+
+			<option value="DE-total" selected>Deutschland gesamt</option>
+			<option value="BW">Baden-Württemberg</option>
+			<option value="BY">Bayern</option>
+			<option value="BE">Berlin</option>
+			<option value="BB">Brandenburg</option>
+			<option value="HB">Bremen</option>
+			<option value="HH">Hamburg</option>
+			<option value="HE">Hessen</option>
+			<option value="MV">Mecklenburg-Vorpommern</option>
+			<option value="NI">Niedersachsen</option>
+			<option value="NW">Nordrhein-Westfalen</option>
+			<option value="RP">Rheinland-Pfalz</option>
+			<option value="SL">Saarland</option>
+			<option value="SN">Sachsen</option>
+			<option value="ST">Sachsen-Anhalt</option>
+			<option value="SH">Schleswig-Holstein</option>
+			<option value="TH">Thüringen</option>
+		</select>
+	</p>
+
+	<img id="icu_forecast_de_states_img" src="plots-python/icu-forecast/de-states/DE-total.png"
+		alt="icu_forecast_de_states_img" width="800" height="600" /><br />
+	<img id="icu_forecast_de_states_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png"
+		alt="icu_forecast_de_states_img_zoom" width="800" height="600" /><br />
+
+
+	<p>
+		Die Grafiken der Landkreise sind bisher nur über einen Direktlink unter Verwendung der Landkreis-ID zu bekommen,
+		Beispiel:<br />
+		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/05978.png" target="_blank">
+			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>05978</b>.png</a> <br />
+		und<br />
+		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/05978-zoom.png"
+			target="_blank">
+			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>05978</b>-zoom.png</a><br />
+		Eine Liste der Landkreis-IDs gibt es <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/ref-de-districts.tsv"
+			target="_blank">hier</a>
+
+	</p>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+
 
 	<h4>
 		<a id="DeStatesCasesDoubling"></a> Verdopplungszeit der Neu-Infektionen
