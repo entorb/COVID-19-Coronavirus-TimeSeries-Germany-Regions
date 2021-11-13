@@ -122,9 +122,19 @@ function de_district_multiplot_populate_select() {
           var opt = document.createElement('option');
           opt.innerHTML = v;
           opt.value = data2[v];
-          de_district_multiplot_sel_kreis.appendChild(opt)
-          icu_forecast_sel_de_districts.appendChild(opt)
+          de_district_multiplot_sel_kreis.appendChild(opt);
         });
+
+      // TODO: cloning of object needed, here dirty hack
+      Object.keys(data2)
+        .sort()
+        .forEach(function (v, i) {
+          var opt = document.createElement('option');
+          opt.innerHTML = v;
+          opt.value = data2[v];
+          icu_forecast_sel_de_districts.appendChild(opt);
+        });
+
 
     });
 }
