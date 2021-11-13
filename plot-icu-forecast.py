@@ -102,12 +102,17 @@ def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
     filters df_divi_all by l_lk_ids
     sums up betten_covid and betten_ges
     """
+    print("lk_ids")
+    print(l_lk_ids)
     global df_divi_all
     df = df_divi_all[df_divi_all["gemeindeschluessel"].isin(l_lk_ids)]
     df = df.groupby(['date']).agg(
         {'betten_covid': 'sum',
          'betten_ges': 'sum'}
     )
+    print("df len")
+    print(len(df))
+
     df.index = pd.to_datetime(df.index)
 
     date_last = pd.to_datetime(df.index[-1]).date()
@@ -405,6 +410,8 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', fil
         assert filename != "", f"ERROR: filename missing for {title}"
         assert len(l_lk_ids) > 0, f"ERROR lk_ids empty for {title}"
         assert title != "", f"ERROR: title empty for filename {filename}"
+        print(title)
+        print(l_lk_ids)
         df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
         df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
         filepath = f"{dir_out}/de-district-group/{filename}.png"
@@ -447,18 +454,18 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', fil
         quote=quote)
 
     # TODO
-    plot_it(
-        df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=title)
+#    plot_it(
+#        df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=title)
 
 
-print("DE-total")
-doit(mode="DE-total")
+# print("DE-total")
+# doit(mode="DE-total")
 
-print("de-states")
-for i in range(1, 16+1):
-    # bl_id = 02 für HH etc
-    # bl_id = "%02d" % i
-    doit(mode="de-state", bl_id=i)
+# print("de-states")
+# for i in range(1, 16+1):
+#     # bl_id = 02 für HH etc
+#     # bl_id = "%02d" % i
+#     doit(mode="de-state", bl_id=i)
 
 
 print("de-district-group")
@@ -466,18 +473,18 @@ print("de-district-group")
 # generated via icu-groups.py
 l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
 for d in l_groupes:
-    landkreis_name = d["title"]
+    title = d["title"]
     id = d["id"]
     l_lk_ids = d["lk_ids"]
-    doit(mode="de-district-group", title=landkreis_name, l_lk_ids=l_lk_ids,
+    doit(mode="de-district-group", title=title, l_lk_ids=l_lk_ids,
          filename=str(d["id"]))
 
 # test
 
-print("de-districts")
-l_lk_ids = helper.read_json_file(
-    "data/de-divi/lkids.json")
-for lk_id in l_lk_ids:
-    if (lk_id == "16056"):  # Eisenach
-        continue
-    doit(mode="de-district", l_lk_ids=(lk_id,))
+# print("de-districts")
+# l_lk_ids = helper.read_json_file(
+#     "data/de-divi/lkids.json")
+# for lk_id in l_lk_ids:
+#     if (lk_id == "16056"):  # Eisenach
+#         continue
+#     doit(mode="de-district", l_lk_ids=(lk_id,))
