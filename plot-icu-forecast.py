@@ -102,10 +102,14 @@ def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
     filters df_divi_all by l_lk_ids
     sums up betten_covid and betten_ges
     """
-    print("lk_ids")
-    print(l_lk_ids)
     global df_divi_all
-    df = df_divi_all[df_divi_all["gemeindeschluessel"].isin(l_lk_ids)]
+    df = df_divi_all
+    print(len(df))
+    df = df[df["gemeindeschluessel"].isin(l_lk_ids)]
+    print(df.tail())
+
+    assert len(df) > 0, f"ERROR: no divi data for lk_ids: {l_lk_ids}"
+
     df = df.groupby(['date']).agg(
         {'betten_covid': 'sum',
          'betten_ges': 'sum'}
