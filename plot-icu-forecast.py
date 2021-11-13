@@ -76,7 +76,7 @@ def load_lk_data(l_lkids: list) -> DataFrame:
             continue
 
         # load cases data
-        if l_lkids == ["11000", ]:  # Berlin
+        if lk_id == "11000":  # Berlin
             file_cases = f'data/de-states/de-state-BE.tsv'
         else:
             file_cases = f'data/de-districts/de-district_timeseries-{lk_id}.tsv'
@@ -316,8 +316,8 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     axes.tick_params(right=True, labelright=True)
 
     # {weeks_forcast} Wochen
-    plt.title(
-        f'{landkreis_name}: Prognose ICU Bettenbelegung')
+    title = f'{landkreis_name}: Prognose ICU Bettenbelegung'
+    plt.title(title)
     axes.set_xlabel("")
     axes.set_ylabel('ICU Betten belegt')
     axes.set_axisbelow(True)  # for grid below the lines
@@ -333,11 +333,14 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     plt.savefig(fname=filepath, format='png')
 
     # zoomed plot
+    # TODO: better title?
+    # plt.title(title + " zoom")
     date_min2 = pd.to_datetime(df.index[-45]).date()
     date_max2 = pd.to_datetime(l_df_prognosen[0].index[-1]).date()
     axes.set_xlim([date_min2, date_max2])
 
     # set grid to week
+    # no, because than the month info is lost
     # wloc = WeekdayLocator()
     # axes.xaxis.set_major_locator(wloc)
 

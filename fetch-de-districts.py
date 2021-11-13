@@ -148,12 +148,10 @@ def fetch_and_prepare_ref_landkreise() -> dict:
     for d_this_landkreis in l_landkreise:
         lk_id = d_this_landkreis['RS']  # RS = LK_ID ; county = LK_Name
 
-        # TODOS
         # 16056 Eisenach was merged with 16063: LK Wartburgkreis
         # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach
-        # # for some strange reason, the RKI dashboard no longer has data for Eisenach / 16056
-        # if lk_id == '16056':  # Eisenach
-        #     continue
+        if lk_id == '16056':  # Eisenach
+            continue
 
         assert type(lk_id) == str
         assert lk_id.isdecimal() == True

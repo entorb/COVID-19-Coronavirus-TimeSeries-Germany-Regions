@@ -241,6 +241,10 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     mailTo = row["email"]
     s_this_regions = row["regions"]
     l_this_regions = row["regions"].split(',')
+    # 16056 Eisenach was merged with 16063: LK Wartburgkreis
+    # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach    
+    if "16056" in l_this_regions:
+        l_this_regions.remove("16056")
 
     # for sorting by value
     d_this_regions_cases_100k = {}
