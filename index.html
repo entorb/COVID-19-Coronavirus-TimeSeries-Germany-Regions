@@ -384,13 +384,13 @@
 	<p>In der folgenden Grafik ist als Zeitverlauf die Anzahl der deutschen Land- und Stadtkreise pro
 		Inzidenz-Intervallen aufgetragen.</p>
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png"
-		alt="hist-de-districts-Cases_Last_Week_Per_100000.png">
+		alt="hist-de-districts-Cases_Last_Week_Per_100000.png" width="640" height="480">
 
 	<p>Analog dazu hier Zunahme und Abnahme der Inzidenzen im Vergleich zur Vorwoche:</p>
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png"><br />
+		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="640" height="480"><br />
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png">
+		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="640" height="480">
 	<!-- 
 		min 1. COVID-19 Neu-Infektionen in der letzten Woche vermeldet haben und darunter die mit einer Inzidenz über 50.</p>
 	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="640" height="480"> <br />
@@ -635,7 +635,7 @@
 			<a href="#article-cases-deaths-divi-TH">TH</a>
 		</div>
 		<div class="af_gallery_results" id="results_cases-deaths-divi" style="display: flex;flex-flow:column">
-			<div class="af_gallery_results_plot" id="results_DE_states_plot">
+			<div class="af_gallery_results_plot" id="results_DE_states_plot1">
 				<article id="#article-cases-deaths-divi-DE-total">
 					<img src="plots-python/de-states/de-state-DE-total.png"
 						alt="plots-python/de-states/de-state-DE-total.png" width="800" height="800"><br />
@@ -728,6 +728,7 @@
 		Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten Woche für 2 Wochen fortgeschrieben. Blau
 		ist die Historie der gemeldeten ICU Betten.<br />
 		Hier die Region auswählen:
+	</p>
 	<table>
 		<tr>
 			<th>Bundesland</th>
@@ -758,17 +759,21 @@
 			</td>
 			<td>
 				<select id="icu_forecast_sel_de_districts" style="width:200px"
-					onchange="icu_forecast_sel_de_districts_selected()"></select>
+					onchange="icu_forecast_sel_de_districts_selected()">
+					<option value="0" selected>Auswählen</option>
+					</select>
 
 			</td>
 		</tr>
 	</table>
-	</p>
 
-	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="icu_forecast_img" width="800"
+	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="keine Daten gefunden" width="800"
 		height="600" /><br />
-	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png"
-		alt="icu_forecast_img_zoom" width="800" height="600" /><br />
+	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600" alt="" /><br/>
+	<small>generated via Python <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
+			target="_blank">plot-icu-forecast.py</a>
+	</small>
 
 
 	<!-- <p>
@@ -790,10 +795,6 @@
 		aber es fehlt mich noch an der dazugehörigen Datenlage. Hier freue ich mich über <a
 			href="/contact.php?origin=COVID-19">Hinweise</a>.</p>
 
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
-			target="_blank">plot-icu-forecast.py</a>
-	</small>
 
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -843,74 +844,74 @@
 			<a href="#article-cases-de-doubling-TH">TH</a>
 		</div>
 		<div class="af_gallery_results" id="results_cases-de-doubling" style="display: flex;flex-flow:column">
-			<div class="af_gallery_results_plot" id="results_DE_states_plot">
+			<div class="af_gallery_results_plot" id="results_DE_states_plot2">
 				<article id="#article-cases-de-doubling-DE-total">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-DE-total.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-DE-total.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-DE-total.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BW">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-BW.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BW.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-BW.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BY">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-BY.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BY.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-BY.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BE">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-BE.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BE.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-BE.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BB">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-BB.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BB.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-BB.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HB">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-HB.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HB.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-HB.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HH">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-HH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HH.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-HH.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HE">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-HE.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HE.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-HE.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-MV">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-MV.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-MV.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-MV.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-NI">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-NI.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-NI.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-NI.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-NW">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-NW.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-NW.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-NW.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-RP">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-RP.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-RP.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-RP.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SL">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-SL.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SL.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-SL.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SN">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-SN.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SN.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-SN.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-ST">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-ST.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-ST.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-ST.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SH">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-SH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SH.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-SH.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-TH">
 					<img src="plots-gnuplot/de-states/cases-de-doubling-TH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-TH.png"><br />
+						alt="plots-gnuplot/de-states/cases-de-doubling-TH.png" width="640" height="480"><br />
 				</article>
 			</div>
 			<div class="af_gallery_results_footer" id="results_DE_states_footer">
@@ -1280,7 +1281,7 @@
 	<h4>
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
-	<img src="plots-python\de-vaccination.png" height="480px" />
+	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png"/>
 	<br />
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
@@ -1316,9 +1317,9 @@
 		beteiligen möchte kann gerne <a href="/contact.php?origin=CO2Ampel">Kontakt</a> zu mir aufnehmen. Aktueller
 		Stand: </p>
 	<img alt="ASGS-V1.jpg"
-		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg" /><br />
+		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg" width="1280" height="960"/><br />
 	<img alt="4xCO2-in-Holz.jpg"
-		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg" />
+		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg"  width="1280" height="720"/>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 
@@ -1339,7 +1340,7 @@
 	</h3>
 	<a title="Dan Polansky and authors of File:BlankMap-World.svg. / CC BY-SA (https://creativecommons.org/licenses/by-sa/4.0)"
 		href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg"
-		target="_blank"><img width="1024" alt="COVID-19 Outbreak World Map Total Deaths per Capita"
+		target="_blank"><img alt="COVID-19 Outbreak World Map Total Deaths per Capita"
 			src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg/1024px-COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg.png"></a>
 
 	<p>Map deaths per million population, borrowed from <a
