@@ -423,18 +423,18 @@ for group in l_groupes:
     doit(landkreis_name=landkreis_name, l_lkids=l_lkids)
 
 
-# # loop over all district that have Divi data
-# for file in glob.glob("data/de-divi/tsv/*.tsv"):
-#     (filepath, fileName) = os.path.split(file)
-#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#     lkid = fileBaseName
-#     if (lkid == "16056"):  # Eisenach
-#         continue
-#     if lkid == "11000":
-#         landkreis_name = "Berlin"
-#     else:
-#         landkreis_name = d_lkid2name[lkid]
-#     doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
+# loop over all district that have Divi data
+for file in glob.glob("data/de-divi/tsv/*.tsv"):
+    (filepath, fileName) = os.path.split(file)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    lkid = fileBaseName
+    if (lkid == "16056"):  # Eisenach
+        continue
+    if lkid == "11000":
+        landkreis_name = "Berlin"
+    else:
+        landkreis_name = d_lkid2name[lkid]
+    doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
 
 # sum up districts to bundeslaender
 for i in range(1, 16+1):
@@ -449,15 +449,15 @@ for i in range(1, 16+1):
     landkreis_name = helper.BL_code_from_BL_ID(int(blid))
     doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
 
-# # sum up DE-total
-# l_lkids = []
-# for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
-#     (filepath, fileName) = os.path.split(file)
-#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#     lkid = fileBaseName
-#     l_lkids.append(lkid)
-# landkreis_name = "Deutschland gesamt"
-# doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
+# sum up DE-total
+l_lkids = []
+for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
+    (filepath, fileName) = os.path.split(file)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    lkid = fileBaseName
+    l_lkids.append(lkid)
+landkreis_name = "Deutschland gesamt"
+doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
 
 
 # l_lkids = ("09563",)
