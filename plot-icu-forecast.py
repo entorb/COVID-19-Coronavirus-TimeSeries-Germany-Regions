@@ -51,7 +51,7 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 dir_out = 'plots-python/icu-forecast/'
 # os.makedirs(dir_out, exist_ok=True)
 os.makedirs(dir_out+"/single", exist_ok=True)
-os.makedirs(dir_out+"/joined", exist_ok=True)
+os.makedirs(dir_out+"/de-district-group", exist_ok=True)
 os.makedirs(dir_out+"/de-states", exist_ok=True)
 
 # how many weeks shall we look into the future
@@ -358,7 +358,16 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     plt.close()
 
 
-def doit(landkreis_name, l_lkids, group='de-district'):
+def doit(landkreis_name, l_lkids, mode='de-district', filename=""):
+    """
+    mode:
+    district: 1 Landkreis
+    district-group: multiple districts, requires filename
+    state
+    DE
+    """
+    if mode == "de-district-group":
+        assert filename != "", f"ERROR: filename missing for {landkreis_name}"
     # unique list
     l_lkids = list(set(l_lkids))
     if "16056" in l_lkids:  # Eisenach
@@ -385,24 +394,27 @@ def doit(landkreis_name, l_lkids, group='de-district'):
         l_prognosen_prozente=l_prognosen_prozente,
         quote=quote)
 
-    if group == "de-district":
-        if (len(l_lkids) > 1):
-            # we are handling joined districts
-            filepath = f"{dir_out}/joined/{'_'.join(l_lkids)}.png"
-        else:
-            filepath = f"{dir_out}/single/{l_lkids[0]}.png"
-    elif group == "de-state":
+    if mode == "district":
+        filepath = f"{dir_out}/single/{l_lkids[0]}.png"
+
+    elif mode == "district-group":
+        filepath = f"{dir_out}/de-district-group/{filename}.png"
+
+    elif mode == "state":
+        # TODO: do it better
+        # fetch bl_id for first lk_id
         bl_id = l_lkids[0][0:2]
         bl_code = helper.d_BL_code_from_BL_ID(int(bl_id))
         bl_name = helper.d_BL_name_from_BL_Code[bl_code]
         landkreis_name = bl_name
         filepath = f"{dir_out}/de-states/{bl_code}.png"
 
-    elif group == "DE-total":
+    elif mode == "DE":
         bl_code = "DE-total"
         filepath = f"{dir_out}/de-states/{bl_code}.png"
         landkreis_name = "Deutschland gesamt"
 
+    # TODO
     plot_4_cases_prognose(
         df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=landkreis_name)
 
@@ -415,53 +427,58 @@ d_lkid2name = helper.read_json_file(
 # Landkreise oder Landkreisgruppe auswählen
 #
 
-l_groupes = []
-l_groupes.append(("Fürth Stadt + LK", ("09563", "09573")))
-l_groupes.append(("Erlangen und ERH", ("09562", "09572")))
-l_groupes.append(("Harburg und Lüneburg", ("03353", "03355")))
+# l_groupes = []
+# l_groupes.append(("Fürth Stadt + LK", ("09563", "09573")))
+# l_groupes.append(("Erlangen und ERH", ("09562", "09572")))
+# l_groupes.append(("Harburg und Lüneburg", ("03353", "03355")))
+
+
+l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
 
 # loop over grouped landkreise
-for group in l_groupes:
-    landkreis_name = group[0]
-    l_lkids = group[1]
-    doit(landkreis_name=landkreis_name, l_lkids=l_lkids)
+for d in l_groupes:
+    landkreis_name = d["title"]
+    id = d["id"]
+    l_lkids = d["lkids"]
+    doit(landkreis_name=landkreis_name, l_lkids=l_lkids,
+         mode="district-group", filename=str(d["id"]))
 
 
-# loop over all district that have Divi data
-for file in glob.glob("data/de-divi/tsv/*.tsv"):
-    (filepath, fileName) = os.path.split(file)
-    (fileBaseName, fileExtension) = os.path.splitext(fileName)
-    lkid = fileBaseName
-    if (lkid == "16056"):  # Eisenach
-        continue
-    if lkid == "11000":
-        landkreis_name = "Berlin"
-    else:
-        landkreis_name = d_lkid2name[lkid]
-    doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
+# # loop over all district that have Divi data
+# for file in glob.glob("data/de-divi/tsv/*.tsv"):
+#     (filepath, fileName) = os.path.split(file)
+#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
+#     lkid = fileBaseName
+#     if (lkid == "16056"):  # Eisenach
+#         continue
+#     if lkid == "11000":
+#         landkreis_name = "Berlin"
+#     else:
+#         landkreis_name = d_lkid2name[lkid]
+#     doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
 
-# sum up districts to bundeslaender
-for i in range(1, 16+1):
-    # blid = 02 für HH etc
-    blid = "%02d" % i
-    l_lkids = []
-    for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
-        (filepath, fileName) = os.path.split(file)
-        (fileBaseName, fileExtension) = os.path.splitext(fileName)
-        lkid = fileBaseName
-        l_lkids.append(lkid)
-    landkreis_name = helper.d_BL_code_from_BL_ID(int(blid))
-    doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
+# # sum up districts to bundeslaender
+# for i in range(1, 16+1):
+#     # blid = 02 für HH etc
+#     blid = "%02d" % i
+#     l_lkids = []
+#     for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
+#         (filepath, fileName) = os.path.split(file)
+#         (fileBaseName, fileExtension) = os.path.splitext(fileName)
+#         lkid = fileBaseName
+#         l_lkids.append(lkid)
+#     landkreis_name = helper.d_BL_code_from_BL_ID(int(blid))
+#     doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
 
-# sum up DE-total
-l_lkids = []
-for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
-    (filepath, fileName) = os.path.split(file)
-    (fileBaseName, fileExtension) = os.path.splitext(fileName)
-    lkid = fileBaseName
-    l_lkids.append(lkid)
-landkreis_name = "Deutschland gesamt"
-doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
+# # sum up DE-total
+# l_lkids = []
+# for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
+#     (filepath, fileName) = os.path.split(file)
+#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
+#     lkid = fileBaseName
+#     l_lkids.append(lkid)
+# landkreis_name = "Deutschland gesamt"
+# doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
 
 
 # l_lkids = ("09563",)
