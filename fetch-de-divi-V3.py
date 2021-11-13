@@ -38,9 +38,58 @@ d_bl_id2code = {'01': 'SH', '02': 'HH', '03': 'NI', '04': 'HB', '05': 'NW', '06'
                 '08': 'BW', '09': 'BY', '10': 'SL', '11': 'BE', '12': 'BB', '13': 'MV', '14': 'SN', '15': 'ST', '16': 'TH', 'DE-total': 'DE-total'}
 
 
-def fetch_latest_csvs():
+def fetch_latest_csv():
     """
-    fetches the 5 latest files from https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table
+    fetches the latest (top) file from https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table
+    output: latest.csv (overwrites old file)
+    """
+
+    url = 'https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table'
+    file = 'cache/de-divi/list-csv-page-1.html'
+    payload = {"filter_order_Dir": "DESC",
+               "filter_order": "tbl.ordering",
+               "start": 0}
+    # "cid[]": "0", "category_id": "54", "task": "", "8ba87835776d29f4e379a261512319f1": "1"
+
+    cont = helper.read_url_or_cachefile(
+        url=url, cachefile=file, request_type='post', payload=payload, cache_max_age=3600, verbose=True)
+
+    # extract link of from <a href="/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-28-12-15/download"
+
+    l_csv_urls = extractLinkList(cont=cont)
+
+    # reduce list to the 5 latest files
+    # commented out, since at 07.07.2020 at the source the table sourting was strange, so that the new files where not on top of the list
+    # while len(l_csv_urls) > 5:
+    #     l_csv_urls.pop()
+
+    d_csvs_in_table = {}
+
+    # loop over urls to replace outdated files by latest file per day
+    # '/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-25-12-15/download'
+    # '/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-25-12-15-2/download'
+    for url in l_csv_urls:
+        url = f"https://www.divi.de{url}"
+        # '/divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15'
+        filename = re.search(
+            r'/divi-intensivregister-tagesreport-archiv-csv/viewdocument/\d+?/divi-intensivregister-(\d{4}\-\d{2}\-\d{2})[^/]', url).group(1)
+        d_csvs_in_table[filename] = url
+    del l_csv_urls, filename, url
+
+    l = sorted(d_csvs_in_table.keys())
+    latest_filename = l[-1]
+    latest_url = d_csvs_in_table[latest_filename]
+
+    file = f"data/de-divi/downloaded/latest.csv"
+
+    if not os.path.isfile(file):
+        cont = helper.read_url_or_cachefile(
+            url=latest_url, cachefile=file, request_type='get', payload={}, cache_max_age=3600, verbose=True)
+
+
+def fetch_all_csvs():
+    """
+    fetches the all files from https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table
     only keeps the latest file per day
     """
 
@@ -52,7 +101,7 @@ def fetch_latest_csvs():
     # "cid[]": "0", "category_id": "54", "task": "", "8ba87835776d29f4e379a261512319f1": "1"
 
     cont = helper.read_url_or_cachefile(
-        url=url, cachefile=cachefile, request_type='post', payload=payload, cache_max_age=3600, verbose=True)
+        url=url, cachefile=cachefile, request_type='post', payload=payload, cache_max_age=900, verbose=True)
 
     # extract link of from <a href="/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-28-12-15/download"
 
@@ -70,7 +119,7 @@ def fetch_latest_csvs():
     # '/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-2020-06-25-12-15-2/download'
     for url in l_csv_urls:
         url = f"https://www.divi.de{url}"
-        '/divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15'
+        # '/divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15'
         filename = re.search(
             r'/divi-intensivregister-tagesreport-archiv-csv/viewdocument/\d+?/divi-intensivregister-(\d{4}\-\d{2}\-\d{2})[^/]', url).group(1)
         d_csvs_to_fetch[filename] = url
@@ -79,8 +128,10 @@ def fetch_latest_csvs():
     assert len(d_csvs_to_fetch) > 0, "Error: no files to fetch"
     for filename, url in d_csvs_to_fetch.items():
         cachefile = f"data/de-divi/downloaded/{filename}.csv"
-        cont = helper.read_url_or_cachefile(
-            url=url, cachefile=cachefile, request_type='get', payload={}, cache_max_age=3600, verbose=True)
+
+        if not os.path.isfile(cachefile):
+            cont = helper.read_url_or_cachefile(
+                url=url, cachefile=cachefile, request_type='get', payload={}, cache_max_age=3600, verbose=True)
 
 
 def generate_database() -> dict:
@@ -90,10 +141,11 @@ def generate_database() -> dict:
     d_database_states = {'01': {}, '02': {}, '03': {}, '04': {}, '05': {}, '06': {}, '07': {
     }, '08': {}, '09': {}, '10': {}, '11': {}, '12': {}, '13': {}, '14': {}, '15': {}, '16': {}, 'DE-total': {}}
 
-    csv_file = sorted(glob.glob('data/de-divi/downloaded/*.csv'))[-1]
-    (filepath, fileName) = os.path.split(csv_file)
-    (fileBaseName, fileExtension) = os.path.splitext(fileName)
-    del filepath, fileName, fileBaseName, fileExtension
+    # csv_file = sorted(glob.glob('data/de-divi/downloaded/*.csv'))[-1]
+    csv_file = 'data/de-divi/downloaded/latest.csv'
+    # (filepath, fileName) = os.path.split(csv_file)
+    # (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    # del filepath, fileName, fileBaseName, fileExtension
 
 # file 2020-04-24.csv:
 # bundesland,kreis,anzahl_standorte,betten_frei,betten_belegt,faelle_covid_aktuell_im_bundesland
@@ -347,7 +399,8 @@ def export_tsv(d_database):
     pass
 
 
-fetch_latest_csvs()
+# fetch_all_csvs()
+fetch_latest_csv()
 d_database = generate_database()
 export_tsv(d_database)
 
