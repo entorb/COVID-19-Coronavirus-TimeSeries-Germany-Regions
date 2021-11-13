@@ -236,9 +236,9 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #     continue
-    mailBody += """HINWEIS: Aufgrund der aktuellen Lage habe ich eine "Prognose für Intensivstations Bettenbedarf" erstellt. Gerne an Krankenhäuser weitergeben, vielleicht hilft es für deren Planung.
-    https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
-    LG Torben\n\n\n"""
+    mailBody += """HINWEIS: Aufgrund der aktuellen Lage habe ich eine Prognose für Intensivstations Bettenbedarf erstellt. Gerne an Krankenhäuser weitergeben, vielleicht hilft es denen in der Planung.
+https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
+LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
