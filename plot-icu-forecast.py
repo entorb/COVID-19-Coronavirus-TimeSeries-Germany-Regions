@@ -316,10 +316,10 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     axes.tick_params(right=True, labelright=True)
 
     # {weeks_forcast} Wochen
-    title = f'{landkreis_name}: Prognose ICU Bettenbelegung'
+    title = f'{landkreis_name}: Prognose ITS Bettenbedarf'
     plt.title(title)
     axes.set_xlabel("")
-    axes.set_ylabel('ICU Betten belegt')
+    axes.set_ylabel('ITS Betten')
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
