@@ -425,7 +425,7 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', fil
     df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
     del df_divi, df_cases
 
-    # print(df_data.tail())
+    #  print(df_data.tail())
     quote = df_data["quote_betten_covid_pro_cases_roll_sum_20"].tail(
         7).mean()
 
@@ -472,6 +472,7 @@ for d in l_groupes:
     doit(mode="de-district-group", title=landkreis_name, l_lk_ids=l_lk_ids,
          filename=str(d["id"]))
 
+# test
 
 print("de-districts")
 l_lk_ids = helper.read_json_file(
