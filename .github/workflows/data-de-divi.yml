@@ -51,18 +51,18 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-    - name: Data fetch-de-divi
-      run: python3 fetch-de-divi-V3.py
+#    - name: Data fetch-de-divi
+#      run: python3 fetch-de-divi-V3.py
 
     - name: Data icu-groups.py
       run: python3 icu-groups.py
 
 # also update districts and states to have as accurate numbers as possible
-    - name: Data fetch-de-states
-      run: python3 fetch-de-states-V2.py
+#    - name: Data fetch-de-states
+#      run: python3 fetch-de-states-V2.py
       
-    - name: Data fetch-de-districts
-      run: python3 fetch-de-districts.py      
+#    - name: Data fetch-de-districts
+#      run: python3 fetch-de-districts.py      
 
     - name: Data commit new files
       run: |
