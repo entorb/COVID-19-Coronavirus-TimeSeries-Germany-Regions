@@ -98,7 +98,7 @@ function fetch_states_latest(array_states_latest) {
 // de_district_multiplot_sel_kreis
 // icu_forecast_sel_de_districts
 // TODO: for icu_forecast_sel_de_districts filter auf /data/de-districts/lkids.json
-function de_district_multiplot_populate_select() {
+function populate_de_district_multiplot_and_icu_select() {
   const url =
     "https://entorb.net/COVID-19-coronavirus/data/de-districts/mapping_landkreis_ID_name.json";
   return $.getJSON(url, function (data) {

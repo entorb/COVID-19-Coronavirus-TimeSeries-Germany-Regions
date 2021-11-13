@@ -1994,7 +1994,7 @@
 		// fetch data and populate html Elements after fetching the page
 		promises.push(fetch_countries_latest(array_countries_latest));
 		promises.push(fetch_states_latest(array_states_latest));
-		promises.push(de_district_multiplot_populate_select());
+		promises.push(populate_de_district_multiplot_and_icu_select());
 		promises.push(icu_forecast_sel_de_district_group_populate_select());
 		promises.push(rc_fetch_DE_states_and_populate_risk_calc_select());
 
