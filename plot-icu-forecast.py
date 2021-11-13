@@ -353,7 +353,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     title = f'{landkreis_name}: Prognose ITS Bettenbedarf'
     plt.title(title)
     axes.set_xlabel("")
-    axes.set_ylabel('ITS Betten')
+    axes.set_ylabel('Bedarf an ITS Betten durch COVID Patienten')
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
@@ -377,7 +377,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     # wloc = WeekdayLocator()
     # axes.xaxis.set_major_locator(wloc)
 
-    t = axes.text(pd.to_datetime(df.index[-15]).date(), max_value, "Bisheriges Maximum",
+    t = axes.text(pd.to_datetime(df.index[-15]).date(), max_value, "bisheriges Maximum",
                   verticalalignment='center', horizontalalignment='center')
     t.set_bbox(dict(facecolor='white', edgecolor='white', alpha=0.5))
 
