@@ -53,8 +53,8 @@ jobs:
     - name: Data fetch-de-divi
       run: python3 fetch-de-divi-V3.py
 
-    - name: Plotting icu-forecast.py
-      run: python3 icu-forecast.py
+    - name: Plotting plot-icu-forecast.py
+      run: plot-icu-forecast.py
 
     - name: Matplotlib zipping plots-python/
       run: |
