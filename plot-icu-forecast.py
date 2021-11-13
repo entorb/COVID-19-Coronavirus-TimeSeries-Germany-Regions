@@ -104,6 +104,7 @@ def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
     filters df_divi_all by l_lk_ids
     sums up betten_covid and betten_ges
     """
+    assert len(l_lk_ids) > 0
     global df_divi_all
     df = df_divi_all
     print(len(df))
@@ -135,10 +136,11 @@ def sum_bl_divi_data(bl_id: int) -> DataFrame:
     filters df_divi_all by l_lk_ids
     sums up betten_covid and betten_ges
     """
+    assert type(bl_id) == int
     global df_divi_all
     df = df_divi_all
     # print(df.head())
-    df = df_divi_all[df_divi_all["bundesland"] == int(bl_id)]
+    df = df_divi_all[df_divi_all["bundesland"] == bl_id]
     # print(df.head())
     df = df.groupby(['date']).agg(
         {'betten_covid': 'sum',
@@ -188,22 +190,24 @@ def load_and_sum_lk_case_data(l_lk_ids: list) -> DataFrame:
     sum up their daily Cases_New
     calc 20-day-moving sum
     """
+    for lk_id in l_lk_ids:
+        assert type(lk_id) == int, f"not integer {lk_id}"
     # initialize new dataframe
     df_sum = pd.DataFrame()
     for lk_id in l_lk_ids:
-        if lk_id in ('16056',):  # Eisenach
+        if lk_id in (16056,):  # Eisenach
             continue
 
         # load cases data
-        if lk_id == "11000":  # Berlin
+        if lk_id == 11000:  # Berlin
             file_cases = f'data/de-states/de-state-BE.tsv'
         else:
-            file_cases = f'data/de-districts/de-district_timeseries-{lk_id}.tsv'
+            file_cases = f'data/de-districts/de-district_timeseries-{"%05d" % lk_id}.tsv'
 
         # skip missing files
         if not os.path.isfile(file_cases):
-            print(f"WARN: file not found: {file_cases}")
-            continue
+            print(f"ERROR: file not found: {file_cases}")
+            exit(1)
 
         df_file_cases = pd.read_csv(file_cases, sep="\t")
         df_file_cases = helper.pandas_set_date_index(df_file_cases)
@@ -253,6 +257,8 @@ def load_bl_case_data(bl_code: str) -> DataFrame:
 
 def join_cases_divi(df_cases: DataFrame, df_divi: DataFrame) -> DataFrame:
     # initialize new dataframe
+    print(df_cases.head())
+    print(df_divi.head())
     df_sum = df_cases
     del df_cases
     df_sum["betten_covid"] = df_divi["betten_covid"]
@@ -384,7 +390,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     plt.close()
 
 
-def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', filename=""):
+def doit(title="", l_lk_ids: list = (), bl_id: int = -1, mode='de-district', filename=""):
     """
     mode:
     district: 1 Landkreis
