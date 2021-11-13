@@ -1,4 +1,5 @@
 # from datetime import timedelta  # , date
+import helper
 import glob
 import shutil
 import datetime
@@ -9,9 +10,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.dates import MonthLocator, YearLocator, WeekdayLocator
 # import matplotlib.ticker as ticker
-
-
-import helper
+import locale
 
 
 # Matplotlib setup
@@ -20,6 +19,7 @@ mpl.use('Agg')  # Cairo
 # turn off interactive mode
 plt.ioff()
 
+locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 # info : see icu-forecase/howto
 # model:
@@ -34,7 +34,14 @@ plt.ioff()
 
 # TODO:
 # switch data source to Risklayer?
+# sum per bundesland: Berlin missing
+# sum total
+
+# Done
 # draw a line from max betten
+# zoomed plot
+# support 1 chart per district as well as grouped ones
+
 
 #
 # setup
@@ -44,9 +51,10 @@ dir_out = 'plots-python/icu-forecast/'
 # os.makedirs(dir_out, exist_ok=True)
 os.makedirs(dir_out+"/single", exist_ok=True)
 os.makedirs(dir_out+"/joined", exist_ok=True)
+os.makedirs(dir_out+"/de-states", exist_ok=True)
 
 # how many weeks shall we look into the future
-weeks_forcast = 3
+weeks_forcast = 2
 
 
 #
@@ -63,17 +71,49 @@ def load_lk_data(l_lkids: list) -> DataFrame:
     """
     # initialize new dataframe
     df_sum = pd.DataFrame()
-    for lkid in l_lkids:
+    for lk_id in l_lkids:
+        if lk_id in ('16056',):  # Eisenach
+            continue
+
         # load cases data
-        df_file_cases = pd.read_csv(
-            f'data/de-districts/de-district_timeseries-{lkid}.tsv', sep="\t")
+        if l_lkids == ["11000", ]:  # Berlin
+            file_cases = f'data/de-states/de-state-BE.tsv'
+        else:
+            file_cases = f'data/de-districts/de-district_timeseries-{lk_id}.tsv'
+
+        # skip missing files
+        if not os.path.isfile(file_cases):
+            print(f"WARN: file not found: {file_cases}")
+            continue
+
+        df_file_cases = pd.read_csv(file_cases, sep="\t")
         df_file_cases = helper.pandas_set_date_index(df_file_cases)
+        date_today = pd.to_datetime(df_file_cases.index[-1]).date()
+
+        # check for bad values
+        if (df_file_cases['Cases_New'].isnull().values.any()):
+            raise f"ERROR: {lk_id}: df_file_cases has bad values"
+            # df_file_cases['Cases_New'] = df_file_cases['Cases_New'].fillna(0)
 
         # load icu bed data if there is any
-        file_divi = f'data/de-divi/tsv/{lkid}.tsv'
+        file_divi = f'data/de-divi/tsv/{lk_id}.tsv'
         if os.path.isfile(file_divi):
             df_file_divi = pd.read_csv(file_divi, sep="\t")
             df_file_divi = helper.pandas_set_date_index(df_file_divi)
+
+            # I needed to reindex the divi df to close gaps by 0!!!
+            idx = pd.date_range('2020-01-01', str(date_today))
+            df_file_divi = df_file_divi.reindex(idx, fill_value=0)
+
+            # assert same end
+            assert (pd.to_datetime(
+                df_file_cases.index[-1]).date() == pd.to_datetime(df_file_divi.index[-1]).date())
+
+            # check for bad values
+            if (df_file_divi['faelle_covid_aktuell_beatmet'].isnull().values.any()):
+                raise f"ERROR: {lk_id}: df_file_divi has bad values"
+            if (df_file_divi['betten_ges'].isnull().values.any()):
+                raise f"ERROR: {lk_id}: betten_ges has bad values"
 
         if 'Cases_New' not in df_sum.columns:
             df_sum['Cases_New'] = df_file_cases['Cases_New']
@@ -88,6 +128,9 @@ def load_lk_data(l_lkids: list) -> DataFrame:
                 df_sum["betten_ges"] += df_file_divi["betten_ges"]
                 df_sum["betten_belegt"] += df_file_divi["faelle_covid_aktuell_beatmet"]
 
+    if (len(df_sum) > 0 and df_sum['betten_belegt'].isnull().values.any()):
+        raise f"ERROR: {lk_id}: df_sum betten_belegt has bad values"
+
     df_sum['Cases_New_roll_sum_20'] = df_sum['Cases_New'].rolling(
         window=20, min_periods=1).sum()
 
@@ -99,6 +142,7 @@ def load_lk_data(l_lkids: list) -> DataFrame:
 
     # after calc of 20-day sum we can remove dates prior to april 2020 where three is no DIVI data
     df_sum = df_sum.loc['2020-04-01':]
+    # print(df_sum.tail(30))
     return df_sum
 
 
@@ -245,15 +289,12 @@ def plot_3_betten_belegt(df: DataFrame, filename: str, landkreis_name: str):
 
 
 def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, filepath: str, landkreis_name: str):
-    """
-    plot 4.png
-    """
-
     fig, axes = plt.subplots(figsize=(8, 6))
 
     # drop some data from the plot
     date_min = '2020-09-01'
     date_max = str(pd.to_datetime(l_df_prognosen[0].index[-1]).date())
+    date_today = str(pd.to_datetime(df.index[-1]).date())
     df = df.loc[date_min:]
 
     max_value = df['betten_belegt'].max()
@@ -274,13 +315,15 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     axes.set_ylim(0, )
     axes.tick_params(right=True, labelright=True)
 
-    plt.title(f'{landkreis_name}: Prognose ICU Bettenbelegung')
+    # {weeks_forcast} Wochen
+    plt.title(
+        f'{landkreis_name}: Prognose ICU Bettenbelegung')
     axes.set_xlabel("")
     axes.set_ylabel('ICU Betten belegt')
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
-    plt.gcf().text(1.0, 0.0, s=f"by Torben https://entorb.net , based on RKI and DIVI data of {date_max}", fontsize=8,
+    plt.gcf().text(1.0, 0.0, s=f"by Torben https://entorb.net , based on RKI and DIVI data of {date_today}", fontsize=8,
                    horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
 
     plt.legend(title='Inzidenz-Prognose')
@@ -290,22 +333,33 @@ def plot_4_cases_prognose(df: DataFrame, l_df_prognosen: list, l_prognosen_proze
     plt.savefig(fname=filepath, format='png')
 
     # zoomed plot
-    date_min2 = pd.to_datetime(df.index[-30]).date()
+    date_min2 = pd.to_datetime(df.index[-45]).date()
     date_max2 = pd.to_datetime(l_df_prognosen[0].index[-1]).date()
     axes.set_xlim([date_min2, date_max2])
 
     # set grid to week
-    wloc = WeekdayLocator()
-    axes.xaxis.set_major_locator(wloc)
+    # wloc = WeekdayLocator()
+    # axes.xaxis.set_major_locator(wloc)
 
     t = axes.text(pd.to_datetime(df.index[-15]).date(), max_value, "Bisheriges Maximum",
                   verticalalignment='center', horizontalalignment='center')
     t.set_bbox(dict(facecolor='white', edgecolor='white', alpha=0.5))
 
     plt.savefig(fname=filepath.replace(".png", "-zoom.png"), format='png')
+    # cleanup
+    fig.clf()
+    axes.cla()
+    plt.close('all')
+    plt.close(fig)
+    plt.close()
 
 
-def doit(landkreis_name, l_lkids):
+def doit(landkreis_name, l_lkids, group='de-district'):
+    # unique list
+    l_lkids = list(set(l_lkids))
+    if "16056" in l_lkids:  # Eisenach
+        l_lkids.remove("16056")
+
     df_data = load_lk_data(l_lkids=l_lkids)
     quote = df_data["quote_its_belegt_pro_Cases_New_roll_sum_20"].tail(
         7).mean()
@@ -327,22 +381,26 @@ def doit(landkreis_name, l_lkids):
         l_prognosen_prozente=l_prognosen_prozente,
         quote=quote)
 
-    if (len(l_lkids) > 1):
-        # we are handling joined districts
-        filepath = f"{dir_out}/joined/{'_'.join(l_lkids)}.png"
-    else:
-        filepath = f"{dir_out}/single/{l_lkids[0]}.png"
+    if group == "de-district":
+        if (len(l_lkids) > 1):
+            # we are handling joined districts
+            filepath = f"{dir_out}/joined/{'_'.join(l_lkids)}.png"
+        else:
+            filepath = f"{dir_out}/single/{l_lkids[0]}.png"
+    elif group == "de-state":
+        bl_id = l_lkids[0][0:2]
+        bl_code = helper.BL_code_from_BL_ID(int(bl_id))
+        bl_name = helper.d_BL_name_from_BL_Code[bl_code]
+        landkreis_name = bl_name
+        filepath = f"{dir_out}/de-states/{bl_code}.png"
+
+    elif group == "DE-total":
+        bl_code = "DE-total"
+        filepath = f"{dir_out}/de-states/{bl_code}.png"
+        landkreis_name = "Deutschland gesamt"
 
     plot_4_cases_prognose(
         df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=landkreis_name)
-
-
-# plot_4_cases_prognose(
-#     df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filename=f"icu-forecast/howto/5_tm.png", landkreis_name=landkreis_name)
-
-
-# shutil.copyfile(f"{filepath}", f"latest.png")
-# shutil.copyfile(f'{filepath.replace(".png","-zoom.png")}', f"latest-zoom.png")
 
 
 d_lkid2name = helper.read_json_file(
@@ -370,18 +428,46 @@ for group in l_groupes:
 #     (filepath, fileName) = os.path.split(file)
 #     (fileBaseName, fileExtension) = os.path.splitext(fileName)
 #     lkid = fileBaseName
-#     landkreis_name = d_lkid2name[lkid]
+#     if (lkid == "16056"):  # Eisenach
+#         continue
+#     if lkid == "11000":
+#         landkreis_name = "Berlin"
+#     else:
+#         landkreis_name = d_lkid2name[lkid]
 #     doit(landkreis_name=landkreis_name, l_lkids=(lkid,))
+
+# sum up districts to bundeslaender
+for i in range(1, 16+1):
+    # blid = 02 für HH etc
+    blid = "%02d" % i
+    l_lkids = []
+    for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
+        (filepath, fileName) = os.path.split(file)
+        (fileBaseName, fileExtension) = os.path.splitext(fileName)
+        lkid = fileBaseName
+        l_lkids.append(lkid)
+    landkreis_name = helper.BL_code_from_BL_ID(int(blid))
+    doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="de-state")
+
+# # sum up DE-total
+# l_lkids = []
+# for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
+#     (filepath, fileName) = os.path.split(file)
+#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
+#     lkid = fileBaseName
+#     l_lkids.append(lkid)
+# landkreis_name = "Deutschland gesamt"
+# doit(landkreis_name=landkreis_name, l_lkids=l_lkids, group="DE-total")
 
 
 # l_lkids = ("09563",)
 # "09563": "Fürth (Kreisfreie Stadt)",
 # "09573": "Fürth (Landkreis)",
 
-    # model test plots, to verify my coding against Dirk's
-    # plot_1_cases(
-    #     df=df_data, filename=f"icu-forecast-howto/1_tm.png", landkreis_name=landkreis_name)
-    # plot_2_its_per_20day_cases(
-    #     df=df_data, filename=f"icu-forecast-howto/2_tm.png", landkreis_name=landkreis_name)
-    # plot_3_betten_belegt(
-    #     df=df_data, filename=f"icu-forecast-howto/3_tm.png", landkreis_name=landkreis_name)
+# model test plots, to verify my coding against Dirk's
+# plot_1_cases(
+#     df=df_data, filename=f"icu-forecast-howto/1_tm.png", landkreis_name=landkreis_name)
+# plot_2_its_per_20day_cases(
+#     df=df_data, filename=f"icu-forecast-howto/2_tm.png", landkreis_name=landkreis_name)
+# plot_3_betten_belegt(
+#     df=df_data, filename=f"icu-forecast-howto/3_tm.png", landkreis_name=landkreis_name)
