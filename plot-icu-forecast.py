@@ -61,18 +61,125 @@ weeks_forcast = 2
 #
 # 1. data functions
 #
-
-
-def load_lk_data(l_lkids: list) -> DataFrame:
+def load_divi_data() -> DataFrame:
     """
-    l_lkids : list of lkids:str
+    load complete set of all divi data
+    calc betten_belegt
+    rename faelle_covid_aktuell_invasiv_beatmet -> betten_covid
+    """
+    df = pd.read_csv(
+        f'data/de-divi/downloaded/latest.csv', sep=",")
+
+    # select columns
+    df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
+
+    df = df[["date", "bundesland", "gemeindeschluessel",
+            "faelle_covid_aktuell_invasiv_beatmet",
+             "betten_ges",
+             "betten_frei",
+             "betten_belegt"]]
+
+    # check for for bad values
+    if (df['faelle_covid_aktuell_invasiv_beatmet'].isnull().values.any()):
+        raise f"ERROR: faelle_covid_aktuell_beatmet has bad values"
+    if (df['betten_ges'].isnull().values.any()):
+        raise f"ERROR: betten_ges has bad values"
+
+    df = df.rename({
+        "faelle_covid_aktuell_invasiv_beatmet": "betten_covid",
+    }, axis=1, errors="raise")
+
+    # print(df.tail())
+
+    return df
+
+
+df_divi_all = load_divi_data()
+
+
+def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
+    """
+    filters df_divi_all by l_lk_ids
+    sums up betten_covid and betten_ges
+    """
+    global df_divi_all
+    df = df_divi_all[df_divi_all["gemeindeschluessel"].isin(l_lk_ids)]
+    df = df.groupby(['date']).agg(
+        {'betten_covid': 'sum',
+         'betten_ges': 'sum'}
+    )
+    df.index = pd.to_datetime(df.index)
+
+    date_last = pd.to_datetime(df.index[-1]).date()
+    # I needed to reindex the divi df to close gaps by 0!!!
+    idx = pd.date_range('2020-01-01', date_last)
+    df = df.reindex(idx, fill_value=0)
+
+    # print(df.tail())
+    return df
+
+
+def sum_bl_divi_data(bl_id: int) -> DataFrame:
+    """
+    filters df_divi_all by l_lk_ids
+    sums up betten_covid and betten_ges
+    """
+    global df_divi_all
+    df = df_divi_all
+    # print(df.head())
+    df = df_divi_all[df_divi_all["bundesland"] == int(bl_id)]
+    # print(df.head())
+    df = df.groupby(['date']).agg(
+        {'betten_covid': 'sum',
+         'betten_ges': 'sum'}
+    )
+    df.index = pd.to_datetime(df.index)
+
+    date_last = pd.to_datetime(df.index[-1]).date()
+    # I needed to reindex the divi df to close gaps by 0!!!
+    idx = pd.date_range('2020-01-01', date_last)
+    df = df.reindex(idx, fill_value=0)
+
+    # print(df.tail())
+    return df
+
+
+def sum_DE_divi_data() -> DataFrame:
+    """
+    filters df_divi_all by l_lk_ids
+    sums up betten_covid and betten_ges
+    """
+    global df_divi_all
+    df = df_divi_all.groupby(['date']).agg(
+        {'betten_covid': 'sum',
+         'betten_ges': 'sum'}
+    )
+    df.index = pd.to_datetime(df.index)
+
+    date_last = pd.to_datetime(df.index[-1]).date()
+    # I needed to reindex the divi df to close gaps by 0!!!
+    idx = pd.date_range('2020-01-01', date_last)
+    df = df.reindex(idx, fill_value=0)
+
+    # print(df.tail())
+    return df
+
+
+# l_lk_ids = ("02000", "11000")
+# df_divi = sum_lk_divi_data(l_lk_ids)
+# exit()
+
+
+def load_and_sum_lk_case_data(l_lk_ids: list) -> DataFrame:
+    """
+    l_lk_ids : list of lk_ids:str
     grouping of lk data
     sum up their daily Cases_New
     calc 20-day-moving sum
     """
     # initialize new dataframe
     df_sum = pd.DataFrame()
-    for lk_id in l_lkids:
+    for lk_id in l_lk_ids:
         if lk_id in ('16056',):  # Eisenach
             continue
 
@@ -89,61 +196,69 @@ def load_lk_data(l_lkids: list) -> DataFrame:
 
         df_file_cases = pd.read_csv(file_cases, sep="\t")
         df_file_cases = helper.pandas_set_date_index(df_file_cases)
-        date_today = pd.to_datetime(df_file_cases.index[-1]).date()
 
         # check for bad values
         if (df_file_cases['Cases_New'].isnull().values.any()):
             raise f"ERROR: {lk_id}: df_file_cases has bad values"
             # df_file_cases['Cases_New'] = df_file_cases['Cases_New'].fillna(0)
 
-        # load icu bed data if there is any
-        file_divi = f'data/de-divi/tsv/{lk_id}.tsv'
-        if os.path.isfile(file_divi):
-            df_file_divi = pd.read_csv(file_divi, sep="\t")
-            df_file_divi = helper.pandas_set_date_index(df_file_divi)
-
-            # I needed to reindex the divi df to close gaps by 0!!!
-            idx = pd.date_range('2020-01-01', str(date_today))
-            df_file_divi = df_file_divi.reindex(idx, fill_value=0)
-
-            # assert same end
-            assert (pd.to_datetime(
-                df_file_cases.index[-1]).date() == pd.to_datetime(df_file_divi.index[-1]).date())
-
-            # check for bad values
-            if (df_file_divi['faelle_covid_aktuell_beatmet'].isnull().values.any()):
-                raise f"ERROR: {lk_id}: df_file_divi has bad values"
-            if (df_file_divi['betten_ges'].isnull().values.any()):
-                raise f"ERROR: {lk_id}: betten_ges has bad values"
-
         if 'Cases_New' not in df_sum.columns:
             df_sum['Cases_New'] = df_file_cases['Cases_New']
         else:
             df_sum['Cases_New'] += df_file_cases['Cases_New']
 
-        if os.path.isfile(file_divi):
-            if 'betten_belegt' not in df_sum.columns:
-                df_sum["betten_ges"] = df_file_divi["betten_ges"]
-                df_sum["betten_belegt"] = df_file_divi["faelle_covid_aktuell_beatmet"]
-            else:
-                df_sum["betten_ges"] += df_file_divi["betten_ges"]
-                df_sum["betten_belegt"] += df_file_divi["faelle_covid_aktuell_beatmet"]
+    # print(df_sum.tail(30))
+    return df_sum
 
-    if (len(df_sum) > 0 and df_sum['betten_belegt'].isnull().values.any()):
-        raise f"ERROR: {lk_id}: df_sum betten_belegt has bad values"
+
+def load_bl_case_data(bl_code: str) -> DataFrame:
+    """
+    Bundesland-Data
+    """
+    # load cases data
+    file_cases = f'data/de-states/de-state-{bl_code}.tsv'
+
+    # skip missing files
+    assert os.path.isfile(file_cases), f"ERROR: file not found {file_cases}"
+
+    df = pd.read_csv(file_cases, sep="\t")
+    # print(df.head())
+    df = helper.pandas_set_date_index(df)
+    df = df['Cases_New'].to_frame()
+    # print(df.head())
+
+    # check for bad values
+    if (df['Cases_New'].isnull().values.any()):
+        raise f"ERROR: {file_cases} has bad values"
+
+    if 'Cases_New' not in df.columns:
+        df['Cases_New'] = df['Cases_New']
+    else:
+        df['Cases_New'] += df['Cases_New']
+
+    # print(df.tail(30))
+    return df
+
+
+def join_cases_divi(df_cases: DataFrame, df_divi: DataFrame) -> DataFrame:
+    # initialize new dataframe
+    df_sum = df_cases
+    del df_cases
+    df_sum["betten_covid"] = df_divi["betten_covid"]
+    df_sum["betten_ges"] = df_divi["betten_ges"]
 
     df_sum['Cases_New_roll_sum_20'] = df_sum['Cases_New'].rolling(
         window=20, min_periods=1).sum()
 
-    df_sum['quote_its_belegt_pro_Cases_New_roll_sum_20'] = df_sum["betten_belegt"] / \
+    df_sum['quote_betten_covid_pro_cases_roll_sum_20'] = df_sum["betten_covid"] / \
         df_sum['Cases_New_roll_sum_20']
 
-    df_sum['betten_belegt_roll'] = df_sum['betten_belegt'].rolling(
+    df_sum['betten_belegt_roll'] = df_sum['betten_covid'].rolling(
         window=7, min_periods=1).mean()
 
-    # after calc of 20-day sum we can remove dates prior to april 2020 where three is no DIVI data
+    # after calc of 20-day sum we can remove dates prior to april 2020 where there is no DIVI data available
     df_sum = df_sum.loc['2020-04-01':]
-    # print(df_sum.tail(30))
+
     return df_sum
 
 
@@ -179,7 +294,7 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
             window=20, min_periods=1).sum()
         # drop the 21 days again
         df_prognose = df_prognose.iloc[21:]
-        df_prognose['betten_belegt_calc'] = (
+        df_prognose['betten_covid_calc'] = (
             quote * df_prognose['Cases_New_roll_sum_20']).round(1)
         l_df_prognosen[i] = df_prognose
     return l_df_prognosen
@@ -199,19 +314,19 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     date_today = str(pd.to_datetime(df.index[-1]).date())
     df = df.loc[date_min:]
 
-    max_value = df['betten_belegt'].max()
-    max_value_date = df['betten_belegt'].idxmax()
+    max_value = df['betten_covid'].max()
+    max_value_date = df['betten_covid'].idxmax()
 
-    myPlot = df.iloc[:]['betten_belegt'].plot(
+    myPlot = df.iloc[:]['betten_covid'].plot(
         linewidth=1.0, zorder=1, label="_nolegend_")
 
     axes.hlines(y=max_value, xmin=max_value_date, xmax=date_max,
                 color='grey', linestyles='--')
 
-    l_df_prognosen[0]["betten_belegt_calc"].plot(
+    l_df_prognosen[0]["betten_covid_calc"].plot(
         linewidth=2.0, label=f"{l_prognosen_prozente[0]}% (aktuell)")
     for i in reversed(range(1, len(l_df_prognosen))):
-        l_df_prognosen[i]["betten_belegt_calc"].plot(
+        l_df_prognosen[i]["betten_covid_calc"].plot(
             linewidth=2.0, label=f"{l_prognosen_prozente[i]}%")
 
     axes.set_ylim(0, )
@@ -258,7 +373,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     plt.close()
 
 
-def doit(landkreis_name, l_lkids, mode='de-district', filename=""):
+def doit(title="", l_lk_ids: list = (), bl_id: int = "", mode='de-district', filename=""):
     """
     mode:
     district: 1 Landkreis
@@ -266,15 +381,52 @@ def doit(landkreis_name, l_lkids, mode='de-district', filename=""):
     state
     DE
     """
-    if mode == "de-district-group":
-        assert filename != "", f"ERROR: filename missing for {landkreis_name}"
-    # unique list
-    l_lkids = list(set(l_lkids))
-    if "16056" in l_lkids:  # Eisenach
-        l_lkids.remove("16056")
+    assert mode in ("de-district", "de-district-group", "de-state", 'DE-total')
+    # ensure lk_ids are a unique list
+    l_lk_ids = list(set(l_lk_ids))
 
-    df_data = load_lk_data(l_lkids=l_lkids)
-    quote = df_data["quote_its_belegt_pro_Cases_New_roll_sum_20"].tail(
+    if "16056" in l_lk_ids:  # Eisenach
+        l_lk_ids.remove("16056")
+
+    if mode == "de-district":
+        assert len(l_lk_ids) == 1
+        lk_id = l_lk_ids[0]
+        df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
+        if l_lk_ids[0] == "11000":  # Berlin
+            # Berlin as it is 1 set in DIVI, but multiple in RKI
+            title = "Berlin"
+            df_cases = load_bl_case_data(bl_code='BE')
+        else:
+            df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
+            title = helper.d_lk_name_from_lk_id[lk_id]
+        filepath = f"{dir_out}/single/{lk_id}.png"
+
+    elif mode == "de-district-group":
+        assert filename != "", f"ERROR: filename missing for {title}"
+        assert len(l_lk_ids) > 0, f"ERROR lk_ids empty for {title}"
+        assert title != "", f"ERROR: title empty for filename {filename}"
+        df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
+        df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
+        filepath = f"{dir_out}/de-district-group/{filename}.png"
+
+    elif mode == "de-state":
+        df_divi = sum_bl_divi_data(bl_id=bl_id)
+        bl_code = helper.d_BL_code_from_BL_ID[int(bl_id)]
+        df_cases = load_bl_case_data(bl_code=bl_code)
+        title = helper.d_BL_name_from_BL_Code[bl_code]
+        filepath = f"{dir_out}/de-states/{bl_code}.png"
+
+    elif mode == 'DE-total':
+        df_divi = sum_DE_divi_data()
+        df_cases = load_bl_case_data(bl_code="DE-total")
+        filepath = f"{dir_out}/de-states/DE-total.png"
+        title = "Deutschland gesamt"
+
+    df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
+    del df_divi, df_cases
+
+    # print(df_data.tail())
+    quote = df_data["quote_betten_covid_pro_cases_roll_sum_20"].tail(
         7).mean()
 
     # Inzidenzänderung
@@ -294,87 +446,37 @@ def doit(landkreis_name, l_lkids, mode='de-district', filename=""):
         l_prognosen_prozente=l_prognosen_prozente,
         quote=quote)
 
-    if mode == "district":
-        filepath = f"{dir_out}/single/{l_lkids[0]}.png"
-
-    elif mode == "district-group":
-        filepath = f"{dir_out}/de-district-group/{filename}.png"
-
-    elif mode == "state":
-        # TODO: do it better
-        # fetch bl_id for first lk_id
-        bl_id = l_lkids[0][0:2]
-        bl_code = helper.d_BL_code_from_BL_ID(int(bl_id))
-        bl_name = helper.d_BL_name_from_BL_Code[bl_code]
-        landkreis_name = bl_name
-        filepath = f"{dir_out}/de-states/{bl_code}.png"
-
-    elif mode == "DE":
-        bl_code = "DE-total"
-        filepath = f"{dir_out}/de-states/{bl_code}.png"
-        landkreis_name = "Deutschland gesamt"
-
     # TODO
-    # plot_it(
-    #     df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=landkreis_name)
-
-
-d_lkid2name = helper.read_json_file(
-    "data/de-districts/mapping_landkreis_ID_name.json")
-
-
-#
-# Landkreise oder Landkreisgruppe auswählen
-#
-# generated via icu-groups.py
-
-l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
-
-# loop over grouped landkreise
-print("district-group")
-for d in l_groupes:
-    landkreis_name = d["title"]
-    id = d["id"]
-    l_lkids = d["lkids"]
-    doit(landkreis_name=landkreis_name, l_lkids=l_lkids,
-         mode="district-group", filename=str(d["id"]))
-
-
-# print("districts")
-# # loop over all district that have Divi data
-# for file in glob.glob("data/de-divi/tsv/*.tsv"):
-#     (filepath, fileName) = os.path.split(file)
-#     (fileBaseName, fileExtension) = os.path.splitext(fileName)
-#     lkid = fileBaseName
-#     if (lkid == "16056"):  # Eisenach
-#         continue
-#     if lkid == "11000":
-#         landkreis_name = "Berlin"
-#     else:
-#         landkreis_name = d_lkid2name[lkid]
-#     doit(landkreis_name=landkreis_name, l_lkids=(lkid,),mode="de-district", )
-
-print("states")
-# sum up districts to bundeslaender
-for i in range(1, 16+1):
-    # blid = 02 für HH etc
-    blid = "%02d" % i
-    l_lkids = []
-    for file in sorted(glob.glob(f"data/de-divi/tsv/{blid}*.tsv")):
-        (filepath, fileName) = os.path.split(file)
-        (fileBaseName, fileExtension) = os.path.splitext(fileName)
-        lkid = fileBaseName
-        l_lkids.append(lkid)
-    landkreis_name = helper.d_BL_code_from_BL_ID[int(blid)]
-    doit(landkreis_name=landkreis_name, l_lkids=l_lkids, mode="de-state")
+    plot_it(
+        df=df_data, l_df_prognosen=l_df_prognosen, l_prognosen_prozente=l_prognosen_prozente, filepath=filepath, landkreis_name=title)
 
 
 print("DE-total")
-l_lkids = []
-for file in sorted(glob.glob(f"data/de-divi/tsv/*.tsv")):
-    (filepath, fileName) = os.path.split(file)
-    (fileBaseName, fileExtension) = os.path.splitext(fileName)
-    lkid = fileBaseName
-    l_lkids.append(lkid)
-landkreis_name = "Deutschland gesamt"
-doit(landkreis_name=landkreis_name, l_lkids=l_lkids, mode="DE-total")
+doit(mode="DE-total")
+
+print("de-states")
+for i in range(1, 16+1):
+    # bl_id = 02 für HH etc
+    # bl_id = "%02d" % i
+    doit(mode="de-state", bl_id=i)
+
+
+print("de-district-group")
+# loop over grouped landkreise
+# generated via icu-groups.py
+l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
+for d in l_groupes:
+    landkreis_name = d["title"]
+    id = d["id"]
+    l_lk_ids = d["lk_ids"]
+    doit(mode="de-district-group", title=landkreis_name, l_lk_ids=l_lk_ids,
+         filename=str(d["id"]))
+
+
+print("de-districts")
+l_lk_ids = helper.read_json_file(
+    "data/de-divi/lkids.json")
+for lk_id in l_lk_ids:
+    if (lk_id == "16056"):  # Eisenach
+        continue
+    doit(mode="de-district", l_lk_ids=(lk_id,))

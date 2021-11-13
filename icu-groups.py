@@ -8,47 +8,47 @@ l_groups = []
 d = {
     "id": 1,
     "title": "Fürth und Umland",
-    "lkids": ("09563",  # Fürth Stadt
-              "09573",  # Fürth Land
-              )
+    "lk_ids": ("09563",  # Fürth Stadt
+               "09573",  # Fürth Land
+               )
 }
 l_groups.append(d)
 d = {
     "id": 2,
     "title": "Erlangen und Umland",
-    "lkids": ("09562",  # Erlangen
-              "09572",  # ERH
-              "09474",  # Forchheim
-              # "09575",  # NEA: 48
-              )
+    "lk_ids": ("09562",  # Erlangen
+               "09572",  # ERH
+               "09474",  # Forchheim
+               # "09575",  # NEA: 48
+               )
 }
 l_groups.append(d)
 d = {
     "id": 3,
     "title": "Nürnberg und Umland",
-    "lkids": ("09564",  # Nürnberg Stadt
-              "09574",  # Nürnberg Land
-              "09576",  # Roth
-              "09571",  # Ansbach
-              )
+    "lk_ids": ("09564",  # Nürnberg Stadt
+               "09574",  # Nürnberg Land
+               "09576",  # Roth
+               "09571",  # Ansbach
+               )
 }
 l_groups.append(d)
 d = {
     "id": 4,
     "title": "Harburg und Lüneburg",
-    "lkids": ("03353",  # Harburg
-              "03355",  # LG
-              )
+    "lk_ids": ("03353",  # Harburg
+               "03355",  # LG
+               )
 }
 l_groups.append(d)
 d = {
     "id": 5,
     "title": "Dresden und Umland",
-    "lkids": ("14612",  # DD
-              "14628",  # SS
-              "14625",  # Bautzen
-              "14627",  # Meißen
-              )
+    "lk_ids": ("14612",  # DD
+               "14628",  # SS
+               "14625",  # Bautzen
+               "14627",  # Meißen
+               )
 }
 l_groups.append(d)
 
@@ -87,7 +87,7 @@ df = df.sort_values(by=['betten_belegt'], ascending=False)
 l_ids = []
 for d in l_groups:
     print(f'{d["title"]}')
-    for lkid in d["lkids"]:
+    for lkid in d["lk_ids"]:
         df2 = df[df["gemeindeschluessel"] == int(lkid)]
         if len(df2) > 0:
             betten_ges = df2["betten_ges"].iloc[0]

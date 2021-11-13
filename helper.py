@@ -208,6 +208,9 @@ d_BL_name_from_BL_Code = {
     'TH': "Thüringen",
     'DE-total': "Deutschland"}
 
+d_lk_name_from_lk_id = read_json_file(
+    "data/de-districts/mapping_landkreis_ID_name.json")
+
 
 def prepare_time_series(l_time_series: list) -> list:
     """
