@@ -350,7 +350,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     axes.tick_params(right=True, labelright=True)
 
     # {weeks_forcast} Wochen
-    title = f'{landkreis_name}: Prognose ITS Bettenbedarf'
+    title = f'{landkreis_name}: 2 Wochen Prognose ITS Bettenbedarf'
     plt.title(title)
     axes.set_xlabel("")
     axes.set_ylabel('Bedarf an ITS Beatmungs-Betten durch COVID Patienten')
