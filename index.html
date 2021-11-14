@@ -730,9 +730,12 @@
 	<p>
 		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105"
 			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
-		Bedarf an Intensivbetten für die Landkreise und Bundesländer erstellt. Eingangsparameter der Prognose ist die
-		Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten Woche für 2 Wochen fortgeschrieben. Blau
-		ist die Historie der gemeldeten ITS Betten.
+		Bedarf an Intensivbetten zur Beatmung von COVID Patienten erstellt und für alle Landkreise und Bundesländer
+		berechnet.
+		Eingangsparameter der Prognose ist die Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten
+		Woche für 2 Wochen fortgeschrieben. Blau ist die Historie der ans <a href="https://www.intensivregister.de/"
+			target="_blank">DIVI-Intensivregister</a> gemeldeten belegten ITS Betten (deren Datenreihe
+		"faelle_covid_aktuell_invasiv_beatmet"). Details zum Modell siehe unten.
 	</p>
 
 	<p>
@@ -808,17 +811,39 @@
 	</p> -->
 
 	<p>
-		Hinweise:
+		Hinweise
 	<ul>
-		<li>Das DIVI aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 14:15</li>
+		<li>Das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a>
+			aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 14:15</li>
+		<li>Verwendete <a href="https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table"
+				target="_blank">DIVI Rohdaten (CSV Format)</a></li>
 		<li>Nicht alle Intensivstationen melden ihre Zahlen an das <a href="https://www.intensivregister.de/"
 				target="_blank">DIVI-Intensivregister</a> </li>
+		<li>Daher spiegeln die obigen Zahlen (Vergangenheit, wie auch Prognose) nur die Krankenhäuser wieder, die ans
+			DIVI melden. Die Gesamtzahl ist um einen konstanten Faktor höher.</li>
+		<li>Die Zahlen zeigen die ITS Betten in denen COVID Patienten beatmet werden </li>
 		<li>Ich freue mich über <a href="/contact.php?origin=COVID-19">Verbesserungsvorschäge</a> und Vorschläge für
 			weitere
 			<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/icu-groups.py"
 				target="_blank">Landkreisgruppierungen</a>
 		</li>
 	</ul>
+	</p>
+	<p>
+		Modell<br />
+		Vorgeschlagen von <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">Dirk
+			Paessler</a>
+	<ol>
+		<li>Auswahl einer Region (Landkreise/Landkreisgruppe/Bundesland)</li>
+		<li>Verhältnis von dort gemeldeten COVID-Beatmungs-Betten (DIVI Datenreihe
+			"faelle_covid_aktuell_invasiv_beatmet") zu 20-Tages-Inzidenz für die letzten 7 Tage berechnet</li>
+		<li>Mittelwert dieses Verhältnisses über diese 7 Tage gebildet
+			(und für die 2-Wochen-Prognose als konstant angenommen)</li>
+		<li>Neue Fälle der letzten 7 Tage werden mit verschiedenen Wachstums-Annahmen für 2 Wochen in die Zukunft
+			prognostiziert</li>
+		<li>Die aus der Prognose resultierende zukünftige 20-Tages-Inzidenz mit dem obigen Mittelwert (Betten zu
+			20-Tages-Inzidenz) in eine Betten-Prognose umgerechnet</li>
+	</ol>
 	</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>

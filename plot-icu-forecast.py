@@ -353,7 +353,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     title = f'{landkreis_name}: Prognose ITS Bettenbedarf'
     plt.title(title)
     axes.set_xlabel("")
-    axes.set_ylabel('Bedarf an ITS Betten durch COVID Patienten')
+    axes.set_ylabel('Bedarf an ITS Beatmungs-Betten durch COVID Patienten')
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
