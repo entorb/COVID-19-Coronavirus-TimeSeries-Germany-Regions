@@ -74,7 +74,7 @@ def load_divi_data() -> DataFrame:
     df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
 
     df = df[["date", "bundesland", "gemeindeschluessel",
-            "faelle_covid_aktuell_invasiv_beatmet",
+             "faelle_covid_aktuell_invasiv_beatmet",
              "betten_ges",
              "betten_frei",
              "betten_belegt"]]
@@ -416,7 +416,7 @@ def doit(title="", l_lk_ids: list = (), bl_id: int = -1, mode='de-district', fil
         else:
             df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
             title = helper.d_lk_name_from_lk_id["%05d" % lk_id]
-        filepath = f"{dir_out}/single/{lk_id}.png"
+        filepath = f'{dir_out}/single/{"%05d" % lk_id}.png'
 
     elif mode == "de-district-group":
         assert filename != "", f"ERROR: filename missing for {title}"
