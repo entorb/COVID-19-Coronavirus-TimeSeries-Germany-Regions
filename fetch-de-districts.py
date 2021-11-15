@@ -31,6 +31,11 @@ from tqdm import tqdm
 # my helper modules
 import helper
 
+# idea:
+# fetch data from risklayer instead:
+# http://www.risklayer-explorer.com/media/data/events/GermanyValues.csv
+
+
 """
 Further details and Endpoints
 LK_ID is https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel

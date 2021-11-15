@@ -1,18 +1,20 @@
 # from datetime import timedelta  # , date
 import helper
-import glob
-import shutil
+
+# import glob
+# import shutil
 import datetime
 import os
+import datetime as dt
+import locale
+
 import pandas as pd
 from pandas.core.frame import DataFrame
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.dates import MonthLocator, YearLocator, WeekdayLocator
 
+# from matplotlib.dates import MonthLocator, YearLocator, WeekdayLocator
 # import matplotlib.ticker as ticker
-import locale
-import datetime as dt
 
 
 # Matplotlib setup
@@ -544,11 +546,6 @@ def doit(
     )
 
 
-# Modelltests mit Daten von Erlangen
-# print("Erlangen")
-# doit(mode="de-district", l_lk_ids=(9562,))
-
-
 print("DE-total")
 doit(mode="DE-total")
 
@@ -556,10 +553,8 @@ print("de-states")
 for i in range(1, 16 + 1):
     doit(mode="de-state", bl_id=i)
 
-
 print("de-district-group")
-# loop over grouped landkreise
-# generated via icu-groups.py
+# groups generated via icu-groups.py
 l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
 for d in l_groupes:
     title = d["title"]
@@ -568,8 +563,6 @@ for d in l_groupes:
     doit(
         mode="de-district-group", title=title, l_lk_ids=l_lk_ids, filename=str(d["id"])
     )
-
-# test
 
 print("de-districts")
 l_lk_ids = helper.read_json_file("data/de-divi/lkids.json")
@@ -580,8 +573,54 @@ for lk_id in l_lk_ids:
     doit(mode="de-district", l_lk_ids=(lk_id,))
 
 
+# Tests
+
 # # Unna: 4 Wochen Prognose für @doc_emed
 # print("Unna")
 # weeks_forcast = 4
 # doit(mode="de-district", l_lk_ids=(5978,))
-# #
+
+
+# Modelltests mit Daten von Erlangen
+# print("Erlangen")
+# doit(mode="de-district", l_lk_ids=(9562,))
+
+
+# def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
+#     """
+#     plot 2.png
+#     """
+
+#     fig, axes = plt.subplots(figsize=(8, 6))
+
+#     colors = ("blue", "black")
+
+#     myPlot = df["quote_betten_covid_pro_cases_roll_sum_20"].plot(
+#         linewidth=2.0, legend=False, zorder=1, color=colors[0]
+#     )
+
+#     plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 20-Tages-Fallzahl")
+#     axes.set_xlabel("")
+#     axes.set_ylabel("")
+#     # color of label and ticks
+#     axes.yaxis.label.set_color(colors[0])
+#     axes.tick_params(axis="y", colors=colors[0])
+#     # grid
+#     axes.set_axisbelow(True)  # for grid below the lines
+#     axes.grid(zorder=-1)
+
+#     date_min2 = pd.to_datetime(df.index[-60]).date()
+#     date_max2 = pd.to_datetime(df.index[-1]).date()
+#     axes.set_xlim([date_min2, date_max2])
+#     axes.set_ylim(0, 0.10)
+
+#     plt.tight_layout()
+#     plt.savefig(fname=filename, format="png")
+
+
+# l_lk_ids = (9562,)
+# df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
+# df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
+# df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
+
+# plot_2_its_per_20day_cases(df=df_data, filename="out.png", landkreis_name="Erlangen")
