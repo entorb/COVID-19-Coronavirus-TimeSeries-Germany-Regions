@@ -728,16 +728,21 @@
 		<a id="DeStatesIcuForecast"></a> Intensivstationsprognose
 	</h4>
 	<p>
-		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105"
-			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
-		Bedarf an Intensivbetten zur Beatmung von COVID Patienten erstellt und für alle <a
-			href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
+		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">stark
+			vereinfachten Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognose für den
+		Bedarf an Intensivbetten für COVID Patienten implementiert.
+		Diese wird täglich um 14:15 für alle <a href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
 			href="#DeStates-cases-deaths-divi">Bundesländer</a>
-		berechnet.
-		Eingangsparameter der Prognose ist die Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten
-		Woche für 2 Wochen fortgeschrieben. Blau ist die Historie der ans <a href="https://www.intensivregister.de/"
-			target="_blank">DIVI-Intensivregister</a> gemeldeten durch COVID Patienten belegten ITS Betten. Details zum
-		Modell siehe <a href="#DeStatesIcuForecastHinweise">unten</a>.
+		aktualisiert.
+	</p>
+	<p>
+		Eingangsparameter der Prognose ist die künftige Entwicklung der 7-Tages-Inzidenz.
+		In Orange ist der aktueller Anstieg der letzten Woche für 2 Wochen fortgeschrieben.
+		In anderen Farben sind Inzidenz-Veränderungen von +50%, +25%, 0% und -25% pro Woche skizziert.
+		Blau zeigt die Historie der ans <a href="https://www.intensivregister.de/"
+			target="_blank">DIVI-Intensivregister</a> gemeldeten
+		Bettenbelegung.
+		Details zum Modell siehe <a href="#DeStatesIcuForecastHinweise">unten</a>.
 	</p>
 
 	<p>
@@ -797,22 +802,6 @@
 			target="_blank">plot-icu-forecast.py</a>
 	</small>
 
-
-	<!-- <p>
-		Die Grafiken der Landkreise sind bisher nur über einen Direktlink unter Verwendung der Landkreis-ID zu bekommen,
-		das werde ich später mal verbessern.
-		Beispiel:<br />
-		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/09562.png" target="_blank">
-			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>09562</b>.png</a> <br />
-		und<br />
-		<a href="https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/09562-zoom.png"
-			target="_blank">
-			https://entorb.net/COVID-19-coronavirus/plots-python/icu-forecast/single/<b>09562</b>-zoom.png</a><br />
-		Eine Liste der Landkreis-IDs gibt es <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/ref-de-districts.tsv"
-			target="_blank">hier</a>
-	</p> -->
-
 	<p>
 		<a id="DeStatesIcuForecastHinweise"></a>Hinweise
 	<ul>
@@ -824,11 +813,14 @@
 				target="_blank">DIVI-Intensivregister</a> </li>
 		<li>Daher spiegeln die obigen Zahlen (Vergangenheit, wie auch Prognose) nur die Krankenhäuser wider, die ans
 			DIVI melden. Die Gesamtzahl ist um einen konstanten Faktor höher.</li>
-		<li>Die Zahlen zeigen die ITS Betten in denen COVID Patienten beatmet werden </li>
+		<li>Das Modell ist sehr einfach gehalten und sicher nicht exakt. Trotzdem kann es helfen die aktuelle Lage
+			besser zu bewerten.</li>
 		<li>Ich freue mich über <a href="/contact.php?origin=COVID-19">Verbesserungsvorschäge</a> und Vorschläge für
 			weitere
 			<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/icu-groups.py"
-				target="_blank">Landkreisgruppierungen</a>
+				target="_blank">Landkreisgruppierungen</a>, bevorzugt unter Angabe der <a
+				href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/mapping_landkreis_ID_name.json"
+				target="_blank">Gemeindeschlüssel</a>.
 		</li>
 	</ul>
 	</p>
