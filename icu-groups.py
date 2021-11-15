@@ -43,11 +43,34 @@ d = {
 l_groups.append(d)
 d = {
     "id": 5,
-    "title": "Dresden und Umland",
+    "title": "Dresden Krankenhauscluster",
     "lk_ids": ("14612",  # DD
-               "14628",  # SS
+               "14628",  # SS-OE
                "14625",  # Bautzen
                "14627",  # Meißen
+               "14626",  # Görlitz
+               )
+}
+l_groups.append(d)
+d = {
+    "id": 6,
+    "title": "Leipzig Krankenhauscluster",
+    "lk_ids": ("14713",  # L
+               "14729",  # L Land
+               "14730",  # Nordsachsen
+               "14627",  # Meißen
+               "14626",  # Görlitz
+               )
+}
+l_groups.append(d)
+d = {
+    "id": 7,
+    "title": "Chemnitz Krankenhauscluster",
+    "lk_ids": ("14511",  # Chemnitz
+               "14522",  # Mittelsachsen
+               "14524",  # Zwickau
+               "14521",  # Erzgebirgskreis
+               "14523",  # Vogtlandkreis
                )
 }
 l_groups.append(d)
