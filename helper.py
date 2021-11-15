@@ -14,6 +14,7 @@ import os
 import os.path
 import time
 import datetime as dt
+
 # import argparse
 import csv
 import json
@@ -29,6 +30,7 @@ import requests  # for read_url_or_cachefile
 # further modules
 import math
 import numpy as np
+
 # curve-fit() function imported from scipy
 from scipy.optimize import curve_fit
 import pandas as pd
@@ -36,21 +38,21 @@ import matplotlib.pyplot as plt
 
 
 # ensure all output folders are present
-os.makedirs('cache', exist_ok=True)
-os.makedirs('cache/de-districts/', exist_ok=True)
-os.makedirs('cache/de-divi/', exist_ok=True)
-os.makedirs('cache/de-states/', exist_ok=True)
-os.makedirs('cache/int/', exist_ok=True)
-os.makedirs('data/de-districts/latest/', exist_ok=True)
-os.makedirs('plots-gnuplot/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-districts/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-divi/', exist_ok=True)
-os.makedirs('plots-gnuplot/de-states/', exist_ok=True)
-os.makedirs('plots-gnuplot/int/', exist_ok=True)
-os.makedirs('plots-python/', exist_ok=True)
-os.makedirs('plots-python/de-states/', exist_ok=True)
-os.makedirs('plots-python/de-districts/', exist_ok=True)
-os.makedirs('maps/out/de-districts/', exist_ok=True)
+os.makedirs("cache", exist_ok=True)
+os.makedirs("cache/de-districts/", exist_ok=True)
+os.makedirs("cache/de-divi/", exist_ok=True)
+os.makedirs("cache/de-states/", exist_ok=True)
+os.makedirs("cache/int/", exist_ok=True)
+os.makedirs("data/de-districts/latest/", exist_ok=True)
+os.makedirs("plots-gnuplot/", exist_ok=True)
+os.makedirs("plots-gnuplot/de-districts/", exist_ok=True)
+os.makedirs("plots-gnuplot/de-divi/", exist_ok=True)
+os.makedirs("plots-gnuplot/de-states/", exist_ok=True)
+os.makedirs("plots-gnuplot/int/", exist_ok=True)
+os.makedirs("plots-python/", exist_ok=True)
+os.makedirs("plots-python/de-states/", exist_ok=True)
+os.makedirs("plots-python/de-districts/", exist_ok=True)
+os.makedirs("maps/out/de-districts/", exist_ok=True)
 
 
 #
@@ -58,22 +60,30 @@ os.makedirs('maps/out/de-districts/', exist_ok=True)
 #
 
 
-def read_url_or_cachefile(url: str, cachefile: str, request_type: str = 'get', payload: dict = {}, cache_max_age: int = 1800, verbose: bool = True) -> str:
+def read_url_or_cachefile(
+    url: str,
+    cachefile: str,
+    request_type: str = "get",
+    payload: dict = {},
+    cache_max_age: int = 1800,
+    verbose: bool = True,
+) -> str:
     b_cache_is_recent = check_cache_file_available_and_recent(
-        fname=cachefile, max_age=cache_max_age, verbose=verbose)
+        fname=cachefile, max_age=cache_max_age, verbose=verbose
+    )
     if not b_cache_is_recent:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ',
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ",
         }
-        if request_type == 'get':
+        if request_type == "get":
             cont = requests.get(url, headers=headers).content
-        elif request_type == 'post':
+        elif request_type == "post":
             cont = requests.post(url, headers=headers, data=payload).content
-        with open(cachefile, mode='wb') as fh:
+        with open(cachefile, mode="wb") as fh:
             fh.write(cont)
-        cont = cont.decode('utf-8')
+        cont = cont.decode("utf-8")
     else:
-        with open(cachefile, mode='r', encoding='utf-8') as fh:
+        with open(cachefile, mode="r", encoding="utf-8") as fh:
             cont = fh.read()
     return cont
 
@@ -82,14 +92,13 @@ def read_json_file(filename: str):
     """
     returns list or dict
     """
-    with open(filename, mode='r', encoding='utf-8') as fh:
+    with open(filename, mode="r", encoding="utf-8") as fh:
         return json.load(fh)
 
 
 def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 1):
-    with open(filename, mode='w', encoding='utf-8', newline='\n') as fh:
-        json.dump(d, fh, ensure_ascii=False,
-                  sort_keys=sort_keys, indent=indent)
+    with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
+        json.dump(d, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
 
 
 def convert_timestamp_to_date_str(ts: int) -> str:
@@ -107,6 +116,7 @@ def convert_timestamp_to_date_str(ts: int) -> str:
 def date_format(y: int, m: int, d: int) -> str:
     return "%04d-%02d-%02d" % (y, m, d)
 
+
 #
 # Pandas Helper
 #
@@ -114,16 +124,18 @@ def date_format(y: int, m: int, d: int) -> str:
 
 def pandas_set_date_index(df, date_column: str = "Date"):
     """use date as index"""
-    df[date_column] = pd.to_datetime(df[date_column], format='%Y-%m-%d')
+    df[date_column] = pd.to_datetime(df[date_column], format="%Y-%m-%d")
     df.set_index([date_column], inplace=True)
     return df
 
 
 def pandas_calc_roll_av(df, column: str, days: int = 7):
     """calc rolling average over column"""
-    df[column + '_roll_av'] = df[column].rolling(
-        window=days, min_periods=1).mean().round(1)
+    df[column + "_roll_av"] = (
+        df[column].rolling(window=days, min_periods=1).mean().round(1)
+    )
     return df
+
 
 #
 # Matplotlib Helper
@@ -131,8 +143,16 @@ def pandas_calc_roll_av(df, column: str, days: int = 7):
 
 
 def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = dt.date.today()):
-    plt.gcf().text(1.0, 0.0, s=f"by Torben https://entorb.net , based on {source} data of {date}", fontsize=8,
-                   horizontalalignment='right', verticalalignment='bottom', rotation='vertical')
+    plt.gcf().text(
+        1.0,
+        0.0,
+        s=f"by Torben https://entorb.net , based on {source} data of {date}",
+        fontsize=8,
+        horizontalalignment="right",
+        verticalalignment="bottom",
+        rotation="vertical",
+    )
+
 
 #
 # COVID-19 Helpers
@@ -149,67 +169,69 @@ def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = dt.date.to
 
 
 d_BL_code_from_BL_ID = {
-    0: 'DE-total',
-    1: 'SH',
-    2: 'HH',
-    3: 'NI',
-    4: 'HB',
-    5: 'NW',
-    6: 'HE',
-    7: 'RP',
-    8: 'BW',
-    9: 'BY',
-    10: 'SL',
-    11: 'BE',
-    12: 'BB',
-    13: 'MV',
-    14: 'SN',
-    15: 'ST',
-    16: 'TH'
+    0: "DE-total",
+    1: "SH",
+    2: "HH",
+    3: "NI",
+    4: "HB",
+    5: "NW",
+    6: "HE",
+    7: "RP",
+    8: "BW",
+    9: "BY",
+    10: "SL",
+    11: "BE",
+    12: "BB",
+    13: "MV",
+    14: "SN",
+    15: "ST",
+    16: "TH",
 }
 
 
 d_BL_ID_from_BL_code = {
-    'DE-total': 0,
-    'SH': 1,
-    'HH': 2,
-    'NI': 3,
-    'HB': 4,
-    'NW': 5,
-    'HE': 6,
-    'RP': 7,
-    'BW': 8,
-    'BY': 9,
-    'SL': 10,
-    'BE': 11,
-    'BB': 12,
-    'MV': 13,
-    'SN': 14,
-    'ST': 15,
-    'TH': 16
+    "DE-total": 0,
+    "SH": 1,
+    "HH": 2,
+    "NI": 3,
+    "HB": 4,
+    "NW": 5,
+    "HE": 6,
+    "RP": 7,
+    "BW": 8,
+    "BY": 9,
+    "SL": 10,
+    "BE": 11,
+    "BB": 12,
+    "MV": 13,
+    "SN": 14,
+    "ST": 15,
+    "TH": 16,
 }
 
 d_BL_name_from_BL_Code = {
-    'BW': "Baden-Württemberg",
-    'BY': "Bayern",
-    'BE': "Berlin",
-    'BB': "Brandenburg",
-    'HB': "Bremen",
-    'HH': "Hamburg",
-    'HE': "Hessen",
-    'MV': "Mecklenburg-Vorpommern",
-    'NI': "Niedersachsen",
-    'NW': "Nordrhein-Westfalen",
-    'RP': "Rheinland-Pfalz",
-    'SL': "Saarland",
-    'SN': "Sachsen",
-    'ST': "Sachsen-Anhalt",
-    'SH': "Schleswig-Holstein",
-    'TH': "Thüringen",
-    'DE-total': "Deutschland"}
+    "BW": "Baden-Württemberg",
+    "BY": "Bayern",
+    "BE": "Berlin",
+    "BB": "Brandenburg",
+    "HB": "Bremen",
+    "HH": "Hamburg",
+    "HE": "Hessen",
+    "MV": "Mecklenburg-Vorpommern",
+    "NI": "Niedersachsen",
+    "NW": "Nordrhein-Westfalen",
+    "RP": "Rheinland-Pfalz",
+    "SL": "Saarland",
+    "SN": "Sachsen",
+    "ST": "Sachsen-Anhalt",
+    "SH": "Schleswig-Holstein",
+    "TH": "Thüringen",
+    "DE-total": "Deutschland",
+}
 
 d_lk_name_from_lk_id = read_json_file(
-    "data/de-districts/mapping_landkreis_ID_name.json")
+    "data/de-districts/mapping_landkreis_ID_name.json"
+)
 
 
 def prepare_time_series(l_time_series: list) -> list:
@@ -227,18 +249,16 @@ def prepare_time_series(l_time_series: list) -> list:
 
     # some checks
     d = l_time_series[0]
-    assert 'Date' in d
-    assert 'Cases' in d
-    assert 'Deaths' in d
-    assert isinstance(d['Date'], str)
-    assert isinstance(d['Cases'], int)
-    assert isinstance(d['Deaths'], int)
-    last_date = dt.datetime.strptime(
-        l_time_series[-1]['Date'], "%Y-%m-%d")
+    assert "Date" in d
+    assert "Cases" in d
+    assert "Deaths" in d
+    assert isinstance(d["Date"], str)
+    assert isinstance(d["Cases"], int)
+    assert isinstance(d["Deaths"], int)
+    last_date = dt.datetime.strptime(l_time_series[-1]["Date"], "%Y-%m-%d")
 
     # ensure sorting by date
-    l_time_series = sorted(
-        l_time_series, key=lambda x: x['Date'], reverse=False)
+    l_time_series = sorted(l_time_series, key=lambda x: x["Date"], reverse=False)
 
     # NO, THIS RESULTS IN DATA SEAMING TO OLD
     # if lastdate and lastdate-1 have the same number of cases, than drop lastdate
@@ -256,64 +276,79 @@ def prepare_time_series(l_time_series: list) -> list:
         d = l_time_series[i]
 
         # ensure that each date is unique
-        assert d['Date'] not in l_dates_processed
-        l_dates_processed.append(d['Date'])
+        assert d["Date"] not in l_dates_processed
+        l_dates_processed.append(d["Date"])
 
-        this_date = dt.datetime.strptime(d['Date'], "%Y-%m-%d")
-        d['Days_Past'] = (this_date-last_date).days
+        this_date = dt.datetime.strptime(d["Date"], "%Y-%m-%d")
+        d["Days_Past"] = (this_date - last_date).days
 
         # days_since_2_deaths
-        d['Days_Since_2nd_Death'] = None
-        if d['Deaths'] >= 2:  # is 2 a good value?
-            d['Days_Since_2nd_Death'] = days_since_2_deaths
+        d["Days_Since_2nd_Death"] = None
+        if d["Deaths"] >= 2:  # is 2 a good value?
+            d["Days_Since_2nd_Death"] = days_since_2_deaths
             days_since_2_deaths += 1
 
         # _New since yesterday
-        d['Cases_New'] = d['Cases'] - last_cases
-        d['Deaths_New'] = d['Deaths'] - last_deaths
+        d["Cases_New"] = d["Cases"] - last_cases
+        d["Deaths_New"] = d["Deaths"] - last_deaths
         # sometimes values are corrected, leading to negative values, which I replace by 0
-        if (d['Cases_New'] < 0):
-            d['Cases_New'] = 0
-        if (d['Deaths_New'] < 0):
-            d['Deaths_New'] = 0
+        if d["Cases_New"] < 0:
+            d["Cases_New"] = 0
+        if d["Deaths_New"] < 0:
+            d["Deaths_New"] = 0
 
         # delta of _Last_Week = last 7 days
-        d['Cases_Last_Week'] = 0
-        d['Deaths_Last_Week'] = 0
+        d["Cases_Last_Week"] = 0
+        d["Deaths_Last_Week"] = 0
         if i >= 7:
             # TM: this is correct, I double checked it ;-)
-            d7 = l_time_series[i-7]
-            d['Cases_Last_Week'] = d['Cases'] - d7['Cases']
-            d['Deaths_Last_Week'] = d['Deaths'] - d7['Deaths']
+            d7 = l_time_series[i - 7]
+            d["Cases_Last_Week"] = d["Cases"] - d7["Cases"]
+            d["Deaths_Last_Week"] = d["Deaths"] - d7["Deaths"]
 
             # Cases_Last_Week_7Day_Percent and Deaths_Last_Week_7Day_Percent
-            d['Cases_Last_Week_7Day_Percent'] = 0
-            if d7['Cases_Last_Week'] >= 2:  # min 2 to reduce noise
-                d['Cases_Last_Week_7Day_Percent'] = round((d['Cases_Last_Week']-d7['Cases_Last_Week']) /
-                                                          d7['Cases_Last_Week'] * 100, 1)
-            d['Deaths_Last_Week_7Day_Percent'] = 0
-            if d7['Deaths_Last_Week'] >= 2:  # min 2 to reduce noise
-                d['Deaths_Last_Week_7Day_Percent'] = round((d['Deaths_Last_Week']-d7['Deaths_Last_Week']) /
-                                                           d7['Deaths_Last_Week'] * 100, 1)
+            d["Cases_Last_Week_7Day_Percent"] = 0
+            if d7["Cases_Last_Week"] >= 2:  # min 2 to reduce noise
+                d["Cases_Last_Week_7Day_Percent"] = round(
+                    (d["Cases_Last_Week"] - d7["Cases_Last_Week"])
+                    / d7["Cases_Last_Week"]
+                    * 100,
+                    1,
+                )
+            d["Deaths_Last_Week_7Day_Percent"] = 0
+            if d7["Deaths_Last_Week"] >= 2:  # min 2 to reduce noise
+                d["Deaths_Last_Week_7Day_Percent"] = round(
+                    (d["Deaths_Last_Week"] - d7["Deaths_Last_Week"])
+                    / d7["Deaths_Last_Week"]
+                    * 100,
+                    1,
+                )
 
         # sometimes values are corrected, leading to negative values, which I replace by 0
-        if (d['Cases_Last_Week'] < 0):
-            d['Cases_Last_Week'] = 0
-        if (d['Deaths_Last_Week'] < 0):
-            d['Deaths_Last_Week'] = 0
+        if d["Cases_Last_Week"] < 0:
+            d["Cases_Last_Week"] = 0
+        if d["Deaths_Last_Week"] < 0:
+            d["Deaths_Last_Week"] = 0
 
         # Deaths_Per_Cases
-        d['Deaths_Per_Cases'] = None
-        if d['Cases'] > 0 and d['Deaths'] > 0:
-            d['Deaths_Per_Cases'] = round(d['Deaths'] / d['Cases'], 3)
+        d["Deaths_Per_Cases"] = None
+        if d["Cases"] > 0 and d["Deaths"] > 0:
+            d["Deaths_Per_Cases"] = round(d["Deaths"] / d["Cases"], 3)
         # Deaths_Per_Cases_Last_Week
-        d['Deaths_Per_Cases_Last_Week'] = None
-        if i >= 7 and d['Cases_Last_Week'] and d['Deaths_Last_Week'] and d['Cases_Last_Week'] > 0 and d['Deaths_Last_Week'] > 0:
-            d['Deaths_Per_Cases_Last_Week'] = round(
-                d['Deaths_Last_Week'] / d['Cases_Last_Week'], 3)
+        d["Deaths_Per_Cases_Last_Week"] = None
+        if (
+            i >= 7
+            and d["Cases_Last_Week"]
+            and d["Deaths_Last_Week"]
+            and d["Cases_Last_Week"] > 0
+            and d["Deaths_Last_Week"] > 0
+        ):
+            d["Deaths_Per_Cases_Last_Week"] = round(
+                d["Deaths_Last_Week"] / d["Cases_Last_Week"], 3
+            )
 
-        last_cases = d['Cases']
-        last_deaths = d['Deaths']
+        last_cases = d["Cases"]
+        last_deaths = d["Deaths"]
 
         l_time_series[i] = d
 
@@ -321,7 +356,7 @@ def prepare_time_series(l_time_series: list) -> list:
 
 
 def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
-    keys_to_drop = ('Days_Past', )
+    keys_to_drop = ("Days_Past",)
     for i in range(len(l_time_series)):
         d = l_time_series[i]
         for key in keys_to_drop:
@@ -333,13 +368,27 @@ def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
 
 def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
     d_data_latest = dict(d_ref_data)
-    for code, l_time_series in d_data_all .items():
+    for code, l_time_series in d_data_all.items():
         assert code in d_data_latest.keys()
         if len(l_time_series) == 0:  # handling of empty data set
             continue
         d = l_time_series[-1]
-        d_data_latest[code]['Date_Latest'] = d['Date']
-        for key in ('Cases', 'Deaths', 'Cases_New', 'Deaths_New', 'Cases_Per_Million', 'Deaths_Per_Million', 'Cases_Last_Week', 'Deaths_Last_Week', 'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million', 'Cases_Last_Week_Per_100000', 'Cases_Last_Week_7Day_Percent', 'Deaths_Last_Week_7Day_Percent'):
+        d_data_latest[code]["Date_Latest"] = d["Date"]
+        for key in (
+            "Cases",
+            "Deaths",
+            "Cases_New",
+            "Deaths_New",
+            "Cases_Per_Million",
+            "Deaths_Per_Million",
+            "Cases_Last_Week",
+            "Deaths_Last_Week",
+            "Cases_Last_Week_Per_Million",
+            "Deaths_Last_Week_Per_Million",
+            "Cases_Last_Week_Per_100000",
+            "Cases_Last_Week_7Day_Percent",
+            "Deaths_Last_Week_7Day_Percent",
+        ):
             d_data_latest[code][key] = d[key]
         d_slopes = fit_slopes(l_time_series)
         for key, value in d_slopes.items():
@@ -351,36 +400,45 @@ def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
 
 
 def add_per_million_via_lookup(d: dict, d_ref: dict, code: str) -> dict:
-    pop_in_million = d_ref[code]['Population'] / 1000000
+    pop_in_million = d_ref[code]["Population"] / 1000000
     return add_per_million(d=d, pop_in_million=pop_in_million)
 
 
 def add_per_million(d: dict, pop_in_million: float) -> dict:
-    for key in ('Cases', 'Deaths', 'Cases_New', 'Deaths_New', 'Cases_Last_Week', 'Deaths_Last_Week'):
+    for key in (
+        "Cases",
+        "Deaths",
+        "Cases_New",
+        "Deaths_New",
+        "Cases_Last_Week",
+        "Deaths_Last_Week",
+    ):
         perMillion = None
         if key in d and d[key] is not None:
             if pop_in_million:
-                perMillion = d[key]/pop_in_million
-                if key in ('Deaths_New', ):
+                perMillion = d[key] / pop_in_million
+                if key in ("Deaths_New",):
                     perMillion = round(perMillion, 3)
-                elif key in ('Deaths_Last_Week', ):
+                elif key in ("Deaths_Last_Week",):
                     perMillion = round(perMillion, 2)
                 else:
                     perMillion = int(round(perMillion, 3))
             # else:
             #     perMillion = 0  # if pop is unknown
-        d[key+'_Per_Million'] = perMillion
-    d['Cases_Last_Week_Per_100000'] = d['Cases_Last_Week_Per_Million']/10
+        d[key + "_Per_Million"] = perMillion
+    d["Cases_Last_Week_Per_100000"] = d["Cases_Last_Week_Per_Million"] / 10
     return d
 
 
-def check_cache_file_available_and_recent(fname: str, max_age: int = 3600, verbose: bool = False) -> bool:
+def check_cache_file_available_and_recent(
+    fname: str, max_age: int = 3600, verbose: bool = False
+) -> bool:
     b_cache_good = True
     if not os.path.exists(fname):
         if verbose:
             print(f"No Cache available: {fname}")
         b_cache_good = False
-    if (b_cache_good and time.time() - os.path.getmtime(fname) > max_age):
+    if b_cache_good and time.time() - os.path.getmtime(fname) > max_age:
         if verbose:
             print(f"Cache too old: {fname}")
         b_cache_good = False
@@ -390,15 +448,15 @@ def check_cache_file_available_and_recent(fname: str, max_age: int = 3600, verbo
 def fetch_json_as_dict_from_url(url: str) -> dict:
     filedata = urllib.request.urlopen(url)
     contents = filedata.read()
-    d_json = json.loads(contents.decode('utf-8'))
+    d_json = json.loads(contents.decode("utf-8"))
     # retry on error:
-    if 'error' in d_json:
+    if "error" in d_json:
         print("retrying upon error...")
         time.sleep(3)
         filedata = urllib.request.urlopen(url)
         contents = filedata.read()
-        d_json = json.loads(contents.decode('utf-8'))
-    assert 'error' not in d_json, d_json['error']['details'][0] + "\n" + url
+        d_json = json.loads(contents.decode("utf-8"))
+    assert "error" not in d_json, d_json["error"]["details"][0] + "\n" + url
     return d_json
 
 
@@ -413,12 +471,15 @@ def extract_x_and_y_data(data: list) -> list:
         data_y.append(pair[1])
     return data_x, data_y
 
+
 #
 # Helpers for fitting
 #
 
 
-def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_range_y: list) -> list:
+def extract_data_according_to_fit_ranges(
+    data: list, fit_range_x: list, fit_range_y: list
+) -> list:
     """
     filters the data on which we fit
     data ist list of (x,y) value pairs
@@ -429,7 +490,12 @@ def extract_data_according_to_fit_ranges(data: list, fit_range_x: list, fit_rang
         return (data_x_for_fit, data_y_for_fit)
     assert len(data[0]) == 2  # pairs of (x,y)
     for i in range(len(data)):
-        if data[i][0] >= fit_range_x[0] and data[i][0] <= fit_range_x[1] and data[i][1] >= fit_range_y[0] and data[i][1] <= fit_range_y[1]:
+        if (
+            data[i][0] >= fit_range_x[0]
+            and data[i][0] <= fit_range_x[1]
+            and data[i][1] >= fit_range_y[0]
+            and data[i][1] <= fit_range_y[1]
+        ):
             data_x_for_fit.append(data[i][0])
             data_y_for_fit.append(data[i][1])
     assert len(data_x_for_fit) == len(data_x_for_fit)
@@ -459,8 +525,8 @@ def fit_slopes(l_time_series: list) -> dict:
     # TM: this is correct ant returns last 7 entries: -7 .. -1
     for i in range(-days_used_for_slope_fit, 0):
         d = l_time_series[i]
-        sum_Cases_Last_Week += d['Cases_Last_Week']
-        sum_Deaths_Last_Week += d['Deaths_Last_Week']
+        sum_Cases_Last_Week += d["Cases_Last_Week"]
+        sum_Deaths_Last_Week += d["Deaths_Last_Week"]
     if sum_Cases_Last_Week > 0:
         avg_Cases_Last_Week = sum_Cases_Last_Week / days_used_for_slope_fit
     if sum_Deaths_Last_Week > 0:
@@ -472,10 +538,10 @@ def fit_slopes(l_time_series: list) -> dict:
         for i in range(-days_used_for_slope_fit, 0):
             d = l_time_series[i]
             data_cases_last_week_percent.append(
-                (d['Days_Past'], d['Cases_Last_Week'] / avg_Cases_Last_Week * 100))
+                (d["Days_Past"], d["Cases_Last_Week"] / avg_Cases_Last_Week * 100)
+            )
         N0, m = 0, 0
-        d_res = fit_routine(data=data_cases_last_week_percent,
-                            mode="lin")
+        d_res = fit_routine(data=data_cases_last_week_percent, mode="lin")
         if "fit_res" in d_res:
             N0, m = d_res["fit_res"]
         d_slopes["Slope_Cases_Last_Week_Percent"] = round(m, 1)
@@ -485,36 +551,31 @@ def fit_slopes(l_time_series: list) -> dict:
         for i in range(-days_used_for_slope_fit, 0):
             d = l_time_series[i]
             data_cases_last_week_percent.append(
-                (d['Days_Past'], d['Deaths_Last_Week'] / avg_Deaths_Last_Week * 100))
+                (d["Days_Past"], d["Deaths_Last_Week"] / avg_Deaths_Last_Week * 100)
+            )
         N0, m = 0, 0
-        d_res = fit_routine(data=data_cases_last_week_percent,
-                            mode="lin")
+        d_res = fit_routine(data=data_cases_last_week_percent, mode="lin")
         if "fit_res" in d_res:
             N0, m = d_res["fit_res"]
         d_slopes["Slope_Deaths_Last_Week_Percent"] = round(m, 1)
 
     for i in range(-days_used_for_slope_fit, 0):
         d = l_time_series[i]
-        data_cases_new_pm.append(
-            (d['Days_Past'], d['Cases_Last_Week_Per_Million']))
-        data_deaths_new_pm.append(
-            (d['Days_Past'], d['Deaths_Last_Week_Per_Million']))
-        data_cases_last_week.append(
-            (d['Days_Past'], 0.0 + d['Cases_Last_Week']))
+        data_cases_new_pm.append((d["Days_Past"], d["Cases_Last_Week_Per_Million"]))
+        data_deaths_new_pm.append((d["Days_Past"], d["Deaths_Last_Week_Per_Million"]))
+        data_cases_last_week.append((d["Days_Past"], 0.0 + d["Cases_Last_Week"]))
         # SOLVED: why does the fit not work well when using Cases_Last_Week instead of Cases_Last_Week_Per_Million ??? d['Cases_Last_Week']/10 again works... -> because of bad start values for T
 
     # Cases_New_Per_Million
     N0, m = 0, 0
-    d_res = fit_routine(data=data_cases_new_pm,
-                        mode="lin")
+    d_res = fit_routine(data=data_cases_new_pm, mode="lin")
     if "fit_res" in d_res:
         N0, m = d_res["fit_res"]
     d_slopes["Slope_Cases_New_Per_Million"] = round(m, 2)
 
     # Deaths_New_Per_Million
     N0, m = 0, 0
-    d_res = fit_routine(data=data_deaths_new_pm,
-                        mode="lin")
+    d_res = fit_routine(data=data_deaths_new_pm, mode="lin")
     if "fit_res" in d_res:
         N0, m = d_res["fit_res"]
     d_slopes["Slope_Deaths_New_Per_Million"] = round(m, 2)
@@ -523,16 +584,16 @@ def fit_slopes(l_time_series: list) -> dict:
     # only perform fit of doubling time if more than 100 new cases today and yesterday
     if data_cases_last_week[-1][1] >= 100:
         N0, doubling_time = 0, 0
-        d_res = fit_routine(data=data_cases_last_week,
-                            mode="exp")
+        d_res = fit_routine(data=data_cases_last_week, mode="exp")
         if "fit_res" in d_res:
             N0, doubling_time = d_res["fit_res"]
             if doubling_time > 1 and doubling_time <= 60:
                 d_slopes["DoublingTime_Cases_Last_Week_Per_100000"] = round(
-                    doubling_time, 1)
+                    doubling_time, 1
+                )
                 # TODO: DoublingTime_Cases_Last_Week_Per_100000 -> DoublingTime_Cases_Last_Week
     else:
-        print(f'not fitting: {data_cases_last_week[-1][1]}')
+        print(f"not fitting: {data_cases_last_week[-1][1]}")
 
     return d_slopes
 
@@ -544,7 +605,7 @@ def fit_function_exp_growth(t, N0, T):
     T = time it takes for t duplication: f(t+T) = 2 x f(t)
     """
     # previously b = ln(2)/T used, but this is better as T = doubling time is directly returned
-    return N0 * np.exp(t * math.log(2)/T)
+    return N0 * np.exp(t * math.log(2) / T)
 
 
 def fit_function_linear(t, N0, m):
@@ -556,14 +617,20 @@ def fit_function_linear(t, N0, m):
     return m * t + N0
 
 
-def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.inf), fit_range_y: list = (-np.inf, np.inf)) -> dict:
+def fit_routine(
+    data: list,
+    mode: str = "exp",
+    fit_range_x: list = (-np.inf, np.inf),
+    fit_range_y: list = (-np.inf, np.inf),
+) -> dict:
     """
     data: list of x,y pairs
     """
     assert len(data) >= 2
     assert mode in ("exp", "lin")
     (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
-        data, fit_range_x, fit_range_y)
+        data, fit_range_x, fit_range_y
+    )
     if len(data_x_for_fit) < 3:
         return {}
     if mode == "lin":
@@ -588,21 +655,17 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
     else:
         initial_guess_y0 = 10.0
 
-    if mode == 'lin':
+    if mode == "lin":
         p0 = [initial_guess_y0, 1.0]
     else:  # mode = 'exp'
         # for exp we need to know if the slope is pos or negative
         # I have no better idea than performing a linear fit first
-        lin_fit_res = curve_fit(
-            fit_function_linear,
-            data_x_for_fit,
-            data_y_for_fit
-        )[0]
+        lin_fit_res = curve_fit(fit_function_linear, data_x_for_fit, data_y_for_fit)[0]
         if lin_fit_res[0] > 0:
             initial_guess_y0 = lin_fit_res[0]
         lin_fit_slope_m = lin_fit_res[1]
 
-        if abs(lin_fit_slope_m) < 1.0/10:
+        if abs(lin_fit_slope_m) < 1.0 / 10:
             # print(f"linear slope too small: {lin_fit_slope_m}")
             return {}
 
@@ -621,7 +684,7 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
             data_y_for_fit,
             p0,
             # bounds: ( min of all parameters) , (max of all parameters) )
-            bounds=(bounds_lower, bounds_upper)
+            bounds=(bounds_lower, bounds_upper),
         )
 
         # y_next_day = fit_function(1, fit_res[0], fit_res[1])
@@ -630,12 +693,9 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
         # if data_y_for_fit[-1] > 0:
         #     factor_increase_next_day = y_next_day / data_y_for_fit[-1]
 
-        d = {
-            'fit_res': fit_res,
-            'fit_res_cov': fit_res_cov
-        }
+        d = {"fit_res": fit_res, "fit_res_cov": fit_res_cov}
         # print(f"debugging: fit_res_1 = {fit_res[1]}")
-        if mode == 'exp' and abs(fit_res[1]) < 1:
+        if mode == "exp" and abs(fit_res[1]) < 1:
             print("T %.2f is very small" % fit_res[1])
 
     except (RuntimeError, ValueError) as error:
@@ -644,7 +704,9 @@ def fit_routine(data: list, mode: str = "exp", fit_range_x: list = (-np.inf, np.
     return d
 
 
-def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp") -> list:
+def series_of_fits(
+    data: list, fit_range: int = 7, max_days_past=14, mode="exp"
+) -> list:
     """
     perform a series of fits: per day on data of 7 days back
     fit_range: fit over how many days
@@ -655,8 +717,8 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
     """
     fit_series_res = {}
     # remove y=0 values from start until first non-null
-#    while len(data) > 0 and data[0][1] == 0:
-#        data.pop(0)
+    #    while len(data) > 0 and data[0][1] == 0:
+    #        data.pop(0)
     if len(data) < 7:
         return {}
     if -max_days_past < min(data[0]):
@@ -667,7 +729,10 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
 
         # extracting/filtering the data matching the time interval
         (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
-            data, fit_range_x=(last_day_for_fit-fit_range+0.1, last_day_for_fit+0.1), fit_range_y=(-np.inf, np.inf))
+            data,
+            fit_range_x=(last_day_for_fit - fit_range + 0.1, last_day_for_fit + 0.1),
+            fit_range_y=(-np.inf, np.inf),
+        )
         # +0.1 to ensure that last day is included and that lastday - 7 is not included, so 7 days!
 
         if sum(data_y_for_fit) == 0:
@@ -682,12 +747,11 @@ def series_of_fits(data: list, fit_range: int = 7, max_days_past=14, mode="exp")
         # if last_day_for_fit == -999:
         #     print("debugging")
 
-        d = fit_routine(
-            data=data_modified, mode=mode)
+        d = fit_routine(data=data_modified, mode=mode)
         # d={} if fit fails
         if len(d) != 0:
             # dict: day -> doubling_time (neg for halftime)
-            this_doubling_time = round(d['fit_res'][1], 1)
+            this_doubling_time = round(d["fit_res"][1], 1)
             fit_series_res[last_day_for_fit] = this_doubling_time
         # else:
         #     print(
@@ -701,12 +765,12 @@ def read_ref_data_de_states() -> dict:
     read pop etc from ref table and returns it as dict of dict
     """
     d_states_ref = {}
-    with open('data/ref_de-states.tsv', mode='r', encoding='utf-8') as f:
+    with open("data/ref_de-states.tsv", mode="r", encoding="utf-8") as f:
         csv_reader = csv.DictReader(f, delimiter="\t")
         for row in csv_reader:
             d = {}
-            d['State'] = row['State']
-            d['Population'] = int(row['Population'])
-            d['Pop Density'] = float(row['Pop Density'])
+            d["State"] = row["State"]
+            d["Population"] = int(row["Population"])
+            d["Pop Density"] = float(row["Pop Density"])
             d_states_ref[row["Code"]] = d
     return d_states_ref

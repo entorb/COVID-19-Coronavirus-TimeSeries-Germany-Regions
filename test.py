@@ -13,7 +13,6 @@ import helper
 # print(df.tail())
 
 
-df_divi_latest = pd.read_csv(
-    f'data/de-divi/downloaded/latest.csv', sep=",")
+df_divi_latest = pd.read_csv(f"data/de-divi/downloaded/latest.csv", sep=",")
 
 print(df_divi_latest.tail())

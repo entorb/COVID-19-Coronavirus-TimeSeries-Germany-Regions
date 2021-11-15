@@ -33,13 +33,14 @@ import helper
 def read_and_prepare_data():
     # create empty data frame, based on data for Hamburg
     df_file = pd.read_csv(
-        'data/de-districts/de-district_timeseries-02000.tsv', sep="\t")
+        "data/de-districts/de-district_timeseries-02000.tsv", sep="\t"
+    )
     df = pd.DataFrame()
     # df['Date'] = df_file['Date']
 
     # use date as index
-    df['Date'] = pd.to_datetime(df_file['Date'], format='%Y-%m-%d')
-    df.set_index(['Date'], inplace=True)
+    df["Date"] = pd.to_datetime(df_file["Date"], format="%Y-%m-%d")
+    df.set_index(["Date"], inplace=True)
 
     # incidence groups
     # =0, <5, <10, <25, <50, <100, <200, >=200
@@ -53,14 +54,14 @@ def read_and_prepare_data():
     # df['400'] = 0
     # df['999'] = 0
 
-    df['>0'] = 0
-    df['>5'] = 0
-    df['>10'] = 0
-    df['>25'] = 0
-    df['>50'] = 0
-    df['>100'] = 0
-    df['>200'] = 0
-    df['>400'] = 0
+    df[">0"] = 0
+    df[">5"] = 0
+    df[">10"] = 0
+    df[">25"] = 0
+    df[">50"] = 0
+    df[">100"] = 0
+    df[">200"] = 0
+    df[">400"] = 0
 
     # df['=0'] = 0
     # df['<5'] = 0
@@ -71,16 +72,16 @@ def read_and_prepare_data():
     # df['<200'] = 0
     # df['<400'] = 0
 
-    df['+1%'] = 0
-    df['+25%'] = 0
-    df['+50%'] = 0
-    df['+100%'] = 0
-    df['+200%'] = 0
-    df['-1%'] = 0
-    df['-25%'] = 0
-    df['-50%'] = 0
-    df['-75%'] = 0
-    df['-100%'] = 0
+    df["+1%"] = 0
+    df["+25%"] = 0
+    df["+50%"] = 0
+    df["+100%"] = 0
+    df["+200%"] = 0
+    df["-1%"] = 0
+    df["-25%"] = 0
+    df["-50%"] = 0
+    df["-75%"] = 0
+    df["-100%"] = 0
 
     count = 0
 
@@ -91,11 +92,13 @@ def read_and_prepare_data():
             continue
 
         df_file = pd.read_csv(filename, sep="\t")
-        df_file['Date'] = pd.to_datetime(df_file['Date'], format='%Y-%m-%d')
-        df_file.set_index(['Date'], inplace=True)
+        df_file["Date"] = pd.to_datetime(df_file["Date"], format="%Y-%m-%d")
+        df_file.set_index(["Date"], inplace=True)
 
         # convert Cases_Last_Week_Per_Million to Cases_Last_Week_Per_100000
-        df_file['Cases_Last_Week_Per_100000'] = df_file['Cases_Last_Week_Per_Million'] / 10
+        df_file["Cases_Last_Week_Per_100000"] = (
+            df_file["Cases_Last_Week_Per_Million"] / 10
+        )
 
         # is_000 = df_file['Cases_Last_Week_Per_100000'] == 0
         # is_005 = (df_file['Cases_Last_Week_Per_100000'] > 0) & (
@@ -114,14 +117,14 @@ def read_and_prepare_data():
         #     df_file['Cases_Last_Week_Per_100000'] < 400)
         # is_999 = (df_file['Cases_Last_Week_Per_100000'] >= 400)
 
-        gt_000 = (df_file['Cases_Last_Week_Per_100000'] > 0)
-        gt_005 = (df_file['Cases_Last_Week_Per_100000'] >= 5)
-        gt_010 = (df_file['Cases_Last_Week_Per_100000'] >= 10)
-        gt_025 = (df_file['Cases_Last_Week_Per_100000'] >= 25)
-        gt_050 = (df_file['Cases_Last_Week_Per_100000'] >= 50)
-        gt_100 = (df_file['Cases_Last_Week_Per_100000'] >= 100)
-        gt_200 = (df_file['Cases_Last_Week_Per_100000'] >= 200)
-        gt_400 = (df_file['Cases_Last_Week_Per_100000'] >= 400)
+        gt_000 = df_file["Cases_Last_Week_Per_100000"] > 0
+        gt_005 = df_file["Cases_Last_Week_Per_100000"] >= 5
+        gt_010 = df_file["Cases_Last_Week_Per_100000"] >= 10
+        gt_025 = df_file["Cases_Last_Week_Per_100000"] >= 25
+        gt_050 = df_file["Cases_Last_Week_Per_100000"] >= 50
+        gt_100 = df_file["Cases_Last_Week_Per_100000"] >= 100
+        gt_200 = df_file["Cases_Last_Week_Per_100000"] >= 200
+        gt_400 = df_file["Cases_Last_Week_Per_100000"] >= 400
 
         # lt_005 = (df_file['Cases_Last_Week_Per_100000'] < 5)
         # lt_010 = (df_file['Cases_Last_Week_Per_100000'] < 10)
@@ -141,14 +144,14 @@ def read_and_prepare_data():
         # df['400'] += is_400 * 1
         # df['999'] += is_999 * 1
 
-        df['>0'] += gt_000 * 1
-        df['>5'] += gt_005 * 1
-        df['>10'] += gt_010 * 1
-        df['>25'] += gt_025 * 1
-        df['>50'] += gt_050 * 1
-        df['>100'] += gt_100 * 1
-        df['>200'] += gt_200 * 1
-        df['>400'] += gt_400 * 1
+        df[">0"] += gt_000 * 1
+        df[">5"] += gt_005 * 1
+        df[">10"] += gt_010 * 1
+        df[">25"] += gt_025 * 1
+        df[">50"] += gt_050 * 1
+        df[">100"] += gt_100 * 1
+        df[">200"] += gt_200 * 1
+        df[">400"] += gt_400 * 1
 
         # df['=0'] += is_000 * 1
         # df['<5'] += lt_005 * 1
@@ -160,34 +163,34 @@ def read_and_prepare_data():
         # df['<400'] += lt_400 * 1
 
         # +X%
-        gt_p001p = (df_file['Cases_Last_Week_7Day_Percent'] >= 1)
-        gt_p025p = (df_file['Cases_Last_Week_7Day_Percent'] >= 25)
-        gt_p050p = (df_file['Cases_Last_Week_7Day_Percent'] >= 50)
-        gt_p100p = (df_file['Cases_Last_Week_7Day_Percent'] >= 100)
-        gt_p200p = (df_file['Cases_Last_Week_7Day_Percent'] >= 200)
-        gt_m001p = (df_file['Cases_Last_Week_7Day_Percent'] <= -1)
-        gt_m025p = (df_file['Cases_Last_Week_7Day_Percent'] <= -25)
-        gt_m050p = (df_file['Cases_Last_Week_7Day_Percent'] <= -50)
-        gt_m075p = (df_file['Cases_Last_Week_7Day_Percent'] <= -75)
-        gt_m100p = (df_file['Cases_Last_Week_7Day_Percent'] <= -100)
+        gt_p001p = df_file["Cases_Last_Week_7Day_Percent"] >= 1
+        gt_p025p = df_file["Cases_Last_Week_7Day_Percent"] >= 25
+        gt_p050p = df_file["Cases_Last_Week_7Day_Percent"] >= 50
+        gt_p100p = df_file["Cases_Last_Week_7Day_Percent"] >= 100
+        gt_p200p = df_file["Cases_Last_Week_7Day_Percent"] >= 200
+        gt_m001p = df_file["Cases_Last_Week_7Day_Percent"] <= -1
+        gt_m025p = df_file["Cases_Last_Week_7Day_Percent"] <= -25
+        gt_m050p = df_file["Cases_Last_Week_7Day_Percent"] <= -50
+        gt_m075p = df_file["Cases_Last_Week_7Day_Percent"] <= -75
+        gt_m100p = df_file["Cases_Last_Week_7Day_Percent"] <= -100
 
-        df['+1%'] += gt_p001p * 1
-        df['+25%'] += gt_p025p * 1
-        df['+50%'] += gt_p050p * 1
-        df['+100%'] += gt_p100p * 1
-        df['+200%'] += gt_p200p * 1
-        df['-1%'] += gt_m001p * 1
-        df['-25%'] += gt_m025p * 1
-        df['-50%'] += gt_m050p * 1
-        df['-75%'] += gt_m075p * 1
-        df['-100%'] += gt_m100p * 1
+        df["+1%"] += gt_p001p * 1
+        df["+25%"] += gt_p025p * 1
+        df["+50%"] += gt_p050p * 1
+        df["+100%"] += gt_p100p * 1
+        df["+200%"] += gt_p200p * 1
+        df["-1%"] += gt_m001p * 1
+        df["-25%"] += gt_m025p * 1
+        df["-50%"] += gt_m050p * 1
+        df["-75%"] += gt_m075p * 1
+        df["-100%"] += gt_m100p * 1
         count += 1
         # TODO
         # if count >= 10:
         #     break
     # print(df.tail())
 
-    df.to_csv('cache/hist-de-districts.csv')
+    df.to_csv("cache/hist-de-districts.csv")
     return df
 
 
@@ -195,20 +198,26 @@ def read_and_prepare_data():
 # df = read_and_prepare_data()
 # os.remove("cache/hist-de-districts.csv")
 
-if helper.check_cache_file_available_and_recent(fname='cache/hist-de-districts.csv', max_age=3600, verbose=True) == False:
+if (
+    helper.check_cache_file_available_and_recent(
+        fname="cache/hist-de-districts.csv", max_age=3600, verbose=True
+    )
+    == False
+):
     df = read_and_prepare_data()
 else:
-    df = pd.read_csv('cache/hist-de-districts.csv')
-    df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
-    df.set_index(['Date'], inplace=True)
+    df = pd.read_csv("cache/hist-de-districts.csv")
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
+    df.set_index(["Date"], inplace=True)
 
 
 def CntToPerc(x):
-    return x/412 * 100
+    return x / 412 * 100
 
 
 def PercToCnt(x):
-    return x/100 * 412
+    return x / 100 * 412
+
 
 # print(df)
 
@@ -222,8 +231,7 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
     # df.plot(y='025')
 
     # df_hist = df[['0', '5', '10', '25', '50', '100', '200', '400', '999']]
-    df_sums_gt = df[['>0', '>5', '>10',
-                     '>25', '>50', '>100', '>200', '>400']]
+    df_sums_gt = df[[">0", ">5", ">10", ">25", ">50", ">100", ">200", ">400"]]
     # df_sums_lt = df[['=0', '<5', '<10', '<25',
     #                  '<50', '<100', '<200', '<400', '>400']]
 
@@ -239,61 +247,67 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
     # fig, ax = myplot.subplots(constrained_layout=True)
 
     # plt.ylabel('Anzahl')
-    plt.title('Anzahl der Landkreise pro Inzidenz-Intervall')
+    plt.title("Anzahl der Landkreise pro Inzidenz-Intervall")
 
     plt.tight_layout()
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>0'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>5'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>10'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>25'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>50'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>100'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>200'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['>400'])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">0"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">5"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">10"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">25"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">50"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">100"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">200"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">400"])
 
     # secaxy = plt.secondary_yaxis('right', functions=(CntToPerc, PercToCnt))
     # secaxy.set_ylabel('Percent')
 
     # plt.ylim(top=412)
     plt.savefig(
-        fname='plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png', format='png')
+        fname="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png",
+        format="png",
+    )
     # plt.show()
 
 
 def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Incr():
-    df_sums_gt = df[['+1%', '+25%', '+50%', '+100%', '+200%']]
+    df_sums_gt = df[["+1%", "+25%", "+50%", "+100%", "+200%"]]
 
     myPlot = df_sums_gt.plot()
-    plt.title('Anzahl der Landkreise pro Inzidenz-Anstiegs-Intervall')
+    plt.title("Anzahl der Landkreise pro Inzidenz-Anstiegs-Intervall")
 
     plt.tight_layout()
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['+1%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['+25%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['+50%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['+100%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['+200%'])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+1%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+25%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+50%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+100%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+200%"])
 
     plt.ylim(top=412)
     plt.savefig(
-        fname='plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png', format='png')
+        fname="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png",
+        format="png",
+    )
 
 
 def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Decr():
-    df_sums_gt = df[['-1%', '-25%', '-50%', '-75%', '-100%']]
+    df_sums_gt = df[["-1%", "-25%", "-50%", "-75%", "-100%"]]
 
     myPlot = df_sums_gt.plot()
-    plt.title('Anzahl der Landkreise pro Inzidenz-Abnahme-Intervall')
+    plt.title("Anzahl der Landkreise pro Inzidenz-Abnahme-Intervall")
 
     plt.tight_layout()
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['-1%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['-25%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['-50%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['-75%'])
-    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt['-100%'])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-1%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-25%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-50%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-75%"])
+    plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-100%"])
 
     plt.ylim(top=412)
     plt.savefig(
-        fname='plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png', format='png')
+        fname="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png",
+        format="png",
+    )
 
 
 plot_hist_de_districts_Cases_Last_Week_Per_100000()

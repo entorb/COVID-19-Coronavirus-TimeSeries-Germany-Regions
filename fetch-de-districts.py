@@ -20,6 +20,7 @@ import json
 # further modules
 # fitting
 import numpy as np
+
 # curve-fit() function imported from scipy
 # from scipy.optimize import curve_fit
 # from matplotlib import pyplot as plt
@@ -92,6 +93,7 @@ d_ref_landkreise = {}
 
 # small helper functions
 
+
 def get_lk_name_from_lk_id(lk_id: str) -> str:
     global d_ref_landkreise
     # name = d_ref_landkreise[lk_id]['county']
@@ -100,6 +102,7 @@ def get_lk_name_from_lk_id(lk_id: str) -> str:
 
 
 # Code functions
+
 
 def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
     """
@@ -119,73 +122,89 @@ def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
     file_cache = "cache/de-districts/de-districts.json"
 
     max_allowed_rows_to_fetch = 2000
-    url = 'https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?f=json' +\
-        '&where=1%3D1' +\
-        '&outFields=*' +\
-        '&orderByFields=BL_ID%2C+AGS' +\
-        "&resultRecordCount=" + str(max_allowed_rows_to_fetch) + \
-        '&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false' +\
-        '&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false' +\
-        '&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=' +\
-        '&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&token='
+    url = (
+        "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?f=json"
+        + "&where=1%3D1"
+        + "&outFields=*"
+        + "&orderByFields=BL_ID%2C+AGS"
+        + "&resultRecordCount="
+        + str(max_allowed_rows_to_fetch)
+        + "&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false"
+        + "&returnGeometry=false&returnCentroid=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false"
+        + "&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset="
+        + "&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&token="
+    )
 
     cont = helper.read_url_or_cachefile(
-        url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+        url=url,
+        cachefile=file_cache,
+        request_type="get",
+        cache_max_age=3600,
+        verbose=False,
+    )
     json_cont = json.loads(cont)
     # flatten the json structure
-    l2 = json_cont['features']
-    l_time_series = [v['attributes'] for v in l2]
+    l2 = json_cont["features"]
+    l_time_series = [v["attributes"] for v in l2]
     assert len(l_time_series) < max_allowed_rows_to_fetch
     return l_time_series
 
 
 def fetch_and_prepare_ref_landkreise() -> dict:
-    file_out = 'data/de-districts/ref-de-districts'
+    file_out = "data/de-districts/ref-de-districts"
     l_landkreise = fetch_ref_landkreise(readFromCache=True)
     d_landkreise = {}
 
     # convert list to dict, using lk_id as key
     for d_this_landkreis in l_landkreise:
-        lk_id = d_this_landkreis['RS']  # RS = LK_ID ; county = LK_Name
+        lk_id = d_this_landkreis["RS"]  # RS = LK_ID ; county = LK_Name
 
         # 16056 Eisenach was merged with 16063: LK Wartburgkreis
         # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach
-        if lk_id == '16056':  # Eisenach
+        if lk_id == "16056":  # Eisenach
             continue
 
         assert type(lk_id) == str
         assert lk_id.isdecimal() == True
 
         d = {}
-        d['Population'] = d_this_landkreis['EWZ']
-        assert type(d['Population']) == int
-        d['BL_Name'] = d_this_landkreis['BL']
-        d['BL_Code'] = helper.d_BL_code_from_BL_ID[
-            int(d_this_landkreis['BL_ID'])]
-        d['LK_Name'] = d_this_landkreis['GEN']
-        d['LK_Name'] = d['LK_Name'].replace(
-            "Region Hannover", "Hannover").replace("Regionalverband ", "")
-        d['LK_Typ'] = d_this_landkreis['BEZ']
+        d["Population"] = d_this_landkreis["EWZ"]
+        assert type(d["Population"]) == int
+        d["BL_Name"] = d_this_landkreis["BL"]
+        d["BL_Code"] = helper.d_BL_code_from_BL_ID[int(d_this_landkreis["BL_ID"])]
+        d["LK_Name"] = d_this_landkreis["GEN"]
+        d["LK_Name"] = (
+            d["LK_Name"]
+            .replace("Region Hannover", "Hannover")
+            .replace("Regionalverband ", "")
+        )
+        d["LK_Typ"] = d_this_landkreis["BEZ"]
         d_landkreise[lk_id] = d
 
     del d_this_landkreis
 
-    helper.write_json(filename=file_out+'.json',
-                      d=d_landkreise, sort_keys=True, indent=1)
+    helper.write_json(
+        filename=file_out + ".json", d=d_landkreise, sort_keys=True, indent=1
+    )
 
-    with open(file_out+'.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
-        csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
-            'LK_ID',
-            'LK_Name',
-            'LK_Typ',
-            'Population',
-            'BL_Code',
-            'BL_Name'
-        ])
+    with open(file_out + ".tsv", mode="w", encoding="utf-8", newline="\n") as fh_csv:
+        csvwriter = csv.DictWriter(
+            fh_csv,
+            delimiter="\t",
+            extrasaction="ignore",
+            fieldnames=[
+                "LK_ID",
+                "LK_Name",
+                "LK_Typ",
+                "Population",
+                "BL_Code",
+                "BL_Name",
+            ],
+        )
         csvwriter.writeheader()
         for lk_id in sorted(d_landkreise.keys()):
             d = d_landkreise[lk_id]
-            d['LK_ID'] = lk_id
+            d["LK_ID"] = lk_id
             csvwriter.writerow(d)
         del lk_id, d
 
@@ -207,22 +226,23 @@ def gen_mapping_BL2LK_json():
     for lk_id in d_ref_landkreise.keys():
         lk = d_ref_landkreise[lk_id]
         d_landkreis_id_name_mapping[lk_id] = get_lk_name_from_lk_id(lk_id)
-        if lk['BL_Code'] not in d_bundeslaender.keys():
+        if lk["BL_Code"] not in d_bundeslaender.keys():
             d = {}
             l_lk_ids = []
-            l_lk_ids.append((lk_id, lk['LK_Name']))
-            d['BL_Name'] = lk['BL_Name']
-            d['LK_IDs'] = l_lk_ids
+            l_lk_ids.append((lk_id, lk["LK_Name"]))
+            d["BL_Name"] = lk["BL_Name"]
+            d["LK_IDs"] = l_lk_ids
 
-            d_bundeslaender[lk['BL_Code']] = d
+            d_bundeslaender[lk["BL_Code"]] = d
         else:
-            d_bundeslaender[lk['BL_Code']]['LK_IDs'].append(
-                (lk_id, lk['LK_Name']))
+            d_bundeslaender[lk["BL_Code"]]["LK_IDs"].append((lk_id, lk["LK_Name"]))
 
     helper.write_json(
-        'data/de-districts/mapping_bundesland_landkreis.json', d_bundeslaender)
+        "data/de-districts/mapping_bundesland_landkreis.json", d_bundeslaender
+    )
     helper.write_json(
-        'data/de-districts/mapping_landkreis_ID_name.json', d_landkreis_id_name_mapping)
+        "data/de-districts/mapping_landkreis_ID_name.json", d_landkreis_id_name_mapping
+    )
 
 
 def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
@@ -241,23 +261,33 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
 
     max_allowed_rows_to_fetch = 2000
 
-    url = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query" + \
-        "?f=json" + \
-        "&where=(IdLandkreis='" + lk_id + "')" + \
-        "&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall%2C+AnzahlFall%2C+AnzahlTodesfall" \
-        "&orderByFields=Meldedatum" + \
-        "&resultRecordCount=" + str(max_allowed_rows_to_fetch) + \
-        "&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false" + \
-        "&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token="
+    url = (
+        "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query"
+        + "?f=json"
+        + "&where=(IdLandkreis='"
+        + lk_id
+        + "')"
+        + "&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall%2C+AnzahlFall%2C+AnzahlTodesfall"
+        "&orderByFields=Meldedatum"
+        + "&resultRecordCount="
+        + str(max_allowed_rows_to_fetch)
+        + "&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false"
+        + "&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token="
+    )
     # get more stuff
     # "&outFields=*" + \
 
     cont = helper.read_url_or_cachefile(
-        url=url, cachefile=file_cache, request_type='get', cache_max_age=3600, verbose=False)
+        url=url,
+        cachefile=file_cache,
+        request_type="get",
+        cache_max_age=3600,
+        verbose=False,
+    )
     json_cont = json.loads(cont)
     # flatten the json structure
-    l2 = json_cont['features']
-    l_time_series = [v['attributes'] for v in l2]
+    l2 = json_cont["features"]
+    l_time_series = [v["attributes"] for v in l2]
 
     assert len(l_time_series) < max_allowed_rows_to_fetch
     return l_time_series
@@ -269,8 +299,7 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
     convert and add fields of time series list
     returns list
     """
-    l_time_series_fetched = fetch_landkreis_time_series(
-        lk_id=lk_id, readFromCache=True)
+    l_time_series_fetched = fetch_landkreis_time_series(lk_id=lk_id, readFromCache=True)
 
     l_time_series = []
 
@@ -278,11 +307,11 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
     for entry in l_time_series_fetched:
         d = {}
         # covert to int
-        d['Cases'] = int(entry['SummeFall'])
-        d['Deaths'] = int(entry['SummeTodesfall'])
+        d["Cases"] = int(entry["SummeFall"])
+        d["Deaths"] = int(entry["SummeTodesfall"])
         # calc Date from 'Meldedatum' (ms)
-        d['Date'] = helper.convert_timestamp_to_date_str(
-            int(entry['Meldedatum'] / 1000)
+        d["Date"] = helper.convert_timestamp_to_date_str(
+            int(entry["Meldedatum"] / 1000)
         )
         l_time_series.append(d)
     l_time_series = helper.prepare_time_series(l_time_series)
@@ -324,27 +353,29 @@ def download_all_data():
 
 
 def join_with_divi_data(d_districts_data: dict) -> dict:
-    d_divi_data = helper.read_json_file('cache/de-divi/de-divi-V3.json')
+    d_divi_data = helper.read_json_file("cache/de-divi/de-divi-V3.json")
     for lk_id, l_lk_time_series in d_districts_data.items():
         # all Berlin Districts are in divi at 11000
-        if lk_id[0:2] == '11':
+        if lk_id[0:2] == "11":
             l_divi_time_series = d_divi_data["11000"]
         elif lk_id not in d_divi_data:
             continue
-#        assert lk_id in d_divi_data, f"Error: LK {lk_id} missing in DIVI data"
-        if lk_id[0:2] != '11':
+        #        assert lk_id in d_divi_data, f"Error: LK {lk_id} missing in DIVI data"
+        if lk_id[0:2] != "11":
             l_divi_time_series = d_divi_data[lk_id]
         d_divi_time_series = {}
         for d in l_divi_time_series:
-            d_divi_time_series[d['Date']] = d
+            d_divi_time_series[d["Date"]] = d
 
         for d in l_lk_time_series:
-            if d['Date'] not in d_divi_time_series:
+            if d["Date"] not in d_divi_time_series:
                 continue
-            d['DIVI_Intensivstationen_Covid_Prozent'] = d_divi_time_series[d['Date']
-                                                                           ]['faelle_covid_aktuell_proz']
-            d['DIVI_Intensivstationen_Betten_belegt_Prozent'] = d_divi_time_series[d['Date']
-                                                                                   ]['betten_belegt_proz']
+            d["DIVI_Intensivstationen_Covid_Prozent"] = d_divi_time_series[d["Date"]][
+                "faelle_covid_aktuell_proz"
+            ]
+            d["DIVI_Intensivstationen_Betten_belegt_Prozent"] = d_divi_time_series[
+                d["Date"]
+            ]["betten_belegt_proz"]
 
         d_districts_data[lk_id] = l_lk_time_series
 
@@ -354,25 +385,35 @@ def join_with_divi_data(d_districts_data: dict) -> dict:
 def export_data(d_districts_data: dict):
     """export timeseries as JSON and CSV"""
     for lk_id, l_time_series in d_districts_data.items():
-        l_time_series = helper.timeseries_export_drop_irrelevant_columns(
-            l_time_series)
-        file_out = f'data/de-districts/de-district_timeseries-{lk_id}'
-        helper.write_json(
-            file_out+'.json', d=l_time_series, sort_keys=True)
+        l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
+        file_out = f"data/de-districts/de-district_timeseries-{lk_id}"
+        helper.write_json(file_out + ".json", d=l_time_series, sort_keys=True)
 
-        with open(file_out+'.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
-            csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
-                'Date',
-                'Cases', 'Deaths',
-                'Cases_New', 'Deaths_New',
-                'Cases_Last_Week', 'Deaths_Last_Week',
-                'Cases_Per_Million', 'Deaths_Per_Million',
-                'Cases_New_Per_Million', 'Deaths_New_Per_Million',
-                'Cases_Last_Week_Per_Million', 'Deaths_Last_Week_Per_Million',
-                'DIVI_Intensivstationen_Covid_Prozent',
-                'DIVI_Intensivstationen_Betten_belegt_Prozent',
-                'Cases_Last_Week_7Day_Percent'
-            ]
+        with open(
+            file_out + ".tsv", mode="w", encoding="utf-8", newline="\n"
+        ) as fh_csv:
+            csvwriter = csv.DictWriter(
+                fh_csv,
+                delimiter="\t",
+                extrasaction="ignore",
+                fieldnames=[
+                    "Date",
+                    "Cases",
+                    "Deaths",
+                    "Cases_New",
+                    "Deaths_New",
+                    "Cases_Last_Week",
+                    "Deaths_Last_Week",
+                    "Cases_Per_Million",
+                    "Deaths_Per_Million",
+                    "Cases_New_Per_Million",
+                    "Deaths_New_Per_Million",
+                    "Cases_Last_Week_Per_Million",
+                    "Deaths_Last_Week_Per_Million",
+                    "DIVI_Intensivstationen_Covid_Prozent",
+                    "DIVI_Intensivstationen_Betten_belegt_Prozent",
+                    "Cases_Last_Week_7Day_Percent",
+                ],
             )
             csvwriter.writeheader()
             for d in l_time_series:
@@ -380,8 +421,7 @@ def export_data(d_districts_data: dict):
 
 
 def export_latest_data(d_districts_data: dict):
-    d_districts_latest = helper.extract_latest_data(
-        d_ref_landkreise, d_districts_data)
+    d_districts_latest = helper.extract_latest_data(d_ref_landkreise, d_districts_data)
     d_for_export_V1 = d_districts_latest
     l_for_export_V2 = []
     for lk_id, d in d_districts_latest.items():
@@ -394,30 +434,59 @@ def export_latest_data(d_districts_data: dict):
         d["Bundesland"] = d["BL_Name"]
         del d["BL_Name"]
         # divi data is not returned by helper.extract_latest_data and mostly not available at latest day, so using the date of the previous day instead
-        if 'DIVI_Intensivstationen_Covid_Prozent' in d_districts_data[lk_id][-1]:
-            d['DIVI_Intensivstationen_Covid_Prozent'] = d_districts_data[lk_id][-1]['DIVI_Intensivstationen_Covid_Prozent']
-            d['DIVI_Intensivstationen_Betten_belegt_Prozent'] = d_districts_data[lk_id][-1]['DIVI_Intensivstationen_Betten_belegt_Prozent']
-        elif 'DIVI_Intensivstationen_Covid_Prozent' in d_districts_data[lk_id][-2]:
-            d['DIVI_Intensivstationen_Covid_Prozent'] = d_districts_data[lk_id][-2]['DIVI_Intensivstationen_Covid_Prozent']
-            d['DIVI_Intensivstationen_Betten_belegt_Prozent'] = d_districts_data[lk_id][-2]['DIVI_Intensivstationen_Betten_belegt_Prozent']
+        if "DIVI_Intensivstationen_Covid_Prozent" in d_districts_data[lk_id][-1]:
+            d["DIVI_Intensivstationen_Covid_Prozent"] = d_districts_data[lk_id][-1][
+                "DIVI_Intensivstationen_Covid_Prozent"
+            ]
+            d["DIVI_Intensivstationen_Betten_belegt_Prozent"] = d_districts_data[lk_id][
+                -1
+            ]["DIVI_Intensivstationen_Betten_belegt_Prozent"]
+        elif "DIVI_Intensivstationen_Covid_Prozent" in d_districts_data[lk_id][-2]:
+            d["DIVI_Intensivstationen_Covid_Prozent"] = d_districts_data[lk_id][-2][
+                "DIVI_Intensivstationen_Covid_Prozent"
+            ]
+            d["DIVI_Intensivstationen_Betten_belegt_Prozent"] = d_districts_data[lk_id][
+                -2
+            ]["DIVI_Intensivstationen_Betten_belegt_Prozent"]
         d_for_export_V2 = d
-        d_for_export_V2['LK_ID'] = lk_id
+        d_for_export_V2["LK_ID"] = lk_id
         l_for_export_V2.append(d_for_export_V2)
 
     # Export as JSON
-    helper.write_json('data/de-districts/de-districts-results.json',
-                      d=d_for_export_V1, sort_keys=True)
+    helper.write_json(
+        "data/de-districts/de-districts-results.json", d=d_for_export_V1, sort_keys=True
+    )
 
     helper.write_json(
-        filename='data/de-districts/de-districts-results-V2.json', d=l_for_export_V2, sort_keys=True)
+        filename="data/de-districts/de-districts-results-V2.json",
+        d=l_for_export_V2,
+        sort_keys=True,
+    )
 
     # Export as CSV
-    with open('data/de-districts/de-districts-results.tsv', mode='w', encoding='utf-8', newline='\n') as fh_csv:
-        csvwriter = csv.DictWriter(fh_csv, delimiter='\t', extrasaction='ignore', fieldnames=[
-            'Landkreis',   'Bundesland', 'Population', 'Cases', 'Deaths',
-            'Cases_Per_Million', 'Deaths_Per_Million',
-            'DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent', 'DoublingTime_Cases_Last_Week_Per_100000'
-        ])
+    with open(
+        "data/de-districts/de-districts-results.tsv",
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh_csv:
+        csvwriter = csv.DictWriter(
+            fh_csv,
+            delimiter="\t",
+            extrasaction="ignore",
+            fieldnames=[
+                "Landkreis",
+                "Bundesland",
+                "Population",
+                "Cases",
+                "Deaths",
+                "Cases_Per_Million",
+                "Deaths_Per_Million",
+                "DIVI_Intensivstationen_Covid_Prozent",
+                "DIVI_Intensivstationen_Betten_belegt_Prozent",
+                "DoublingTime_Cases_Last_Week_Per_100000",
+            ],
+        )
 
         csvwriter.writeheader()
 
