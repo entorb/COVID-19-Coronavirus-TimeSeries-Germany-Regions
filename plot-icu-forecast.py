@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MonthLocator, YearLocator, WeekdayLocator
 # import matplotlib.ticker as ticker
 import locale
+import datetime as dt
 
 
 # Matplotlib setup
@@ -34,6 +35,9 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 # TODO:
 # switch data source to Risklayer?
+# parallel / multiprocessing to speedup
+# add todays beds to prognose [0]
+# if cases series has more data than divi data, use them instead of dropping them
 
 # Done
 # draw a line from max betten
@@ -49,7 +53,6 @@ locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 #
 
 dir_out = 'plots-python/icu-forecast/'
-# os.makedirs(dir_out, exist_ok=True)
 os.makedirs(dir_out+"/single", exist_ok=True)
 os.makedirs(dir_out+"/de-district-group", exist_ok=True)
 os.makedirs(dir_out+"/de-states", exist_ok=True)
@@ -65,7 +68,8 @@ def load_divi_data() -> DataFrame:
     """
     load complete set of all divi data
     calc betten_belegt
-    rename faelle_covid_aktuell_invasiv_beatmet -> betten_covid
+    old: rename faelle_covid_aktuell_invasiv_beatmet -> betten_covid
+    new: rename faelle_covid_aktuell -> betten_covid
     """
     df = pd.read_csv(
         f'data/de-divi/downloaded/latest.csv', sep=",")
@@ -74,19 +78,19 @@ def load_divi_data() -> DataFrame:
     df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
 
     df = df[["date", "bundesland", "gemeindeschluessel",
-             "faelle_covid_aktuell_invasiv_beatmet",
+             "faelle_covid_aktuell",
              "betten_ges",
              "betten_frei",
              "betten_belegt"]]
 
     # check for for bad values
-    if (df['faelle_covid_aktuell_invasiv_beatmet'].isnull().values.any()):
-        raise f"ERROR: faelle_covid_aktuell_beatmet has bad values"
+    if (df['faelle_covid_aktuell'].isnull().values.any()):
+        raise f"ERROR: faelle_covid_aktuell has bad values"
     if (df['betten_ges'].isnull().values.any()):
         raise f"ERROR: betten_ges has bad values"
 
     df = df.rename({
-        "faelle_covid_aktuell_invasiv_beatmet": "betten_covid",
+        "faelle_covid_aktuell": "betten_covid",
     }, axis=1, errors="raise")
 
     # print(df.tail())
@@ -95,6 +99,13 @@ def load_divi_data() -> DataFrame:
 
 
 df_divi_all = load_divi_data()
+
+date_divi_data_str = df_divi_all["date"].max()
+date_divi_data = dt.date.fromisoformat(date_divi_data_str)
+date_divi_data_dt = dt.datetime(
+    date_divi_data.year, date_divi_data.month, date_divi_data.day)
+# exit()
+
 # print(len(df_divi_all))
 # exit(90)
 
@@ -251,7 +262,11 @@ def load_bl_case_data(bl_code: str) -> DataFrame:
     else:
         df['Cases_New'] += df['Cases_New']
 
-    # print(df.tail(30))
+    # filter out data newer than latest DIVI data
+    # print(df.tail(3))
+    global date_divi_data_dt
+    df = df[df.index <= date_divi_data_dt]
+    # print(df.tail(3))
     return df
 
 
@@ -284,7 +299,8 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
     Fälle der letzten Woche für X Wochen in die Zukunft prognostizieren
     returns list of dataframes
     """
-    date_today = pd.to_datetime(df_data.index[-1]).date()
+    # date_today = pd.to_datetime(df_data.index[-1]).date()
+    date_today = date_divi_data
     df_last21 = df_data["Cases_New"].tail(21).to_frame(name='Cases_New')
     ds_last7 = df_data["Cases_New"].tail(7)
 
@@ -292,6 +308,10 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
     # gen as many df as prozente given
     for proz in l_prognosen_prozente:
         df_prognose = pd.DataFrame()
+        # new_row = {"Date": date_today,
+        #            "Cases_New": df_data["Cases_New"].tail(1)}
+        # df_prognose = df_prognose.append(
+        #     new_row, ignore_index=True)
         for week in range(1, weeks_forcast+1):
             for i in range(1, 7+1):
                 day = date_today + datetime.timedelta(days=+ i + 7*(week-1))
@@ -313,7 +333,21 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
         df_prognose = df_prognose.iloc[21:]
         df_prognose['betten_covid_calc'] = (
             quote * df_prognose['Cases_New_roll_sum_20']).round(1)
+
+        # TODO: add todays value as starting point
+
+        # new_datetime = df_prognose.index[0:]+pd.Timedelta('-1 days')
+
+        # # df_prognose.loc[date_divi_data_dt].insert(3000)
+        # data = {'betten_covid_calc': 3000}
+        # df_prognose = df_prognose.append(
+        #     pd.DataFrame(data, index=[new_datetime]))
+        # print(df_prognose.head())
+        # print(df_prognose.tail())
+        # exit()
+
         l_df_prognosen[i] = df_prognose
+
     return l_df_prognosen
 
 
@@ -353,7 +387,7 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     title = f'{landkreis_name}: 2 Wochen Prognose ITS Bettenbedarf'
     plt.title(title)
     axes.set_xlabel("")
-    axes.set_ylabel('Bedarf an ITS Beatmungs-Betten durch COVID Patienten')
+    axes.set_ylabel('Bedarf an ITS Betten durch COVID Patienten')
     axes.set_axisbelow(True)  # for grid below the lines
     axes.grid(zorder=-1)
 
@@ -380,6 +414,12 @@ def plot_it(df: DataFrame, l_df_prognosen: list, l_prognosen_prozente: list, fil
     t = axes.text(pd.to_datetime(df.index[-15]).date(), max_value, "bisheriges Maximum",
                   verticalalignment='center', horizontalalignment='center')
     t.set_bbox(dict(facecolor='white', edgecolor='white', alpha=0.5))
+
+    # print(date_today)
+    # print(df.tail())
+    # print(l_df_prognosen[0].head())
+    # axes.vlines(x=date_today, ymin=0, ymax=10000,
+    #             color='grey', linestyles='--')
 
     plt.savefig(fname=filepath.replace(".png", "-zoom.png"), format='png')
     # cleanup

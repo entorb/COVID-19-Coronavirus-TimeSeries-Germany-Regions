@@ -730,12 +730,14 @@
 	<p>
 		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105"
 			target="_blank">einfachen Modell von Dirk Paessler</a> habe ich eine tagesaktuelle 2-Wochen Prognose für den
-		Bedarf an Intensivbetten zur Beatmung von COVID Patienten erstellt und für alle Landkreise und Bundesländer
+		Bedarf an Intensivbetten zur Beatmung von COVID Patienten erstellt und für alle <a
+			href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
+			href="#DeStates-cases-deaths-divi">Bundesländer</a>
 		berechnet.
 		Eingangsparameter der Prognose ist die Entwicklung der 7-Tages-Inzidenz. In Orange ist der Trend der letzten
 		Woche für 2 Wochen fortgeschrieben. Blau ist die Historie der ans <a href="https://www.intensivregister.de/"
-			target="_blank">DIVI-Intensivregister</a> gemeldeten belegten ITS Betten (deren Datenreihe
-		"faelle_covid_aktuell_invasiv_beatmet"). Details zum Modell siehe unten.
+			target="_blank">DIVI-Intensivregister</a> gemeldeten durch COVID Patienten belegten ITS Betten. Details zum
+		Modell siehe <a href="#DeStatesIcuForecastHinweise">unten</a>.
 	</p>
 
 	<p>
@@ -785,10 +787,11 @@
 		</tr>
 	</table>
 
-	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" alt="keine Daten gefunden"
-		width="800" height="600" /><br />
 	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600"
-		alt="" /><br />
+		alt="keine Daten gefunden" />
+	<br />
+	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" width="800" height="600" alt="" />
+	<br />
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
 			target="_blank">plot-icu-forecast.py</a>
@@ -811,7 +814,7 @@
 	</p> -->
 
 	<p>
-		Hinweise
+		<a id="DeStatesIcuForecastHinweise"></a>Hinweise
 	<ul>
 		<li>Das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a>
 			aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 14:15</li>
@@ -836,7 +839,7 @@
 	<ol>
 		<li>Auswahl einer Region (Landkreise/Landkreisgruppe/Bundesland)</li>
 		<li>Verhältnis von dort gemeldeten COVID-Beatmungs-Betten (DIVI Datenreihe
-			"faelle_covid_aktuell_invasiv_beatmet") zu 20-Tages-Inzidenz für die letzten 7 Tage berechnet</li>
+			"faelle_covid_aktuell") zu 20-Tages-Inzidenz für die letzten 7 Tage berechnet</li>
 		<li>Mittelwert dieses Verhältnisses über diese 7 Tage gebildet
 			(und für die 2-Wochen-Prognose als konstant angenommen)</li>
 		<li>Neue Fälle der letzten 7 Tage werden mit verschiedenen Wachstums-Annahmen für 2 Wochen in die Zukunft
