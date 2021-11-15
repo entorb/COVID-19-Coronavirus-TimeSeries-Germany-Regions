@@ -129,6 +129,7 @@ def fetch_all_csvs():
 
 
 def generate_database() -> dict:
+    # TODO: use Pandas instead of manuall CVS stuff
     """ from 2021-10-29 on Divi publisheds all data in the latest file"""
     d_database = {}
     # d_database_states = {}  # Bundesländer
@@ -167,15 +168,17 @@ def generate_database() -> dict:
                 "anzahl_meldebereiche": int(row["anzahl_meldebereiche"]),
                 "faelle_covid_aktuell": int(row["faelle_covid_aktuell"]),
                 "anzahl_standorte": int(row["anzahl_standorte"]),
+                "faelle_covid_aktuell_invasiv_beatmet": int(row["faelle_covid_aktuell_invasiv_beatmet"]),
                 "betten_frei": int(float(row["betten_frei"])),
                 "betten_belegt": int(float(row["betten_belegt"]))
             }
-            if "faelle_covid_aktuell_beatmet" in row:
-                d["faelle_covid_aktuell_beatmet"] = int(
-                    row["faelle_covid_aktuell_beatmet"])
-            elif "faelle_covid_aktuell_invasiv_beatmet" in row:
-                d["faelle_covid_aktuell_beatmet"] = int(
-                    row["faelle_covid_aktuell_invasiv_beatmet"])
+            # field was renamed in past
+            # if "faelle_covid_aktuell_beatmet" in row:
+            #     d["faelle_covid_aktuell_beatmet"] = int(
+            #         row["faelle_covid_aktuell_beatmet"])
+            # elif "faelle_covid_aktuell_invasiv_beatmet" in row:
+            #     d["faelle_covid_aktuell_beatmet"] = int(
+            #         row["faelle_covid_aktuell_invasiv_beatmet"])
 
             d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
             if d["betten_ges"] > 0:
@@ -188,7 +191,7 @@ def generate_database() -> dict:
                 d["faelle_covid_aktuell_proz"] = None
             if d["faelle_covid_aktuell"] > 0:
                 d["faelle_covid_aktuell_beatmet_proz"] = round(
-                    100*d["faelle_covid_aktuell_beatmet"] / d["faelle_covid_aktuell"], 1)
+                    100*d["faelle_covid_aktuell_invasiv_beatmet"] / d["faelle_covid_aktuell"], 1)
             else:
                 d["faelle_covid_aktuell_beatmet_proz"] = 0
 
@@ -243,7 +246,7 @@ def generate_database() -> dict:
                 d["faelle_covid_aktuell_proz"] = None
             if d["faelle_covid_aktuell"] > 0:
                 d["faelle_covid_aktuell_beatmet_proz"] = round(
-                    100*d["faelle_covid_aktuell_beatmet"] / d["faelle_covid_aktuell"], 1)
+                    100*d["faelle_covid_aktuell_invasiv_beatmet"] / d["faelle_covid_aktuell"], 1)
             else:
                 d["faelle_covid_aktuell_beatmet_proz"] = 0
 
