@@ -39,8 +39,8 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 # TODO:
 # switch data source to Risklayer?
 # parallel / multiprocessing to speedup
-# add todays beds to prognose [0]
 # if cases series has more data than divi data, use them instead of dropping them
+#  -> it is the opposite case: divi reports data of today at 12:15, RKI today of yesterday...
 
 # Done
 # draw a line from max betten
@@ -113,6 +113,7 @@ def load_divi_data() -> DataFrame:
 df_divi_all = load_divi_data()
 
 date_divi_data_str = df_divi_all["date"].max()
+# print(date_divi_data_str)
 # date_divi_data_str = "2021-11-01"
 date_divi_data = dt.date.fromisoformat(date_divi_data_str)
 date_divi_data_dt = dt.datetime(
@@ -304,8 +305,9 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
     Fälle der letzten Woche für X Wochen in die Zukunft prognostizieren
     returns list of dataframes
     """
-    # date_today = pd.to_datetime(df_data.index[-1]).date()
-    date_today = date_divi_data
+    # date_today = date_divi_data
+    # case data is often older than divi data, so we use that data (being the index of df_data)
+    date_today = pd.to_datetime(df_data.index[-1]).date()
     df_last21 = df_data["Cases_New"].tail(21).to_frame(name="Cases_New")
     ds_last7 = df_data["Cases_New"].tail(7)
 
@@ -515,7 +517,6 @@ def doit(
     # print(df.tail(3))
 
     df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
-    del df_divi, df_cases
 
     #  print(df_data.tail())
     quote = df_data["quote_betten_covid_pro_cases_roll_sum_20"].tail(7).mean()
@@ -538,7 +539,7 @@ def doit(
 
     # TODO
     plot_it(
-        df=df_data,
+        df=df_divi,
         l_df_prognosen=l_df_prognosen,
         l_prognosen_prozente=l_prognosen_prozente,
         filepath=filepath,
