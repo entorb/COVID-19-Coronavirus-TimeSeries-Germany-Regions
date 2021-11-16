@@ -586,41 +586,49 @@ for lk_id in l_lk_ids:
 # doit(mode="de-district", l_lk_ids=(9562,))
 
 
-# def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
-#     """
-#     plot 2.png
-#     """
+def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
+    """
+    plot 2.png
+    """
 
-#     fig, axes = plt.subplots(figsize=(8, 6))
+    fig, axes = plt.subplots(figsize=(8, 6))
 
-#     colors = ("blue", "black")
+    colors = ("blue", "black")
 
-#     myPlot = df["quote_betten_covid_pro_cases_roll_sum_20"].plot(
-#         linewidth=2.0, legend=False, zorder=1, color=colors[0]
-#     )
+    myPlot = df["quote_betten_covid_pro_cases_roll_sum_20"].plot(
+        linewidth=2.0, legend=False, zorder=1, color=colors[0]
+    )
 
-#     plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 20-Tages-Fallzahl")
-#     axes.set_xlabel("")
-#     axes.set_ylabel("")
-#     # color of label and ticks
-#     axes.yaxis.label.set_color(colors[0])
-#     axes.tick_params(axis="y", colors=colors[0])
-#     # grid
-#     axes.set_axisbelow(True)  # for grid below the lines
-#     axes.grid(zorder=-1)
+    plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 20-Tages-Fallzahl")
+    axes.set_xlabel("")
+    axes.set_ylabel("")
+    # color of label and ticks
+    axes.yaxis.label.set_color(colors[0])
+    axes.tick_params(axis="y", colors=colors[0])
+    # grid
+    axes.set_axisbelow(True)  # for grid below the lines
+    axes.grid(zorder=-1)
 
-#     date_min2 = pd.to_datetime(df.index[-60]).date()
-#     date_max2 = pd.to_datetime(df.index[-1]).date()
-#     axes.set_xlim([date_min2, date_max2])
-#     axes.set_ylim(0, 0.10)
+    date_min2 = pd.to_datetime(df.index[-60]).date()
+    date_max2 = pd.to_datetime(df.index[-1]).date()
+    axes.set_xlim([date_min2, date_max2])
 
-#     plt.tight_layout()
-#     plt.savefig(fname=filename, format="png")
+    df = df.loc[date_min2:]
+    y_min = df["quote_betten_covid_pro_cases_roll_sum_20"].min()
+    y_max = df["quote_betten_covid_pro_cases_roll_sum_20"].max()
+    axes.set_ylim(y_min, y_max)
+
+    plt.tight_layout()
+    plt.savefig(fname=filename, format="png")
 
 
-# l_lk_ids = (9562,)
+# l_lk_ids = (14612, 14628, 14625, 14627, 14626)  # Cluster DD
+# l_lk_ids = (9563, 9573)  # Fürth SK+LK
+# l_lk_ids = (14612,)  # DD
 # df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
 # df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
 # df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
 
-# plot_2_its_per_20day_cases(df=df_data, filename="out.png", landkreis_name="Erlangen")
+# plot_2_its_per_20day_cases(df=df_data, filename="out.png", landkreis_name="Dresden")
+
+# doit(mode="de-district", l_lk_ids=(9562,))

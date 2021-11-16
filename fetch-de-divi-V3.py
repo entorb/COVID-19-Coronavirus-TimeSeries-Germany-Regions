@@ -85,15 +85,14 @@ def fetch_latest_csv():
 
     file = f"data/de-divi/downloaded/latest.csv"
 
-    if not os.path.isfile(file):
-        cont = helper.read_url_or_cachefile(
-            url=latest_url,
-            cachefile=file,
-            request_type="get",
-            payload={},
-            cache_max_age=3600,
-            verbose=True,
-        )
+    cont = helper.read_url_or_cachefile(
+        url=latest_url,
+        cachefile=file,
+        request_type="get",
+        payload={},
+        cache_max_age=1,
+        verbose=True,
+    )
 
 
 def fetch_all_csvs():
