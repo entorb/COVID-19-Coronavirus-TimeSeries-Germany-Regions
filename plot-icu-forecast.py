@@ -125,65 +125,32 @@ date_divi_data_dt = dt.datetime(
 # exit(90)
 
 
-def sum_lk_divi_data(l_lk_ids: list) -> DataFrame:
+def sum_divi_data(mode, l_lk_ids: list = (), bl_id: int = -1) -> DataFrame:
     """
-    filters df_divi_all by l_lk_ids
+    filters df_divi_all by l_lk_ids  bl_id or all
     sums up betten_covid and betten_ges
+
+    mode
+    de-district
+    de-district-group: multiple districts, requires filename
+    de-state
+    DE-total
     """
-    assert len(l_lk_ids) > 0
     global df_divi_all
     df = df_divi_all
-    # print(len(df))
-    df = df[df["gemeindeschluessel"].isin(l_lk_ids)]
-    # print(df.tail())
-
-    assert len(df) > 0, f"ERROR: no divi data for lk_ids: {l_lk_ids}"
-
+    if mode == "de-district" or mode == "de-district-group":
+        assert len(l_lk_ids) > 0
+        # filter on list of lk_ids
+        df = df[df["gemeindeschluessel"].isin(l_lk_ids)]
+        assert len(df) > 0, f"ERROR: no divi data for lk_ids: {l_lk_ids}"
+    elif mode == "de-state":
+        assert type(bl_id) == int
+        df = df_divi_all[df_divi_all["bundesland"] == bl_id]
+        assert len(df) > 0, f"ERROR: no divi data for bl_id: {bl_id}"
+    elif mode == "DE-total":
+        pass
+    # sum up
     df = df.groupby(["date"]).agg({"betten_covid": "sum", "betten_ges": "sum"})
-    # print("df len")
-    # print(len(df))
-
-    df.index = pd.to_datetime(df.index)
-
-    date_last = pd.to_datetime(df.index[-1]).date()
-    # I needed to reindex the divi df to close gaps by 0!!!
-    idx = pd.date_range("2020-01-01", date_last)
-    df = df.reindex(idx, fill_value=0)
-
-    # print(df.tail())
-    return df
-
-
-def sum_bl_divi_data(bl_id: int) -> DataFrame:
-    """
-    filters df_divi_all by l_lk_ids
-    sums up betten_covid and betten_ges
-    """
-    assert type(bl_id) == int
-    global df_divi_all
-    df = df_divi_all
-    # print(df.head())
-    df = df_divi_all[df_divi_all["bundesland"] == bl_id]
-    # print(df.head())
-    df = df.groupby(["date"]).agg({"betten_covid": "sum", "betten_ges": "sum"})
-    df.index = pd.to_datetime(df.index)
-
-    date_last = pd.to_datetime(df.index[-1]).date()
-    # I needed to reindex the divi df to close gaps by 0!!!
-    idx = pd.date_range("2020-01-01", date_last)
-    df = df.reindex(idx, fill_value=0)
-
-    # print(df.tail())
-    return df
-
-
-def sum_DE_divi_data() -> DataFrame:
-    """
-    filters df_divi_all by l_lk_ids
-    sums up betten_covid and betten_ges
-    """
-    global df_divi_all
-    df = df_divi_all.groupby(["date"]).agg({"betten_covid": "sum", "betten_ges": "sum"})
     df.index = pd.to_datetime(df.index)
 
     date_last = pd.to_datetime(df.index[-1]).date()
@@ -264,11 +231,6 @@ def load_bl_case_data(bl_code: str) -> DataFrame:
     # check for bad values
     if df["Cases_New"].isnull().values.any():
         raise f"ERROR: {file_cases} has bad values"
-
-    if "Cases_New" not in df.columns:
-        df["Cases_New"] = df["Cases_New"]
-    else:
-        df["Cases_New"] += df["Cases_New"]
 
     return df
 
@@ -461,10 +423,10 @@ def doit(
 ):
     """
     mode:
-    district: 1 Landkreis
-    district-group: multiple districts, requires filename
-    state
-    DE
+    de-district: 1 Landkreis
+    de-district-group: multiple districts, requires filename
+    de-state
+    DE-total
     """
     assert mode in ("de-district", "de-district-group", "de-state", "DE-total")
     # ensure lk_ids are a unique list
@@ -477,7 +439,7 @@ def doit(
         assert len(l_lk_ids) == 1
         lk_id = l_lk_ids[0]
         assert lk_id > 1000, f"lk_id {lk_id} is invalid"
-        df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
+        df_divi = sum_divi_data(mode=mode, l_lk_ids=l_lk_ids)
         if l_lk_ids[0] == 11000:  # Berlin
             # Berlin as it is 1 set in DIVI, but multiple in RKI
             title = "Berlin"
@@ -493,19 +455,19 @@ def doit(
         assert title != "", f"ERROR: title empty for filename {filename}"
         # print(title)
         # print(l_lk_ids)
-        df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
+        df_divi = sum_divi_data(mode=mode, l_lk_ids=l_lk_ids)
         df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
         filepath = f"{dir_out}/de-district-group/{filename}.png"
 
     elif mode == "de-state":
-        df_divi = sum_bl_divi_data(bl_id=bl_id)
+        df_divi = sum_divi_data(mode=mode, bl_id=bl_id)
         bl_code = helper.d_BL_code_from_BL_ID[int(bl_id)]
         df_cases = load_bl_case_data(bl_code=bl_code)
         title = helper.d_BL_name_from_BL_Code[bl_code]
         filepath = f"{dir_out}/de-states/{bl_code}.png"
 
     elif mode == "DE-total":
-        df_divi = sum_DE_divi_data()
+        df_divi = sum_divi_data(mode=mode)
         df_cases = load_bl_case_data(bl_code="DE-total")
         filepath = f"{dir_out}/de-states/DE-total.png"
         title = "Deutschland gesamt"
