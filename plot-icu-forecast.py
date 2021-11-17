@@ -27,13 +27,13 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 # info : see icu-forecase/howto
 # model:
-# 1. calculating a moving sum of  20-day-cases
-# 2. calculating the ratio of the icu-beds to the 20-day-cases-sum
+# 1. calculating a moving sum of  21-day-cases
+# 2. calculating the ratio of the icu-beds to the 21-day-cases-sum
 # 3. calculating the average of that ratio for the last 7 days
 # 4. assuming this ratio is constant for the forecast
 # 5. use last weeks case data to model the future cases, using different 7-day-change models
-# 6. calculate the moving sum of 20-days-cases
-# 7. multiply by found ratio icu-beds to the 20-day-cases-sum to convert to beds
+# 6. calculate the moving sum of 21-days-cases
+# 7. multiply by found ratio icu-beds to the 21-day-cases-sum to convert to beds
 
 
 # TODO:
@@ -205,7 +205,7 @@ def load_and_sum_lk_case_data(l_lk_ids: list) -> DataFrame:
     l_lk_ids : list of lk_ids:str
     grouping of lk data
     sum up their daily Cases_New
-    calc 20-day-moving sum
+    calc 21-day-moving sum
     """
     for lk_id in l_lk_ids:
         assert type(lk_id) == int, f"not integer {lk_id}"
@@ -282,19 +282,19 @@ def join_cases_divi(df_cases: DataFrame, df_divi: DataFrame) -> DataFrame:
     df_sum["betten_covid"] = df_divi["betten_covid"]
     df_sum["betten_ges"] = df_divi["betten_ges"]
 
-    df_sum["Cases_New_roll_sum_20"] = (
-        df_sum["Cases_New"].rolling(window=20, min_periods=1).sum()
+    df_sum["Cases_New_roll_sum_21"] = (
+        df_sum["Cases_New"].rolling(window=21, min_periods=1).sum()
     )
 
-    df_sum["quote_betten_covid_pro_cases_roll_sum_20"] = (
-        df_sum["betten_covid"] / df_sum["Cases_New_roll_sum_20"]
+    df_sum["quote_betten_covid_pro_cases_roll_sum_21"] = (
+        df_sum["betten_covid"] / df_sum["Cases_New_roll_sum_21"]
     )
 
     df_sum["betten_belegt_roll"] = (
         df_sum["betten_covid"].rolling(window=7, min_periods=1).mean()
     )
 
-    # after calc of 20-day sum we can remove dates prior to april 2020 where there is no DIVI data available
+    # after calc of 21-day sum we can remove dates prior to april 2020 where there is no DIVI data available
     df_sum = df_sum.loc["2020-04-01":]
 
     return df_sum
@@ -328,18 +328,18 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
         df_prognose = helper.pandas_set_date_index(df_prognose)
         l_df_prognosen.append(df_prognose)  # add to list of dataframes
 
-    # calc 20 day sum
+    # calc 21 day sum
     for i in range(len(l_df_prognosen)):
         df_prognose = l_df_prognosen[i]
-        # prepend last 21 days to calc the 20 day sum
+        # prepend last 22 days to calc the 21 day sum
         df_prognose = df_last21.append(df_prognose)
-        df_prognose["Cases_New_roll_sum_20"] = (
-            df_prognose["Cases_New"].rolling(window=20, min_periods=1).sum()
+        df_prognose["Cases_New_roll_sum_21"] = (
+            df_prognose["Cases_New"].rolling(window=21, min_periods=1).sum()
         )
-        # drop the 21 days again
-        df_prognose = df_prognose.iloc[21:]
+        # drop the 22 days again
+        df_prognose = df_prognose.iloc[22:]
         df_prognose["betten_covid_calc"] = (
-            quote * df_prognose["Cases_New_roll_sum_20"]
+            quote * df_prognose["Cases_New_roll_sum_21"]
         ).round(1)
 
         # TODO: add todays value as starting point
@@ -519,7 +519,7 @@ def doit(
     df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
 
     #  print(df_data.tail())
-    quote = df_data["quote_betten_covid_pro_cases_roll_sum_20"].tail(7).mean()
+    quote = df_data["quote_betten_covid_pro_cases_roll_sum_21"].tail(7).mean()
 
     # Inzidenzänderung
     # inzidenz diese Woche
@@ -587,7 +587,7 @@ for lk_id in l_lk_ids:
 # doit(mode="de-district", l_lk_ids=(9562,))
 
 
-def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str):
+def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str):
     """
     plot 2.png
     """
@@ -596,11 +596,11 @@ def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str
 
     colors = ("blue", "black")
 
-    myPlot = df["quote_betten_covid_pro_cases_roll_sum_20"].plot(
+    myPlot = df["quote_betten_covid_pro_cases_roll_sum_21"].plot(
         linewidth=2.0, legend=False, zorder=1, color=colors[0]
     )
 
-    plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 20-Tages-Fallzahl")
+    plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 21-Tages-Fallzahl")
     axes.set_xlabel("")
     axes.set_ylabel("")
     # color of label and ticks
@@ -615,8 +615,8 @@ def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str
     axes.set_xlim([date_min2, date_max2])
 
     df = df.loc[date_min2:]
-    y_min = df["quote_betten_covid_pro_cases_roll_sum_20"].min()
-    y_max = df["quote_betten_covid_pro_cases_roll_sum_20"].max()
+    y_min = df["quote_betten_covid_pro_cases_roll_sum_21"].min()
+    y_max = df["quote_betten_covid_pro_cases_roll_sum_21"].max()
     axes.set_ylim(y_min, y_max)
 
     plt.tight_layout()
@@ -630,6 +630,6 @@ def plot_2_its_per_20day_cases(df: DataFrame, filename: str, landkreis_name: str
 # df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
 # df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
 
-# plot_2_its_per_20day_cases(df=df_data, filename="out.png", landkreis_name="Dresden")
+# plot_2_its_per_21day_cases(df=df_data, filename="out.png", landkreis_name="Dresden")
 
 # doit(mode="de-district", l_lk_ids=(9562,))
