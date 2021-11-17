@@ -8,6 +8,13 @@ import os
 import datetime as dt
 import locale
 
+import time
+
+# timestart = time.time()
+# print(time.time() - timestart)
+
+import multiprocessing as mp
+
 import pandas as pd
 from pandas.core.frame import DataFrame
 import matplotlib as mpl
@@ -326,6 +333,42 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
 #
 
 
+def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str):
+    """
+    plot 2.png
+    """
+
+    fig, axes = plt.subplots(figsize=(8, 6))
+
+    colors = ("blue", "black")
+
+    myPlot = df["quote_betten_covid_pro_cases_roll_sum_21"].plot(
+        linewidth=2.0, legend=False, zorder=1, color=colors[0]
+    )
+
+    plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 21-Tages-Fallzahl")
+    axes.set_xlabel("")
+    axes.set_ylabel("")
+    # color of label and ticks
+    axes.yaxis.label.set_color(colors[0])
+    axes.tick_params(axis="y", colors=colors[0])
+    # grid
+    axes.set_axisbelow(True)  # for grid below the lines
+    axes.grid(zorder=-1)
+
+    date_min2 = pd.to_datetime(df.index[-60]).date()
+    date_max2 = pd.to_datetime(df.index[-1]).date()
+    axes.set_xlim([date_min2, date_max2])
+
+    df = df.loc[date_min2:]
+    y_min = df["quote_betten_covid_pro_cases_roll_sum_21"].min()
+    y_max = df["quote_betten_covid_pro_cases_roll_sum_21"].max()
+    axes.set_ylim(y_min, y_max)
+
+    plt.tight_layout()
+    plt.savefig(fname=filename, format="png")
+
+
 def plot_it(
     df: DataFrame,
     l_df_prognosen: list,
@@ -416,6 +459,22 @@ def plot_it(
     plt.close("all")
     plt.close(fig)
     plt.close()
+
+
+def doit_de_district(lk_id: int):
+    """
+    for multiprocessing
+    """
+    assert type(lk_id) == int
+    doit(mode="de-district", l_lk_ids=(lk_id,))
+
+
+def doit_de_state(bl_id: int):
+    """
+    for multiprocessing
+    """
+    assert type(bl_id) == int
+    doit(mode="de-state", bl_id=bl_id)
 
 
 def doit(
@@ -509,31 +568,48 @@ def doit(
     )
 
 
-print("DE-total")
-doit(mode="DE-total")
+def main():
+    # now via multiprocessing
+    pool = mp.Pool(processes=mp.cpu_count())
 
-print("de-states")
-for i in range(1, 16 + 1):
-    doit(mode="de-state", bl_id=i)
+    print("DE-total")
+    doit(mode="DE-total")
 
-print("de-district-group")
-# groups generated via icu-groups.py
-l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
-for d in l_groupes:
-    title = d["title"]
-    id = d["id"]
-    l_lk_ids = [int(x) for x in d["lk_ids"]]
-    doit(
-        mode="de-district-group", title=title, l_lk_ids=l_lk_ids, filename=str(d["id"])
-    )
+    print("de-states")
+    l_pile_of_work = []
+    for bl_id in range(1, 16 + 1):
+        # doit(mode="de-state", bl_id=bl_id)
+        l_pile_of_work.append(bl_id)
+    res = pool.map(doit_de_state, l_pile_of_work)
 
-print("de-districts")
-l_lk_ids = helper.read_json_file("data/de-divi/lkids.json")
-for lk_id in l_lk_ids:
-    lk_id = int(lk_id)
-    if lk_id == 16056:  # Eisenach
-        continue
-    doit(mode="de-district", l_lk_ids=(lk_id,))
+    print("de-district-group")
+    # groups generated via icu-groups.py
+    l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
+    for d in l_groupes:
+        title = d["title"]
+        id = d["id"]
+        l_lk_ids = [int(x) for x in d["lk_ids"]]
+        doit(
+            mode="de-district-group",
+            title=title,
+            l_lk_ids=l_lk_ids,
+            filename=str(id),
+        )
+
+    print("de-districts")
+    l_lk_ids = helper.read_json_file("data/de-divi/lkids.json")
+    l_pile_of_work = []
+    for lk_id in l_lk_ids:
+        lk_id = int(lk_id)
+        if lk_id == 16056:  # Eisenach
+            continue
+        # doit(mode="de-district", l_lk_ids=(lk_id,))
+        l_pile_of_work.append(lk_id)
+    res = pool.map(doit_de_district, l_pile_of_work)
+
+
+if __name__ == "__main__":
+    main()
 
 
 # Tests
@@ -547,42 +623,6 @@ for lk_id in l_lk_ids:
 # Modelltests mit Daten von Erlangen
 # print("Erlangen")
 # doit(mode="de-district", l_lk_ids=(9562,))
-
-
-def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str):
-    """
-    plot 2.png
-    """
-
-    fig, axes = plt.subplots(figsize=(8, 6))
-
-    colors = ("blue", "black")
-
-    myPlot = df["quote_betten_covid_pro_cases_roll_sum_21"].plot(
-        linewidth=2.0, legend=False, zorder=1, color=colors[0]
-    )
-
-    plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 21-Tages-Fallzahl")
-    axes.set_xlabel("")
-    axes.set_ylabel("")
-    # color of label and ticks
-    axes.yaxis.label.set_color(colors[0])
-    axes.tick_params(axis="y", colors=colors[0])
-    # grid
-    axes.set_axisbelow(True)  # for grid below the lines
-    axes.grid(zorder=-1)
-
-    date_min2 = pd.to_datetime(df.index[-60]).date()
-    date_max2 = pd.to_datetime(df.index[-1]).date()
-    axes.set_xlim([date_min2, date_max2])
-
-    df = df.loc[date_min2:]
-    y_min = df["quote_betten_covid_pro_cases_roll_sum_21"].min()
-    y_max = df["quote_betten_covid_pro_cases_roll_sum_21"].max()
-    axes.set_ylim(y_min, y_max)
-
-    plt.tight_layout()
-    plt.savefig(fname=filename, format="png")
 
 
 # l_lk_ids = (14612, 14628, 14625, 14627, 14626)  # Cluster DD
