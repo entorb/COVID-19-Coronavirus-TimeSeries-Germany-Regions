@@ -1,5 +1,6 @@
 # plot via pandas and matplotlib
 # from matplotlib.colors import LogNorm
+from datetime import datetime
 import glob
 import os
 from pandas.core.frame import DataFrame
@@ -9,7 +10,15 @@ import matplotlib as mpl
 import matplotlib.ticker as ticker
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.sparse import data
 import helper  # my helper modules
+
+import multiprocessing as mp
+
+import time
+
+timestart = time.time()
+
 
 # Matplotlib setup
 # Agg to prevent "Fail to allocate bitmap"
@@ -174,7 +183,11 @@ def read_data(datafile: str) -> DataFrame:
     return df
 
 
-def plot_it(df: DataFrame, code: str, long_name: str, source: str):
+# DE as reference
+df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
+
+
+def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
     """
     source: de-states or de-districts
     """
@@ -228,6 +241,7 @@ def plot_it(df: DataFrame, code: str, long_name: str, source: str):
     )
 
     if b_thisIsDE_total == False:
+        global df_DE
         # DE data for comparison
         df_DE["Inzidenz"].plot(
             ax=axes[0],
@@ -237,8 +251,6 @@ def plot_it(df: DataFrame, code: str, long_name: str, source: str):
             zorder=2,
             linewidth=2.0,
         )
-    if b_thisIsDE_total == False:
-        # DE data for comparison
         df_DE["Tote"].plot(
             ax=axes[1],
             color=colors[2][1],
@@ -252,9 +264,9 @@ def plot_it(df: DataFrame, code: str, long_name: str, source: str):
 
     # plt.show()
 
-    if source == "de-states":
+    if mode == "de-states":
         fname = f"plots-python/de-states/de-state-{code}.png"
-    elif source == "de-districts":
+    elif mode == "de-districts":
         fname = f"plots-python/de-districts/de-district-{code}.png"
     plt.savefig(fname=fname, format="png")
 
@@ -267,38 +279,56 @@ def plot_it(df: DataFrame, code: str, long_name: str, source: str):
     plt.close()
 
 
-# DE as reference
-df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
-
-
-# plot for states
-# for datafile in ("data/de-states/de-state-BY.tsv",):
-for datafile in glob.glob("data/de-states/de-state-*.tsv"):
+def doit_bl(datafile: str):
+    """for Bundesländer"""
     (filepath, fileName) = os.path.split(datafile)
     (fileBaseName, fileExtension) = os.path.splitext(fileName)
     code = fileBaseName[9:]
     long_name = helper.d_BL_name_from_BL_Code[code]
-
     df = read_data(datafile=datafile)
+    plot_it(df=df, code=code, long_name=long_name, mode="de-states")
 
-    plot_it(df=df, code=code, long_name=long_name, source="de-states")
+
+def doit_lk(datafile: str):
+    """ "for Landkreise"""
+    (filepath, fileName) = os.path.split(datafile)
+    (fileBaseName, fileExtension) = os.path.splitext(fileName)
+    code = fileBaseName[-5:]
+    if code == "16056":  # Eisenach was merged with 16063: LK Wartburgkreis
+        return
+    global d_landkreisNames
+    long_name = d_landkreisNames[code]
+    df = read_data(datafile=datafile)
+    plot_it(df=df, code=code, long_name=long_name, mode="de-districts")
 
 
 d_landkreisNames = helper.read_json_file(
     "data/de-districts/mapping_landkreis_ID_name.json"
 )
 
-# same for districts
-# for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
-for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
-    (filepath, fileName) = os.path.split(datafile)
-    (fileBaseName, fileExtension) = os.path.splitext(fileName)
-    code = fileBaseName[-5:]
-    if code == "16056":  # Eisenach was merged with 16063: LK Wartburgkreis
-        continue
-    long_name = d_landkreisNames[code]
 
-    df = read_data(datafile=datafile)
+def main():
+    # now via multiprocessing
+    pool = mp.Pool(processes=mp.cpu_count())
 
-    # print(code, long_name)
-    plot_it(df, code, long_name, "de-districts")
+    # plot for states
+    l_pile_of_work = []
+    # for datafile in ("data/de-states/de-state-BY.tsv",):
+    for datafile in glob.glob("data/de-states/de-state-*.tsv"):
+        l_pile_of_work.append(datafile)
+        # doit_bl(datafile=datafile)
+    res = pool.map(doit_bl, l_pile_of_work)
+
+    # same for districts
+    l_pile_of_work = []
+    # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
+    for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
+        l_pile_of_work.append(datafile)
+        # doit_lk(datafile=datafile)
+    res = pool.map(doit_lk, l_pile_of_work)
+
+
+if __name__ == "__main__":
+    main()
+    print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
+# 164s single processing -> 27s multiprocessing

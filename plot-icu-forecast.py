@@ -10,8 +10,8 @@ import locale
 
 import time
 
-# timestart = time.time()
-# print(time.time() - timestart)
+timestart = time.time()
+
 
 import multiprocessing as mp
 
@@ -610,6 +610,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
 
 
 # Tests
