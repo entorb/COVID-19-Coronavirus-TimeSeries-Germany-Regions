@@ -15,7 +15,6 @@ import os
 import os.path
 import re
 import csv
-import glob
 
 # import requests  # for read_url_or_cachefile
 
