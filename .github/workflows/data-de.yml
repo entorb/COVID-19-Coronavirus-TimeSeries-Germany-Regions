@@ -73,7 +73,7 @@ jobs:
     - name: Data+Plot fetch-mortality-de
       run: python3 fetch-de-mortality.py
 
-    - name: Data + Plot fetch-de-vaccination
+    - name: Data+Plot fetch-de-vaccination
       run: python3 fetch-de-vaccination.py
 
     - name: Data show dates
