@@ -609,7 +609,8 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print("DIVI data of: "+ datadate_divi_data_str)
+    # global datadate_divi_data_str
+    # print("DIVI data of: "+ datadate_divi_data_str)
     print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
 
 
