@@ -120,7 +120,6 @@ def load_divi_data() -> DataFrame:
 df_divi_all = load_divi_data()
 
 date_divi_data_str = df_divi_all["date"].max()
-# print(date_divi_data_str)
 # date_divi_data_str = "2021-11-01"
 date_divi_data = dt.date.fromisoformat(date_divi_data_str)
 date_divi_data_dt = dt.datetime(
@@ -610,6 +609,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    print("DIVI data of: "+ datadate_divi_data_str)
     print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
 
 
