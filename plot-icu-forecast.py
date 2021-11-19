@@ -596,32 +596,37 @@ def main():
     l2 = [df_divi_all] * len(l1)
     res = pool.starmap(doit_de_district, iterable=zip(l1, l2))
 
+    #
+    # Tests
+    #
 
-if __name__ == "__main__":
-    main()
+    # Unna: 4 Wochen Prognose für @doc_emed
+    # print("Unna")
+    # weeks_forcast = 4
+    # doit(mode="de-district", l_lk_ids=(5978,))
+
+    # Modelltests mit Daten von Erlangen
+    # print("Erlangen")
+    # doit(mode="de-district", l_lk_ids=(9562,))
+
+    # l_lk_ids = (14612, 14628, 14625, 14627, 14626)  # Cluster DD
+    # l_lk_ids = (14612,)  # DD
+    # l_lk_ids = (9563, 9573)  # Fürth SK+LK
+    # l_lk_ids = (9562, 9572, 9474)  # Erlangen Umland
+    # df_divi = sum_divi_data(
+    #     mode="de-district", df_divi_all=df_divi_all, l_lk_ids=l_lk_ids
+    # )
+    # df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
+    # df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
+    # # l_lk_ids = helper.read_json_file("data/de-divi/lkids.json")
+    # plot_2_its_per_21day_cases(
+    #     df=df_data,
+    #     filename="out.png",
+    #     landkreis_name=helper.d_lk_name_from_lk_id["%05d" % l_lk_ids[0]],
+    # )
+
     print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
 
 
-# Tests
-
-# # Unna: 4 Wochen Prognose für @doc_emed
-# print("Unna")
-# weeks_forcast = 4
-# doit(mode="de-district", l_lk_ids=(5978,))
-
-
-# Modelltests mit Daten von Erlangen
-# print("Erlangen")
-# doit(mode="de-district", l_lk_ids=(9562,))
-
-
-# l_lk_ids = (14612, 14628, 14625, 14627, 14626)  # Cluster DD
-# l_lk_ids = (9563, 9573)  # Fürth SK+LK
-# l_lk_ids = (14612,)  # DD
-# df_divi = sum_lk_divi_data(l_lk_ids=l_lk_ids)
-# df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
-# df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
-
-# plot_2_its_per_21day_cases(df=df_data, filename="out.png", landkreis_name="Dresden")
-
-# doit(mode="de-district", l_lk_ids=(9562,))
+if __name__ == "__main__":
+    main()
