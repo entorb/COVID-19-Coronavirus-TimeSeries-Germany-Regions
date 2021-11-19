@@ -346,7 +346,7 @@ def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str
 
 
 def plot_it(
-    df: DataFrame,
+    df_divi: DataFrame,
     l_df_prognosen: list,
     l_prognosen_prozente: list,
     filepath: str,
@@ -357,13 +357,13 @@ def plot_it(
     # drop some data from the plot
     date_min = "2020-09-01"
     date_max = str(pd.to_datetime(l_df_prognosen[0].index[-1]).date())
-    date_today = str(pd.to_datetime(df.index[-1]).date())
-    df = df.loc[date_min:]
+    date_today = str(pd.to_datetime(df_divi.index[-1]).date())
+    df_divi = df_divi.loc[date_min:]
 
-    max_value = df["betten_covid"].max()
-    max_value_date = df["betten_covid"].idxmax()
+    max_value = df_divi["betten_covid"].max()
+    max_value_date = df_divi["betten_covid"].idxmax()
 
-    myPlot = df.iloc[:]["betten_covid"].plot(
+    myPlot = df_divi.iloc[:]["betten_covid"].plot(
         linewidth=1.0, zorder=1, label="_nolegend_"
     )
 
@@ -404,7 +404,7 @@ def plot_it(
     # zoomed plot
     # TODO: better title?
     # plt.title(title + " zoom")
-    date_min2 = pd.to_datetime(df.index[-45]).date()
+    date_min2 = pd.to_datetime(df_divi.index[-45]).date()
     date_max2 = pd.to_datetime(l_df_prognosen[0].index[-1]).date()
     axes.set_xlim([date_min2, date_max2])
 
@@ -414,7 +414,7 @@ def plot_it(
     # axes.xaxis.set_major_locator(wloc)
 
     t = axes.text(
-        pd.to_datetime(df.index[-15]).date(),
+        pd.to_datetime(df_divi.index[-15]).date(),
         max_value,
         "bisheriges Maximum",
         verticalalignment="center",
@@ -546,7 +546,7 @@ def doit(
 
     # TODO
     plot_it(
-        df=df_divi,
+        df_divi=df_divi,
         l_df_prognosen=l_df_prognosen,
         l_prognosen_prozente=l_prognosen_prozente,
         filepath=filepath,
@@ -559,12 +559,6 @@ def main():
     pool = mp.Pool(processes=mp.cpu_count())
 
     df_divi_all = load_divi_data()
-    date_divi_data_str = df_divi_all["date"].max()
-    # date_divi_data_str = "2021-11-01"
-    # date_divi_data = dt.date.fromisoformat(date_divi_data_str)
-    # date_divi_data_dt = dt.datetime(
-    #     date_divi_data.year, date_divi_data.month, date_divi_data.day
-    # )
 
     print("DE-total")
     doit(mode="DE-total", df_divi_all=df_divi_all)
