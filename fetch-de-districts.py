@@ -272,15 +272,19 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
         + "&where=(IdLandkreis='"
         + lk_id
         + "')"
-        + "&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall%2C+AnzahlFall%2C+AnzahlTodesfall"
-        "&orderByFields=Meldedatum"
+        + "&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall"
+        + "&orderByFields=Meldedatum"
         + "&resultRecordCount="
         + str(max_allowed_rows_to_fetch)
         + "&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false"
         + "&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token="
     )
-    # get more stuff
-    # "&outFields=*" + \
+    # %2C+AnzahlFall%2C+AnzahlTodesfall
+
+    # example
+    # https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=(IdLandkreis='14612')&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall%2C+AnzahlFall%2C+AnzahlTodesfall&orderByFields=Meldedatum&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token=
+    # f=json
+    # &outFields=*
 
     cont = helper.read_url_or_cachefile(
         url=url,
