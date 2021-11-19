@@ -111,27 +111,18 @@ def load_divi_data() -> DataFrame:
         axis=1,
         errors="raise",
     )
-
-    # print(df.tail())
-
     return df
 
 
-df_divi_all = load_divi_data()
-
-date_divi_data_str = df_divi_all["date"].max()
-# date_divi_data_str = "2021-11-01"
-date_divi_data = dt.date.fromisoformat(date_divi_data_str)
-date_divi_data_dt = dt.datetime(
-    date_divi_data.year, date_divi_data.month, date_divi_data.day
-)
 # exit()
 
 # print(len(df_divi_all))
 # exit(90)
 
 
-def sum_divi_data(mode, l_lk_ids: list = (), bl_id: int = -1) -> DataFrame:
+def sum_divi_data(
+    mode, df_divi_all: DataFrame, l_lk_ids: list = (), bl_id: int = -1
+) -> DataFrame:
     """
     filters df_divi_all by l_lk_ids  bl_id or all
     sums up betten_covid and betten_ges
@@ -142,7 +133,6 @@ def sum_divi_data(mode, l_lk_ids: list = (), bl_id: int = -1) -> DataFrame:
     de-state
     DE-total
     """
-    global df_divi_all
     df = df_divi_all
     if mode == "de-district" or mode == "de-district-group":
         assert len(l_lk_ids) > 0
@@ -279,14 +269,13 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
     df_last21 = df_data["Cases_New"].tail(21).to_frame(name="Cases_New")
     ds_last7 = df_data["Cases_New"].tail(7)
 
+    assert len(ds_last7) == 7
+    assert len(df_last21) == 21
+
     l_df_prognosen = []
     # gen as many df as prozente given
     for proz in l_prognosen_prozente:
         df_prognose = pd.DataFrame()
-        # new_row = {"Date": date_today,
-        #            "Cases_New": df_data["Cases_New"].tail(1)}
-        # df_prognose = df_prognose.append(
-        #     new_row, ignore_index=True)
         for week in range(1, weeks_forcast + 1):
             for i in range(1, 7 + 1):
                 day = date_today + datetime.timedelta(days=+i + 7 * (week - 1))
@@ -294,33 +283,21 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
                 new_row = {"Date": day, "Cases_New": case_prognose}
                 df_prognose = df_prognose.append(new_row, ignore_index=True)
         df_prognose = helper.pandas_set_date_index(df_prognose)
-        l_df_prognosen.append(df_prognose)  # add to list of dataframes
+        l_df_prognosen.append(df_prognose)
 
     # calc 21 day sum
     for i in range(len(l_df_prognosen)):
         df_prognose = l_df_prognosen[i]
-        # prepend last 22 days to calc the 21 day sum
+        # prepend last 21 days to calc the 21 day sum
         df_prognose = df_last21.append(df_prognose)
         df_prognose["Cases_New_roll_sum_21"] = (
             df_prognose["Cases_New"].rolling(window=21, min_periods=1).sum()
         )
-        # drop the 22 days again
-        df_prognose = df_prognose.iloc[22:]
+        # drop the 21 days again
+        df_prognose = df_prognose.iloc[21:]
         df_prognose["betten_covid_calc"] = (
             quote * df_prognose["Cases_New_roll_sum_21"]
         ).round(1)
-
-        # TODO: add todays value as starting point
-
-        # new_datetime = df_prognose.index[0:]+pd.Timedelta('-1 days')
-
-        # # df_prognose.loc[date_divi_data_dt].insert(3000)
-        # data = {'betten_covid_calc': 3000}
-        # df_prognose = df_prognose.append(
-        #     pd.DataFrame(data, index=[new_datetime]))
-        # print(df_prognose.head())
-        # print(df_prognose.tail())
-        # exit()
 
         l_df_prognosen[i] = df_prognose
 
@@ -460,24 +437,29 @@ def plot_it(
     plt.close()
 
 
-def doit_de_district(lk_id: int):
+def doit_de_district(lk_id: int, df_divi_all: DataFrame):
     """
     for multiprocessing
     """
     assert type(lk_id) == int
-    doit(mode="de-district", l_lk_ids=(lk_id,))
+    doit(mode="de-district", df_divi_all=df_divi_all, l_lk_ids=(lk_id,))
 
 
-def doit_de_state(bl_id: int):
+def doit_de_state(bl_id: int, df_divi_all: DataFrame):
     """
     for multiprocessing
     """
     assert type(bl_id) == int
-    doit(mode="de-state", bl_id=bl_id)
+    doit(mode="de-state", df_divi_all=df_divi_all, bl_id=bl_id)
 
 
 def doit(
-    title="", l_lk_ids: list = (), bl_id: int = -1, mode="de-district", filename=""
+    mode="de-district",
+    df_divi_all: DataFrame = None,
+    title="",
+    l_lk_ids: list = (),
+    bl_id: int = -1,
+    filename="",
 ):
     """
     mode:
@@ -497,7 +479,7 @@ def doit(
         assert len(l_lk_ids) == 1
         lk_id = l_lk_ids[0]
         assert lk_id > 1000, f"lk_id {lk_id} is invalid"
-        df_divi = sum_divi_data(mode=mode, l_lk_ids=l_lk_ids)
+        df_divi = sum_divi_data(mode=mode, df_divi_all=df_divi_all, l_lk_ids=l_lk_ids)
         if l_lk_ids[0] == 11000:  # Berlin
             # Berlin as it is 1 set in DIVI, but multiple in RKI
             title = "Berlin"
@@ -513,27 +495,26 @@ def doit(
         assert title != "", f"ERROR: title empty for filename {filename}"
         # print(title)
         # print(l_lk_ids)
-        df_divi = sum_divi_data(mode=mode, l_lk_ids=l_lk_ids)
+        df_divi = sum_divi_data(mode=mode, df_divi_all=df_divi_all, l_lk_ids=l_lk_ids)
         df_cases = load_and_sum_lk_case_data(l_lk_ids=l_lk_ids)
         filepath = f"{dir_out}/de-district-group/{filename}.png"
 
     elif mode == "de-state":
-        df_divi = sum_divi_data(mode=mode, bl_id=bl_id)
+        df_divi = sum_divi_data(mode=mode, df_divi_all=df_divi_all, bl_id=bl_id)
         bl_code = helper.d_BL_code_from_BL_ID[int(bl_id)]
         df_cases = load_bl_case_data(bl_code=bl_code)
         title = helper.d_BL_name_from_BL_Code[bl_code]
         filepath = f"{dir_out}/de-states/{bl_code}.png"
 
     elif mode == "DE-total":
-        df_divi = sum_divi_data(mode=mode)
+        df_divi = sum_divi_data(mode=mode, df_divi_all=df_divi_all)
         df_cases = load_bl_case_data(bl_code="DE-total")
         filepath = f"{dir_out}/de-states/DE-total.png"
         title = "Deutschland gesamt"
 
     # filter out data newer than latest DIVI data
     # print(df.tail(3))
-    global date_divi_data_dt
-    df_cases = df_cases[df_cases.index <= date_divi_data_dt]
+    df_cases = df_cases[df_cases.index <= df_divi.index[-1]]
     # print(df.tail(3))
 
     df_data = join_cases_divi(df_cases=df_cases, df_divi=df_divi)
@@ -557,6 +538,12 @@ def doit(
         df_data=df_data, l_prognosen_prozente=l_prognosen_prozente, quote=quote
     )
 
+    if mode == "DE-total":
+        print("Dates")
+        print("DIVI", pd.to_datetime(df_divi.index[-1]).date())
+        print("DE: cases", pd.to_datetime(df_cases.index[-1]).date())
+        print("DE: forecast", pd.to_datetime(l_df_prognosen[0].index[0]).date())
+
     # TODO
     plot_it(
         df=df_divi,
@@ -571,15 +558,21 @@ def main():
     # now via multiprocessing
     pool = mp.Pool(processes=mp.cpu_count())
 
+    df_divi_all = load_divi_data()
+    date_divi_data_str = df_divi_all["date"].max()
+    # date_divi_data_str = "2021-11-01"
+    # date_divi_data = dt.date.fromisoformat(date_divi_data_str)
+    # date_divi_data_dt = dt.datetime(
+    #     date_divi_data.year, date_divi_data.month, date_divi_data.day
+    # )
+
     print("DE-total")
-    doit(mode="DE-total")
+    doit(mode="DE-total", df_divi_all=df_divi_all)
 
     print("de-states")
-    l_pile_of_work = []
-    for bl_id in range(1, 16 + 1):
-        # doit(mode="de-state", bl_id=bl_id)
-        l_pile_of_work.append(bl_id)
-    res = pool.map(doit_de_state, l_pile_of_work)
+    l1 = range(1, 16 + 1)
+    l2 = [df_divi_all] * len(l1)
+    res = pool.starmap(func=doit_de_state, iterable=zip(l1, l2))
 
     print("de-district-group")
     # groups generated via icu-groups.py
@@ -590,6 +583,7 @@ def main():
         l_lk_ids = [int(x) for x in d["lk_ids"]]
         doit(
             mode="de-district-group",
+            df_divi_all=df_divi_all,
             title=title,
             l_lk_ids=l_lk_ids,
             filename=str(id),
@@ -604,13 +598,13 @@ def main():
             continue
         # doit(mode="de-district", l_lk_ids=(lk_id,))
         l_pile_of_work.append(lk_id)
-    res = pool.map(doit_de_district, l_pile_of_work)
+    l1 = l_pile_of_work
+    l2 = [df_divi_all] * len(l1)
+    res = pool.starmap(doit_de_district, iterable=zip(l1, l2))
 
 
 if __name__ == "__main__":
     main()
-    # global datadate_divi_data_str
-    # print("DIVI data of: "+ datadate_divi_data_str)
     print("runtime: %ds on %d CPUs" % (time.time() - timestart, mp.cpu_count()))
 
 
