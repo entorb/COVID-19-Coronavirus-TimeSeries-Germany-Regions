@@ -26,6 +26,8 @@ import openpyxl
 # import csv
 import urllib.request
 
+from pandas.core.frame import DataFrame
+
 # my helper modules
 import helper
 
@@ -33,7 +35,7 @@ import helper
 # 1. read my covid data
 # 1.1 after de-states-V2 only 1 day is missing: add 0 data for missing 01.01.2020
 l = [0] * 1  # 1 day
-df1 = pd.DataFrame(data={"Deaths_Covid_2020": l})
+df1 = pd.DataFrame(data={"Deaths_Covid": l})
 
 # read my data
 df0 = pd.read_csv("data/de-states/de-state-DE-total.tsv", sep="\t")
@@ -41,41 +43,73 @@ df0 = pd.read_csv("data/de-states/de-state-DE-total.tsv", sep="\t")
 # extract only date and Death_New columns
 df2 = pd.DataFrame()
 df2["Date"] = df0["Date"]
-df2["Deaths_Covid_2020"] = df0["Deaths_New"]
+df2["Deaths_Covid"] = df0["Deaths_New"]
 del df0
 
-# old
-# assert (df2.iloc[0]['Date'] ==
-#         '2020-02-28'), "Error of start date, expecting 2020-02-28"
-# # drop the 2 Feb data rows (of 0 deaths)
-# df2.drop([0, 1], inplace=True)
+# remove 29.2.
+df2 = df2[~df2["Date"].isin(("2020-02-29", "2024-02-29", "2028-02-29"))]
 
 # ensure first row is from 02.01. (for prepending only 1 missing day)
 assert df2.iloc[0]["Date"] == "2020-01-02", (
     "Error of start date, expecting 2020-01-02, got : " + df2.iloc[0]["Date"]
 )
 
+# prepend 1.1.2020
+df3 = DataFrame()
+df3["Deaths_Covid"] = df1["Deaths_Covid"].append(df2["Deaths_Covid"], ignore_index=True)
 
-df_covid_2020 = pd.DataFrame()
-df_covid_2020["Deaths_Covid_2020"] = df1["Deaths_Covid_2020"].append(
-    df2["Deaths_Covid_2020"], ignore_index=True
+del df1, df2
+df3["Deaths_Covid_roll"] = (
+    df3["Deaths_Covid"].rolling(window=7, min_periods=1).mean().round(1)
 )
-df_covid_2020["Deaths_Covid_2020_roll"] = (
-    df_covid_2020["Deaths_Covid_2020"].rolling(window=7, min_periods=1).mean().round(1)
-)
-df_covid_2021 = (
-    df_covid_2020[1 * 365 :].rename(
+
+
+df_covid_2020 = (
+    df3[0 : 1 * 365]
+    .reset_index(drop=True)
+    .rename(
         {
-            "Deaths_Covid_2020": "Deaths_Covid_2021",
-            "Deaths_Covid_2020_roll": "Deaths_Covid_2021_roll",
+            "Deaths_Covid": "Deaths_Covid_2020",
+            "Deaths_Covid_roll": "Deaths_Covid_2020_roll",
         },
         axis=1,
         errors="raise",
     )
-).reset_index()
+)
+
+df_covid_2021 = (
+    df3[1 * 365 : 2 * 365]
+    .reset_index(drop=True)
+    .rename(
+        {
+            "Deaths_Covid": "Deaths_Covid_2021",
+            "Deaths_Covid_roll": "Deaths_Covid_2021_roll",
+        },
+        axis=1,
+        errors="raise",
+    )
+)
+
+
+# pd.DataFrame()
+# df_covid_2020["Deaths_Covid_2020"] = df1["Deaths_Covid"].append(
+#     df2["Deaths_Covid"], ignore_index=True
+# )
+# df_covid_2020["Deaths_Covid_2020_roll"] = (
+#     df_covid_2020["Deaths_Covid_2020"].rolling(window=7, min_periods=1).mean().round(1)
+# )
+# df_covid_2021 = (
+#     df_covid_2020[1 * 365 :].rename(
+#         {
+#             "Deaths_Covid_2020": "Deaths_Covid_2021",
+#             "Deaths_Covid_2020_roll": "Deaths_Covid_2021_roll",
+#         },
+#         axis=1,
+#         errors="raise",
+#     )
+# ).reset_index()
 # print(df_covid_2021.tail())
 # exit()
-del df1, df2
 
 # 2. fetch and parse Excel of mortality data from Destatis
 
