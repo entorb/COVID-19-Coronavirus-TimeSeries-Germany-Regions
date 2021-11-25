@@ -731,13 +731,13 @@
 		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">stark
 			vereinfachten Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognose für den
 		Bedarf an Intensivbetten für COVID Patienten implementiert.
-		Diese wird täglich um 14:15 für alle <a href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
+		Diese wird täglich um 15:15 für alle <a href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
 			href="#DeStates-cases-deaths-divi">Bundesländer</a>
 		aktualisiert.
 	</p>
 	<p>
 		Eingangsparameter der Prognose ist die künftige Entwicklung der 7-Tages-Inzidenz.
-		In Orange ist der aktueller Anstieg der letzten Woche für 2 Wochen fortgeschrieben.
+		In orange ist der aktueller Anstieg der letzten Woche für 2 Wochen fortgeschrieben.
 		In anderen Farben sind Inzidenz-Veränderungen von +50%, +25%, 0% und -25% pro Woche skizziert.
 		Blau zeigt die Historie der ans <a href="https://www.intensivregister.de/"
 			target="_blank">DIVI-Intensivregister</a> gemeldeten
@@ -806,7 +806,7 @@
 		<a id="DeStatesIcuForecastHinweise"></a>Hinweise
 	<ul>
 		<li>Das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a>
-			aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 14:15</li>
+			aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 15:15</li>
 		<li>Verwendete <a href="https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table"
 				target="_blank">DIVI Rohdaten (CSV Format)</a> Datenreihe "faelle_covid_aktuell"</li>
 		<li>Nicht alle Intensivstationen melden ihre Zahlen an das <a href="https://www.intensivregister.de/"
@@ -1108,9 +1108,10 @@
 	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality.png" width="640" height="480">
 
 	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro
-		Kalendertag gemittelt und zusammen mit den Daten von 2020 aufgetragen. Im unteren Bereich ist die Differenz
-		dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
-	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800">
+		Kalendertag gemittelt und zusammen mit den Daten von 2020 und 2021 aufgetragen. Im unteren Bereich ist die
+		Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
+	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800"><br />
+	<img src="plots-gnuplot/de-mortality-covid-2021.png" alt="de-mortality-covid-2021.png" width="640" height="800">
 	<br /> <small>generated via Gnuplot <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
 			target="_blank">plot-de-mortality.gp</a>, raw data can be found in <a

@@ -55,6 +55,7 @@ assert df2.iloc[0]["Date"] == "2020-01-02", (
     "Error of start date, expecting 2020-01-02, got : " + df2.iloc[0]["Date"]
 )
 
+
 df_covid_2020 = pd.DataFrame()
 df_covid_2020["Deaths_Covid_2020"] = df1["Deaths_Covid_2020"].append(
     df2["Deaths_Covid_2020"], ignore_index=True
@@ -62,7 +63,18 @@ df_covid_2020["Deaths_Covid_2020"] = df1["Deaths_Covid_2020"].append(
 df_covid_2020["Deaths_Covid_2020_roll"] = (
     df_covid_2020["Deaths_Covid_2020"].rolling(window=7, min_periods=1).mean().round(1)
 )
-# print(df_covid_2020.tail())
+df_covid_2021 = (
+    df_covid_2020[1 * 365 :].rename(
+        {
+            "Deaths_Covid_2020": "Deaths_Covid_2021",
+            "Deaths_Covid_2020_roll": "Deaths_Covid_2021_roll",
+        },
+        axis=1,
+        errors="raise",
+    )
+).reset_index()
+# print(df_covid_2021.tail())
+# exit()
 del df1, df2
 
 # 2. fetch and parse Excel of mortality data from Destatis
@@ -131,6 +143,7 @@ df["2016_2019_mean_roll"] = (
 df["2016_2019_roll_max"] = df.iloc[:, [7, 8, 9, 10]].max(axis=1)
 df["2016_2019_roll_min"] = df.iloc[:, [7, 8, 9, 10]].min(axis=1)
 
-df = df.join(df_covid_2020)
+df = df.join(df_covid_2020).join(df_covid_2021)
+print(df.tail(100))
 
 df.to_csv("data/de-mortality.tsv", sep="\t", index=False)
