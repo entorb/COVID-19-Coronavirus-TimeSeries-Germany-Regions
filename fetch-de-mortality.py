@@ -12,14 +12,8 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-# import codecs
-# import urllib
-# import requests
-# import csv
-# import json
-# import requests
-import os
 
+# external packages
 import pandas as pd
 import openpyxl
 
@@ -33,9 +27,6 @@ import helper
 
 
 # 1. read my covid data
-# 1.1 after de-states-V2 only 1 day is missing: add 0 data for missing 01.01.2020
-l = [0] * 1  # 1 day
-df1 = pd.DataFrame(data={"Deaths_Covid": l})
 
 # read my data
 df0 = pd.read_csv("data/de-states/de-state-DE-total.tsv", sep="\t")
@@ -55,14 +46,17 @@ assert df2.iloc[0]["Date"] == "2020-01-02", (
 )
 
 # prepend 1.1.2020
+l = [0] * 1  # 1 day
+df1 = pd.DataFrame(data={"Deaths_Covid": l})
+
 df3 = DataFrame()
 df3["Deaths_Covid"] = df1["Deaths_Covid"].append(df2["Deaths_Covid"], ignore_index=True)
-
+# df4 = pd.concat([df1, df3]).reset_index(drop=True)
 del df1, df2
+
 df3["Deaths_Covid_roll"] = (
     df3["Deaths_Covid"].rolling(window=7, min_periods=1).mean().round(1)
 )
-
 
 df_covid_2020 = (
     df3[0 : 1 * 365]
@@ -90,26 +84,6 @@ df_covid_2021 = (
     )
 )
 
-
-# pd.DataFrame()
-# df_covid_2020["Deaths_Covid_2020"] = df1["Deaths_Covid"].append(
-#     df2["Deaths_Covid"], ignore_index=True
-# )
-# df_covid_2020["Deaths_Covid_2020_roll"] = (
-#     df_covid_2020["Deaths_Covid_2020"].rolling(window=7, min_periods=1).mean().round(1)
-# )
-# df_covid_2021 = (
-#     df_covid_2020[1 * 365 :].rename(
-#         {
-#             "Deaths_Covid_2020": "Deaths_Covid_2021",
-#             "Deaths_Covid_2020_roll": "Deaths_Covid_2021_roll",
-#         },
-#         axis=1,
-#         errors="raise",
-#     )
-# ).reset_index()
-# print(df_covid_2021.tail())
-# exit()
 
 # 2. fetch and parse Excel of mortality data from Destatis
 
@@ -178,6 +152,5 @@ df["2016_2019_roll_max"] = df.iloc[:, [7, 8, 9, 10]].max(axis=1)
 df["2016_2019_roll_min"] = df.iloc[:, [7, 8, 9, 10]].min(axis=1)
 
 df = df.join(df_covid_2020).join(df_covid_2021)
-print(df.tail(100))
 
-df.to_csv("data/de-mortality.tsv", sep="\t", index=False)
+df.to_csv("data/de-mortality.tsv", sep="\t", index=False, line_terminator="\n")
