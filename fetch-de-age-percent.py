@@ -18,26 +18,20 @@ def read_alterstrukur() -> DataFrame:
     file = "data/DE_Bevoelkerung_nach_Altersgruppen-ges.tsv"
 
     df = pd.read_csv(file, sep="\t")
-    # print(df1)
+    # print(df)
 
     df.set_index("Altersgruppe", inplace=True)
 
     df = df.rename(
         {
-            "Personen": "Bevöklerung",
+            "Personen": "Bevölkerung",
         },
         axis=1,
         errors="raise",
     )
-
-    de_sum = df["Bevöklerung"].loc["Summe"]
-    # print(de_sum)
-
+    de_sum = df["Bevölkerung"].loc["Summe"]
     df.drop("Summe", inplace=True)
-    # print(df)
-
-    df["Bev_Proz"] = (df["Bevöklerung"] / de_sum * 100).round(1)
-    # print(df)
+    df["Bev_Proz"] = (df["Bevölkerung"] / de_sum * 100).round(1)
     return df
 
 
@@ -126,48 +120,6 @@ def read_rki_cases() -> DataFrame:
     return df
 
 
-def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 203053):
-    """
-    filters on yearweek
-    returns DF, sum_cases
-    """
-    # optionally: filter on date range
-    df_rki = df_rki[df_rki.index >= start_yearweek]
-    df_rki = df_rki[df_rki.index <= end_yearweek]
-
-    # calc sum and drop column
-    sum_cases = df_rki["Gesamt"].sum()
-    df_rki = df_rki.drop(
-        "Gesamt",
-        axis="columns",
-    )
-    print(f"{sum_cases} Fälle")
-
-    d = {}
-    for c in df_rki.columns:
-        d[c] = df_rki[c].sum()
-
-    d2 = {
-        "0-9": df_rki["0-4"].sum() + df_rki["5-9"].sum(),
-        "10-19": df_rki["10-14"].sum() + df_rki["15-19"].sum(),
-        "20-29": df_rki["20-24"].sum() + df_rki["25-29"].sum(),
-        "30-39": df_rki["30-34"].sum() + df_rki["35-39"].sum(),
-        "40-49": df_rki["40-44"].sum() + df_rki["45-49"].sum(),
-        "50-59": df_rki["50-54"].sum() + df_rki["55-59"].sum(),
-        "60-69": df_rki["60-64"].sum() + df_rki["65-69"].sum(),
-        "70-79": df_rki["70-74"].sum() + df_rki["75-79"].sum(),
-        "80-89": df_rki["80-84"].sum() + df_rki["85-89"].sum(),
-        "80+": df_rki["80-84"].sum() + df_rki["85-89"].sum() + df_rki["90+"].sum(),
-    }
-    # merge dicts
-    d.update(d2)
-    df = pd.DataFrame.from_dict(d, orient="index", columns=["Covid_Fälle"])
-    df["Covid_Fälle_Proz"] = (df["Covid_Fälle"] / sum_cases * 100).round(1)
-
-    # print(df)
-    return (df, sum_cases)
-
-
 def read_rki_deaths() -> DataFrame:
     """
     read Excel file and perform some transformations
@@ -196,6 +148,48 @@ def read_rki_deaths() -> DataFrame:
     df.set_index("YearWeek", inplace=True)
     df = df.drop(["Sterbejahr", "Sterbewoche"], axis="columns")
     return df
+
+
+def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 203053):
+    """
+    filters on yearweek
+    returns DF, sum_cases
+    """
+    # optionally: filter on date range
+    df_rki = df_rki[df_rki.index >= start_yearweek]
+    df_rki = df_rki[df_rki.index <= end_yearweek]
+
+    # calc sum and drop column
+    sum_cases = df_rki["Gesamt"].sum()
+    df_rki = df_rki.drop(
+        "Gesamt",
+        axis="columns",
+    )
+    print(f"{sum_cases} Fälle")
+
+    d = {}
+    for col in df_rki.columns:
+        d[col] = df_rki[col].sum()
+
+    d2 = {
+        "0-9": df_rki["0-4"].sum() + df_rki["5-9"].sum(),
+        "10-19": df_rki["10-14"].sum() + df_rki["15-19"].sum(),
+        "20-29": df_rki["20-24"].sum() + df_rki["25-29"].sum(),
+        "30-39": df_rki["30-34"].sum() + df_rki["35-39"].sum(),
+        "40-49": df_rki["40-44"].sum() + df_rki["45-49"].sum(),
+        "50-59": df_rki["50-54"].sum() + df_rki["55-59"].sum(),
+        "60-69": df_rki["60-64"].sum() + df_rki["65-69"].sum(),
+        "70-79": df_rki["70-74"].sum() + df_rki["75-79"].sum(),
+        "80-89": df_rki["80-84"].sum() + df_rki["85-89"].sum(),
+        "80+": df_rki["80-84"].sum() + df_rki["85-89"].sum() + df_rki["90+"].sum(),
+    }
+    # merge dicts
+    d.update(d2)
+    df = pd.DataFrame.from_dict(d, orient="index", columns=["Covid_Fälle"])
+    df["Covid_Fälle_Proz"] = (df["Covid_Fälle"] / sum_cases * 100).round(1)
+
+    # print(df)
+    return (df, sum_cases)
 
 
 def filter_rki_deaths(df_rki, start_yearweek: int = 202001, end_yearweek: int = 203053):
