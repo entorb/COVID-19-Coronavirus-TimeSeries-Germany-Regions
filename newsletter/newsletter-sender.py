@@ -238,7 +238,6 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     #     continue
     mailBody += """HINWEIS: Aufgrund der aktuellen Lage habe ich eine Prognose für den Bettenbedarf der Intensivstationen erstellt. Gerne an Krankenhäuser weitergeben, vielleicht hilft es deren Planung.
 https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
-https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
 LG Torben\n\n\n"""
 
     mailTo = row["email"]
