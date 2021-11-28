@@ -44,14 +44,14 @@ def read_rki_cases() -> DataFrame:
     date as rows and age group as columns
     index: yearweek: 202014 für 2020 cw14
     """
-    excelFile = "cache\de-rki-Altersverteilung.xlsx"
+    excelFile = "cache/de-rki-Altersverteilung.xlsx"
     df = pd.read_excel(
         open(excelFile, "rb"), sheet_name="Fallzahlen", engine="openpyxl"
     )
     df.set_index("Altersgruppe", inplace=True)
 
     # # time-series of 7-Tage-Inzidenz might be intersting as well...
-    # excelFile = "cache\de-rki-Altersverteilung.xlsx"
+    # excelFile = "cache/de-rki-Altersverteilung.xlsx"
     # df_rki_inzidenz = pd.read_excel(
     #     open(excelFile, "rb"), sheet_name="7-Tage-Inzidenz", engine="openpyxl"
     # )
@@ -89,7 +89,7 @@ def read_rki_deaths() -> DataFrame:
     here the date is in rows and the age group is in columns
     index: yearweek: 202014 für 2020 cw14
     """
-    excelFile = "cache\de-rki-COVID-19_Todesfaelle.xlsx"
+    excelFile = "cache/de-rki-COVID-19_Todesfaelle.xlsx"
 
     df = pd.read_excel(
         open(excelFile, "rb"), sheet_name="COVID_Todesfälle_KW_AG10", engine="openpyxl"
