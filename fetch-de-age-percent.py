@@ -32,7 +32,13 @@ def read_alterstrukur() -> DataFrame:
     )
     de_sum = df["Bevölkerung"].loc["Summe"]
     df.drop("Summe", inplace=True)
+    df.loc["20-"] = df.loc["0-9"] + df.loc["10-19"]
+    df.loc["30-"] = df.loc["0-9"] + df.loc["10-19"] + df.loc["20-29"]
+    df.loc["40-"] = df.loc["0-9"] + df.loc["10-19"] + df.loc["20-29"] + df.loc["30-39"]
+    df.loc["20-40"] = df.loc["20-29"] + df.loc["30-39"]
+
     df["Bev_Proz"] = (df["Bevölkerung"] / de_sum * 100).round(1)
+
     return df
 
 
@@ -186,6 +192,28 @@ def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 2
         "70-79": df_rki["70-74"].sum() + df_rki["75-79"].sum(),
         "80-89": df_rki["80-84"].sum() + df_rki["85-89"].sum(),
         "80+": df_rki["80-84"].sum() + df_rki["85-89"].sum() + df_rki["90+"].sum(),
+        "20-": df_rki["0-4"].sum()
+        + df_rki["5-9"].sum()
+        + df_rki["10-14"].sum()
+        + df_rki["15-19"].sum(),
+        "30-": df_rki["0-4"].sum()
+        + df_rki["5-9"].sum()
+        + df_rki["10-14"].sum()
+        + df_rki["15-19"].sum()
+        + df_rki["20-24"].sum()
+        + df_rki["25-29"].sum(),
+        "40-": df_rki["0-4"].sum()
+        + df_rki["5-9"].sum()
+        + df_rki["10-14"].sum()
+        + df_rki["15-19"].sum()
+        + df_rki["20-24"].sum()
+        + df_rki["25-29"].sum()
+        + df_rki["30-34"].sum()
+        + df_rki["35-39"].sum(),
+        "20-40": df_rki["20-24"].sum()
+        + df_rki["25-29"].sum()
+        + df_rki["30-34"].sum()
+        + df_rki["35-39"].sum(),
     }
     # merge dicts
     d.update(d2)
@@ -222,6 +250,15 @@ def filter_rki_deaths(df_rki, start_yearweek: int = 202001, end_yearweek: int = 
         "80+": df_rki["AG 80-89 Jahre"].sum() + df_rki["AG 90+ Jahre"].sum(),
         "80-89": df_rki["AG 80-89 Jahre"].sum(),
         "90+": df_rki["AG 90+ Jahre"].sum(),
+        "20-": df_rki["AG 0-9 Jahre"].sum() + df_rki["AG 10-19 Jahre"].sum(),
+        "30-": df_rki["AG 0-9 Jahre"].sum()
+        + df_rki["AG 10-19 Jahre"].sum()
+        + df_rki["AG 20-29 Jahre"].sum(),
+        "40-": df_rki["AG 0-9 Jahre"].sum()
+        + df_rki["AG 10-19 Jahre"].sum()
+        + df_rki["AG 20-29 Jahre"].sum()
+        + df_rki["AG 30-39 Jahre"].sum(),
+        "20-40": df_rki["AG 20-29 Jahre"].sum() + df_rki["AG 30-39 Jahre"].sum(),
     }
     df = pd.DataFrame.from_dict(d, orient="index", columns=["Covid_Tote"])
     df["Covid_Tote_Proz"] = (df["Covid_Tote"] / sum_death * 100).round(3)
@@ -261,9 +298,13 @@ def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 20305
     # sum_icu does not include the unknown age fraction
     sum_icu2 = int(df["ICU"].sum())
     df["ICU"] = df["ICU"].round(0).astype(int)
-    df.loc["0-9"] = df.loc["17_Minus"] / 2
-    df.loc["10-19"] = df.loc["17_Minus"] / 2
-    df.loc["20-29"] = df.loc["18-29"]
+    df.loc["0-9"] = df.loc["17_Minus"] / 2  # This is an estimation
+    df.loc["10-19"] = df.loc["17_Minus"] / 2  # This is an estimation
+    df.loc["20-29"] = df.loc["18-29"]  # This is an estimation
+    df.loc["20-"] = df.loc["17_Minus"]  # This is an estimation
+    df.loc["30-"] = df.loc["17_Minus"] + df.loc["18-29"]
+    df.loc["40-"] = df.loc["17_Minus"] + df.loc["18-29"] + df.loc["30-39"]
+    df.loc["20-40"] = df.loc["18-29"] + df.loc["30-39"]  # This is an estimation
 
     df["ICU_Proz"] = (df["ICU"] / sum_icu2 * 100).round(1)
 
@@ -290,7 +331,7 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
         zorder=1,
         width=0.8,
         color=["green", "blue", "red", "black"],
-        figsize=(9, 6),
+        figsize=(8, 8),
     )
     plt.legend(
         [
