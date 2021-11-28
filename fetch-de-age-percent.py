@@ -373,6 +373,13 @@ def main():
         sum_deaths=sum_deaths,
         sum_icu=sum_icu,
     )
+    df.sort_index(inplace=True)
+    df.to_csv(
+        "data/de_age_percent_1_pre_2021_summer.tsv",
+        sep="\t",
+        index=True,
+        line_terminator="\n",
+    )
 
     start_year = 2021
     start_week = 26
@@ -404,6 +411,13 @@ def main():
         sum_cases=sum_cases,
         sum_deaths=sum_deaths,
         sum_icu=sum_icu,
+    )
+    df.sort_index(inplace=True)
+    df.to_csv(
+        "data/de_age_percent_2_post_2021_summer.tsv",
+        sep="\t",
+        index=True,
+        line_terminator="\n",
     )
 
 
