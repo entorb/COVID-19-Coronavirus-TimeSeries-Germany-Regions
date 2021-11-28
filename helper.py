@@ -60,6 +60,21 @@ os.makedirs("maps/out/de-districts/", exist_ok=True)
 #
 
 
+def download_from_url_if_old(
+    url: str, file_local: str, max_age: int = 3600, verbose=False
+):
+    if not check_cache_file_available_and_recent(
+        fname=file_local, max_age=max_age, verbose=verbose
+    ):
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ",
+        }
+        filedata = requests.get(url, headers=headers).content
+        datatowrite = filedata
+        with open(file_local, mode="wb") as f:
+            f.write(datatowrite)
+
+
 def read_url_or_cachefile(
     url: str,
     cachefile: str,

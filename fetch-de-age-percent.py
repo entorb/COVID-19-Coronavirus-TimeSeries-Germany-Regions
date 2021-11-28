@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 import matplotlib.ticker as mtick
+import datetime as dt
 
 # import urllib.request
 import requests
@@ -33,44 +34,6 @@ def read_alterstrukur() -> DataFrame:
     df.drop("Summe", inplace=True)
     df["Bev_Proz"] = (df["Bevölkerung"] / de_sum * 100).round(1)
     return df
-
-
-def fetch_rki_cases() -> DataFrame:
-    """
-    download cases data from RKI if not recent
-    """
-    excelFile = "cache\de-rki-Altersverteilung.xlsx"
-    url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Altersverteilung.xlsx?__blob=publicationFile"
-
-    if not helper.check_cache_file_available_and_recent(
-        fname=excelFile, max_age=3600, verbose=False
-    ):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ",
-        }
-        filedata = requests.get(url, headers=headers).content
-        datatowrite = filedata
-        with open(excelFile, mode="wb") as f:
-            f.write(datatowrite)
-
-
-def fetch_rki_deaths() -> DataFrame:
-    """
-    download deaths data from RKI if not recent
-    """
-    excelFile = "cache\de-rki-COVID-19_Todesfaelle.xlsx"
-    url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/COVID-19_Todesfaelle.xlsx?__blob=publicationFile"
-
-    if not helper.check_cache_file_available_and_recent(
-        fname=excelFile, max_age=3600, verbose=False
-    ):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ",
-        }
-        filedata = requests.get(url, headers=headers).content
-        datatowrite = filedata
-        with open(excelFile, mode="wb") as f:
-            f.write(datatowrite)
 
 
 def read_rki_cases() -> DataFrame:
@@ -150,6 +113,47 @@ def read_rki_deaths() -> DataFrame:
     return df
 
 
+def read_divi() -> DataFrame:
+    """
+    read CSV file and perform some transformations
+    here the date is in rows and the age group is in columns
+    index: yearweek: 202014 für 2020 cw14
+    """
+    file_local = "cache/de-divi/bund-covid-altersstruktur-zeitreihe_ab-2021-04-29.csv"
+
+    df = pd.read_csv(file_local, sep=",")
+    df["Date"] = df["Datum"].str[0:10]
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
+    df["Year"] = pd.DatetimeIndex(df["Date"]).year
+    # FutureWarning: weekofyear and week have been deprecated, please use DatetimeIndex.isocalendar().week instead
+    # df["Week"] = pd.DatetimeIndex(df["Date"]).week
+    # df["Week"] = df["Date"].isocalendar().week
+    df["Week"] = df["Date"].map(lambda v: pd.to_datetime(v).isocalendar()[1])
+    df["YearWeek"] = df["Year"] * 100 + df["Week"]
+    df = df.drop(["Bundesland", "Datum", "Week", "Year", "Date"], axis="columns")
+
+    # print(df)
+
+    # rename column headers
+    # rename column headers by extracting some int values from a string
+    l2 = []
+    for col in df.columns:
+        col = (
+            col.replace("Stratum_", "").replace("_Bis_", "-").replace("80_Plus", "80+")
+        )
+        l2.append(col)
+    df.columns = l2
+
+    # group by and mean / average
+    df = df.groupby(["YearWeek"]).mean()
+    # .round(1)
+    # df["sum"] = df.sum(axis=1)
+    # .round(1)
+    # print(df)
+
+    return df
+
+
 def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 203053):
     """
     filters on yearweek
@@ -226,11 +230,56 @@ def filter_rki_deaths(df_rki, start_yearweek: int = 202001, end_yearweek: int = 
     return (df, sum_death)
 
 
-def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int):
+def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 203053):
+
+    print(df_divi)
+
+    # optionally: filter on date range
+    df_divi = df_divi[df_divi.index >= start_yearweek]
+    df_divi = df_divi[df_divi.index <= end_yearweek]
+
+    # sum_icu = 0
+    # for col in df_divi.columns:
+    #     sum_icu += df_divi[col].sum()
+    # print(f"{sum_icu} ICU")
+
+    # print(df_divi)
+    # df = df_divi["sum"].mean()
+    # df[]
+    # print(df_divi)
+    # exit()
+
+    d = {}
+    for col in df_divi.columns:
+        d[col] = df_divi[col].mean()
+
+    df = pd.DataFrame.from_dict(d, orient="index", columns=["ICU"])
+    print(df)
+    # sum_icu includes the unknown age fraction
+    sum_icu = int(df["ICU"].sum())
+    df = df.drop(["Unbekannt"], axis="index")
+    # sum_icu does not include the unknown age fraction
+    sum_icu2 = int(df["ICU"].sum())
+    df["ICU"] = df["ICU"].round(0).astype(int)
+    df.loc["0-9"] = df.loc["17_Minus"] / 2
+    df.loc["10-19"] = df.loc["17_Minus"] / 2
+    df.loc["20-29"] = df.loc["18-29"]
+
+    df["ICU_Proz"] = (df["ICU"] / sum_icu2 * 100).round(1)
+
+    # print(df)
+
+    # exit()
+
+    return df, sum_icu
+
+
+def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: int):
     # select subset of columns
-    df = df[["Bev_Proz", "Covid_Fälle_Proz", "Covid_Tote_Proz"]]
+    df = df[["Bev_Proz", "Covid_Fälle_Proz", "ICU_Proz", "Covid_Tote_Proz"]]
     # drop null value rows
     df = df.dropna()
+    # print(df)
     # manually drop some rows
     # df = df.drop("80-89").drop("90+")
 
@@ -239,11 +288,17 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int):
         use_index=True,
         linewidth=2.0,
         zorder=1,
-        width=0.9,
-        figsize=(9, 4),
+        width=0.8,
+        color=["green", "blue", "red", "black"],
+        figsize=(9, 6),
     )
     plt.legend(
-        ["Anteil ges. Bevölkerung", "Anteil ges. Covid Fälle", "Anteil ges. Covid Tote"]
+        [
+            "Anteil ges. Bevölkerung",
+            "Anteil ges. Covid Fälle",
+            "Anteil Intensivbetten (gemittelt)",
+            "Anteil ges. Covid Tote",
+        ]
     )
 
     plt.gca().invert_yaxis()
@@ -254,22 +309,38 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int):
     plt.gca().xaxis.set_major_locator(mtick.MultipleLocator(5))
 
     plt.title(
-        f"Covid pro Altersgruppe in DE {title_time}\n{sum_cases} Fälle, {sum_deaths} Tote"
+        f"Covid pro Altersgruppe in DE {title_time}\n{sum_cases} Fälle, {sum_deaths} Tote, {sum_icu} ICU Betten (gemittelt)"
     )
 
     # plt.xlabel("Prozent")
-    plt.ylabel("Alter (Jahre)")
     plt.grid(axis="x")
+    plt.ylabel("Alter (Jahre)")
     plt.tight_layout()
     plt.savefig(fname=f"plots-python/{outfile}.png", format="png")
 
 
 def main():
-    fetch_rki_cases()
-    fetch_rki_deaths()
+    # fetch_rki_cases()
+    file_local = "cache/de-rki-Altersverteilung.xlsx"
+    url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Altersverteilung.xlsx?__blob=publicationFile"
+    helper.download_from_url_if_old(url=url, file_local=file_local)
+
+    # fetch_rki_deaths()
+    file_local = "cache/de-rki-COVID-19_Todesfaelle.xlsx"
+    url = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/COVID-19_Todesfaelle.xlsx?__blob=publicationFile"
+    helper.download_from_url_if_old(url=url, file_local=file_local)
+
+    # fetch_divi()
+    file_local = "cache/de-divi/bund-covid-altersstruktur-zeitreihe_ab-2021-04-29.csv"
+    url = "https://diviexchange.blob.core.windows.net/%24web/bund-covid-altersstruktur-zeitreihe_ab-2021-04-29.csv"
+    helper.download_from_url_if_old(url=url, file_local=file_local)
+
+    df_rki_deaths = read_divi()
+
     df_alterstrukur = read_alterstrukur()
     df_rki_cases = read_rki_cases()
     df_rki_deaths = read_rki_deaths()
+    df_divi_icu = read_divi()
 
     start_year = 2020
     start_week = 1
@@ -286,7 +357,13 @@ def main():
         start_yearweek=start_year * 100 + start_week,
         end_yearweek=end_year * 100 + end_week,
     )
-    df = df_cases.join([df_deaths, df_alterstrukur])
+    df_icu, sum_icu = filter_divi(
+        df_divi=df_divi_icu,
+        start_yearweek=start_year * 100 + start_week,
+        end_yearweek=end_year * 100 + end_week,
+    )
+
+    df = df_cases.join([df_deaths, df_alterstrukur, df_icu])
     # print(df)
     plotit(
         df=df,
@@ -294,6 +371,7 @@ def main():
         title_time="bis Sommer 2021",
         sum_cases=sum_cases,
         sum_deaths=sum_deaths,
+        sum_icu=sum_icu,
     )
 
     start_year = 2021
@@ -311,7 +389,13 @@ def main():
         start_yearweek=start_year * 100 + start_week,
         end_yearweek=end_year * 100 + end_week,
     )
-    df = df_cases.join([df_deaths, df_alterstrukur])
+    df_icu, sum_icu = filter_divi(
+        df_divi=df_divi_icu,
+        start_yearweek=start_year * 100 + start_week,
+        end_yearweek=end_year * 100 + end_week,
+    )
+
+    df = df_cases.join([df_deaths, df_alterstrukur, df_icu])
     # print(df)
     plotit(
         df=df,
@@ -319,6 +403,7 @@ def main():
         title_time="seit Sommer 2021",
         sum_cases=sum_cases,
         sum_deaths=sum_deaths,
+        sum_icu=sum_icu,
     )
 
 
