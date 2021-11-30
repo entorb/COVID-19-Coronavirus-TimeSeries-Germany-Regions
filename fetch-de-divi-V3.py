@@ -50,7 +50,7 @@ def fetch_latest_csv():
     #     cachefile=file,
     #     request_type="post",
     #     payload=payload,
-    #     cache_max_age=3600,
+    #     cache_max_age=0,
     #     verbose=True,
     # )
 
@@ -91,7 +91,7 @@ def fetch_latest_csv():
         cachefile=file,
         request_type="get",
         payload={},
-        cache_max_age=1,  # 1s because the git pull created files are "new"
+        cache_max_age=0,  # 0s because the git pull created files are "new"
         verbose=True,
     )
 
@@ -114,7 +114,7 @@ def fetch_latest_csv():
 #         cachefile=cachefile,
 #         request_type="post",
 #         payload=payload,
-#         cache_max_age=900,
+#         cache_max_age=0,
 #         verbose=True,
 #     )
 
@@ -152,7 +152,7 @@ def fetch_latest_csv():
 #                 cachefile=cachefile,
 #                 request_type="get",
 #                 payload={},
-#                 cache_max_age=3600,
+#                 cache_max_age=0,
 #                 verbose=True,
 #             )
 

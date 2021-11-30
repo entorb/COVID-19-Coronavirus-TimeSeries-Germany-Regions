@@ -420,7 +420,7 @@ d_countries_ref = read_ref_data_countries()
 d_selected_countries = read_ref_selected_countries()
 
 if not helper.check_cache_file_available_and_recent(
-    fname=file_cache, max_age=1800, verbose=True
+    fname=file_cache, max_age=0, verbose=True
 ):
     download_new_data()
 

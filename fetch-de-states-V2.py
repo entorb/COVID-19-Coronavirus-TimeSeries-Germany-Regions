@@ -67,7 +67,7 @@ def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list
         url=url,
         cachefile=file_cache,
         request_type="get",
-        cache_max_age=1,  # 1s because git pulled files are "new"
+        cache_max_age=0,  # 0s because git pulled files are "new"
         verbose=False,
     )
     json_cont = json.loads(cont)

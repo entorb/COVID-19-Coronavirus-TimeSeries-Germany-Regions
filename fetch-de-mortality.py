@@ -91,7 +91,7 @@ excelFile = "cache\de-mortality.xlsx"
 
 
 if not helper.check_cache_file_available_and_recent(
-    fname=excelFile, max_age=1, verbose=False  # 1s because git pulled files are "new"
+    fname=excelFile, max_age=0, verbose=False  # 0s because git pulled files are "new"
 ):
     url = "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
     filedata = urllib.request.urlopen(url)

@@ -200,7 +200,7 @@ def read_and_prepare_data():
 
 if (
     helper.check_cache_file_available_and_recent(
-        fname="cache/hist-de-districts.csv", max_age=3600, verbose=True
+        fname="cache/hist-de-districts.csv", max_age=0, verbose=True
     )
     == False
 ):

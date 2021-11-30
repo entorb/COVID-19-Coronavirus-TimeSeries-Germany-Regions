@@ -30,8 +30,8 @@ dataFileSource = "cache\de-vaccination.csv"
 
 if not helper.check_cache_file_available_and_recent(
     fname=dataFileSource,
-    max_age=1,
-    verbose=False,  # 1s because git pulled files are "new"
+    max_age=0,  # 0s because git pulled files are "new"
+    verbose=False,
 ):
     url = "https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv"
     filedata = urllib.request.urlopen(url)
