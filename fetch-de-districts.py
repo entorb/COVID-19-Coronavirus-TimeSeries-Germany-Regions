@@ -144,7 +144,7 @@ def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
         url=url,
         cachefile=file_cache,
         request_type="get",
-        cache_max_age=3600,
+        cache_max_age=1,  # 1s because git pulled files are "new"
         verbose=False,
     )
     json_cont = json.loads(cont)
@@ -290,7 +290,7 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
         url=url,
         cachefile=file_cache,
         request_type="get",
-        cache_max_age=3600,
+        cache_max_age=1,  # 1s because git pulled files are "new"
         verbose=False,
     )
     json_cont = json.loads(cont)
