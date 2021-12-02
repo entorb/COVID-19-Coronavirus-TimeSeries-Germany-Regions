@@ -138,8 +138,11 @@
 						Landkreis</a> <b>(neue Grafik)</b>
 				</li>
 				<li>
-					<b><a href="newsletter-register.html" target="_blank">Konfigurierbare Landkreis E-
+					<b><a href="newsletter-register.html" target="_blank">Konfigurierbare Landkreis E-Mail
 							Benachrichtigung</a></b>
+				</li>
+				<li>
+					<a href="#DeStatesIcuForecast">Intensivstationsprognose</a> <b>(neu)</b>
 				</li>
 			</ul>
 			<li>
@@ -154,9 +157,6 @@
 						Bundesland</a> <b>(neue Grafik)</b>
 				</li>
 				<li>
-					<a href="#DeStatesIcuForecast">Intensivstationsprognose</a> <b>(neu)</b>
-				</li>
-				<li>
 					<a href="#DeStatesCasesDoubling">Verdopplungszeit der Neu-Infektionen</a>
 				</li>
 				<li>
@@ -165,20 +165,23 @@
 				<li>
 					<a href="#DeStatesDeaths">Opfer</a>
 				</li>
-				<li>
-					<a href="#DeMortality">Vergleich der Sterbefälle 2016-2021</a>
-				</li>
-				<li>
-					<a href="#DeAgePercent">Altersverteilungen</a> <b>(neu)</b>
-				</li>
 			</ul>
 			<li>
 				<a href="#DeAnalyses">Weitere Auswertungen</a>
 			</li>
 			<ul>
 				<li>
-					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wie hoch ist die Wahrscheinlichkeit dass beim
-						Treffen mit Personen ein Infizierter dabei ist?</a>
+					<a href="#DeMortality">Vergleich der Sterbefälle 2016-2021 / Übersterblichkeit</a>
+				</li>
+				<li>
+					<a href="#DeAgePercent">Altersverteilungen</a> <b>(neu)</b>
+				</li>
+				<li>
+					<a href="#DE_impfungen">Impfdaten</a> <b>(neu)</b>
+				</li>
+				<li>
+					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wahrscheinlichkeit einen Infizierten zu
+						treffen</a>
 				</li>
 				<li>
 					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a>
@@ -189,9 +192,6 @@
 				</li>
 				<li>
 					<a href="#DE_calc-cases-from-deaths-DE-total">Abschätzung der Dunkelziffer der Infizierten</a>
-				</li>
-				<li>
-					<a href="#DE_impfungen">Impfdaten</a> <b>(neu)</b>
 				</li>
 			</ul>
 			<li>
@@ -219,13 +219,13 @@
 				<a href="#CountriesCustomChart">Country comparison chart</a>
 			</li>
 			<li>
-				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a>
-			</li>
-			<li>
 				<a href="#event_risk_calculator_EN">Event Risk Calculator</a>
 			</li>
 			<li>
 				<a href="#CountryRankings">Country Rankings</a>
+			</li>
+			<li>
+				<a href="#CountriesDoublingTime">Doubling Time of New Infections</a>
 			</li>
 			<li>
 				<a href="#SelectedCountries">Comparison of selected countries</a>
@@ -387,6 +387,7 @@
 	<!-- <p>siehe <a href="maps/">hier</a></p> -->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="DeDistrictZeroCases"></a>Anzahl der Landkreise mit Neu-Infektionen in der letzten Woche</h4>
 
@@ -411,6 +412,7 @@
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="DeDistrictTable"></a>Landkreistabelle mit Intensivstationsauslastung</h4>
 
@@ -438,6 +440,8 @@
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
 
 	<h4><a id="DeDistrictChart"></a>Interaktiver Landkreis Vergleich</h4>
 
@@ -516,6 +520,7 @@
 	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="DeDistricts-cases-deaths-divi"></a>Infektionen, Tote und Intensivstationsauslastung pro
 		Landkreis</h4>
@@ -529,6 +534,7 @@
 	<img id="de_district_multiplot_img" src="plots-python/de-districts/de-district-02000.png"
 		alt="plots-python/de-districts/de-district-02000.png" width="800" height="800" />
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4>Konfigurierbare Landkreis E-Mail Benachrichtigung</h4>
 
@@ -539,193 +545,8 @@
 	</a>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
-	<h3>
-		<a id="DeStates"></a>Bundesländer
-	</h3>
-
-	<h4><a id="DeStatesChart"></a>Interaktiver Bundesland Vergeich</h4>
-	<!--  -->
-	<table>
-		<tr>
-			<td>y-Achse:</td>
-			<td><select id="sel_y_axis_field_DeStates" name="sel_y_axis_field_DeStates" style="width:200px"></select>
-			</td>
-			<td><select id="sel_sorting_DeStates" name="sel_sorting_DeStates" style="width:200px"></select></td>
-		</tr>
-		<tr>
-			<td>x-Achse:</td>
-			<td><select id="sel_x_axis_time_range_DeStates" name="sel_x_axis_time_range_DeStates" style="width:200px">
-				</select></td>
-			<td>&nbsp;</td>
-		</tr>
-	</table>
-	<!--  -->
-	<div id="div_eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
-	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
-			target="_blank">de-states</a></small>
-	<!-- 
-		JS for eCharts DE States 
-	-->
-	<script>
-		const eChart_DeStates = echarts.init(document.getElementById("div_eChartsDeStatesContainer"));
-		const select_yAxisProperty_DeStates = document.getElementById("sel_y_axis_field_DeStates");
-		// setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeStates, "");
-		setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeDistricts, "");
-		const select_sorting_DeStates = document.getElementById("sel_sorting_DeStates");
-		setOptionsToSelect(select_sorting_DeStates, options_eCharts_sorting, "");
-		const select_xAxisTimeRange_DeStates = document.getElementById("sel_x_axis_time_range_DeStates");
-		const options_xaxis_time_range_DeStates = [
-			{ value: "12weeks", text: "12 Wochen" },
-			{ value: "4weeks", text: "4 Wochen" },
-			{ value: "all", text: "ganzer Zeitraum" },
-		];
-		setOptionsToSelect(select_xAxisTimeRange_DeStates, options_xaxis_time_range_DeStates, "");
-
-		if ('yAxis' in urlParams && options_yAxisProperty_DeDistricts.indexOf(urlParams.yAxis) > -1) {
-			select_yAxisProperty_DeStates.value = urlParams.yAxis;
-		}
-		if ('Sort' in urlParams && options_eCharts_sorting.indexOf(urlParams.Sort) > -1) {
-			select_sorting_DeStates.value = urlParams.Sort;
-		}
-
-		select_yAxisProperty_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
-		select_sorting_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
-		select_xAxisTimeRange_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
-
-
-		// Wait for all async promises to be done (all data is fetched)
-		// sets the DeStateCodes to default value
-		// then refreshes the chart
-		Promise.all(promises).then(function () {
-			console.log("eCharts DeStates: all data fetched");
-			refreshDeChart(
-				eChart_DeStates,
-				codes_DeStates,
-				data_object_DeStates,
-				mapDeStatesNames,
-				select_yAxisProperty_DeStates,
-				select_xAxisTimeRange_DeStates,
-				select_sorting_DeStates,
-				update_url = false
-			)
-		});
-
-
-
-	</script>
-
-	<p><small><a href="#ToC">Back to top</a></small></p>
-
-	<h4><a id="DeStates-cases-deaths-divi"></a>Infizierte, Tote und Intensivstationsauslastung durch COVID-19 pro
-		Bundesland</h4>
-	<div class="af_gallery_container">
-		<div class="af_gallery_select" id="dropdown_cases-deaths-divi">
-			<!-- <input type="text" placeholder="Filter.." id="filter" onkeyup="filter()"> -->
-
-			<p><b>Auswahl</b></p>
-			<a href="#article-cases-deaths-divi-DE-total">DE-total</a>
-			<a href="#article-cases-deaths-divi-BW">BW</a>
-			<a href="#article-cases-deaths-divi-BY">BY</a>
-			<a href="#article-cases-deaths-divi-BE">BE</a>
-			<a href="#article-cases-deaths-divi-BB">BB</a>
-			<a href="#article-cases-deaths-divi-HB">HB</a>
-			<a href="#article-cases-deaths-divi-HH">HH</a>
-			<a href="#article-cases-deaths-divi-HE">HE</a>
-			<a href="#article-cases-deaths-divi-MV">MV</a>
-			<a href="#article-cases-deaths-divi-NI">NI</a>
-			<a href="#article-cases-deaths-divi-NW">NW</a>
-			<a href="#article-cases-deaths-divi-RP">RP</a>
-			<a href="#article-cases-deaths-divi-SL">SL</a>
-			<a href="#article-cases-deaths-divi-SN">SN</a>
-			<a href="#article-cases-deaths-divi-ST">ST</a>
-			<a href="#article-cases-deaths-divi-SH">SH</a>
-			<a href="#article-cases-deaths-divi-TH">TH</a>
-		</div>
-		<div class="af_gallery_results" id="results_cases-deaths-divi" style="display: flex;flex-flow:column">
-			<div class="af_gallery_results_plot" id="results_DE_states_plot1">
-				<article id="#article-cases-deaths-divi-DE-total">
-					<img src="plots-python/de-states/de-state-DE-total.png"
-						alt="plots-python/de-states/de-state-DE-total.png" width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-BW">
-					<img src="plots-python/de-states/de-state-BW.png" alt="plots-python/de-states/de-state-BW.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-BY">
-					<img src="plots-python/de-states/de-state-BY.png" alt="plots-python/de-states/de-state-BY.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-BE">
-					<img src="plots-python/de-states/de-state-BE.png" alt="plots-python/de-states/de-state-BE.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-BB">
-					<img src="plots-python/de-states/de-state-BB.png" alt="plots-python/de-states/de-state-BB.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-HB">
-					<img src="plots-python/de-states/de-state-HB.png" alt="plots-python/de-states/de-state-HB.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-HH">
-					<img src="plots-python/de-states/de-state-HH.png" alt="plots-python/de-states/de-state-HH.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-HE">
-					<img src="plots-python/de-states/de-state-HE.png" alt="plots-python/de-states/de-state-HE.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-MV">
-					<img src="plots-python/de-states/de-state-MV.png" alt="plots-python/de-states/de-state-MV.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-NI">
-					<img src="plots-python/de-states/de-state-NI.png" alt="plots-python/de-states/de-state-NI.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-NW">
-					<img src="plots-python/de-states/de-state-NW.png" alt="plots-python/de-states/de-state-NW.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-RP">
-					<img src="plots-python/de-states/de-state-RP.png" alt="plots-python/de-states/de-state-RP.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-SL">
-					<img src="plots-python/de-states/de-state-SL.png" alt="plots-python/de-states/de-state-SL.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-SN">
-					<img src="plots-python/de-states/de-state-SN.png" alt="plots-python/de-states/de-state-SN.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-ST">
-					<img src="plots-python/de-states/de-state-ST.png" alt="plots-python/de-states/de-state-ST.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-SH">
-					<img src="plots-python/de-states/de-state-SH.png" alt="plots-python/de-states/de-state-SH.png"
-						width="800" height="800"><br />
-				</article>
-				<article id="#article-cases-deaths-divi-TH">
-					<img src="plots-python/de-states/de-state-TH.png" alt="plots-python/de-states/de-state-TH.png"
-						width="800" height="800"><br />
-				</article>
-			</div>
-			<div class="af_gallery_results_footer" id="results_DE_states-cases-deaths-divi_footer">
-				<small>generated via Python <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-states-V2.py"
-						target="_blank">plot-de-states-V2.py</a>, raw data can be found in <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
-						target="_blank">de-states</a>
-					<br /> Many thanks to Alex Friedl for writing this gallery feature! </small>
-			</div>
-		</div>
-	</div>
-
-	<p><small><a href="#ToC">Back to top</a></small></p>
 
 	<h4>
 		<a id="DeStatesIcuForecast"></a> Intensivstationsprognose
@@ -845,6 +666,199 @@
 	</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
+	<h3>
+		<a id="DeStates"></a>Bundesländer
+	</h3>
+
+	<h4><a id="DeStatesChart"></a>Interaktiver Bundesland Vergeich</h4>
+	<!--  -->
+	<table>
+		<tr>
+			<td>y-Achse:</td>
+			<td><select id="sel_y_axis_field_DeStates" name="sel_y_axis_field_DeStates" style="width:200px"></select>
+			</td>
+			<td><select id="sel_sorting_DeStates" name="sel_sorting_DeStates" style="width:200px"></select></td>
+		</tr>
+		<tr>
+			<td>x-Achse:</td>
+			<td><select id="sel_x_axis_time_range_DeStates" name="sel_x_axis_time_range_DeStates" style="width:200px">
+				</select></td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+	<!--  -->
+	<div id="div_eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
+	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
+			target="_blank">de-states</a></small>
+	<!-- 
+		JS for eCharts DE States 
+	-->
+	<script>
+		const eChart_DeStates = echarts.init(document.getElementById("div_eChartsDeStatesContainer"));
+		const select_yAxisProperty_DeStates = document.getElementById("sel_y_axis_field_DeStates");
+		// setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeStates, "");
+		setOptionsToSelect(select_yAxisProperty_DeStates, options_yAxisProperty_DeDistricts, "");
+		const select_sorting_DeStates = document.getElementById("sel_sorting_DeStates");
+		setOptionsToSelect(select_sorting_DeStates, options_eCharts_sorting, "");
+		const select_xAxisTimeRange_DeStates = document.getElementById("sel_x_axis_time_range_DeStates");
+		const options_xaxis_time_range_DeStates = [
+			{ value: "12weeks", text: "12 Wochen" },
+			{ value: "4weeks", text: "4 Wochen" },
+			{ value: "all", text: "ganzer Zeitraum" },
+		];
+		setOptionsToSelect(select_xAxisTimeRange_DeStates, options_xaxis_time_range_DeStates, "");
+
+		if ('yAxis' in urlParams && options_yAxisProperty_DeDistricts.indexOf(urlParams.yAxis) > -1) {
+			select_yAxisProperty_DeStates.value = urlParams.yAxis;
+		}
+		if ('Sort' in urlParams && options_eCharts_sorting.indexOf(urlParams.Sort) > -1) {
+			select_sorting_DeStates.value = urlParams.Sort;
+		}
+
+		select_yAxisProperty_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
+		select_sorting_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
+		select_xAxisTimeRange_DeStates.onchange = function () { refreshDeStatesChartWrapper() };
+
+
+		// Wait for all async promises to be done (all data is fetched)
+		// sets the DeStateCodes to default value
+		// then refreshes the chart
+		Promise.all(promises).then(function () {
+			console.log("eCharts DeStates: all data fetched");
+			refreshDeChart(
+				eChart_DeStates,
+				codes_DeStates,
+				data_object_DeStates,
+				mapDeStatesNames,
+				select_yAxisProperty_DeStates,
+				select_xAxisTimeRange_DeStates,
+				select_sorting_DeStates,
+				update_url = false
+			)
+		});
+
+
+
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+	<h4><a id="DeStates-cases-deaths-divi"></a>Infizierte, Tote und Intensivstationsauslastung durch COVID-19 pro
+		Bundesland</h4>
+	<div class="af_gallery_container">
+		<div class="af_gallery_select" id="dropdown_cases-deaths-divi">
+			<!-- <input type="text" placeholder="Filter.." id="filter" onkeyup="filter()"> -->
+
+			<p><b>Auswahl</b></p>
+			<a href="#article-cases-deaths-divi-DE-total">DE-total</a>
+			<a href="#article-cases-deaths-divi-BW">BW</a>
+			<a href="#article-cases-deaths-divi-BY">BY</a>
+			<a href="#article-cases-deaths-divi-BE">BE</a>
+			<a href="#article-cases-deaths-divi-BB">BB</a>
+			<a href="#article-cases-deaths-divi-HB">HB</a>
+			<a href="#article-cases-deaths-divi-HH">HH</a>
+			<a href="#article-cases-deaths-divi-HE">HE</a>
+			<a href="#article-cases-deaths-divi-MV">MV</a>
+			<a href="#article-cases-deaths-divi-NI">NI</a>
+			<a href="#article-cases-deaths-divi-NW">NW</a>
+			<a href="#article-cases-deaths-divi-RP">RP</a>
+			<a href="#article-cases-deaths-divi-SL">SL</a>
+			<a href="#article-cases-deaths-divi-SN">SN</a>
+			<a href="#article-cases-deaths-divi-ST">ST</a>
+			<a href="#article-cases-deaths-divi-SH">SH</a>
+			<a href="#article-cases-deaths-divi-TH">TH</a>
+		</div>
+		<div class="af_gallery_results" id="results_cases-deaths-divi" style="display: flex;flex-flow:column">
+			<div class="af_gallery_results_plot" id="results_DE_states_plot1">
+				<article id="#article-cases-deaths-divi-DE-total">
+					<img src="plots-python/de-states/de-state-DE-total.png"
+						alt="plots-python/de-states/de-state-DE-total.png" width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BW">
+					<img src="plots-python/de-states/de-state-BW.png" alt="plots-python/de-states/de-state-BW.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BY">
+					<img src="plots-python/de-states/de-state-BY.png" alt="plots-python/de-states/de-state-BY.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BE">
+					<img src="plots-python/de-states/de-state-BE.png" alt="plots-python/de-states/de-state-BE.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-BB">
+					<img src="plots-python/de-states/de-state-BB.png" alt="plots-python/de-states/de-state-BB.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HB">
+					<img src="plots-python/de-states/de-state-HB.png" alt="plots-python/de-states/de-state-HB.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HH">
+					<img src="plots-python/de-states/de-state-HH.png" alt="plots-python/de-states/de-state-HH.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-HE">
+					<img src="plots-python/de-states/de-state-HE.png" alt="plots-python/de-states/de-state-HE.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-MV">
+					<img src="plots-python/de-states/de-state-MV.png" alt="plots-python/de-states/de-state-MV.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-NI">
+					<img src="plots-python/de-states/de-state-NI.png" alt="plots-python/de-states/de-state-NI.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-NW">
+					<img src="plots-python/de-states/de-state-NW.png" alt="plots-python/de-states/de-state-NW.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-RP">
+					<img src="plots-python/de-states/de-state-RP.png" alt="plots-python/de-states/de-state-RP.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SL">
+					<img src="plots-python/de-states/de-state-SL.png" alt="plots-python/de-states/de-state-SL.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SN">
+					<img src="plots-python/de-states/de-state-SN.png" alt="plots-python/de-states/de-state-SN.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-ST">
+					<img src="plots-python/de-states/de-state-ST.png" alt="plots-python/de-states/de-state-ST.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-SH">
+					<img src="plots-python/de-states/de-state-SH.png" alt="plots-python/de-states/de-state-SH.png"
+						width="800" height="800"><br />
+				</article>
+				<article id="#article-cases-deaths-divi-TH">
+					<img src="plots-python/de-states/de-state-TH.png" alt="plots-python/de-states/de-state-TH.png"
+						width="800" height="800"><br />
+				</article>
+			</div>
+			<div class="af_gallery_results_footer" id="results_DE_states-cases-deaths-divi_footer">
+				<small>generated via Python <a
+						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-states-V2.py"
+						target="_blank">plot-de-states-V2.py</a>, raw data can be found in <a
+						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
+						target="_blank">de-states</a>
+					<br /> Many thanks to Alex Friedl for writing this gallery feature! </small>
+			</div>
+		</div>
+	</div>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
 
 
 	<h4>
@@ -1003,6 +1017,7 @@
 		den Algorithmus optimiert).</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4>
 		<a id="DeStatesCases"></a>Bundesländer - Infektionen
@@ -1053,6 +1068,7 @@
 	</div>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 	<!-- <h5>
 		<a id="cases-de-states-latest-per-million"></a> Gesamtzahl Infizierte - Bar Chart</h5>
 
@@ -1061,19 +1077,22 @@
 	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-de.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states-latest.tsv" target="_blank">de-states-latest.tsv</a>
 	</small>
 
-	<p><small><a href="#ToC">Back to top</a></small></p> -->
+	<p><small><a href="#ToC">Back to top</a></small></p> <hr />-->
 
 	<h4>
 		<a id="DeStatesDeaths"></a>Bundesländer - Opfer
 	</h4>
 
 	<p> In den Darstellungen der Opferzahlen habe ich auf der rechten Seite Referenzwerte zu anderen Todesursachen
-		angegeben, Quellen dazu siehe <a href="#RefDeathCauses">diese Tabelle</a> unten. Hinweis: die Todeszahlen laufen
+		angegeben, Quellen dazu siehe <a href="#RefDeathCauses">diese Tabelle</a> unten. Hinweis: die dem RKI gemeldeten
+		Opferzahlen haben einen Meldeverzug von ca. 3 Wochen, daher sind die letzen Zahlen noch nicht korrekt.
+		<!-- Todeszahlen laufen
 		den Infektionszahlen um ca. 3 Wochen hinterher. Im Median sterben Patienten <a
 			href="https://www.worldometers.info/coronavirus/coronavirus-death-rate/#days" target="_blank">14 Tage</a>
 		nach den ersten Symptomen, die wiederrum etwa <a
 			href="https://www.worldometers.info/coronavirus/coronavirus-incubation-period/" target="_blank">3-5 Tage</a>
-		nach der Infektion auftreten.</p>
+		nach der Infektion auftreten. -->
+	</p>
 
 	<h5><a id="DeStatesDeathsLastWeek"></a>Neu-Verstorbene pro 7 Tage</h5>
 	<img src="plots-gnuplot/de-states/deaths-de-last_week-per-million.png" alt="deaths-de-last_week-per-million.png"
@@ -1100,21 +1119,34 @@
 			target="_blank">de-state-XX.tsv</a></small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
-	<h5><a id="DeMortality"></a>Vergleich der Sterbefälle 2016-2021</h5>
+
+
+
+
+
+
+	<h3>
+		<a id="DeAnalyses"></a>Weitere Auswertungen
+	</h3>
+
+	<h4><a id="DeMortality"></a>Vergleich der Sterbefälle 2016-2021 / Übersterblichkeit</h4>
 
 	<p> Basierend auf den <a
 			href="https://www.destatis.de/DE/Themen/Querschnitt/Corona/Gesellschaft/bevoelkerung-sterbefaelle.html"
-			target="_blank">Daten</a> des Deutschen Statistischen Bundesamts habe ich die Sterbefälle von 2020 mit den
-		Vorjahren verglichen. Alle Datenreihen wurden mit einem gleitenden Durchschnitt von 7 Tagen geglättet und der
-		29.2. wurde entfernt. </p>
+			target="_blank">Daten</a> des Deutschen Statistischen Bundesamts habe ich die Gesamtzahl der Sterbefälle
+		während der Pandemie mit den Vorjahren verglichen. Hinweis: Alle Datenreihen wurden mit einem gleitenden
+		Durchschnitt von
+		7 Tagen geglättet und der 29.2. wurde entfernt. </p>
 	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality.png" width="640" height="480">
 
 	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro
 		Kalendertag gemittelt und zusammen mit den Daten von 2020 und 2021 aufgetragen. Im unteren Bereich ist die
 		Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
-	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800"><br />
 	<img src="plots-gnuplot/de-mortality-covid-2021.png" alt="de-mortality-covid-2021.png" width="640" height="800">
+	<br />
+	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800">
 	<br /> <small>generated via Gnuplot <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
 			target="_blank">plot-de-mortality.gp</a>, raw data can be found in <a
@@ -1132,8 +1164,9 @@
 			target="_blank">Spanien</a>.</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
-	<h5><a id="DeAgePercent"></a>Altersverteilungen</h5>
+	<h4><a id="DeAgePercent"></a>Altersverteilungen</h4>
 	<p>
 		Hier eine Auswertung der Altersverteilungen. Ich habe die Zeit bis Sommer 2021 und danach unterschieden um den
 		Effekt der Impfungen sehen zu können.
@@ -1176,20 +1209,77 @@
 			target="_blank">de_age_percent_1_pre_2021_summer.tsv</a>
 	</small>
 
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
+
+	<h4>
+		<a id="DE_impfungen"></a>Impfdaten
+	</h4>
+	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png" />
+	<br />
+	<small>generated via Python <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
+			target="_blank">fetch-de-vaccination.py</a>
+	</small>
+	<br /> Hinweis: täglich haben in Deutschland etwa 2000 Kinder ihren 12. Geburtstag, was damit die Baseline für die
+	täglichen Impfungen werden sollte. <ul>
+		<li>
+			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
+				target="_blank"> RKI Auswertung der Impfdaten, mit Rohdaten </a>
+		</li>
+		<li>
+			<a href="https://impfdashboard.de/" target="_blank"> Impfdashboard des Bundesministeriums für Gesundheit
+				(BMG) </a>
+		</li>
+	</ul>
+	<!-- 
+			Die folgenden Grafik ist vom RKI und hier nur eingebettet.
+				<br />
+				<img
+			src="https://www.rki.de/SharedDocs/Bilder/InfAZ/neuartiges_Coronavirus/Impfquotenmonitoring_Balken.png;?__blob=poster"
+			width="800px" /> 
+		-->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
+	<h4>
+		<a id="DE_impf_fakten"></a>
+		Fakten zum Thema Impfung
+	</h4>
+	<ul>
+		<!-- <li>Die Entscheidung sich impfen zu lassen soll jeder für sich treffen.</li> -->
+		<li>Die Impfung reduziert die Wahrscheinlichkeit sich zu infizieren.</li>
+		<li>Die Impfung reduziert die Wahrscheinlichkeit andere zu infizieren.</li>
+		<li>Die Impfung reduziert die Wahrscheinlichkeit für einen schweren Krankheitsverlauf.</li>
+		<li>Zahlenbeispiel: Obwohl 71% der 18-59 Jährigen geimpft sind, sind 88% der hospitalisierten dieser
+			Altersgruppe ungeimpft.<br />
+			<small>Quelle: <a href="https://www.kbv.de/media/sp/2021-11-12_Corona_Report.pdf" target="_blank">
+					Corona Report der Kassenärztlichen Vereinigung vom 12.11.2021</a></small>
+		</li>
+		<li>Die Impfung brigt (wie jede andere Impfung) eine geringe Wahrscheinlichkeit für Impfkomplikationen.
+		</li>
+		<li>
+			Die <a href="https://www.pei.de/DE/newsroom/dossier/coronavirus/arzneimittelsicherheit.html"
+				target="_blank">Studie "Sicherheitsbericht 27.12.2020 bis 30.09.2021" des Paul-Ehrich-Institus</a> dazu:
+			"Die Melderate betrug für alle Impfstoffe zusammen 1,6 Meldungen pro 1.000 Impfdosen, für schwerwiegende
+			Reaktionen 0,2 Meldungen pro 1.000 Impfdosen."
+		</li>
+		<li>Die Wahrscheinlichkeit für Folgeschäden einer COVID Erkrankung ist für Ungeimpfe höher als die von
+			Impfkomplikationen.</li>
+		<li>Es ist sehr wahrscheinlich, dass sich ein Großteil der Deutschen im Laufe der Zeit infizieren werden.</li>
+		<li>Wer sich gegen eine Impfung entscheidet, entscheidet sich dafür mit hoher Wahrscheinlichkeit dem Virus
+			"unvorbereitet" zu begegnen.</li>
+		<li>Daher ist ein Vergleich "Risiko für Schaden durch Impfung" vs. "Nicht-Impfen" unrealistisch. Korrekter ist
+			der Vergleich "Risiko für "Schaden durch Impfung" vs. "Risiko für Schaden durch Covid-Erkrankung bei
+			Ungeimpften"</li>
+	</ul>
 
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
-
-
-	<h3>
-		<a id="DeAnalyses"></a>Weitere Auswertungen
-	</h3>
-
-	<h4><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wie hoch ist die Wahrscheinlichkeit dass beim Treffen mit
-		Personen ein Infizierter dabei ist? </h4>
+	<h4><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wahrscheinlichkeit einen Infizierten zu treffen</h4>
 
 	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion
 		beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche
@@ -1205,6 +1295,9 @@
 			target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
 		<br />
 	</small>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="event_risk_calculator_DE"></a>Veranstaltungsrisikoabschätzung</h4>
 
@@ -1232,7 +1325,7 @@
 		<tr>
 			<td><input id="rc_input_cases_last_week_100k" type="number" value="10" min="1" max="1000" step="0.1"
 					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
-			<td>Neu-Infektionen in Region (letzte 7 Tage pro 100.000 Einwohner), Zahlen können auch der obigen <a
+			<td>Inzidenz (Neu-Infektionen in Region pro Woche pro 100.000 Einwohner), Zahlen können auch der obigen <a
 					href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
 		</tr>
 		<tr>
@@ -1291,6 +1384,7 @@
 			href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?
 	</h4>
@@ -1314,6 +1408,7 @@
 		zu finden sein.</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 	<!-- <h4>
 		<a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h4>
 
@@ -1375,57 +1470,10 @@
 	<p> Beispiel 2: Eine Insel mit 1000 Einwohnern von denen bisher keiner infiziert war, auf der aber getestet wird.<br /> Ergebnis ist das gleiche, mit dem Unterschied, dass die Zahl der positiv getesteten Personen ungleich 0 ist, was aber nicht die Abschätzung einfließt. </p>
 	<p> Beispiel 3: Eine Insel mit 16000 Einwohnern von denen bisher keiner infiziert war.<br /> Werden nun 1000 am 01.01.2020 infiziert, so werden am 15.01. immer noch 10 sterben. Am 15.01. lässt sich daher wie oben beschrieben auf die Gesamtzahl von 1000 am 01.01. schließen. Allerdings werden weiter Menschen infiziert. Nehmen wir z.B. exemplarisch eine Verdopplungszeit von 7 Tagen an, so ist am 8.01. eine Gesamtzahl von 2000 Personen infiziert, am 15.01. dann 4000. Somit ist die Gesamtzahl der Infizierten am 15.01. größer als 1000, was zur Folge hat, dass an den Folgetagen weitere Menschen sterben werden. Am 15.01. sind 4000 infiziert (Verstorbene mitgezählt) aber nur 10 verstorben. Würde man am 15.01. großangelegte Tests durchführen, so würde man im Idealfall alle 4000 infizierten Personen bestimmen und die Dunkelziffer wäre 0. Bestimmt man an diesem Tag die Sterblichkeit, so würde man am 15.01.2020 10 Tote auf 4000 Infizierte = 0.25% finden, was der Eingangsgröße/Annahme widerspricht. Wartet man allerdings weiteren 2 Verdopplungszeiten ab, so sind am 29.01. alle 16000 Einwohner infiziert. Wartet man nochmal 2 Wochen, bis die unglücklichen schweren Fälle verstorben sind, so findet man dann dass von den 16000 Einwohnern 160 verstorben sind, und die Sterblichkeit ist wie erwartet 1%. Dies verdeutlicht, dass die Sterblichkeit erst korrekt ermittelt werden kann, wenn das exponentielle Wachstum vorbei ist. </p> -->
 
+
+
 	<p><small><a href="#ToC">Back to top</a></small></p>
-
-	<h4>
-		<a id="DE_impfungen"></a>Impfdaten
-	</h4>
-	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png" />
-	<br />
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
-			target="_blank">fetch-de-vaccination.py</a>
-	</small>
-	<br /> Hinweis: täglich haben in Deutschland etwa 2000 Kinder ihren 12. Geburtstag, was damit die Baseline für die
-	täglichen Impfungen werden sollte. <ul>
-		<li>
-			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
-				target="_blank"> RKI Auswertung der Impfdaten, mit Rohdaten </a>
-		</li>
-		<li>
-			<a href="https://impfdashboard.de/" target="_blank"> Impfdashboard des Bundesministeriums für Gesundheit
-				(BMG) </a>
-		</li>
-	</ul>
-	<!-- 
-			Die folgenden Grafik ist vom RKI und hier nur eingebettet.
-				<br />
-				<img
-			src="https://www.rki.de/SharedDocs/Bilder/InfAZ/neuartiges_Coronavirus/Impfquotenmonitoring_Balken.png;?__blob=poster"
-			width="800px" /> 
-		-->
-
-	<h4>
-		<a id="DE_impf_fakten"></a>
-		Fakten zum Thema Impfung
-	</h4>
-	<ul>
-		<!-- <li>Die Entscheidung sich impfen zu lassen soll jeder für sich treffen.</li> -->
-		<li>Die Impfung reduziert die Wahrscheinlichkeit sich zu infizieren.</li>
-		<li>Die Impfung reduziert die Wahrscheinlichkeit andere zu infizieren.</li>
-		<li>Die Impfung reduziert die Wahrscheinlichkeit für einen schweren Krankheitsverlauf.</li>
-		<li>Zahlenbeispiel: Obwohl 71% der 18-59 Jährigen geimpft sind, sind 88% der hospitalisierten dieser
-			Altersgruppe ungeimpft.<br />
-			<small>Quelle: <a href="https://www.kbv.de/media/sp/2021-11-12_Corona_Report.pdf" target="_blank">
-					Corona Report der Kassenärztlichen Vereinigung vom 12.11.2021</a></small>
-		</li>
-		<li>Die Impfung brigt (wie jede andere Impfung) eine geringe Wahrscheinlichkeit für Impfkomplikationen.</li>
-		<li>Die Wahrscheinlichkeit für Folgeschäden einer COVID Erkrankung ist für Ungeimpfe höher als die von
-			Impfkomplikationen.</li>
-		<li>Es ist sehr wahrscheinlich, dass sich ein Großteil der Deutschen im Laufe der Zeit infizieren werden.</li>
-		<li>Wer ungeimpft ist, wird also unvorbereitet auf das Virus treffen.</li>
-	</ul>
-
+	<hr />
 
 	<h4>
 		<a id="ArduinoSensorics-De"></a>Nebenprojekt: CO<sub>2</sub>-Ampel
@@ -1444,6 +1492,7 @@
 		height="720" />
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4>
 		<a id="Exp_Wachstum"></a> Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland
@@ -1474,6 +1523,7 @@
 			for Systems Science and Engineering (JHU CSSE)</a> </p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h3><a id="CountryTable"></a>Country Table</h3>
 
@@ -1495,6 +1545,7 @@
 	<!-- <script type="text/javascript" src="tabulator/tabulator.min.js"></script> -->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h3>Country comparison chart</h3>
 
@@ -1684,6 +1735,55 @@
 	</script>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
+	<h3><a id="CountryRankings"></a>Country Rankings</h3>
+
+	<h4><a id="CountriesLatestCases"></a>Cases</h4>
+
+	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new
+		cases (series "Cases Last Week per 100.000 Population"). </p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+
+
+	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their
+		total cases (series "Cases per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+	<script>
+
+
+	</script>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+	<h4><a id="CountriesLatestDeaths"></a>Deaths</h4>
+
+	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their current new
+		deaths (series "Deaths Last Week per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+
+	<p> Ranking countries by current new deaths (series "Deaths Last Week per Million Population") and color-coding
+		their total deaths (series "Deaths per Million Population").</p>
+	<div class="echart-latest-data-wrapper">
+		<div id="div_eChart_Country_Deaths_Last_Week_Per_Million" style="height: 4000px">
+		</div>
+	</div>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
 
 	<h3><a id="CountriesDoublingTime"></a>Doubling Time of New Infections</h3>
 
@@ -1700,6 +1800,7 @@
 	<div id="div_table-countries-doubling"></div>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="event_risk_calculator_EN"></a>Event Risk Calculator</h4>
 
@@ -1726,7 +1827,7 @@
 		<tr>
 			<td><input id="rc_input_cases_last_week_100k_en" type="number" value="20" min="1" max="1000" step="0.1"
 					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
-			<td>New cases in your region (per last 7 days per 100.000 population), numbers can be found at <a
+			<td>New cases in your region (per last week per 100.000 population), numbers can be found at <a
 					href="#CountryTable">Country Table</a> above. </td>
 		</tr>
 		<tr>
@@ -1739,7 +1840,7 @@
 				<input id="rc_output_infectious_pop_en" type="text" readonly disabled value=""
 					style="text-align: right; font-size:20px; width: 100px;">
 			</td>
-			<td>Estimated total amount of infectious people in population (last 7 days per 100.000 population)</td>
+			<td>Estimated total amount of infectious people in population (last week per 100.000 population)</td>
 		</tr>
 		<tr>
 			<th>Output</th>
@@ -1782,49 +1883,7 @@
 	</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
-
-	<h3><a id="CountryRankings"></a>Country Rankings</h3>
-
-	<h4><a id="CountriesLatestCases"></a>Cases</h4>
-
-	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new
-		cases (series "Cases Last Week per 100.000 Population"). </p>
-	<div class="echart-latest-data-wrapper">
-		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
-		</div>
-	</div>
-
-
-	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their
-		total cases (series "Cases per Million Population").</p>
-	<div class="echart-latest-data-wrapper">
-		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
-		</div>
-	</div>
-	<script>
-
-
-	</script>
-
-	<p><small><a href="#ToC">Back to top</a></small></p>
-
-	<h4><a id="CountriesLatestDeaths"></a>Deaths</h4>
-
-	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their current new
-		deaths (series "Deaths Last Week per Million Population").</p>
-	<div class="echart-latest-data-wrapper">
-		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
-		</div>
-	</div>
-
-	<p> Ranking countries by current new deaths (series "Deaths Last Week per Million Population") and color-coding
-		their total deaths (series "Deaths per Million Population").</p>
-	<div class="echart-latest-data-wrapper">
-		<div id="div_eChart_Country_Deaths_Last_Week_Per_Million" style="height: 4000px">
-		</div>
-	</div>
-
-	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h3><a id="SelectedCountries"></a>Comparison of selected countries</h3>
 
@@ -1859,6 +1918,7 @@
 	<p>See table below for <a href="#RefDeathCauses">reference data: deaths by other causes</a></p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
 
 	<h4><a id="CountriesTimeseriesDeaths"></a>Timeseries</h4>
 	<!-- <h3>
@@ -1908,6 +1968,7 @@
 
 	<p><small>
 			<a href="#ToC">Back to top</a></small></p>
+	<hr />
 	<!-- <h4>Findings</h4>
 	<ul>
 		<li> 02.04.2020: Spain and Italy have about twice the death toll per million population that the US had in the flu
@@ -2049,6 +2110,7 @@
 
 	<p><small>
 			<a href="#ToC">Back to top</a></small></p>
+	<hr />
 	<!-- <h3>
 		<a id="Countries_Mortality"></a>Investigating the Calculated Case Mortality: Deaths per Reported Infections</h3>
 
