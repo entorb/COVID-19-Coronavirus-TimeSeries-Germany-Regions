@@ -17,6 +17,8 @@ __license__ = "GPL"
 import pandas as pd
 import openpyxl
 
+import datetime as dt
+
 # import csv
 import urllib.request
 
@@ -36,6 +38,13 @@ df2 = pd.DataFrame()
 df2["Date"] = df0["Date"]
 df2["Deaths_Covid"] = df0["Deaths_New"]
 del df0
+
+# drop deaths of last 3 weeks, as they are not final numbers
+df2["DateAsDate"] = pd.to_datetime(df2["Date"], format="%Y-%m-%d")
+# print(df2.tail(30))
+date_3w = dt.date.today() - dt.timedelta(weeks=3)
+df2.loc[df2["DateAsDate"] >= str(date_3w), "Deaths_Covid"] = None
+# print(df2.tail(30))
 
 # remove 29.2.
 df2 = df2[~df2["Date"].isin(("2020-02-29", "2024-02-29", "2028-02-29"))]

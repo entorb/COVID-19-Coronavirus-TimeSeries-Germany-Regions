@@ -1,6 +1,7 @@
 # plot via pandas and matplotlib
 # from matplotlib.colors import LogNorm
-from datetime import datetime
+# from datetime import datetime
+import datetime as dt
 import glob
 import os
 from pandas.core.frame import DataFrame
@@ -179,13 +180,17 @@ def read_data(datafile: str) -> DataFrame:
         axis=1,
         errors="raise",
     )
-    # negative values -> 0
     df[df < 0] = 0
+    # drop deaths of last 3 weeks, as they are not final numbers
+    date_3w = dt.date.today() - dt.timedelta(weeks=3)
+    df.loc[df.index.date >= date_3w, "Tote"] = None
+    # negative values -> 0
     return df
 
 
 # DE as reference
 df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
+
 date_last = pd.to_datetime(df_DE.index[-1]).date()
 
 
@@ -321,13 +326,13 @@ def main():
         # doit_bl(datafile=datafile)
     res = pool.map(doit_bl, l_pile_of_work)
 
-    # same for districts
-    l_pile_of_work = []
-    # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
-    for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
-        l_pile_of_work.append(datafile)
-        # doit_lk(datafile=datafile)
-    res = pool.map(doit_lk, l_pile_of_work)
+    # # same for districts
+    # l_pile_of_work = []
+    # # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
+    # for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
+    #     l_pile_of_work.append(datafile)
+    #     # doit_lk(datafile=datafile)
+    # res = pool.map(doit_lk, l_pile_of_work)
 
 
 if __name__ == "__main__":
