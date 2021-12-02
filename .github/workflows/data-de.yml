@@ -5,7 +5,8 @@ name: Update Data DE
 on:  
   workflow_dispatch:
   schedule:
-    - cron: "3 4,5 * * *" 
+  # UTC !
+    - cron: "3 5,6 * * *" 
 # TODO
 #  push: 
 #    branches: [ master ]
