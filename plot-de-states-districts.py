@@ -326,13 +326,13 @@ def main():
         # doit_bl(datafile=datafile)
     res = pool.map(doit_bl, l_pile_of_work)
 
-    # # same for districts
-    # l_pile_of_work = []
-    # # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
-    # for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
-    #     l_pile_of_work.append(datafile)
-    #     # doit_lk(datafile=datafile)
-    # res = pool.map(doit_lk, l_pile_of_work)
+    # same for districts
+    l_pile_of_work = []
+    # for datafile in ("data/de-districts/de-district_timeseries-02000.tsv",):
+    for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
+        l_pile_of_work.append(datafile)
+        # doit_lk(datafile=datafile)
+    res = pool.map(doit_lk, l_pile_of_work)
 
 
 if __name__ == "__main__":
