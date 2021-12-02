@@ -45,19 +45,38 @@ df = helper.pandas_set_date_index(df=df, date_column="Impfdatum")
 
 sum_doses = df["Anzahl"].sum()
 
-# gefiltert auf Erstimpfungen
-df1 = df[df["Impfserie"] == 1]
-df1 = df1.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
-df1 = helper.pandas_set_date_index(df=df1, date_column="Impfdatum")
-
 # sum
 df_doses_per_day = df.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
 df_doses_per_day = helper.pandas_set_date_index(
     df=df_doses_per_day, date_column="Impfdatum"
 )
 
-# add first-vac only
+date_last = pd.to_datetime(df.index[-1]).date()
+
+# 1 gefiltert auf Erst-Impfungen
+df1 = df[df["Impfserie"] == 1]
+df1 = df1.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
+df1 = helper.pandas_set_date_index(df=df1, date_column="Impfdatum")
 df_doses_per_day["Anzahl1"] = df1["Anzahl"]
+del df1
+
+# 2 gefiltert auf Zweit-Impfungen
+df2 = df[df["Impfserie"] == 2]
+df2 = df2.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
+df2 = helper.pandas_set_date_index(df=df2, date_column="Impfdatum")
+df2 = df2[df2.index >= "2021-01-10"]
+df_doses_per_day["Anzahl2"] = df2["Anzahl"]
+del df2
+
+# 3 gefiltert auf Dritt-Impfungen
+df3 = df[df["Impfserie"] == 3]
+df3 = df3.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
+df3 = helper.pandas_set_date_index(df=df3, date_column="Impfdatum")
+df3 = df3[df3.index >= "2021-08-25"]
+
+df_doses_per_day["Anzahl3"] = df3["Anzahl"]
+del df3
+
 
 # add rolling averages
 df_doses_per_day = helper.pandas_calc_roll_av(
@@ -66,9 +85,12 @@ df_doses_per_day = helper.pandas_calc_roll_av(
 df_doses_per_day = helper.pandas_calc_roll_av(
     df=df_doses_per_day, column="Anzahl1", days=7
 )
-
-# print(df_doses_per_day.tail(7))
-
+df_doses_per_day = helper.pandas_calc_roll_av(
+    df=df_doses_per_day, column="Anzahl2", days=7
+)
+df_doses_per_day = helper.pandas_calc_roll_av(
+    df=df_doses_per_day, column="Anzahl3", days=7
+)
 
 # initialize plot (
 axes = [
@@ -97,6 +119,22 @@ df_doses_per_day["Anzahl1_roll_av"].plot(
     zorder=2,
     linewidth=2.0,
 )
+df_doses_per_day["Anzahl2_roll_av"].plot(
+    ax=axes[0],
+    # color=colors[0][0],
+    legend=False,
+    secondary_y=False,
+    zorder=2,
+    linewidth=2.0,
+)
+df_doses_per_day["Anzahl3_roll_av"].plot(
+    ax=axes[0],
+    # color=colors[0][0],
+    legend=False,
+    secondary_y=False,
+    zorder=2,
+    linewidth=2.0,
+)
 
 axes[0].set_ylim(
     0,
@@ -108,17 +146,18 @@ axes[0].grid(zorder=0)
 # axes[0].patch.set_visible(False)
 
 # add text to bottom right
-plt.gcf().text(
-    1.0,
-    0.5,
-    s="by Torben https://entorb.net , based on RKI data",
-    fontsize=8,
-    horizontalalignment="right",
-    verticalalignment="center",
-    rotation="vertical",
-)
+helper.mpl_add_text_source(source="RKI", date=date_last)
+# plt.gcf().text(
+#     1.0,
+#     0.5,
+#     s="by Torben https://entorb.net , based on RKI data",
+#     fontsize=8,
+#     horizontalalignment="right",
+#     verticalalignment="center",
+#     rotation="vertical",
+# )
 
-plt.legend(("gesamt", "Erstimpfungen"))
+plt.legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
 
 axes[0].get_yaxis().set_major_formatter(
     matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ","))
