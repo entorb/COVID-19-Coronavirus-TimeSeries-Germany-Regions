@@ -268,9 +268,7 @@ def filter_rki_deaths(df_rki, start_yearweek: int = 202001, end_yearweek: int = 
 
 
 def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 203053):
-
-    print(df_divi)
-
+    # print(df_divi)
     # optionally: filter on date range
     df_divi = df_divi[df_divi.index >= start_yearweek]
     df_divi = df_divi[df_divi.index <= end_yearweek]
@@ -291,7 +289,7 @@ def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 20305
         d[col] = df_divi[col].mean()
 
     df = pd.DataFrame.from_dict(d, orient="index", columns=["ICU"])
-    print(df)
+    # print(df)
     # sum_icu includes the unknown age fraction
     sum_icu = int(df["ICU"].sum())
     df = df.drop(["Unbekannt"], axis="index")
@@ -355,8 +353,12 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
 
     # plt.xlabel("Prozent")
     plt.grid(axis="x")
-    plt.ylabel("Alter (Jahre)")
+    plt.ylabel("Altersgruppe (Jahre)")
     plt.tight_layout()
+    helper.mpl_add_text_source(
+        source="RKI and DIVI", date=(dt.date.today() - dt.timedelta(days=1))
+    )
+
     plt.savefig(fname=f"plots-python/{outfile}.png", format="png")
 
 

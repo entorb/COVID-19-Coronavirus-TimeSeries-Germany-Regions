@@ -147,15 +147,7 @@ axes[0].grid(zorder=0)
 
 # add text to bottom right
 helper.mpl_add_text_source(source="RKI", date=date_last)
-# plt.gcf().text(
-#     1.0,
-#     0.5,
-#     s="by Torben https://entorb.net , based on RKI data",
-#     fontsize=8,
-#     horizontalalignment="right",
-#     verticalalignment="center",
-#     rotation="vertical",
-# )
+
 
 plt.legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
 

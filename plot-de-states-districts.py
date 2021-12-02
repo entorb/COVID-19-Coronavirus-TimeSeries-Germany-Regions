@@ -105,16 +105,17 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
     axes[1].right_ax.set_axisbelow(True)  # for grid below the lines
     axes[1].patch.set_visible(False)
 
-    # add label text to bottom right
-    plt.gcf().text(
-        1.0,
-        0.5,
-        s="by Torben https://entorb.net , based on RKI and DIVI data",
-        fontsize=8,
-        horizontalalignment="right",
-        verticalalignment="center",
-        rotation="vertical",
-    )
+    # # add label text to bottom right
+    helper.mpl_add_text_source(source="RKI and DIVI", date=date_last)
+    # plt.gcf().text(
+    #     1.0,
+    #     0.5,
+    #     s="by Torben https://entorb.net , based on RKI and DIVI data",
+    #     fontsize=8,
+    #     horizontalalignment="right",
+    #     verticalalignment="center",
+    #     rotation="vertical",
+    # )
 
     # add label text to bottom right
     plt.gcf().text(
@@ -185,6 +186,7 @@ def read_data(datafile: str) -> DataFrame:
 
 # DE as reference
 df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
+date_last = pd.to_datetime(df_DE.index[-1]).date()
 
 
 def plot_it(df: DataFrame, code: str, long_name: str, mode: str):

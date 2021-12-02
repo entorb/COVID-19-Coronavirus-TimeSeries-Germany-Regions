@@ -210,6 +210,8 @@ else:
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
     df.set_index(["Date"], inplace=True)
 
+date_last = pd.to_datetime(df.index[-1]).date()
+
 
 def CntToPerc(x):
     return x / 412 * 100
@@ -262,7 +264,10 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
     # secaxy = plt.secondary_yaxis('right', functions=(CntToPerc, PercToCnt))
     # secaxy.set_ylabel('Percent')
 
-    # plt.ylim(top=412)
+    helper.mpl_add_text_source(source="RKI", date=date_last)
+    plt.ylim(0, 412)
+    plt.xlabel("")
+    plt.ylabel("")
     plt.savefig(
         fname="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png",
         format="png",
@@ -283,7 +288,10 @@ def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Incr():
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+100%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+200%"])
 
-    plt.ylim(top=412)
+    helper.mpl_add_text_source(source="RKI", date=date_last)
+    plt.ylim(0, 412)
+    plt.xlabel("")
+    plt.ylabel("")
     plt.savefig(
         fname="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png",
         format="png",
@@ -303,7 +311,10 @@ def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Decr():
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-75%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-100%"])
 
-    plt.ylim(top=412)
+    helper.mpl_add_text_source(source="RKI", date=date_last)
+    plt.ylim(0, 412)
+    plt.xlabel("")
+    plt.ylabel("")
     plt.savefig(
         fname="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png",
         format="png",
