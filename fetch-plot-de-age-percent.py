@@ -65,6 +65,8 @@ def read_rki_cases() -> DataFrame:
     # print(df_rki_inzidenz.head())
 
     # rename column header from 2020_14 to YearWeek : 202014 (int) etc.
+    print(df)
+
     l2 = []
     for c in df.columns:
         year = int(c[0:4])
