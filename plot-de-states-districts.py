@@ -221,30 +221,35 @@ def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
     #
     df["Inzidenz"].plot(
         ax=axes[0],
+        secondary_y=False,
         color=colors[0][0],
         legend=False,
-        secondary_y=False,
         zorder=3,
         linewidth=2.0,
     )
     df["Inzidenzanstieg"].plot.area(
-        ax=axes[0], color=colors[0][1], legend=False, secondary_y=True, zorder=1
+        ax=axes[0], 
+        secondary_y=True, 
+        color=colors[0][1], 
+        legend=False, 
+        zorder=1, 
+        linewidth=1.0,
     )
     df["Tote"].plot(
         ax=axes[1],
+        secondary_y=False,
         color=colors[1][0],
         legend=False,
-        secondary_y=False,
-        zorder=3,
+        zorder=1,
         linewidth=2.0,
     )
     df["Intensivstationsbelegung"].plot.area(
         ax=axes[1],
+        secondary_y=True,
         color=colors[1][1],
         legend=False,
-        secondary_y=True,
-        zorder=1,
-        linewidth=2.0,
+        zorder=3,
+        linewidth=1.0,
     )
 
     if b_thisIsDE_total == False:
@@ -252,17 +257,17 @@ def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
         # DE data for comparison
         df_DE["Inzidenz"].plot(
             ax=axes[0],
+            secondary_y=False,
             color=colors[2][0],
             legend=False,
-            secondary_y=False,
             zorder=2,
             linewidth=2.0,
         )
         df_DE["Tote"].plot(
             ax=axes[1],
+            secondary_y=False,
             color=colors[2][1],
             legend=False,
-            secondary_y=False,
             zorder=2,
             linewidth=2.0,
         )
