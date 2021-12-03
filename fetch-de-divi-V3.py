@@ -469,7 +469,7 @@ def export_tsv(d_database):
                     "betten_belegt_proz",
                     "faelle_covid_aktuell",
                     "faelle_covid_aktuell_proz",
-                    "faelle_covid_aktuell_invasiv_beatmet",
+                    "faelle_covid_aktuell_beatmet",
                     "faelle_covid_aktuell_beatmet_proz",
                 ],
             )
