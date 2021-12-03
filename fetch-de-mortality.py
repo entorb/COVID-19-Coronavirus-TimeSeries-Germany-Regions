@@ -41,10 +41,8 @@ del df0
 
 # drop deaths of last 3 weeks, as they are not final numbers
 df2["DateAsDate"] = pd.to_datetime(df2["Date"], format="%Y-%m-%d")
-# print(df2.tail(30))
 date_3w = dt.date.today() - dt.timedelta(weeks=3)
-df2.loc[df2["DateAsDate"] >= str(date_3w), "Deaths_Covid"] = None
-# print(df2.tail(30))
+df2.loc[df2["DateAsDate"].dt.date >= date_3w, "Deaths_Covid"] = None
 
 # remove 29.2.
 df2 = df2[~df2["Date"].isin(("2020-02-29", "2024-02-29", "2028-02-29"))]
