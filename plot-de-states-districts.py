@@ -70,10 +70,10 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
     axes[1].set_ylim(
         0,
     )  # 0,250
-    axes[1].right_ax.set_ylim(0, 40)
+    axes[1].right_ax.set_ylim(0, 50)
     # tick freq
     # all are set to make charts better compareable
-    axes[0].yaxis.set_major_locator(ticker.MultipleLocator(50))
+    # axes[0].yaxis.set_major_locator(ticker.MultipleLocator(50)) # uncommented, since some regions have incidences > 2000 nowadays
     axes[0].right_ax.yaxis.set_major_locator(ticker.MultipleLocator(25))
     axes[1].yaxis.set_major_locator(ticker.MultipleLocator(25))
     axes[1].right_ax.yaxis.set_major_locator(ticker.MultipleLocator(10))
