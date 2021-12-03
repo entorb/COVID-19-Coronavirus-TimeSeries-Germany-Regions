@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 import matplotlib.ticker as mtick
 import datetime as dt
+import re
 
 # import urllib.request
 import requests
@@ -65,13 +66,23 @@ def read_rki_cases() -> DataFrame:
     # print(df_rki_inzidenz.head())
 
     # rename column header from 2020_14 to YearWeek : 202014 (int) etc.
-    print(df)
-
     l2 = []
+    cols_to_drop = []
     for c in df.columns:
-        year = int(c[0:4])
-        week = int(c[5:7])
-        l2.append(year * 100 + week)
+        if re.match("^\d{4}_\d{1,2}$", c) != None:
+            year = int(c[0:4])
+            week = int(c[5:7])
+            l2.append(year * 100 + week)
+        else:
+            cols_to_drop.append(c)
+    if cols_to_drop:
+        print("dropping these columns:")
+        print(df[cols_to_drop])
+        df = df.drop(
+            cols_to_drop,
+            axis="columns",
+        )
+    # renaming the remaining columns to yearweek (int)
     df.columns = l2
 
     # transpose to have yearweek as index
