@@ -228,11 +228,11 @@ def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
         linewidth=2.0,
     )
     df["Inzidenzanstieg"].plot.area(
-        ax=axes[0], 
-        secondary_y=True, 
-        color=colors[0][1], 
-        legend=False, 
-        zorder=1, 
+        ax=axes[0],
+        secondary_y=True,
+        color=colors[0][1],
+        legend=False,
+        zorder=1,
         linewidth=1.0,
     )
     df["Tote"].plot(
@@ -240,7 +240,7 @@ def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
         secondary_y=False,
         color=colors[1][0],
         legend=False,
-        zorder=1,
+        zorder=3,
         linewidth=2.0,
     )
     df["Intensivstationsbelegung"].plot.area(
@@ -248,7 +248,7 @@ def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
         secondary_y=True,
         color=colors[1][1],
         legend=False,
-        zorder=3,
+        zorder=1,
         linewidth=1.0,
     )
 
