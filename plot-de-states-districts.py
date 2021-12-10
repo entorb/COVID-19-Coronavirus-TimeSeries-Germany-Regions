@@ -181,9 +181,9 @@ def read_data(datafile: str) -> DataFrame:
         errors="raise",
     )
     df[df < 0] = 0
-    # drop deaths of last 3 weeks, as they are not final numbers
-    date_3w = dt.date.today() - dt.timedelta(weeks=3)
-    df.loc[df.index.date >= date_3w, "Tote"] = None
+    # drop deaths of last 4 weeks, as they are not final numbers
+    date_4w = dt.date.today() - dt.timedelta(weeks=4)
+    df.loc[df.index.date >= date_4w, "Tote"] = None
     # negative values -> 0
     return df
 

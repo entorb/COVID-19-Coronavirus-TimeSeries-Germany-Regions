@@ -251,7 +251,7 @@ for property_to_plot in (
     elif property_to_plot == "Deaths_Per_Million":
         threshold = [100, 200, 500, 1000, 2000, 5000, 10000]
     elif property_to_plot == "Cases_Last_Week_Per_100000":
-        threshold = [1, 5, 10, 25, 50, 100, 200]
+        threshold = [1, 10, 35, 50, 100, 200, 500]
     elif property_to_plot == "DIVI_Intensivstationen_Covid_Prozent":
         threshold = [1, 10, 20, 30, 40, 50, 75]
     elif property_to_plot == "DIVI_Intensivstationen_Betten_belegt_Prozent":
