@@ -77,6 +77,6 @@ plot \
       data using (column("Day")):(column("2016_2019_roll_min")):(column("2016_2019_roll_max")) title "Bandbreite 2016-19" with filledcurve lc rgb "gray60" \
     , data using (column("Day")):(column("2016_2019_mean_roll"))   title "Mittelwert 2016-19" axis x1y1  with lines ls 1   \
     , data using (column("Day")):(column("2021_roll")) title "2021" axis x1y1 with lines ls 6 lw 2\
-    , data using (column("Day")):(column("2021_roll")-column("2016_2019_mean_roll")) title "Differenz 2020 zu Mittelwert" axis x1y1 with lines ls 4 \
+    , data using (column("Day")):(column("2021_roll")-column("2016_2019_mean_roll")) title "Differenz 2021 zu Mittelwert" axis x1y1 with lines ls 4 \
     , data using (column("Day")):(column("Deaths_Covid_2021_roll")) title "COVID-19" axis x1y1 with lines ls 3 
 unset output
