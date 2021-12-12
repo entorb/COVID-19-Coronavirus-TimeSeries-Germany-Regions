@@ -23,6 +23,7 @@ import datetime as dt
 import urllib.request
 
 from pandas.core.frame import DataFrame
+import numpy as np
 
 # my helper modules
 import helper
@@ -41,8 +42,11 @@ del df0
 
 # drop deaths of last 3 weeks, as they are not final numbers
 df2["DateAsDate"] = pd.to_datetime(df2["Date"], format="%Y-%m-%d")
-date_3w = dt.date.today() - dt.timedelta(weeks=3)
-df2.loc[df2["DateAsDate"].dt.date >= date_3w, "Deaths_Covid"] = None
+date_4w = dt.date.today() - dt.timedelta(weeks=3)
+# print(date_4w)
+df2.loc[df2["DateAsDate"].dt.date >= date_4w, "Deaths_Covid"] = None
+# print(df2.tail(30))
+
 
 # remove 29.2.
 df2 = df2[~df2["Date"].isin(("2020-02-29", "2024-02-29", "2028-02-29"))]
@@ -64,6 +68,11 @@ del df1, df2
 df3["Deaths_Covid_roll"] = (
     df3["Deaths_Covid"].rolling(window=7, min_periods=1).mean().round(1)
 )
+# rolling takes NAN values into account, so I need to overwrite them
+df3["Deaths_Covid_roll"] = np.where(
+    df3["Deaths_Covid"].isnull(), np.nan, df3["Deaths_Covid_roll"]
+)
+# print(df3.tail(30))
 
 df_covid_2020 = (
     df3[0 : 1 * 365]
