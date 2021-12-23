@@ -95,10 +95,12 @@ def read_rki_cases() -> DataFrame:
     l2 = []
     for c in df.columns:
         c = c.replace(" - ", "-")
+        c = c.strip()  # remove tailing spaces
         l2.append(c)
     df.columns = l2
 
     # print(df.head())
+    # exit()
     return df
 
 
@@ -193,6 +195,11 @@ def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 2
     d = {}
     for col in df_rki.columns:
         d[col] = df_rki[col].sum()
+
+    print(df_rki.head())
+    print(df_rki.columns)
+    print(df_rki["0-4"].head())
+    print(df_rki["5-9"].head())
 
     d2 = {
         "0-9": df_rki["0-4"].sum() + df_rki["5-9"].sum(),
