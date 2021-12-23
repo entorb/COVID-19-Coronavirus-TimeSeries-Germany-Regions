@@ -8,6 +8,8 @@ import subprocess
 
 import helper
 
+# siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
+
 
 def fetch():
     for fname in (
@@ -22,7 +24,7 @@ def fetch():
             f.write(datatowrite)
 
         # extract the .xz file
-        subprocess.run(["xz", "-d", filepath], capture_output=False, text=False)
+        subprocess.run(["xz", "-d", "-f", filepath], capture_output=False, text=False)
 
 
 if not helper.check_cache_file_available_and_recent(
@@ -58,6 +60,9 @@ def read_data() -> pd.DataFrame:
 
 
 df_all_data = read_data()
+
+# max_date = df_all_data["PROCESSING_DATE"].max()
+# print(max_date)
 
 # 1. lineage column
 df_lineages = (
@@ -171,18 +176,20 @@ df_date_sum_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av.cs
 
 df = df_date_pct_roll_av
 
+date_last = pd.to_datetime(df.index[-1]).date()
+
 # df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
 for c in df_scorpio_call_top_ten.index:
     df[c].plot(linewidth=2.0, legend=True)
 
 plt.title(f"SARS-CoV-2 Mutationen in Deutschland")
-plt.gca().set_ylim(0, 100)
-plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
+plt.xlabel("")
 plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
 plt.grid(axis="both")
 plt.gcf().autofmt_xdate()
-plt.xlabel("")
-helper.mpl_add_text_source(source="RKI", date=(dt.date.today() - dt.timedelta(days=1)))
+plt.gca().set_ylim(0, 100)
+plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
+helper.mpl_add_text_source(source="RKI", date=date_last)
 plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-all.png", format="png")
 
@@ -192,10 +199,11 @@ df = df_date_pct_roll_av[df_date_pct_roll_av.index >= "2021-12-01"]
 df["Omicron (BA.1-like)"].plot(linewidth=2.0, legend=False)
 
 plt.title(f"Mutation Omicron (BA.1-like) in Deutschland")
-plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
-plt.grid(axis="both")
 plt.xlabel("")
 plt.gca().set_ylim(auto=True)
 plt.gca().set_ylim(bottom=0)
+plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
+plt.grid(axis="both")
+helper.mpl_add_text_source(source="RKI", date=date_last)
 plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-omicron.png", format="png")
