@@ -153,7 +153,7 @@ df_date_sum = df_date_sum.fillna(0)
 # convert to percent
 df_date_pct = df_date_sum.copy()
 for c in df_scorpio_call_top_ten.index:
-    df_date_pct[c] = df_date_pct[c] / df_date_pct["sequences_total"]
+    df_date_pct[c] = 100.0 * df_date_pct[c] / df_date_pct["sequences_total"]
 
 
 # calc 7-day moving average
@@ -164,9 +164,9 @@ for c in df_date_sum_roll_av.columns:
     df_date_sum_roll_av[c] = (
         df_date_sum_roll_av[c].rolling(window=7, min_periods=1).mean().round(1)
     )
-    df_date_pct_roll_av[c] = 100.0 * df_date_pct_roll_av[c].rolling(
-        window=7, min_periods=1
-    ).mean().round(5)
+    df_date_pct_roll_av[c] = (
+        df_date_pct_roll_av[c].rolling(window=7, min_periods=1).mean().round(5)
+    )
 
 
 df_date_sum_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av.csv")
@@ -174,7 +174,7 @@ df_date_sum_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av.cs
 
 # plotting
 
-df = df_date_pct_roll_av
+df = df_date_pct
 
 date_last = pd.to_datetime(df.index[-1]).date()
 
@@ -182,7 +182,7 @@ date_last = pd.to_datetime(df.index[-1]).date()
 for c in df_scorpio_call_top_ten.index:
     df[c].plot(linewidth=2.0, legend=True)
 
-plt.title(f"SARS-CoV-2 Mutationen in Deutschland")
+plt.title(f"SARS-CoV-2 Mutationen in DE: Anteile")
 plt.xlabel("")
 plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
 plt.grid(axis="both")
@@ -192,13 +192,13 @@ plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
 helper.mpl_add_text_source(source="RKI", date=date_last)
 plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-all.png", format="png")
-
 plt.close()
 
-df = df_date_pct_roll_av[df_date_pct_roll_av.index >= "2021-12-01"]
+df = df_date_pct
+df = df[df.index >= "2021-12-01"]
 df["Omicron (BA.1-like)"].plot(linewidth=2.0, legend=False)
 
-plt.title(f"Mutation Omicron (BA.1-like) in Deutschland")
+plt.title(f"Omicron (BA.1-like) in DE: Anteil")
 plt.xlabel("")
 plt.gca().set_ylim(auto=True)
 plt.gca().set_ylim(bottom=0)
@@ -207,3 +207,24 @@ plt.grid(axis="both")
 helper.mpl_add_text_source(source="RKI", date=date_last)
 plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-omicron.png", format="png")
+plt.close()
+
+
+df = df_date_sum
+for c in df_scorpio_call_top_ten.index:
+    df[c].plot(linewidth=2.0, legend=True)
+
+plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl")
+plt.xlabel("")
+plt.ylabel("Anzahl der Sequenzierungen")
+plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
+plt.grid(axis="both")
+plt.gcf().autofmt_xdate()
+plt.gca().set_ylim(auto=True)
+plt.gca().set_ylim(
+    0,
+)
+helper.mpl_add_text_source(source="RKI", date=date_last)
+plt.tight_layout()
+plt.savefig(fname=f"plots-python/mutations-de-all-absolute.png", format="png")
+plt.close()
