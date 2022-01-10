@@ -180,7 +180,7 @@ date_last = pd.to_datetime(df.index[-1]).date()
 
 # df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
 for c in df_scorpio_call_top_ten.index:
-    df[c].plot(linewidth=2.0, legend=True)
+    df[c].plot(linewidth=1.0, legend=True)
 
 plt.title(f"SARS-CoV-2 Mutationen in DE: Anteile")
 plt.xlabel("")
@@ -212,7 +212,7 @@ plt.close()
 
 df = df_date_sum
 for c in df_scorpio_call_top_ten.index:
-    df[c].plot(linewidth=2.0, legend=True)
+    df[c].plot(linewidth=1.0, legend=True)
 
 plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl")
 plt.xlabel("")
