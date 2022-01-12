@@ -65,8 +65,8 @@ jobs:
     - name: Data fetch-de-districts
       run: python3 fetch-de-districts.py
   
-#    - name: Data+Plot fetch-mortality-de
-#      run: python3 fetch-de-mortality.py
+    - name: Data+Plot fetch-mortality-de
+      run: python3 fetch-de-mortality.py
 
     - name: Data+Plot fetch-de-vaccination
       run: python3 fetch-plot-de-vaccination.py
