@@ -103,7 +103,7 @@ df_covid_2021 = (
 
 # 2. fetch and parse Excel of mortality data from Destatis
 
-excelFile = "cache\de-mortality.xlsx"
+excelFile = "cache/de-mortality.xlsx"
 
 
 if not helper.check_cache_file_available_and_recent(
@@ -120,9 +120,10 @@ if not helper.check_cache_file_available_and_recent(
 
 # data_only : read values instead of formulas
 workbookIn = openpyxl.load_workbook(excelFile, data_only=True)
-sheetIn = workbookIn["D_2016_2021_Tage"]
+sheetIn = workbookIn["D_2016_2022_Tage"]
 
 l_dates = []
+l_deaths2022 = []
 l_deaths2021 = []
 l_deaths2020 = []
 l_deaths2019 = []
@@ -135,12 +136,13 @@ for col in range(2, 368):
     if day == "29.02.":
         continue
     l_dates.append(day)
-    l_deaths2021.append(sheetIn.cell(column=col, row=10).value)
-    l_deaths2020.append(sheetIn.cell(column=col, row=11).value)
-    l_deaths2019.append(sheetIn.cell(column=col, row=12).value)
-    l_deaths2018.append(sheetIn.cell(column=col, row=13).value)
-    l_deaths2017.append(sheetIn.cell(column=col, row=14).value)
-    l_deaths2016.append(sheetIn.cell(column=col, row=15).value)
+    l_deaths2022.append(sheetIn.cell(column=col, row=10).value)
+    l_deaths2021.append(sheetIn.cell(column=col, row=11).value)
+    l_deaths2020.append(sheetIn.cell(column=col, row=12).value)
+    l_deaths2019.append(sheetIn.cell(column=col, row=13).value)
+    l_deaths2018.append(sheetIn.cell(column=col, row=14).value)
+    l_deaths2017.append(sheetIn.cell(column=col, row=15).value)
+    l_deaths2016.append(sheetIn.cell(column=col, row=16).value)
 
 
 data = zip(
@@ -151,9 +153,12 @@ data = zip(
     l_deaths2019,
     l_deaths2020,
     l_deaths2021,
+    l_deaths2022,
 )
 
-df = pd.DataFrame(data, columns=["Day", "2016", "2017", "2018", "2019", "2020", "2021"])
+df = pd.DataFrame(
+    data, columns=["Day", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+)
 
 df["2016_roll"] = df["2016"].rolling(window=7, min_periods=1).mean().round(1)
 df["2017_roll"] = df["2017"].rolling(window=7, min_periods=1).mean().round(1)
@@ -161,13 +166,14 @@ df["2018_roll"] = df["2018"].rolling(window=7, min_periods=1).mean().round(1)
 df["2019_roll"] = df["2019"].rolling(window=7, min_periods=1).mean().round(1)
 df["2020_roll"] = df["2020"].rolling(window=7, min_periods=1).mean().round(1)
 df["2021_roll"] = df["2021"].rolling(window=7, min_periods=1).mean().round(1)
+df["2022_roll"] = df["2022"].rolling(window=7, min_periods=1).mean().round(1)
 df["2016_2019_mean"] = df.iloc[:, [1, 2, 3, 4]].mean(axis=1)  # not column 0 = day
 df["2016_2019_mean_roll"] = (
     df["2016_2019_mean"].rolling(window=7, min_periods=1).mean().round(1)
 )
 
-df["2016_2019_roll_max"] = df.iloc[:, [7, 8, 9, 10]].max(axis=1)
-df["2016_2019_roll_min"] = df.iloc[:, [7, 8, 9, 10]].min(axis=1)
+df["2016_2019_roll_max"] = df.iloc[:, [8, 9, 10, 11]].max(axis=1)
+df["2016_2019_roll_min"] = df.iloc[:, [8, 9, 10, 11]].min(axis=1)
 
 df = df.join(df_covid_2020).join(df_covid_2021)
 
