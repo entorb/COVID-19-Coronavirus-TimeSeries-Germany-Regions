@@ -7,10 +7,12 @@ import json
 import hashlib
 import random
 from datetime import date, timedelta
+import sqlite3
 
 # import time
 
 # TODO
+
 
 ##########################
 # Copy of common functions
@@ -49,11 +51,11 @@ def db_connect():
 
 def db_updateHash(email) -> str:
     "in DB: update hash of email. returns hash"
-    curUpdate = con.cursor()
+    # curUpdate = con.cursor()
     h = genHash(email)
     sql = "UPDATE newsletter SET hash = ? WHERE email = ?"
-    curUpdate.execute(sql, (h, email))
-    con.commit()
+    db_newsletter_cursor_update.execute(sql, (h, email))
+    db_newsletter_connection.commit()
     return h
 
 
@@ -102,21 +104,19 @@ def insertNewEMail(
     send_bcc: str = "",
 ):
     # This is a copy from mailer-daemon/insert.py
-    import sqlite3
-
-    PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
-
+    # import sqlite3
+    # PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
     # ensureValidEMail(send_to) # uncommented, because send_to might contain the name as well
 
-    con = sqlite3.connect(PATH)
-    cur = con.cursor()
-    cur.execute(
+    # con = sqlite3.connect(PATH)
+    # cur = con.cursor()
+    db_outbox_cursor.execute(
         "INSERT INTO outbox(send_to, subject, body, send_from, send_cc, send_bcc, date_created, date_sent) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP, NULL)",
         (send_to, subject, body, send_from, send_cc, send_bcc),
     )
-    con.commit()
-    cur.close()
-    con.close()
+    db_outbox_connection.commit()
+    # cur.close()
+    # con.close()
 
 
 def format_line(
@@ -169,6 +169,14 @@ def get_slope_text_from_dict(d: dict) -> str:
 
 ##########################
 
+# DB connections
+if checkRunningOnServer():
+    PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
+    db_outbox_connection = sqlite3.connect(PATH)
+    db_outbox_cursor = db_outbox_connection.cursor()
+
+db_newsletter_connection, db_newsletter_cursor = db_connect()
+db_newsletter_cursor_update = db_newsletter_connection.cursor()
 
 # set path variables
 pathPrefixOnServer = "/var/www/virtual/entorb/html/COVID-19-coronavirus/"
@@ -180,8 +188,6 @@ if checkRunningOnServer():
     pathToDataDeStates = pathPrefixOnServer + pathToDataDeStates
     pathToDataCountries = pathPrefixOnServer + pathToDataCountries
 
-# connect to DB
-con, cur = db_connect()
 
 # load latest data
 d_data_DeDistricts = {}
@@ -300,7 +306,7 @@ for id in l_worst_country_ids:
 
 
 # loop over subscriptions
-for row in cur.execute(
+for row in db_newsletter_cursor.execute(
     "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"
 ):
     mailBody = ""
@@ -394,3 +400,11 @@ for row in cur.execute(
         )
 
         # time.sleep(60 + 5)  # 65s, as Uberspace has a limit of 60 mails per hour
+
+# DB disconnect
+db_newsletter_cursor.close()
+db_newsletter_cursor_update.close()
+db_newsletter_connection.close()
+if checkRunningOnServer():
+    db_outbox_cursor.close()
+    db_outbox_connection.close()
