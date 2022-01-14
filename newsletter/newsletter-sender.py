@@ -7,6 +7,7 @@ import json
 import hashlib
 import random
 from datetime import date, timedelta
+import time
 
 # TODO
 
@@ -236,9 +237,8 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #     continue
-    mailBody += """HINWEIS: Aufgrund der aktuellen Lage habe ich eine Prognose für den Bettenbedarf der Intensivstationen erstellt. Gerne an Krankenhäuser weitergeben, vielleicht hilft es deren Planung.
-https://entorb.net/COVID-19-coronavirus/#DeStatesIcuForecast
-LG Torben\n\n\n"""
+    mailBody += """HINWEIS: seit dem 12.12.2021 hatte ich Probleme mit dem Versand. Ich hoffe nun endlich die Ursache gefunden und behoben zu haben. Hintergrund: Mein Provider hat am 12.12.2021 seine Spam-Richtlinie verschärft und versendet nur noch max 60 eMails pro Stunde. Meine Lösung: Verzögerung des Sendes an die 200 Abonnenten.
+# LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -285,6 +285,8 @@ LG Torben\n\n\n"""
                 slope_arrow=d["Slope"]
             )
 
+        mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
+
         mailBody += "\nTop 10 Landkreise\n" + s_worst_lk
 
         mailBody += f"Datenstand Landkreisdaten: {s_date_data_hh}\n"
@@ -299,7 +301,6 @@ LG Torben\n\n\n"""
 
         # table footer
         mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner, ²absolut, ³7-Tages Differenz\n"
-        mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
 
         # create a new hash
         # add management link including new hash
@@ -310,5 +311,8 @@ LG Torben\n\n\n"""
 
         mailBody += f"\nAlle Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
 
+        # TODO: use php mail function
         sendmail(to=mailTo, body=mailBody,
                  subject=f"[COVID-19 Landkreis Benachrichtigung] - {reason_for_sending}")
+                 
+        time.sleep(60+5) # 65s, as Uberspace has a limit of 60 mails per hour
