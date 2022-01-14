@@ -211,6 +211,7 @@ plt.close()
 
 
 df = df_date_sum
+# df = df_date_sum_roll_av
 for c in df_scorpio_call_top_ten.index:
     df[c].plot(linewidth=1.0, legend=True)
 
