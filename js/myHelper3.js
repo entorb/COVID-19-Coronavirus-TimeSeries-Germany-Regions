@@ -223,12 +223,13 @@ function removeAllOptionsFromSelect(select) {
 
 // Formats value "Something_Is_HERE" to "Something Is Here"
 function capitalize_words(str, separator) {
+  str = str.replace("Cases_Last_Week_Per_100000", "Inzidenz");
   const allLowerCaseValue = str.split(separator).join(" ").toLowerCase();
   return allLowerCaseValue.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
 
-// Formats value "Something_Is_HERE" to "Something is here" like sentence
+// Formats value "Something Is HERE" to "Something is here" like sentence
 // value: The value to format
 // separator: the separator string between words
 function formatValueToSentenceLike(value, separator) { // , TODO: language

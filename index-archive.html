@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>COVID-19 Coronavirus Disease Spread Analysis in German Regions and the World - Archive</title>
+	<meta charset="utf-8">
+	<meta name="author" content="Dr. Torben Menke">
+	<!-- <link rel="stylesheet" href="/style.css" /> -->
+	<link rel="stylesheet" href="style-covid.css" />
+	<!-- Matomo -->
+	<script>
+		var _paq = window._paq || [];
+		/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function () {
+			var u = "https://entorb.net/stats/matomo/";
+			_paq.push(['setTrackerUrl', u + 'matomo.php']);
+			_paq.push(['setSiteId', '1']);
+			var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+			g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+		})();
+	</script>
+
+</head>
+
+<body>
+	<!-- Matomo noscript-->
+	<noscript>
+		<img src=" https://entorb.net/stats/matomo/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" />
+	</noscript>
+
+	<h2><a id="Germany"></a>Germany / Deutschland</h2>
+
+
+
+	<h4>
+		<a id="DeStatesCases"></a>Bundesländer - Infektionen
+	</h4>
+
+	<h5><a id="DeStatesCasesNew"></a>Neu-Infizierte pro 7 Tage</h5>
+
+	<p>Darstellungen des Zeitverlaufs an COVID-19 Erkrankungen in den deutschen Bundesländern. Die Zahlen habe ich
+		skaliert auf die Bevölkerung der Bundesländer, damit man diese miteinander vergleichen kann. Da die täglichen
+		Zahlen stark schwanken und Wochenenden einen deutlichen Effekt auf diese Schwankungen haben, habe ich in den
+		Darstellungen 7-Tagesdifferenzen verwendet.</p>
+	<img src="plots-gnuplot/de-states/cases-de-last_week-per-million.png" alt="cases-de-last_week-per-million.png"
+		width="640" height="800">
+	<img src="plots-gnuplot/de-states/cases-de-last_week-per-million-log.png"
+		alt="cases-de-last_week-per-million-log.png" width="640" height="800">
+	<br />
+	<small>generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
+			target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
+			target="_blank">de-state-XX.tsv</a>
+	</small>
+
+	<h5><a id="DeStatesCasesLastWeek"></a>Gesamtzahl der Infizierten</h5>
+	<img src="plots-gnuplot/de-states/cases-de-per-million.png" alt="cases-de-per-million.png" width="640" height="800">
+	<img src="plots-gnuplot/de-states/cases-de-per-million-log.png" alt="cases-de-per-million.png" width="640"
+		height="800">
+	<br />
+	<small>generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
+			target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
+			target="_blank">de-state-XX.tsv</a>
+	</small>
+
+
+	<!-- <h5>
+		<a id="cases-de-states-latest-per-million"></a> Gesamtzahl Infizierte - Bar Chart</h5>
+
+	<p>Die graue Linie zeigt den Wert für Gesamtdeutschland.</p>
+	<img src="plots-gnuplot/de-states/cases-de-states-latest-per-million.png" alt="cases-de-states-latest-per-million.png"><br />
+	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-de.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states-latest.tsv" target="_blank">de-states-latest.tsv</a>
+	</small>
+
+	<p><small><a href="#ToC">Back to top</a></small></p> <hr />-->
+
+	<h4>
+		<a id="DeStatesDeaths"></a>Bundesländer - Opfer
+	</h4>
+
+	<p> In den Darstellungen der Opferzahlen habe ich auf der rechten Seite Referenzwerte zu anderen Todesursachen
+		angegeben, Quellen dazu siehe <a href="#RefDeathCauses">diese Tabelle</a> unten. Hinweis: die dem RKI gemeldeten
+		Opferzahlen haben einen Meldeverzug von ca. 3 Wochen, daher sind die letzen Zahlen noch nicht korrekt.
+		<!-- Todeszahlen laufen
+		den Infektionszahlen um ca. 3 Wochen hinterher. Im Median sterben Patienten <a
+			href="https://www.worldometers.info/coronavirus/coronavirus-death-rate/#days" target="_blank">14 Tage</a>
+		nach den ersten Symptomen, die wiederrum etwa <a
+			href="https://www.worldometers.info/coronavirus/coronavirus-incubation-period/" target="_blank">3-5 Tage</a>
+		nach der Infektion auftreten. -->
+	</p>
+
+	<h5><a id="DeStatesDeathsLastWeek"></a>Neu-Verstorbene pro 7 Tage</h5>
+	<img src="plots-gnuplot/de-states/deaths-de-last_week-per-million.png" alt="deaths-de-last_week-per-million.png"
+		width="640" height="800">
+	<img src="plots-gnuplot/de-states/deaths-de-last_week-per-million-log.png"
+		alt="deaths-de-last_week-per-million-log.png" width="640" height="800"><br />
+	<!-- <p> Fazit vom 24.04.2020: </p>
+	<ul>
+		<li>Bisher noch unter den geschätzten Zahlen der besonders starken Grippe Saison von 2017</li>
+		<li> In einigen Bundesländern bereits mehr COVID-19 Tote als Verkehrstote im ganzen Jahr 2019</li>
+		<li>Die Steigerungsrate der Todeszahl hat zwar stagniert, nimmt aber noch immer nicht merklich ab. Sprich bisher
+			starben jede Woche mehr Menschen an COVID-19 als in den Wochen zuvor.</li>
+	</ul> -->
+
+	<h5>Gesamtzahl der Opfer</h5>
+	<img src="plots-gnuplot/de-states/deaths-de-per-million.png" alt="deaths-de-per-million.png" width="640"
+		height="800">
+	<img src="plots-gnuplot/de-states/deaths-de-per-million-log.png" alt="deaths-de-per-million-log.png" width="640"
+		height="800">
+	<br /> <small>generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
+			target="_blank">plot-de-states-timeseries-joined</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
+			target="_blank">de-state-XX.tsv</a></small>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
+
+	<h4><a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher?
+	</h4>
+
+	<p>In der folgenden Abbildung habe ich für Deutschland die Neu-Infizierten und die Neu-Verstorbenen (jeweils pro 7
+		Tage und pro 1 Millionen Einwohner) aufgetragen. Die Kurve der Neu-Verstorbenen habe ich dann zeitlich
+		verschoben und skaliert auf den Frühjahrspeak der Neu-Infektionen.</p>
+	<img src="plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week_per_million.png"
+		alt="shift-deaths-to-match-cases_DE_last-week_per_million.png" width="640" height="480">
+	<br />
+	<small>generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/plot-de-shift-deaths-to-match-cases.gp"
+			target="_blank">plot-de-shift-deaths-to-match-cases.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv"
+			target="_blank">de-state-DE-total.tsv</a>
+	</small>
+
+	<p>Ergebnis vom 28.10.2020: Im Frühjahr 2020 war die Verzögerung zwischen Infektion und Tod etwa 14 Tage mit einer
+		Skalierung von 4.3%. Im Sommer 2020 liegt die Kurve der Neu-Infizierten bei dieser Skalierung oberhalb der Kurve
+		der Opferzahlen. Gründe dafür könnten in der Anzahl der durchgeführten Tests und im Altersprofil der Infizierten
+		zu finden sein.</p>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+	<!-- <h4>
+		<a id="DE_shift_deaths_to_cases"></a> Um wieviele Tage läuft die Opferzahl der Zahl der Infizierten hinterher? </h4>
+
+	<p>In der folgenden Abbildung habe ich für Deutschland die Neu-Infizierten und die Neu-Verstorbenen aufgetragen. Die Kurve der Neu-Verstorbenen habe ich dann zeitlich verschoben um heraus zu finden, um wie viele Tage die Verstorbenen "nachlaufen". Anstatt von Tagessummen wurde die 7-Tage-Differenz verwendet um Wochenendeffekte auszuschließen.</p>
+	<img src="plots-gnuplot/de-states/shift-deaths-to-match-cases_DE_last-week.png" alt="shift-deaths-to-match-cases_DE_last-week.png" width="640" height="480">
+
+	<p>Ergebnis vom 27.04.2020: 14 Tage passen ziemlich gut. Somit ist anzunehmen, dass die Opferzahlen noch mindestens 14 Tage lang abnehmen werden. Für die Zeit von Infektion bis positiv getestet vergehen vermutlich nochmal 7 Tage, so dass wohl 3 Wochen zwischen Beginn einer Maßnahme und Sichtbarkeit dieser in den Opferzahlen liegen wird. Für die beste Übereinstimmung der Kurven habe ich die rechte Achse der Verstorbenen auf 4.2% der linken Achse skaliert. Beides habe ich "nach Auge" gemacht und keine Optimierungsroutine verwendet.</p>
+
+	<p><a id="DE_forecasting-deaths"></a> Analog lässt sich aus dem Zeitverlauf der Infektionen eine Prognose für die Opferzahl für die nächsten 14 Tage erstellen, die direkt mit der Auslastung der Krankenhäuser korrelieren sollte. Hier exemplarisch für Deutschland, Bundesland Bayern und Stadt Erlangen. Skaliert jeweils pro Millionen Einwohner. </p>
+	<img src="plots-gnuplot/de-states/forecasting-deaths-DE.png" alt="forecasting-deaths-DE.png" width="640" height="480">
+	<img src="plots-gnuplot/de-states/forecasting-deaths-BY.png" alt="forecasting-deaths-BY.png" width="640" height="480">
+	<img src="plots-gnuplot/de-states/forecasting-deaths-Erlangen.png" alt="forecasting-deaths-Erlangen.png" width="640" height="480">
+	<br />
+	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-shift-deaths-to-match-cases.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv" target="_blank">de-state-DE-total.tsv</a> </small>
+
+	 -->
+
+
+
+	<h4>
+		<a id="Exp_Wachstum"></a> Untersuchung der exponentiellen Zunahme der Infektionen in Deutschland
+	</h4>
+
+	<p><strike>Dieses Kapitel ist nicht mehr relevant, da wir glücklicherweise den Bereich der exponentiellen Zunahme
+			der Neu-Infektionen verlassen haben.</strike> Daher habe ich es <a
+			href="expGrowth.html#Exp_Wachstum">archiviert</a>.</p>
+
+
+
+
+
+	<h2><a id="World">World</h2>
+
+
+
+	<h3><a id="SelectedCountries"></a>Comparison of selected countries</h3>
+
+	<h4>Current situation</h4>
+
+	<p>Deaths, absolute values.</p>
+	<img src="plots-gnuplot/int/countries-latest-selected-deaths.png" alt="countries-latest-selected-deaths.png"
+		width="640" height="480">
+	<img src="plots-gnuplot/int/countries-latest-selected-deaths-log.png" alt="countries-latest-selected-deaths-log.png"
+		width="640" height="480">
+	<br />
+	<small> generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
+			target="_blank">plot-countries.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/countries-latest-selected.tsv"
+			target="_blank">countries-latest-selected.tsv</a>
+	</small>
+
+	<p> Deaths, scaled by population of the countries, to make them comparable. </p>
+	<img src="plots-gnuplot/int/countries-latest-selected-deaths-per-mill.png"
+		alt="countries-latest-selected-deaths-per-mill.png" width="640" height="480">
+	<img src="plots-gnuplot/int/countries-latest-selected-deaths-per-mill-log.png"
+		alt="countries-latest-selected-deaths-per-mill-log.png" width="640" height="480">
+	<br />
+	<small> generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
+			target="_blank">plot-countries.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/countries-latest-selected.tsv"
+			target="_blank">countries-latest-selected.tsv</a>
+	</small>
+
+	<p>See table below for <a href="#RefDeathCauses">reference data: deaths by other causes</a></p>
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+	<h4><a id="CountriesTimeseriesDeaths"></a>Timeseries</h4>
+	<!-- <h3>
+				<a id="CountriesTimeseriesDeaths"></a>How did the death toll develop in different countries?</h3> -->
+	<!-- <p> Let us now take a look into the past. In the following set of plots, I moved the time (x) axis zero point to the
+				time when a given country reported its 2nd death cases. This allows for comparing the spreading in the countries.
+				First using absolute values. </p> -->
+
+	<p>First using absolute values.</p>
+	<img src="plots-gnuplot/int/countries-deaths-absolute.png" alt="countries-deaths-absolute.png" width="800"
+		height="800">
+	<img src="plots-gnuplot/int/countries-deaths-absolute-log.png" alt="countries-deaths-absolute-log.png" width="800"
+		height="800">
+	<br />
+	<small> generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
+			target="_blank">plot-countries-deaths.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
+			target="_blank">countries-timeseries-XX.tsv</a>
+	</small>
+
+	<p> Now again re-scaled to the population of the countries, to make them comparable. </p>
+	<img src="plots-gnuplot/int/countries-deaths-per-million.png" alt="countries-deaths-per-million.png" width="800"
+		height="800">
+	<img src="plots-gnuplot/int/countries-deaths-per-million-log.png" alt="countries-deaths-per-million-log.png"
+		width="800" height="800">
+	<br />
+
+	<p> Now weekly new deaths per million population. I decided to use this delta of the last 7 days (rolling
+		week)
+		instead of daily new deaths values, since there are strong weekend and other effects present, leading to
+		wrong
+		conclusions.
+		<!-- Note: for here the data is smoothed using a Bézier curve. -->
+	</p>
+	<img src="plots-gnuplot/int/countries-deaths-last_week-per-million.png"
+		alt="countries-deaths-last_week-per-million.png" width="800" height="800">
+	<img src="plots-gnuplot/int/countries-deaths-last_week-per-million-log.png"
+		alt="countries-deaths-last_week-per-million-log.png" width="800" height="800">
+	<br />
+	<small> generated via Gnuplot <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
+			target="_blank">plot-countries-deaths.gp</a>, raw data can be found in <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
+			target="_blank">countries-timeseries-XX.tsv</a>
+	</small>
+
+	<p> See <a href="#RefDeathCauses">reference table</a> for the numbers used. </p>
+
+	<p><small>
+			<a href="#ToC">Back to top</a></small></p>
+	<hr />
+	<!-- <h4>Findings</h4>
+			<ul>
+				<li> 02.04.2020: Spain and Italy have about twice the death toll per million population that the US had in the flu
+					seasion 2018/19. </li>
+				<li> 02.04.2020: In Spain the daily death toll is as high as the total annual drug overdose deaths in Germany </li>
+				<li> 31.03.2020: US have more COVID-19 deaths than at 9/11, as well as surpassing China in terms of absolute
+					numbers. </li>
+				<li> 22.03.2020: Italy today has 50% more total casualties than China </li>
+			</ul>
+		
+			<p><small>
+					<a href="#ToC">Back to top</a></small></p> -->
+
+
+
+
+	<!-- <h3>
+		<a id="Countries_Mortality"></a>Investigating the Calculated Case Mortality: Deaths per Reported Infections</h3>
+
+	<p>Different countries put different effort in testing the population for COVID-19. Hence, some have rather high death toll despite a rather low reported cases. The ratio between the two will be called "calculated case mortality" in the following. The calculated case mortality is of cause highly related to the test effort: more testing results in more reported cases and hence a lower calculated mortality. If on the other hand the clinics are overrun, this will result in an increase in mortality, as the docs are unable to heal all patients. Countries that show a strongly exponentially increasing death toll (short doubling time) will have a lower calculated mortality than the true value. Here a plots of this value for different countries. </p>
+	<img src="plots-gnuplot/int/countries-deaths-per-infections.png" alt="countries-deaths-per-infections.png" width="640" height="480"><br />
+	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-countries.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/countries-joined_selected_and_gnuplot_fit.tsv" target="_blank">countries-latest_selected.tsv</a>
+	</small>
+
+	<p>Findings</p>
+	<ul>
+		<li> Many of the selected countries have a calculated case mortality of around 2%. </li>
+		<li> 08.04.2020: In South Korea and Japan the exponential spread of the virus seems to be under control and they test quite a lot. Therefore, their calculated case mortality might be close to the true mortality in high-technology countries. South Korea today has a value of 1.9%, Japan of 2.2%. </li>
+		<li> 08.04.2020: Most countries that show high calculated case mortality (probably due to too little testing) are the owes facing severe problems today (IT, FR, BE. ES). If this correlation is true, I expect UK, NL and SE to have severe problems soon.</li>
+	</ul>
+
+	<p> Let us now compare the calculated case mortality to the deaths per capita </p>
+	<img src="plots-gnuplot/int/countries-mortality-vs-deaths-ppm.png" alt="countries-mortality-vs-deaths-ppm.png" width="640" height="480"><br />
+	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-countries.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/countries-joined_selected_and_gnuplot_fit.tsv" target="_blank">countries-latest_selected.tsv</a>
+	</small>
+
+	<p>Findings</p>
+	<ul>
+		<li> A low calculated case mortality seems to be related to low deaths per capita, so testing might safe lives, or it is a stronger medical system being related to higher testing capacity.</li>
+	</ul> -->
+
+</body>
+
+</html>
