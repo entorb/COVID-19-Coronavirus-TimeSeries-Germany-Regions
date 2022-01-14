@@ -7,7 +7,8 @@ import json
 import hashlib
 import random
 from datetime import date, timedelta
-import time
+
+# import time
 
 # TODO
 
@@ -30,16 +31,16 @@ def genHash(email: str) -> str:
 
 def gen_SHA256_string(s: str) -> str:
     m = hashlib.sha256()
-    m.update(s.encode('ascii'))
+    m.update(s.encode("ascii"))
     return m.hexdigest()
 
 
 def db_connect():
     # check I running on entorb.net webserver
     if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        pathToDb = '/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db'
+        pathToDb = "/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db"
     else:
-        pathToDb = 'cache/newsletter.db'
+        pathToDb = "cache/newsletter.db"
     con = sqlite3.connect(pathToDb)
     con.row_factory = sqlite3.Row  # allows for access via row["name"]
     cur = con.cursor()
@@ -56,27 +57,85 @@ def db_updateHash(email) -> str:
     return h
 
 
-SENDMAIL = "/usr/sbin/sendmail"
+# SENDMAIL = "/usr/sbin/sendmail"
 
 
-def sendmail(to: str, body: str, subject: str, sender: str = 'no-reply@entorb.net'):
-    mail = f"To: {to}\nSubject: {subject}\nFrom: {sender}\nContent-Type: text/plain; charset=\"utf-8\"\n\n{body}"
+# def sendmail(to: str, body: str, subject: str, sender: str = "no-reply@entorb.net"):
+#     mail = f'To: {to}\nSubject: {subject}\nFrom: {sender}\nContent-Type: text/plain; charset="utf-8"\n\n{body}'
+#     if checkRunningOnServer():
+#         p = os.popen(f"{SENDMAIL} -t -i", "w")
+#         p.write(mail)
+#         # status = p.close()
+#         p.close()
+#     else:
+#         print(mail)
+
+
+def sendmail(
+    to: str,
+    body: str,
+    subject: str = "[COVID-19 Landkreis Benachrichtigung]",
+    sender: str = "no-reply@entorb.net",
+):
+
     if checkRunningOnServer():
-        p = os.popen(f"{SENDMAIL} -t -i", "w")
-        p.write(mail)
-        # status = p.close()
-        p.close()
+        # V1: via SENDMAIL
+        # SENDMAIL = "/usr/sbin/sendmail"
+        # p = os.popen(f"{SENDMAIL} -t -i", "w")
+        # p.write(mail)
+        # # status = p.close()
+        # p.close()
+
+        # V2: via my Mailer Daemon
+        insertNewEMail(send_to=to, subject=subject, body=body, send_from=sender)
+
     else:
-        print(mail)
+        print(f"To: {to}\nSubject: {subject}\nFrom: {sender}\n{body}")
 
 
-def format_line(cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: str) -> str:
+def insertNewEMail(
+    send_to: str,
+    subject: str,
+    body: str,
+    send_from: str = "no-reply@entorb.net",
+    send_cc: str = "",
+    send_bcc: str = "",
+):
+    # This is a copy from mailer-daemon/insert.py
+    import sqlite3
+
+    PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
+
+    # ensureValidEMail(send_to) # uncommented, because send_to might contain the name as well
+
+    con = sqlite3.connect(PATH)
+    cur = con.cursor()
+    cur.execute(
+        "INSERT INTO outbox(send_to, subject, body, send_from, send_cc, send_bcc, date_created, date_sent) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP, NULL)",
+        (send_to, subject, body, send_from, send_cc, send_bcc),
+    )
+    con.commit()
+    cur.close()
+    con.close()
+
+
+def format_line(
+    cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: str
+) -> str:
     return "%6.1f | %5d | %3s | %s\n" % (
-        round(cases_lw_100k, 1), cases_lw, slope_arrow, location)
+        round(cases_lw_100k, 1),
+        cases_lw,
+        slope_arrow,
+        location,
+    )
 
 
 def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) -> str:
-    return "%6.1f           %3s | %s\n" % (round(cases_lw_100k, 1), slope_arrow, location)
+    return "%6.1f           %3s | %s\n" % (
+        round(cases_lw_100k, 1),
+        slope_arrow,
+        location,
+    )
 
 
 # def get_slope_arrow(slope: float) -> str:
@@ -107,14 +166,15 @@ def get_slope_text_from_dict(d: dict) -> str:
         slope = d["Cases_Last_Week_7Day_Percent"]
     return get_slope_text(slope)
 
+
 ##########################
 
 
 # set path variables
-pathPrefixOnServer = '/var/www/virtual/entorb/html/COVID-19-coronavirus/'
-pathToDataDeDistricts = 'data/de-districts/de-districts-results.json'
-pathToDataDeStates = 'data/de-states/de-states-latest.json'
-pathToDataCountries = 'data/int/countries-latest-all.json'
+pathPrefixOnServer = "/var/www/virtual/entorb/html/COVID-19-coronavirus/"
+pathToDataDeDistricts = "data/de-districts/de-districts-results.json"
+pathToDataDeStates = "data/de-states/de-states-latest.json"
+pathToDataCountries = "data/int/countries-latest-all.json"
 if checkRunningOnServer():
     pathToDataDeDistricts = pathPrefixOnServer + pathToDataDeDistricts
     pathToDataDeStates = pathPrefixOnServer + pathToDataDeStates
@@ -125,26 +185,28 @@ con, cur = db_connect()
 
 # load latest data
 d_data_DeDistricts = {}
-with open(pathToDataDeDistricts, mode='r', encoding='utf-8') as fh:
+with open(pathToDataDeDistricts, mode="r", encoding="utf-8") as fh:
     d_data_DeDistricts = json.load(fh)
 
 s_date_data_hh = d_data_DeDistricts["02000"]["Date_Latest"]
 date_data_hh = date.fromisoformat(s_date_data_hh)
-date_yesterday = date.today()-timedelta(days=1)
-assert date_data_hh == date_yesterday, f"date data hh: {date_data_hh} != date yesterday {date_yesterday}"
+date_yesterday = date.today() - timedelta(days=1)
+assert (
+    date_data_hh == date_yesterday
+), f"date data hh: {date_data_hh} != date yesterday {date_yesterday}"
 del date_data_hh, date_yesterday
 
 d_data_DeStates = {}
-with open(pathToDataDeStates, mode='r', encoding='utf-8') as fh:
+with open(pathToDataDeStates, mode="r", encoding="utf-8") as fh:
     d_data_DeStates = json.load(fh)
 
 d_data_Countries = {}
-with open(pathToDataCountries, mode='r', encoding='utf-8') as fh:
+with open(pathToDataCountries, mode="r", encoding="utf-8") as fh:
     # convert list to dict
     l = json.load(fh)
     for d in l:
-        code = d['Code']
-        del d['Code']
+        code = d["Code"]
+        del d["Code"]
         d_data_Countries[code] = d
 del code, fh, l, d
 
@@ -155,35 +217,41 @@ for id, d in d_data_DeDistricts.items():
     if id not in d_data_DeDistricts or "Cases_Last_Week_Per_Million" not in d:
         # print(id, d)
         continue
-    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"]/10
+    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
-for id, value in sorted(d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True):
+for id, value in sorted(
+    d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True
+):
     l_worst_lk_ids.append(id)
 del d_id_cases_DeDistricts, id
 
 # Ranking of worst Bundesländer
 d_id_cases_DeStates = {}
 for id, d in d_data_DeStates.items():
-    if id == 'DE-total':
-        cases_DE_last_week_100k = d["Cases_Last_Week_Per_Million"]/10
+    if id == "DE-total":
+        cases_DE_last_week_100k = d["Cases_Last_Week_Per_Million"] / 10
         slope_DE = get_slope_text_from_dict(d)
 
     else:
-        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_Million"]/10
+        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_Million"] / 10
         d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
-for id, value in sorted(d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True):
+for id, value in sorted(
+    d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True
+):
     l_worst_bl_ids.append(id)
 del d_id_cases_DeStates, id
 
 # Ranking of worst Countries
 d_id_cases_Countries = {}
 for id, d in d_data_Countries.items():
-    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_Million"]/10
+    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
-for id, value in sorted(d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True):
+for id, value in sorted(
+    d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True
+):
     l_worst_country_ids.append(id)
 del d_id_cases_Countries, id
 
@@ -196,10 +264,10 @@ for id in l_worst_lk_ids:
     count += 1
     d = d_data_DeDistricts[id]
     s_worst_lk += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-        slope_arrow=d["Slope"]
+        slope_arrow=d["Slope"],
     )
     if count == max_lines:
         break
@@ -209,10 +277,10 @@ s_worst_bl = ""
 for id in l_worst_bl_ids:
     d = d_data_DeStates[id]
     s_worst_bl += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
         cases_lw=d["Cases_Last_Week"],
         location=f"{d['State']}",
-        slope_arrow=d["Slope"]
+        slope_arrow=d["Slope"],
     )
 
 # string snippet of worst Countries
@@ -223,26 +291,28 @@ for id in l_worst_country_ids:
     count += 1
     d = d_data_Countries[id]
     s_worst_countries += format_line_only_rel(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
+        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
         location=f"{d['Country']}",
-        slope_arrow=d["Slope"]
+        slope_arrow=d["Slope"],
     )
     if count == max_lines:
         break
 
 
 # loop over subscriptions
-for row in cur.execute("SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"):
+for row in cur.execute(
+    "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"
+):
     mailBody = ""
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #     continue
-    mailBody += """HINWEIS: seit dem 12.12.2021 hatte ich Probleme mit dem Versand. Ich hoffe nun endlich die Ursache gefunden und behoben zu haben. Hintergrund: Mein Provider hat am 12.12.2021 seine Spam-Richtlinie verschärft und versendet nur noch max 60 eMails pro Stunde. Meine Lösung: Verzögerung des Sendes an die 200 Abonnenten.
-# LG Torben\n\n\n"""
+    # mailBody += """HINWEIS 3: seit dem 12.12.2021 hatte ich Probleme mit dem Versand. Ich hoffe nun endlich die Ursache gefunden und behoben zu haben. Hintergrund: Mein Provider hat am 12.12.2021 seine Spam-Richtlinie verschärft und versendet nur noch max 60 eMails pro Stunde. Meine Lösung: Verzögerung des Sendens an die 200 Abonnenten.
+    # LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
-    l_this_regions = row["regions"].split(',')
+    l_this_regions = row["regions"].split(",")
     # 16056 Eisenach was merged with 16063: LK Wartburgkreis
     # see https://www.eisenach.de/rathaus/fusion-der-stadt-eisenach
     if "16056" in l_this_regions:
@@ -251,7 +321,9 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
     # for sorting by value
     d_this_regions_cases_100k = {}
     for lk_id in l_this_regions:
-        d_this_regions_cases_100k[lk_id] = d_data_DeDistricts[lk_id]["Cases_Last_Week_Per_Million"]/10
+        d_this_regions_cases_100k[lk_id] = (
+            d_data_DeDistricts[lk_id]["Cases_Last_Week_Per_Million"] / 10
+        )
 
     toSend = False
     reason_for_sending = ""
@@ -274,15 +346,17 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
         mailBody += "Rel.¹ | Absolut² | Änderung³\n"
         mailBody += "Deine Landkreisauswahl\n"
         # table body
-        for lk_id, value in sorted(d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True):
+        for lk_id, value in sorted(
+            d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True
+        ):
             d = d_data_DeDistricts[lk_id]
             if "Slope" not in d:  # handling of missing disticts from API response
                 continue
             mailBody += format_line(
-                cases_lw_100k=d["Cases_Last_Week_Per_Million"]/10,
+                cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
                 cases_lw=d["Cases_Last_Week"],
                 location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-                slope_arrow=d["Slope"]
+                slope_arrow=d["Slope"],
             )
 
         mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
@@ -295,8 +369,9 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
 
         mailBody += "\nBundesländer\n" + s_worst_bl
 
-        mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(cases_DE_last_week_100k,
-                                                                       "Deutschland", slope_DE)
+        mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(
+            cases_DE_last_week_100k, "Deutschland", slope_DE
+        )
         mailBody += "\nLänder der Welt\n" + s_worst_countries
 
         # table footer
@@ -311,8 +386,11 @@ for row in cur.execute("SELECT email, verified, hash, threshold, regions, freque
 
         mailBody += f"\nAlle Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
 
-        # TODO: use php mail function
-        sendmail(to=mailTo, body=mailBody,
-                 subject=f"[COVID-19 Landkreis Benachrichtigung] - {reason_for_sending}")
-                 
-        time.sleep(60+5) # 65s, as Uberspace has a limit of 60 mails per hour
+        # uses php mail function and my outbox mailer.php
+        sendmail(
+            to=mailTo,
+            body=mailBody,
+            subject=f"[COVID-19 Landkreis Benachrichtigung] - {reason_for_sending}",
+        )
+
+        # time.sleep(60 + 5)  # 65s, as Uberspace has a limit of 60 mails per hour
