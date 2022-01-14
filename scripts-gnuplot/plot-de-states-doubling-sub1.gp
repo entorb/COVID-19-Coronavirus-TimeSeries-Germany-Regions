@@ -3,7 +3,7 @@
 # by Torben Menke
 # https://entorb.net
 
-title = "Trend der Neu-Infektionen in ".long_name
+title = "Trend der 7-Tages-Inzidenz in ".long_name
 set title title
 # fitting
 

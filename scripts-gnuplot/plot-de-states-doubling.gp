@@ -10,7 +10,7 @@ set title ""
 set key top right
 
 # set ylabel "Cases"
-set ylabel "Neu-Infektionen pro Woche pro 100000 Einwohner" tc rgb "blue"
+set ylabel "Inzidenz" tc rgb "blue"
 set yrange [0:]
 # set yrange [0.1:]; set logscale y
 set ytics nomirror tc rgb "blue"
