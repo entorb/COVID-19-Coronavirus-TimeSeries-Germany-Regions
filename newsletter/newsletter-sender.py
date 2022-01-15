@@ -120,41 +120,50 @@ def insertNewEMail(
 
 
 def format_line(
-    cases_lw_100k: str, cases_lw: str, location: str, slope_arrow: str
+    value_relative: str, value_absolute: str, location: str, slope: str
 ) -> str:
-    return "%6.1f | %5d | %3s | %s\n" % (
-        round(cases_lw_100k, 1),
-        cases_lw,
-        slope_arrow,
+    return "%5d | %8d | %3s | %s\n" % (
+        value_relative,
+        value_absolute,
+        slope,
         location,
     )
 
 
-def format_line_only_rel(cases_lw_100k: str, location: str, slope_arrow: str) -> str:
-    return "%6.1f           %3s | %s\n" % (
-        round(cases_lw_100k, 1),
-        slope_arrow,
+def format_line_only_rel(value_relative: str, location: str, slope: str) -> str:
+    return "%5d              %3s | %s\n" % (
+        value_relative,
+        slope,
         location,
     )
 
 
-# def get_slope_arrow(slope: float) -> str:
+def format_line_no_slope(
+    value_relative: str, value_absolute: str, location: str
+) -> str:
+    return "%5.1f | %8d | %s\n" % (
+        value_relative,
+        value_absolute,
+        location,
+    )
+
+
+# def get_slope(slope: float) -> str:
 #     if slope >= 3:
-#         slope_arrow = "↑"
+#         slope = "↑"
 #     elif slope >= 1:
-#         slope_arrow = "↗"
+#         slope = "↗"
 #     elif slope > -1:
-#         slope_arrow = "→"
+#         slope = "→"
 #     elif slope > -3:
-#         slope_arrow = "↘"
+#         slope = "↘"
 #     else:
-#         slope_arrow = "↓"
-#     return slope_arrow
+#         slope = "↓"
+#     return slope
 
 
 def get_slope_text(slope: float) -> str:
-    # s = "%+5.1f%%" % slope
-    s = "%+3d%%" % slope
+    s = "%+4d%%" % slope
     return s
 
 
@@ -237,6 +246,7 @@ d_id_cases_DeStates = {}
 for id, d in d_data_DeStates.items():
     if id == "DE-total":
         cases_DE_last_week_100k = d["Cases_Last_Week_Per_Million"] / 10
+        cases_DE_last_week = d["Cases_Last_Week"]
         slope_DE = get_slope_text_from_dict(d)
 
     else:
@@ -249,7 +259,7 @@ for id, value in sorted(
     l_worst_bl_ids.append(id)
 del d_id_cases_DeStates, id
 
-# Ranking of worst Countries
+# Ranking of worst Countries - Cases
 d_id_cases_Countries = {}
 for id, d in d_data_Countries.items():
     d_id_cases_Countries[id] = d["Cases_Last_Week_Per_Million"] / 10
@@ -261,6 +271,18 @@ for id, value in sorted(
     l_worst_country_ids.append(id)
 del d_id_cases_Countries, id
 
+# Ranking of worst Countries - Cases
+d_id_deaths_Countries = {}
+for id, d in d_data_Countries.items():
+    d_id_deaths_Countries[id] = d["Deaths_Last_Week_Per_Million"]
+    # d["Slope"] = get_slope_text_from_dict(d)
+l_worst_country_ids_deaths = []
+for id, value in sorted(
+    d_id_deaths_Countries.items(), key=lambda item: item[1], reverse=True
+):
+    l_worst_country_ids_deaths.append(id)
+del id
+
 
 # string snippet of worst DeDistricts
 s_worst_lk = ""
@@ -270,10 +292,10 @@ for id in l_worst_lk_ids:
     count += 1
     d = d_data_DeDistricts[id]
     s_worst_lk += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
-        cases_lw=d["Cases_Last_Week"],
+        value_relative=d["Cases_Last_Week_Per_Million"] / 10,
+        value_absolute=d["Cases_Last_Week"],
         location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-        slope_arrow=d["Slope"],
+        slope=d["Slope"],
     )
     if count == max_lines:
         break
@@ -283,23 +305,40 @@ s_worst_bl = ""
 for id in l_worst_bl_ids:
     d = d_data_DeStates[id]
     s_worst_bl += format_line(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
-        cases_lw=d["Cases_Last_Week"],
+        value_relative=d["Cases_Last_Week_Per_Million"] / 10,
+        value_absolute=d["Cases_Last_Week"],
         location=f"{d['State']}",
-        slope_arrow=d["Slope"],
+        slope=d["Slope"],
     )
 
-# string snippet of worst Countries
+# string snippet of worst Countries - Cases
 s_worst_countries = ""
 max_lines = 30
 count = 0
 for id in l_worst_country_ids:
     count += 1
     d = d_data_Countries[id]
-    s_worst_countries += format_line_only_rel(
-        cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
+    s_worst_countries += format_line(
+        value_relative=d["Cases_Last_Week_Per_Million"] / 10,
+        value_absolute=d["Cases_Last_Week"],
         location=f"{d['Country']}",
-        slope_arrow=d["Slope"],
+        slope=d["Slope"],
+    )
+    if count == max_lines:
+        break
+
+
+# string snippet of worst Countries - Deaths
+s_worst_countries_deaths = ""
+max_lines = 30
+count = 0
+for id in l_worst_country_ids_deaths:
+    count += 1
+    d = d_data_Countries[id]
+    s_worst_countries_deaths += format_line_no_slope(
+        value_relative=d_id_deaths_Countries[id],
+        value_absolute=d["Deaths_Last_Week"],
+        location=f"{d['Country']}",
     )
     if count == max_lines:
         break
@@ -310,11 +349,13 @@ for row in db_newsletter_cursor.execute(
     "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"
 ):
     mailBody = ""
+    # TODO
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
-    #     continue
-    # mailBody += """HINWEIS 3: seit dem 12.12.2021 hatte ich Probleme mit dem Versand. Ich hoffe nun endlich die Ursache gefunden und behoben zu haben. Hintergrund: Mein Provider hat am 12.12.2021 seine Spam-Richtlinie verschärft und versendet nur noch max 60 eMails pro Stunde. Meine Lösung: Verzögerung des Sendens an die 200 Abonnenten.
-    # LG Torben\n\n\n"""
+    #   continue
+    mailBody += """Frage: Hat jemand einen Linux Mailserver, auf den ich diesen Newsletter-Versand umstellen kann? Mein Provider limitiert die Mails auf 60/60min, was zu erheblicher Verzögerung bei den aktuell 200 Abonnenten führt.
+    Kontakt: https://entorb.net/contact.php?origin=COVID-19
+    LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -348,8 +389,8 @@ for row in db_newsletter_cursor.execute(
     if toSend:
         # mailBody += f"Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n\n"
         # table header
-        mailBody += "Infektionen      : Ort\n"
-        mailBody += "Rel.¹ | Absolut² | Änderung³\n"
+        mailBody += "Infektionen\n"
+        mailBody += "Rel.¹ | Absolut² | Änderung³\n"
         mailBody += "Deine Landkreisauswahl\n"
         # table body
         for lk_id, value in sorted(
@@ -359,10 +400,10 @@ for row in db_newsletter_cursor.execute(
             if "Slope" not in d:  # handling of missing disticts from API response
                 continue
             mailBody += format_line(
-                cases_lw_100k=d["Cases_Last_Week_Per_Million"] / 10,
-                cases_lw=d["Cases_Last_Week"],
+                value_relative=d["Cases_Last_Week_Per_Million"] / 10,
+                value_absolute=d["Cases_Last_Week"],
                 location=f"{d['LK_Name']} ({d['LK_Typ']} in {d['BL_Code']})",
-                slope_arrow=d["Slope"],
+                slope=d["Slope"],
             )
 
         mailBody += f"\nZeitverlauf Deiner ausgewählten Landkreise: https://entorb.net/COVID-19-coronavirus/?yAxis=Cases_Last_Week_Per_100000&DeDistricts={s_this_regions}&Sort=Sort_by_last_value#DeDistrictChart\n"
@@ -375,13 +416,23 @@ for row in db_newsletter_cursor.execute(
 
         mailBody += "\nBundesländer\n" + s_worst_bl
 
-        mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(
-            cases_DE_last_week_100k, "Deutschland", slope_DE
+        mailBody += "\nDeutschland gemittelt\n" + format_line(
+            cases_DE_last_week_100k, cases_DE_last_week, "Deutschland", slope_DE
         )
-        mailBody += "\nLänder der Welt\n" + s_worst_countries
+        # mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(
+        #     cases_DE_last_week_100k, "Deutschland", slope_DE
+        # )
+        mailBody += "\nLänder der Welt - Inzidenzen\n" + s_worst_countries
 
         # table footer
         mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner, ²absolut, ³7-Tages Differenz\n"
+
+        mailBody += "\n\nLänder der Welt - Opferzahlen\n"
+        mailBody += "Rel.¹ | Absolut² | Land\n"
+
+        mailBody += s_worst_countries_deaths
+        # table footer
+        mailBody += "Einheiten: Opfer letzte Woche, ¹relativ pro Mill. Einwohner, ²absolut / Gesamtzahl\n"
 
         # create a new hash
         # add management link including new hash
