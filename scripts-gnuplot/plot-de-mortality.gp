@@ -48,7 +48,8 @@ plot \
     , data using (column("Day")):(column("2018_roll")) title "2018" axis x1y1 with lines ls 3 \
     , data using (column("Day")):(column("2019_roll")) title "2019" axis x1y1 with lines ls 1 \
     , data using (column("Day")):(column("2020_roll"))   title "2020" axis x1y1  with lines ls 2 lw 4 \
-    , data using (column("Day")):(column("2021_roll"))   title "2021" axis x1y1  with lines ls 6 lw 4
+    , data using (column("Day")):(column("2021_roll"))   title "2021" axis x1y1  with lines ls 6 lw 4 \
+    , data using (column("Day")):(column("2022_roll"))   title "2022" axis x1y1  with lines ls 8 lw 4
 unset output
 
 set terminal pngcairo size 640,800 font 'Verdana,9'
