@@ -354,8 +354,8 @@ for row in db_newsletter_cursor.execute(
     # if row["email"] != "my-email-address":
     #   continue
     mailBody += """Frage: Hat jemand einen Linux Mailserver, auf den ich diesen Newsletter-Versand umstellen kann? Mein Provider limitiert die Mails auf 60/60min, was zu erheblicher Verzögerung bei den aktuell 200 Abonnenten führt.
-    Kontakt: https://entorb.net/contact.php?origin=COVID-19
-    LG Torben\n\n\n"""
+Kontakt: https://entorb.net/contact.php?origin=COVID-19
+LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -389,7 +389,7 @@ for row in db_newsletter_cursor.execute(
     if toSend:
         # mailBody += f"Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n\n"
         # table header
-        mailBody += "Infektionen\n"
+        mailBody += "Infektionen (Quelle: RKI)\n\n"
         mailBody += "Rel.¹ | Absolut² | Änderung³\n"
         mailBody += "Deine Landkreisauswahl\n"
         # table body
@@ -416,23 +416,23 @@ for row in db_newsletter_cursor.execute(
 
         mailBody += "\nBundesländer\n" + s_worst_bl
 
-        mailBody += "\nDeutschland gemittelt\n" + format_line(
+        mailBody += "\nDeutschland gesamt\n" + format_line(
             cases_DE_last_week_100k, cases_DE_last_week, "Deutschland", slope_DE
         )
-        # mailBody += "\nDeutschland gemittelt\n" + format_line_only_rel(
+        # mailBody += "\nDeutschland\n" + format_line_only_rel(
         #     cases_DE_last_week_100k, "Deutschland", slope_DE
         # )
-        mailBody += "\nLänder der Welt - Inzidenzen\n" + s_worst_countries
+        mailBody += "\nLänder der Welt - Inzidenzen (Quelle: JHU)\n" + s_worst_countries
 
         # table footer
-        mailBody += "Einheiten: Neu-Infektionen letzte Woche, ¹relativ pro 100.000 Einwohner, ²absolut, ³7-Tages Differenz\n"
+        mailBody += "Einheiten: Neu-Infektionen letzte Woche\n ¹relativ pro 100.000 Einwohner, ²absolut = Gesamtzahl, ³7-Tages Änderung\n"
 
-        mailBody += "\n\nLänder der Welt - Opferzahlen\n"
+        mailBody += "\n\nLänder der Welt - Opferzahlen (Quelle: JHU)\n"
         mailBody += "Rel.¹ | Absolut² | Land\n"
 
         mailBody += s_worst_countries_deaths
         # table footer
-        mailBody += "Einheiten: Opfer letzte Woche, ¹relativ pro Mill. Einwohner, ²absolut / Gesamtzahl\n"
+        mailBody += "Einheiten: Opfer letzte Woche\n ¹relativ pro Mill. Einwohner, ²absolut = Gesamtzahl\n"
 
         # create a new hash
         # add management link including new hash
