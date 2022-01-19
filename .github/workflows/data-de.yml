@@ -74,8 +74,8 @@ jobs:
     - name: Data+Plot fetch-plot-de-age-percent
       run: python3 fetch-plot-de-age-percent.py
 
-    - name: Data+Plot fetch-plot-de-mutations
-      run: python3 fetch-plot-de-mutations.py
+#    - name: Data+Plot fetch-plot-de-mutations
+#      run: python3 fetch-plot-de-mutations.py
 
     - name: Data show dates
       run: bash show_data_dates.sh
