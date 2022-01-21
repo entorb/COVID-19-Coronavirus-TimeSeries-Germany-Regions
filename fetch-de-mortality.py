@@ -40,7 +40,7 @@ df2["Date"] = df0["Date"]
 df2["Deaths_Covid"] = df0["Deaths_New"]
 del df0
 
-# drop deaths of last 3 weeks, as they are not final numbers
+# drop deaths of last 4 weeks, as they are not final yet
 df2["DateAsDate"] = pd.to_datetime(df2["Date"], format="%Y-%m-%d")
 date_4w = dt.date.today() - dt.timedelta(weeks=3)
 # print(date_4w)
@@ -160,6 +160,12 @@ df = pd.DataFrame(
     data, columns=["Day", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
 )
 
+# df["2022"] = df["2022"].fillna(0)
+# df["2022"].astype(int)
+# df["2022"] = df["2022"].replace(0, np.nan)
+
+# problem: rolling is extrapolating by 6 days into the future
+# , closed= did not fix it
 df["2016_roll"] = df["2016"].rolling(window=7, min_periods=1).mean().round(1)
 df["2017_roll"] = df["2017"].rolling(window=7, min_periods=1).mean().round(1)
 df["2018_roll"] = df["2018"].rolling(window=7, min_periods=1).mean().round(1)
@@ -178,3 +184,6 @@ df["2016_2019_roll_min"] = df.iloc[:, [8, 9, 10, 11]].min(axis=1)
 df = df.join(df_covid_2020).join(df_covid_2021)
 
 df.to_csv("data/de-mortality.tsv", sep="\t", index=False, line_terminator="\n")
+
+
+# print(df[["2022", "2022_roll"]].head(17))
