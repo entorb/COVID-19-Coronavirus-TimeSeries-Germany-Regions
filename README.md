@@ -1,6 +1,9 @@
 # COVID-19 Coronavirus Disease Spread Time Series Analyses for German Regions and Selected Countries
 
-Note: on 2022-01-19 I performed another history cleanup and removed data commit history. See backup repo [COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119](https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119).
+History data backups
+* 2022-01-19: I performed a history cleanup and removed data commit history. See backup repo [COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119](https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119).
+* 2021-06-26: I performed a history cleanup and removed data commit history. See backup repo [COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-210626](https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-210626).
+
 
 Here are fetching scripts and resulting data for all charts and reports presented at https://entorb.net/COVID-19-coronavirus/
 
