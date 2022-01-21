@@ -1,5 +1,10 @@
 # COVID-19 Coronavirus Disease Spread Time Series Analyses for German Regions and Selected Countries
 
+History data backups
+* 2022-01-19: I performed a history cleanup and removed data commit history. See backup repo [COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119](https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-220119).
+* 2021-06-26: I performed a history cleanup and removed data commit history. See backup repo [COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-210626](https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-210626).
+
+
 Here are fetching scripts and resulting data for all charts and reports presented at https://entorb.net/COVID-19-coronavirus/
 
 Scripts
@@ -14,7 +19,6 @@ Scripts
 Resulting data in JSON and CSV/TSV format can be browsed [here at GitHub](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data). 
 
 Sources
-* [German states data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-states) is from [Robert Koch Institut](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html) obtaind via [swildermann/COVID-19](https://github.com/swildermann/COVID-19)
 * [German districts data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts) is from [ArcGIS Covid19_RKI_Sums](https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/)
 * [German hospital data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-divi) is from [DIVI-Intensivregister](https://www.divi.de/register/tagesreport). (Thanks to Mr. Parvu for granting usage permission!) 
 * [International data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/int) is from Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE)  obtained via [pomber/covid19](https://github.com/pomber/covid19)
