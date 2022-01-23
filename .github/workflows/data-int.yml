@@ -5,7 +5,8 @@ name: Update Data Countries
 on:  
   workflow_dispatch:    
   schedule:
-    - cron: "13 3 * * *"
+  # UTC ! -> 4:03 DE (Wintertime)
+    - cron: "3 3 * * *"
 # TODO       
 #  push: 
 #    branches: [ master ]
@@ -73,22 +74,22 @@ jobs:
         cd ..
 
 # Update Charts
-    - name: Gnuplot install 
-      run: |
-        sudo apt-get update > /dev/null
-        sudo apt-get install gnuplot > /dev/null
-
-    - name: Gnuplot plotting
-      run: |
-        cd scripts-gnuplot
-        gnuplot all.gp
-        cd ..
-
-    - name: Gnuplot zipping plots-gnuplot/
-      run: |
-        cd plots-gnuplot
-        tar cfz ../cache/plots-gnuplot.tgz *
-        cd ..       
+#    - name: Gnuplot install 
+#      run: |
+#        sudo apt-get update > /dev/null
+#        sudo apt-get install gnuplot > /dev/null
+#
+#    - name: Gnuplot plotting
+#      run: |
+#        cd scripts-gnuplot
+#        gnuplot all.gp
+#        cd ..
+#
+#    - name: Gnuplot zipping plots-gnuplot/
+#      run: |
+#        cd plots-gnuplot
+#        tar cfz ../cache/plots-gnuplot.tgz *
+#        cd ..       
 
 # Publish to release       
     - name: Upload to realase
