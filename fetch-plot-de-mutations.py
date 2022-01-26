@@ -217,7 +217,7 @@ for c in df_scorpio_call_top_ten.index:
 
 plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl")
 plt.xlabel("")
-plt.ylabel("Anzahl der Sequenzierungen")
+plt.ylabel("Anzahl der tägl. Sequenzierungen")
 plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
 plt.grid(axis="both")
 plt.gcf().autofmt_xdate()
