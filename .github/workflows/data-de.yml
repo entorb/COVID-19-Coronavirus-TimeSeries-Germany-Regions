@@ -5,8 +5,8 @@ name: Update Data DE
 on:  
   workflow_dispatch:
   schedule:
-  # UTC ! -> 8:03 DE (Wintertime)
-    - cron: "3 7 * * *" 
+  # UTC ! -> 7:59 DE (Wintertime)
+    - cron: "59 6 * * *" 
 # TODO
 #  push: 
 #    branches: [ master ]
@@ -20,6 +20,10 @@ jobs:
     steps:
 
 # Initialize    
+    - name: print start date
+      run: |
+        date +%Y-%m-%d_%H:%M
+
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
