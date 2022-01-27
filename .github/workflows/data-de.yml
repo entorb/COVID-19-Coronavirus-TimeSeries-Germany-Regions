@@ -5,8 +5,8 @@ name: Update Data DE
 on:  
   workflow_dispatch:
   schedule:
-  # UTC ! -> 9:03 DE (Wintertime)
-    - cron: "3 8 * * *" 
+  # UTC ! -> 7:03 DE (Wintertime)
+    - cron: "3 6 * * *" 
 # TODO
 #  push: 
 #    branches: [ master ]
@@ -143,9 +143,10 @@ jobs:
         files: 
           cache/*.tgz
 
-    - name: print end date
+    - name: print end date and last data of HH
       run: |
         date +%Y-%m-%d_%H:%M
+        tail -n 1 data/de-districts/de-district_timeseries-02000.tsv
 
 # old stuff
 
