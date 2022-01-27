@@ -5,8 +5,8 @@ name: Update Data DE DIVI
 on:  
   workflow_dispatch:
   schedule:
-  # UTC ! -> 14:03 DE (Wintertime)
-    - cron: "3 13 * * *" 
+  # UTC ! -> 13:59 DE (Wintertime)
+    - cron: "59 12 * * *" 
 # TODO
 #  push: 
 #    branches: [ master ]
