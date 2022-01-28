@@ -66,6 +66,7 @@ jobs:
 
     - name: Data+Plot fetch-plot-de-pcr-tests
       run: fetch-plot-de-pcr-tests.py
+      
     - name: Data show dates
       run: bash show_data_dates.sh
 
