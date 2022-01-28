@@ -51,7 +51,7 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-    - name: Data+Plot fetch-mortality-de
+    - name: Data fetch-mortality-de
       run: python3 fetch-de-mortality.py
 
     - name: Data+Plot fetch-de-vaccination
@@ -64,6 +64,8 @@ jobs:
     - name: Data+Plot fetch-plot-de-mutations
       run: python3 fetch-plot-de-mutations.py
 
+    - name: Data+Plot fetch-plot-de-pcr-tests
+      run: fetch-plot-de-pcr-tests.py
     - name: Data show dates
       run: bash show_data_dates.sh
 
