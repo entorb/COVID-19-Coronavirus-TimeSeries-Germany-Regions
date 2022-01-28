@@ -2,6 +2,7 @@ import datetime as dt
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import locale
 
 import urllib.request
 import subprocess
@@ -10,7 +11,9 @@ import helper
 
 # siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
 
+locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
+# TODO. replace by helper.download_from_url_if_old(
 def fetch():
     """
     fetch/download data from rki github account
@@ -114,7 +117,7 @@ df_scorpio_top_ten_lastmonth = (
     .sum()
     .sort_values(by="count", ascending=False)
 )
-df_scorpio_top_ten_lastmonth = df_scorpio_top_ten_lastmonth.head(10)
+df_scorpio_top_ten_lastmonth = df_scorpio_top_ten_lastmonth.head(6)
 
 
 # 3. sum df
@@ -221,7 +224,7 @@ df_sum_alltime_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av
 
 
 # plotting
-
+fig, ax = plt.subplots(figsize=(8, 6))
 df = df_pct_alltime
 date_last = pd.to_datetime(df.index[-1]).date()
 # df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
@@ -239,11 +242,12 @@ plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-all.png", format="png")
 plt.close()
 
+fig, ax = plt.subplots(figsize=(8, 6))
 df = df_pct_lastmonth
 date_last = pd.to_datetime(df.index[-1]).date()
 # df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
 for c in df_scorpio_top_ten_lastmonth.index:
-    df[c].plot(linewidth=1.0, legend=True)
+    df[c].plot(linewidth=2.0, legend=True)
 plt.title(f"SARS-CoV-2 Mutationen in DE: Anteile letzte 2 Monate", loc="left")
 plt.xlabel("")
 plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
@@ -256,6 +260,7 @@ plt.tight_layout()
 plt.savefig(fname=f"plots-python/mutations-de-lastmonth.png", format="png")
 plt.close()
 
+# fig, ax = plt.subplots(figsize=(8, 6))
 # df = df_pct_alltime
 # df = df[df.index >= "2021-12-01"]
 # df["Omicron (BA.1-like)"].plot(linewidth=2.0, legend=False)
@@ -272,12 +277,13 @@ plt.close()
 # plt.close()
 
 
-df = df_sum_alltime
-# df = df_date_sum_roll_av
+fig, ax = plt.subplots(figsize=(8, 6))
+# df = df_sum_alltime
+df = df_sum_alltime_roll_av
 for c in df_scorpio_top_ten_alltime.index:
-    df[c].plot(linewidth=1.0, legend=True)
+    df[c].plot(linewidth=2.0, legend=True)
 
-plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl", loc="left")
+plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl 7-Tages-Mittel", loc="left")
 plt.xlabel("")
 plt.ylabel("Anzahl der tägl. Sequenzierungen")
 plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))

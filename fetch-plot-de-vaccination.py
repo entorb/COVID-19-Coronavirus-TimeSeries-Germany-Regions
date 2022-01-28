@@ -97,7 +97,7 @@ axes = [
     "",
 ]
 fig, axes[0] = plt.subplots(
-    nrows=1, ncols=1, sharex=True, dpi=100  # , figsize=(6, 8)  # default = 6.4,4.8
+    nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6)  # default = 6.4,4.8
 )
 
 fig.suptitle(f"COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
