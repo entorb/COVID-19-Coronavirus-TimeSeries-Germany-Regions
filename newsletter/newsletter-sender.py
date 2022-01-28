@@ -353,9 +353,9 @@ for row in db_newsletter_cursor.execute(
     # for debugging: only send to me
     # if row["email"] != "my-email-address":
     #   continue
-    mailBody += """Frage: Hat jemand einen Linux Mailserver, auf den ich diesen Newsletter-Versand umstellen kann? Mein Provider limitiert die Mails auf 60/60min, was zu erheblicher Verzögerung bei den aktuell 200 Abonnenten führt.
-Kontakt: https://entorb.net/contact.php?origin=COVID-19
-LG Torben\n\n\n"""
+#    mailBody += """Frage: Hat jemand einen Linux Mailserver, auf den ich diesen Newsletter-Versand umstellen kann? Mein Provider limitiert die Mails auf 60/60min, was zu erheblicher Verzögerung bei den aktuell 200 Abonnenten führt.
+# Kontakt: https://entorb.net/contact.php?origin=COVID-19
+# LG Torben\n\n\n"""
 
     mailTo = row["email"]
     s_this_regions = row["regions"]
@@ -439,9 +439,10 @@ LG Torben\n\n\n"""
         h = db_updateHash(mailTo)
         mailBody += f"\nAbmelden/Einstellungen ändern: https://entorb.net/COVID-19-coronavirus/newsletter-frontend.html?hash={h}\n"
 
+        mailBody += "\nAlle Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
         mailBody += "\nNeu anmelden: https://entorb.net/COVID-19-coronavirus/newsletter-register.html\n"
-
-        mailBody += f"\nAlle Auswertungen: https://entorb.net/COVID-19-coronavirus/\n"
+        mailBody += "\nKontakt: https://entorb.net/contact.php?origin=COVID-19\n"
+        
 
         # uses php mail function and my outbox mailer.php
         sendmail(
