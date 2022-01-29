@@ -21,6 +21,10 @@ jobs:
 
     steps:
     
+    - name: print start date
+      run: |
+        date +%Y-%m-%d_%H:%M
+
     - name: Checkout Repositiry
       uses: actions/checkout@v2
       with:
@@ -86,11 +90,6 @@ jobs:
 #        force: true
         directory: maps
 
-
-#    - name: Map upload artifact via tip
-#      uses: eine/tip@master
-#      with:
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        tag: tip
-#        files: |
-#          cache/maps.tgz
+    - name: print end date
+      run: |
+        date +%Y-%m-%d_%H:%M
