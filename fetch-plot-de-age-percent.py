@@ -348,6 +348,10 @@ def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 20305
 
 
 def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: int):
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
     # select subset of columns
     df = df[["Bev_Proz", "Covid_Fälle_Proz", "ICU_Proz", "Covid_Tote_Proz"]]
     # drop null value rows
@@ -388,7 +392,7 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
     # plt.xlabel("Prozent")
     plt.grid(axis="x")
     plt.ylabel("Altersgruppe (Jahre)")
-    plt.tight_layout()
+    fig.set_tight_layout(True)
     helper.mpl_add_text_source(
         source="RKI and DIVI", date=(dt.date.today() - dt.timedelta(days=1))
     )

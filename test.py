@@ -24,3 +24,11 @@ import helper
 import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
+
+
+# plot template
+
+
+
+if __name__ == "__main__":
+    pass

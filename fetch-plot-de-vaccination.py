@@ -13,6 +13,7 @@ __license__ = "GPL"
 # Built-in/Generic Imports
 
 # Further Modules
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
@@ -36,84 +37,85 @@ def fetch_and_prepare_data() -> pd.DataFrame:
         verbose=True,
     )
 
-    df0 = pd.read_csv(dataFileSource, sep=",")
-    df0 = helper.pandas_set_date_index(df=df0, date_column="Impfdatum")
+    df0 = pd.read_csv(
+        dataFileSource, sep=","  # , parse_dates=["Impfdatum"]  # , na_values=[None]
+    )
 
     # df of doses per day
     # cols: total, dose1, dose2,...
-    df_doses_per_day = df0.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
-    df_doses_per_day = helper.pandas_set_date_index(
-        df=df_doses_per_day, date_column="Impfdatum"
-    )
+    df = df0.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
+    df = helper.pandas_set_date_index(df=df, date_column="Impfdatum")
+    # rename index
+    df.index.name = "Date"
 
     # add a series filtered on the vaccination dose nummer 1..3
     for vac_dose_no in range(1, 3 + 1, 1):
         df_tmp = df0[df0["Impfserie"] == vac_dose_no]
         df_tmp = df_tmp.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
         df_tmp = helper.pandas_set_date_index(df=df_tmp, date_column="Impfdatum")
-        df_doses_per_day["Anzahl" + str(vac_dose_no)] = df_tmp["Anzahl"]
+        df["Dose" + str(vac_dose_no)] = df_tmp["Anzahl"]
     del df_tmp, vac_dose_no
 
     # add rolling averages
-    cols = df_doses_per_day.columns
+    cols = df.columns
     for c in cols:
-        df_doses_per_day = helper.pandas_calc_roll_av(
-            df=df_doses_per_day, column=c, days=7
-        )
+        df = helper.pandas_calc_roll_av(df=df, column=c, days=7)
     del cols
-    return df_doses_per_day
+    return df
 
 
-def plotit():
+def plotit(df: pd.DataFrame):
     # initialize plot
-    axes = [
-        "",
-    ]
+    axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
 
-    fig.suptitle(f"COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
+    date_last = pd.to_datetime(df.index[-1]).date()
+    colors = []
+    # sum_doses = df["Anzahl"].sum()
 
     # plot
-    l1_cols = df_doses_per_day.columns
+    l1_cols = df.columns
     l2_cols_roll_av = [elem for elem in l1_cols if "_roll_av" in elem]
     i = 0
     for c in l2_cols_roll_av:
-        df_doses_per_day[c].plot(
+        df[c].plot(
             ax=axes[0],
             # color=colors[i],
             legend=False,
             secondary_y=False,
-            zorder=2,
+            # zorder=2,
             linewidth=2.0,
         )
+        colors.append(axes[0].lines[i].get_color())
         i += 1
 
-    axes[0].set_ylim(
-        0,
-    )
+    # print(colors)
+
+    # Labels
+    fig.suptitle("COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
+    axes[0].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
+
+    # y min to 0
+    axes[0].set_ylim(0, None)
     axes[0].set_xlabel("")
     # axes[0].set_title("7-Tagesmittel", fontsize=10)
-    axes[0].set_zorder(1)
+
+    # grid
+    # axes[0].set_zorder(1)
     axes[0].grid(zorder=0)
     # axes[0].patch.set_visible(False)
 
-    # add text to bottom right
-    helper.mpl_add_text_source(source="RKI", date=date_last)
-
-    plt.legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
-
-    axes[0].get_yaxis().set_major_formatter(
+    # tick formatting: "1,000,000"
+    axes[0].yaxis.set_major_formatter(
         mtick.FuncFormatter(lambda x, p: format(int(x), ","))
     )
 
-    fig.tight_layout()
-    plt.savefig(fname=f"plots-python/de-vaccination.png", format="png")
+    helper.mpl_add_text_source(source="RKI", date=date_last)
+    fig.set_tight_layout(True)
+    fig.savefig(fname=f"plots-python/de-vaccination.png", format="png")
     plt.close()
 
 
 if __name__ == "__main__":
-    df_doses_per_day = fetch_and_prepare_data()
-    print(df_doses_per_day)
-    sum_doses = df_doses_per_day["Anzahl"].sum()
-    date_last = pd.to_datetime(df_doses_per_day.index[-1]).date()
-    plotit()
+    df = fetch_and_prepare_data()
+    plotit(df)

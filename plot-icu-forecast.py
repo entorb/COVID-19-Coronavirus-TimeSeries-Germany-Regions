@@ -37,8 +37,6 @@ timestart = time.time()
 # Matplotlib setup
 # Agg to prevent "Fail to allocate bitmap"
 mpl.use("Agg")  # Cairo
-# turn off interactive mode
-plt.ioff()
 
 
 # info : see icu-forecase/howto
@@ -350,7 +348,7 @@ def plot_2_its_per_21day_cases(df: pd.DataFrame, filename: str, landkreis_name: 
     y_max = df["quote_betten_covid_pro_cases_roll_sum_21"].max()
     axes.set_ylim(y_min, y_max)
 
-    plt.tight_layout()
+    fig.set_tight_layout(True)
     plt.savefig(fname=filename, format="png")
 
 
@@ -407,7 +405,7 @@ def plot_it(
     plt.legend(title="Inzidenz-Prognose")
     # axes.locstr = 'lower left'
 
-    plt.tight_layout()
+    fig.set_tight_layout(True)
     plt.savefig(fname=filepath, format="png")
 
     # zoomed plot

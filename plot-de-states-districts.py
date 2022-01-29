@@ -37,8 +37,6 @@ timestart = time.time()
 # Matplotlib setup
 # Agg to prevent "Fail to allocate bitmap"
 mpl.use("Agg")  # Cairo
-# turn off interactive mode
-plt.ioff()
 
 
 def calc_doubling_time(percent_7day: float) -> float:
@@ -150,7 +148,7 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
         # plt.gcf().text(0.09, 0.055, s=("DE-gesamt"),
         #                fontsize=8, horizontalalignment='left', verticalalignment='center', color=colors[2][1])
 
-    fig.tight_layout()
+    fig.set_tight_layout(True)
 
 
 def read_data(datafile: str) -> pd.DataFrame:

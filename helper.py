@@ -31,6 +31,9 @@ import requests  # for read_url_or_cachefile
 from scipy.optimize import curve_fit
 import urllib.request
 
+# Matplotlib: disable interactive mode
+# mpl.use("Agg")  # Cairo
+plt.ioff()
 
 # ensure all output folders are present
 os.makedirs("cache", exist_ok=True)
@@ -143,7 +146,9 @@ def pandas_set_date_index(df, date_column: str = "Date"):
     elif type(date_column) == str:
         df[date_column] = pd.to_datetime(df[date_column], format="%Y-%m-%d")
     assert df[date_column].dtype == "datetime64[ns]"
-    df.set_index([date_column], inplace=True)
+    # dt_index = pd.DatetimeIndex(df[date_column].values)
+    # df = df.set_index(dt_index) # problem: this does not remove the source column
+    df = df.set_index([date_column])
     assert df.index.dtype == "datetime64[ns]"
     return df
 

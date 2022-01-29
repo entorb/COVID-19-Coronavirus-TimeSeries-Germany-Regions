@@ -5,6 +5,7 @@
 This script downloads German SARS-COV-2 Mutation data from 
 https://github.com/robert-koch-institut/SARS-CoV-2-Sequenzdaten_aus_Deutschland/"
 and plots them
+siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
 """
 
 __author__ = "Dr. Torben Menke"
@@ -16,14 +17,13 @@ import datetime as dt
 import subprocess
 
 # Further Modules
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 
 # My Helper Functions
 import helper
-
-# siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
 
 # Set German date format for plots: Okt instead of Oct
 import locale
@@ -149,6 +149,10 @@ df_scorpio_top_ten_lastmonth = df_scorpio_top_ten_lastmonth.head(6)
 df_sum_alltime = df_scorpio_alltime.groupby("RECEIVE_DATE").sum()
 df_sum_lastmonth = df_scorpio_lastmonth.groupby("RECEIVE_DATE").sum()
 
+df_sum_alltime.set_index(pd.DatetimeIndex(df_sum_alltime.index))
+df_sum_lastmonth.set_index(pd.DatetimeIndex(df_sum_lastmonth.index))
+
+
 df_sum_alltime = df_sum_alltime.rename(
     {
         "count": "sequences_total",
@@ -174,9 +178,15 @@ df_sum_lastmonth = df_sum_lastmonth.rename(
 
 
 def filter_timeseries_df_on_scorpio_call(df: pd.DataFrame, scorpio_call: str):
+    # print(df)
     df2 = df[df["scorpio_call"] == scorpio_call]
-    df2.set_index(["RECEIVE_DATE"], inplace=True)
-    df2 = df2["count"].to_frame()
+    # print(df2)
+    df2 = df2.groupby("RECEIVE_DATE")["count"].sum()
+    df2 = df2.to_frame()
+
+    # print(df2)
+    # df2 = helper.pandas_set_date_index(df=df2, date_column="RECEIVE_DATE")
+
     # print(df2)
     return df2
 
@@ -193,21 +203,23 @@ def filter_timeseries_df_on_scorpio_call(df: pd.DataFrame, scorpio_call: str):
 # 4 add the top mutations to the sum df
 
 for c in df_scorpio_top_ten_alltime.index:
-    df_sum_alltime[c] = filter_timeseries_df_on_scorpio_call(
-        df=df_scorpio_alltime, scorpio_call=c
-    )["count"]
+    a = filter_timeseries_df_on_scorpio_call(df=df_scorpio_alltime, scorpio_call=c)
+    b = a["count"]
+    df_sum_alltime[c] = b
 
 
 for c in df_scorpio_top_ten_lastmonth.index:
-    df_sum_lastmonth[c] = filter_timeseries_df_on_scorpio_call(
-        df=df_scorpio_lastmonth, scorpio_call=c
-    )["count"]
+    a = filter_timeseries_df_on_scorpio_call(df=df_scorpio_lastmonth, scorpio_call=c)
+    b = a["count"]
+    df_sum_lastmonth[c] = b
 
 
 # replace missing / na values by 0
 df_sum_alltime = df_sum_alltime.fillna(0)
 df_sum_lastmonth = df_sum_lastmonth.fillna(0)
 
+
+# print(df_sum_alltime)
 
 # convert to percent
 df_pct_alltime = df_sum_alltime.copy()
@@ -246,77 +258,93 @@ for c in df_sum_lastmonth_roll_av.columns:
 df_sum_alltime_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av.csv")
 
 
-# plotting
-fig, ax = plt.subplots(figsize=(8, 6))
-df = df_pct_alltime
-date_last = pd.to_datetime(df.index[-1]).date()
-# df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
-for c in df_scorpio_top_ten_alltime.index:
-    df[c].plot(linewidth=1.0, legend=True)
-plt.title(f"SARS-CoV-2 Mutationen in DE: Anteile", loc="left")
-plt.xlabel("")
-plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
-plt.grid(axis="both")
-plt.gcf().autofmt_xdate()
-plt.gca().set_ylim(0, 100)
-plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
-helper.mpl_add_text_source(source="RKI", date=date_last)
-plt.tight_layout()
-plt.savefig(fname=f"plots-python/mutations-de-all.png", format="png")
-plt.close()
+def plot_format(fig, axes, date_last, filename):
+    # Labels
+    plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
+    axes[0].set_xlabel("")
 
-fig, ax = plt.subplots(figsize=(8, 6))
-df = df_pct_lastmonth
-date_last = pd.to_datetime(df.index[-1]).date()
-# df["sequences_total"].plot(linewidth=2.0, legend=True, zorder=1)
-for c in df_scorpio_top_ten_lastmonth.index:
-    df[c].plot(linewidth=2.0, legend=True)
-plt.title(f"SARS-CoV-2 Mutationen in DE: Anteile letzte 2 Monate", loc="left")
-plt.xlabel("")
-plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
-plt.grid(axis="both")
-plt.gcf().autofmt_xdate()
-plt.gca().set_ylim(0, 100)
-plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
-helper.mpl_add_text_source(source="RKI", date=date_last)
-plt.tight_layout()
-plt.savefig(fname=f"plots-python/mutations-de-lastmonth.png", format="png")
-plt.close()
+    # grid
+    axes[0].grid(zorder=0)
 
-# fig, ax = plt.subplots(figsize=(8, 6))
-# df = df_pct_alltime
-# df = df[df.index >= "2021-12-01"]
-# df["Omicron (BA.1-like)"].plot(linewidth=2.0, legend=False)
+    helper.mpl_add_text_source(source="RKI", date=date_last)
+    fig.set_tight_layout(True)
+    fig.savefig(fname=filename, format="png")
 
-# plt.title(f"Omicron (BA.1-like) in DE: Anteil", loc="left")
-# plt.xlabel("")
-# plt.gca().set_ylim(auto=True)
-# plt.gca().set_ylim(bottom=0)
-# plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
-# plt.grid(axis="both")
-# helper.mpl_add_text_source(source="RKI", date=date_last)
-# plt.tight_layout()
-# plt.savefig(fname=f"plots-python/mutations-de-omicron.png", format="png")
-# plt.close()
+    # remove all lines
+    while len(axes[0].lines) > 0:
+        axes[0].lines.remove(axes[0].lines[0])
+    # plt.cla()
+    # plt.clf()
+    plt.close()
 
 
-fig, ax = plt.subplots(figsize=(8, 6))
-# df = df_sum_alltime
-df = df_sum_alltime_roll_av
-for c in df_scorpio_top_ten_alltime.index:
-    df[c].plot(linewidth=2.0, legend=True)
+def plotit():
+    plotit1()
+    plotit2()
+    plotit3()
 
-plt.title(f"SARS-CoV-2 Mutationen in DE: Anzahl 7-Tages-Mittel", loc="left")
-plt.xlabel("")
-plt.ylabel("Anzahl der tägl. Sequenzierungen")
-plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
-plt.grid(axis="both")
-plt.gcf().autofmt_xdate()
-plt.gca().set_ylim(auto=True)
-plt.gca().set_ylim(
-    0,
-)
-helper.mpl_add_text_source(source="RKI", date=date_last)
-plt.tight_layout()
-plt.savefig(fname=f"plots-python/mutations-de-all-absolute.png", format="png")
-plt.close()
+
+def plotit1():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
+    df = df_pct_alltime
+    assert df.index.dtype == "datetime64[ns]"
+    date_last = pd.to_datetime(df.index[-1]).date()
+    # print(df.index.dtype)
+
+    for c in df_scorpio_top_ten_alltime.index:
+        df[c].plot(linewidth=1.0, legend=True)
+    fig.suptitle("SARS-CoV-2 Mutationen in DE: Anteile")
+    # y min to 0
+    axes[0].set_ylim(0, 100)
+    # tick formatter
+    axes[0].get_yaxis().set_major_formatter(mtick.PercentFormatter(decimals=0))
+    plot_format(fig, axes, date_last, filename="plots-python/mutations-de-all.png")
+
+
+def plotit2():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
+    df = df_pct_lastmonth
+    assert df.index.dtype == "datetime64[ns]"
+    date_last = pd.to_datetime(df.index[-1]).date()
+
+    for c in df_scorpio_top_ten_lastmonth.index:
+        df[c].plot(linewidth=2.0, legend=True)
+    fig.suptitle("SARS-CoV-2 Mutationen in DE: Anteile letzte 2 Monate")
+    # y min to 0
+    axes[0].set_ylim(0, 100)
+    # tick formatter
+    axes[0].get_yaxis().set_major_formatter(mtick.PercentFormatter(decimals=0))
+    plot_format(
+        fig, axes, date_last, filename="plots-python/mutations-de-lastmonth.png"
+    )
+
+
+def plotit3():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
+    df = df_sum_alltime_roll_av
+    assert df.index.dtype == "datetime64[ns]"
+    date_last = pd.to_datetime(df.index[-1]).date()
+
+    for c in df_scorpio_top_ten_alltime.index:
+        df[c].plot(linewidth=2.0, legend=True)
+    fig.suptitle("SARS-CoV-2 Mutationen in DE: Anzahl 7-Tages-Mittel")
+    # y min to 0
+    axes[0].set_ylim(0, None)
+    # tick formatter
+    # axes[0].get_yaxis().set_major_formatter(mtick.PercentFormatter(decimals=0))
+    plot_format(
+        fig, axes, date_last, filename="plots-python/mutations-de-all-absolute.png"
+    )
+
+
+if __name__ == "__main__":
+    plotit()

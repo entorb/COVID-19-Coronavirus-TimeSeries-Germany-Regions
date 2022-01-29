@@ -232,6 +232,9 @@ def PercToCnt(x):
 
 
 def plot_hist_de_districts_Cases_Last_Week_Per_100000():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
     # plt.style.use('default')
     # plotting
     # plt.ion()
@@ -258,7 +261,7 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
     # plt.ylabel('Anzahl')
     plt.title("Anzahl der Landkreise pro Inzidenz-Intervall")
 
-    plt.tight_layout()
+    fig.set_tight_layout(True)
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">0"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">5"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt[">10"])
@@ -283,12 +286,16 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
 
 
 def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Incr():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
     df_sums_gt = df[["+1%", "+25%", "+50%", "+100%", "+200%"]]
 
     myPlot = df_sums_gt.plot()
     plt.title("Anzahl der Landkreise pro Inzidenz-Anstiegs-Intervall")
 
-    plt.tight_layout()
+    fig.set_tight_layout(True)
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+1%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+25%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["+50%"])
@@ -306,12 +313,17 @@ def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Incr():
 
 
 def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Decr():
+    # initialize plot
+    axes = [None]
+    fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
+
     df_sums_gt = df[["-1%", "-25%", "-50%", "-75%", "-100%"]]
 
     myPlot = df_sums_gt.plot()
     plt.title("Anzahl der Landkreise pro Inzidenz-Abnahme-Intervall")
 
-    plt.tight_layout()
+    fig.set_tight_layout(True)
+
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-1%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-25%"])
     plt.fill_between(list(df_sums_gt.index.values), df_sums_gt["-50%"])
