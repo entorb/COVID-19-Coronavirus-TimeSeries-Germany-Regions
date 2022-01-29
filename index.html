@@ -119,9 +119,11 @@
 		</li>
 		<ul>
 			<li>
+				<a href="#DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a> <b>(neu)</b>
+			</li>
+			<li>
 				<a href="#DeDistrictAni">Karte: Animation der Ausbreitung in den Landkreisen</a>
 			</li>
-
 			<li>
 				<a href="#DeStates">Bundesländer</a>
 			</li>
@@ -175,6 +177,9 @@
 				</li>
 				<li>
 					<a href="#DE_mutations">Mutationen</a> <b>(neu)</b>
+				</li>
+				<li>
+					<a href="#DE_PCR-Tests">PCR Tests: Anzahl und Positiv-Rate</a> <b>(neu)</b>
 				</li>
 				<li>
 					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wahrscheinlichkeit einen Infizierten zu
@@ -330,6 +335,17 @@
 	</small> -->
 
 
+	<h4>
+		<a id="DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a>
+	</h4>
+
+	<img src="plots-python/de-multi-timeseries.png" alt="de-multi-timeseries.png" width="800" height="2000"><br />
+
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
+
 	<h4><a id="DeDistrictAni"></a>Karte: Animation der Ausbreitung in den Landkreisen</h4>
 
 	<p>Grafik anklicken um zur Animation zu gelangen.</p>
@@ -373,11 +389,9 @@
 				target="_blank">gen-de-districts-map.py</a>. Es basiert zum Großteil auf der Arbeit von <a
 				href="https://github.com/ythlev/covid-19" target="_blank">ythlev</a>. </li>
 	</ul>
-	<!-- <p>siehe <a href="maps/">hier</a></p> -->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 
 
@@ -888,17 +902,17 @@
 	<p>In der folgenden Grafik ist als Zeitverlauf die Anzahl der deutschen Land- und Stadtkreise pro
 		Inzidenz-Intervallen aufgetragen.</p>
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png"
-		alt="hist-de-districts-Cases_Last_Week_Per_100000.png" width="640" height="480">
+		alt="hist-de-districts-Cases_Last_Week_Per_100000.png" width="800" height="600">
 
 	<p>Analog dazu hier Zunahme und Abnahme der Inzidenzen im Vergleich zur Vorwoche:</p>
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="640" height="480"><br />
+		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="800" height="600"><br />
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="640" height="480">
+		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="800" height="600">
 	<!-- 
 		min 1. COVID-19 Neu-Infektionen in der letzten Woche vermeldet haben und darunter die mit einer Inzidenz über 50.</p>
-	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="640" height="480"> <br />
-	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="640" height="480">
+	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="800" height="600"> <br />
+	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="800" height="600">
 	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-districts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/de-districts-zero_cases_last_week.tsv" target="_blank">de-districts-zero_cases_last_week.tsv</a></small> -->
 	<br /><small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-districts-increase-histogram.py"
@@ -1012,7 +1026,7 @@
 	<h4>
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
-	<img src="plots-python/de-vaccination.png" width="640" height="480" alt="plots-python/de-vaccination.png" />
+	<img src="plots-python/de-vaccination.png" width="800" height="600" alt="plots-python/de-vaccination.png" />
 	<br />
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
@@ -1086,12 +1100,12 @@
 			target="_blank">tagesaktuellen Omikron-Report</a> des RKI.
 	</p>
 
-	<img src="plots-python/mutations-de-all.png" width="640" height="480" alt="plots-python/mutations-de-all.png" />
-	<br />
-	<img src="plots-python/mutations-de-lastmonth.png" width="640" height="480"
+	<img src="plots-python/mutations-de-lastmonth.png" width="800" height="600"
 		alt="plots-python/mutations-de-lastmonth.png" />
 	<br />
-	<img src="plots-python/mutations-de-all-absolute.png" width="640" height="480"
+	<img src="plots-python/mutations-de-all.png" width="800" height="600" alt="plots-python/mutations-de-all.png" />
+	<br />
+	<img src="plots-python/mutations-de-all-absolute.png" width="800" height="600"
 		alt="plots-python/mmutations-de-all-absolute.png" />
 	<br />
 
@@ -1102,6 +1116,22 @@
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
+
+	<h4><a id="DE_PCR-Tests"></a>PCR Tests: Anzahl und Positiv-Rate</h4>
+	<p>Datenquelle: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Testzahl.html"
+			target="_blank">RKI</a>
+	</p>
+	<img src="plots-python/de-pcr-tests.png" width="800" height="600" alt="plots-python/de-pcr-tests.png" /><br />
+	<small>generated via Python <a
+			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-plot-de-pcr-tests.py"
+			target="_blank">fetch-plot-de-pcr-tests.py</a>
+	</small>
+
+
+
+	<p><small><a href="#ToC">Back to top</a></small></p>
+	<hr />
+
 
 	<h4><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wahrscheinlichkeit einen Infizierten zu treffen</h4>
 

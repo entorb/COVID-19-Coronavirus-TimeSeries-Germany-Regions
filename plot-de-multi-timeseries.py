@@ -174,7 +174,7 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Anzahl PCR Test (7-Tages-Mittel)")
+    axes[i].set_title("Wöchentliche PCR Test (in Millionen)")
 
     i += 1
     df["PosRate"].dropna().plot(
@@ -185,7 +185,8 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("PCR Positiv-Rate (%)")
+    axes[i].set_title("PCR Positiv-Rate")
+    axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     i += 1
     df["ICU_pct"].plot(
@@ -196,7 +197,8 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Anteil Covid auf Intensivstation (%)")
+    axes[i].set_title("Anteil COVID-Patienten auf den Intensivstationen")
+    axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     i += 1
     (df["Anzahl_Impfungen_ges"] / 1000000).plot(
@@ -207,7 +209,7 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Impfungen DE gesamt (in Millionen 7-Tages-Mittel)")
+    axes[i].set_title("Impfungen (in Millionen, 7-Tages-Mittel)")
 
     i += 1
     df["Deaths_Covid_roll_av"].plot(
@@ -218,7 +220,7 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Covid Opfer (7-Tages-Mittel)")
+    axes[i].set_title("Tägliche COVID Opfer (7-Tages-Mittel)")
 
     i += 1
     df["Deaths_roll_av"].plot(
@@ -241,7 +243,7 @@ def plotit():
             # zorder=2,
             linewidth=2.0,
         )
-    axes[i].set_title("Mutationen sequenziert (7-Tages-Mittel)")
+    axes[i].set_title("Sequenzierte Virus Mutanten (7-Tages-Mittel)")
 
     i += 1
     df["InzidenzChange"].plot(
@@ -252,7 +254,8 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Inzidenzänderung (7-Tages-%)")
+    axes[i].set_title("7-Tages Inzidenzanstieg")
+    axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     # layout tuning
     for i in range(0, num_plots):
@@ -261,9 +264,15 @@ def plotit():
         if i != 6:  # Deaths_roll_av
             axes[i].set_ylim(0, None)
     if i == 8:  # InzidenzChange
-        axes[i].set_ylim(0, 150)
+        axes[i].set_ylim(0, 100)
 
-    helper.mpl_add_text_source(source="RKI", date=date_last)
+    #    axes2 = axes[0].twiny()
+
+    axes[0].tick_params(
+        axis="x", bottom=False, top=True, labelbottom=False, labeltop=True
+    )
+
+    helper.mpl_add_text_source(source="verschiedene", date=date_last)
     fig.set_tight_layout(True)
     fig.savefig(fname=f"plots-python/de-multi-timeseries.png", format="png")
     plt.close()
