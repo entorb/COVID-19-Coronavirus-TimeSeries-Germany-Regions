@@ -180,12 +180,11 @@ def read_data(datafile: str) -> pd.DataFrame:
     )
     # nicer names for the data colums
     df = df.rename(
-        {
+        columns={
             "Cases_Last_Week_7Day_Percent": "Inzidenzanstieg",
             "Deaths_Last_Week_Per_Million": "Tote",
             "DIVI_Intensivstationen_Covid_Prozent": "Intensivstationsbelegung",
         },
-        axis=1,
         errors="raise",
     )
     df[df < 0] = 0
@@ -209,6 +208,7 @@ def plot_it(df: pd.DataFrame, code: str, long_name: str, mode: str):
 
     # Discarded idea:
     # initialize only once, to speedup!
+    # TODO: try out if creating once and than using fig = copy.copy(fig_template)
     # to prevent "Fail to allocate bitmap" -> no working
     fig, axes = plt.subplots(
         nrows=2, ncols=1, sharex=True, figsize=(8, 8), dpi=100  # default = 6.4,4.8

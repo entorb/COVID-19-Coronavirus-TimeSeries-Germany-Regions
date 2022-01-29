@@ -71,9 +71,12 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     df = helper.pandas_set_date_index(df=df, date_column="Date")
 
     df2 = pd.DataFrame()
-    df2["TestsMill"] = df["Anzahl Testungen"] / 1e6
-    df2["PosRate"] = 100.0 * df["Positiv getestet"] / df["Anzahl Testungen"]
+    df2["TestsMill"] = (df["Anzahl Testungen"] / 1e6).round(3)
+    df2["PosRate"] = (100.0 * df["Positiv getestet"] / df["Anzahl Testungen"]).round(3)
     # df2["TestsMill"] =
+
+    df2.to_csv("data/ts-de-pcr-tests.tsv", sep="\t", index=True, line_terminator="\n")
+
     return df2
 
 
@@ -97,13 +100,11 @@ def plotit(df: pd.DataFrame):
     fig.suptitle("Anzahl PCR-Tests und Positv-Rate in DE")
     axes[0].set_ylabel("PCR Tests (Mill pro Woche)", color=colors[0])
     axes[0].right_ax.set_ylabel("Positiv-Rate", color=colors[1])
-
-    a = axes[0]
+    axes[0].set_xlabel("")
 
     # y min to 0
     axes[0].set_ylim(0, None)
     axes[0].right_ax.set_ylim(0, None)
-    axes[0].set_xlabel("")
 
     # grid
     # axes[0].set_zorder(1)

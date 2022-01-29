@@ -60,11 +60,16 @@ def fetch_and_prepare_data() -> pd.DataFrame:
         df["Dose" + str(vac_dose_no)] = df_tmp["Anzahl"]
     del df_tmp, vac_dose_no
 
+    # set missing values to 0
+    df.fillna(0, inplace=True)
+
     # add rolling averages
     cols = df.columns
     for c in cols:
         df = helper.pandas_calc_roll_av(df=df, column=c, days=7)
     del cols
+    df.to_csv("data/ts-de-vaccination.tsv", sep="\t", index=True, line_terminator="\n")
+
     return df
 
 
@@ -98,10 +103,10 @@ def plotit(df: pd.DataFrame):
     # Labels
     fig.suptitle("COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
     axes[0].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
+    axes[0].set_xlabel("")
 
     # y min to 0
     axes[0].set_ylim(0, None)
-    axes[0].set_xlabel("")
     # axes[0].set_title("7-Tagesmittel", fontsize=10)
 
     # grid

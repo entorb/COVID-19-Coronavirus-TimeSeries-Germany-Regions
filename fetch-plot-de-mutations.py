@@ -156,17 +156,15 @@ df_sum_lastmonth.set_index(pd.DatetimeIndex(df_sum_lastmonth.index))
 
 
 df_sum_alltime = df_sum_alltime.rename(
-    {
+    columns={
         "count": "sequences_total",
     },
-    axis=1,
     errors="raise",
 )
 df_sum_lastmonth = df_sum_lastmonth.rename(
-    {
+    columns={
         "count": "sequences_total",
     },
-    axis=1,
     errors="raise",
 )
 
@@ -257,7 +255,7 @@ for c in df_sum_lastmonth_roll_av.columns:
     )
 
 
-df_sum_alltime_roll_av.to_csv("cache/rki-mutation-sequences/out-date_sum_roll_av.csv")
+df_sum_alltime_roll_av.to_csv("data/ts-de-mutations.csv")
 
 
 def plot_format(fig, axes, date_last, filename):

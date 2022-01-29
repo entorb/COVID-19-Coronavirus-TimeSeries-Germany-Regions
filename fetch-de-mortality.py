@@ -68,16 +68,15 @@ def prepare_covid_data() -> pd.DataFrame:
     # remove 29.2. (Schaltjahre) (after calc of rolling av)
     df = df[df["Day"] != "29.02."]
 
-    # of df per year
+    # one df per year
     df_covid_2020 = (
         df[df.index.year == 2020][["Day", "Deaths_Covid", "Deaths_Covid_roll_av"]]
         .reset_index(drop=True)
         .rename(
-            {
+            columns={
                 "Deaths_Covid": "Deaths_Covid_2020",
                 "Deaths_Covid_roll_av": "Deaths_Covid_2020_roll_av",
             },
-            axis=1,
             errors="raise",
         )
     )
@@ -87,11 +86,10 @@ def prepare_covid_data() -> pd.DataFrame:
         df[df.index.year == 2021][["Day", "Deaths_Covid", "Deaths_Covid_roll_av"]]
         .reset_index(drop=True)
         .rename(
-            {
+            columns={
                 "Deaths_Covid": "Deaths_Covid_2021",
                 "Deaths_Covid_roll_av": "Deaths_Covid_2021_roll_av",
             },
-            axis=1,
             errors="raise",
         )
     )
@@ -101,11 +99,10 @@ def prepare_covid_data() -> pd.DataFrame:
         df[df.index.year == 2022][["Day", "Deaths_Covid", "Deaths_Covid_roll_av"]]
         .reset_index(drop=True)
         .rename(
-            {
+            columns={
                 "Deaths_Covid": "Deaths_Covid_2022",
                 "Deaths_Covid_roll_av": "Deaths_Covid_2022_roll_av",
             },
-            axis=1,
             errors="raise",
         )
     )
@@ -190,7 +187,7 @@ def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
     df = helper.pandas_calc_roll_av(df=df, column="Deaths", days=7)
 
     df[["Deaths", "Deaths_roll_av"]].to_csv(
-        "data/de-mortality-timeseries.tsv",
+        "data/ts-de-mortality.tsv",
         sep="\t",
         line_terminator="\n",
     )
