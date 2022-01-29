@@ -86,10 +86,13 @@ def read_data() -> pd.DataFrame:
     df = df1.join(df2)
     del df1, df2
 
+    df.rename(columns={"RECEIVE_DATE": "Date"}, inplace=True)
+
     # remove word "Probable" from scorpio_call for better clustering
     df["scorpio_call"] = df["scorpio_call"].replace(
         to_replace=r"^Probable ", value="", regex=True
     )
+
     return df
 
 
@@ -100,7 +103,7 @@ df_all_data = read_data()
 
 # # 2a. group and count by lineage and date columns
 # df_lineages = (
-#     df_all_data.groupby(["lineage", "RECEIVE_DATE"]).size().reset_index(name="count")
+#     df_all_data.groupby(["lineage", "Date"]).size().reset_index(name="count")
 # )
 # df_lineages_top_ten = (
 #     df_lineages.groupby("lineage")
@@ -114,15 +117,12 @@ df_all_data = read_data()
 
 # 2b. group and count by scorpio and date columns
 df_scorpio_alltime = (
-    df_all_data.groupby(["scorpio_call", "RECEIVE_DATE"])
-    .size()
-    .reset_index(name="count")
+    df_all_data.groupby(["scorpio_call", "Date"]).size().reset_index(name="count")
 )
 
 # date_month = dt.date.today() - dt.timedelta(days=30)
 df_scorpio_lastmonth = df_scorpio_alltime[
-    df_scorpio_alltime["RECEIVE_DATE"].dt.date
-    >= (dt.date.today() - dt.timedelta(days=62))
+    df_scorpio_alltime["Date"].dt.date >= (dt.date.today() - dt.timedelta(days=62))
 ]
 
 df_scorpio_top_ten_alltime = (
@@ -133,9 +133,9 @@ df_scorpio_top_ten_alltime = (
 df_scorpio_top_ten_alltime = df_scorpio_top_ten_alltime.head(10)
 # df_scorpio_top_ten = df_scorpio_top_ten[df_scorpio_top_ten["count"] > 1000]
 # print(df_top_ten_scorpio_call)
-df_scorpio_top_ten_alltime.to_csv(
-    "cache/rki-mutation-sequences/out-ranking-scorpio_call.csv"
-)
+# df_scorpio_top_ten_alltime.to_csv(
+#     "cache/rki-mutation-sequences/out-ranking-scorpio_call.csv"
+# )
 
 df_scorpio_top_ten_lastmonth = (
     df_scorpio_lastmonth.groupby("scorpio_call")
@@ -148,8 +148,8 @@ df_scorpio_top_ten_lastmonth = df_scorpio_top_ten_lastmonth.head(6)
 # 3. sum df
 
 # 3.1 add column of total number of sequences per day
-df_sum_alltime = df_scorpio_alltime.groupby("RECEIVE_DATE").sum()
-df_sum_lastmonth = df_scorpio_lastmonth.groupby("RECEIVE_DATE").sum()
+df_sum_alltime = df_scorpio_alltime.groupby("Date").sum()
+df_sum_lastmonth = df_scorpio_lastmonth.groupby("Date").sum()
 
 df_sum_alltime.set_index(pd.DatetimeIndex(df_sum_alltime.index))
 df_sum_lastmonth.set_index(pd.DatetimeIndex(df_sum_lastmonth.index))
@@ -171,7 +171,7 @@ df_sum_lastmonth = df_sum_lastmonth.rename(
 
 # def filter_timeseries_df_on_lineages(df: pd.DataFrame, lineage_name: str):
 #     df2 = df[df["lineage"] == lineage_name]
-#     df2.set_index(["RECEIVE_DATE"], inplace=True)
+#     df2.set_index(["Date"], inplace=True)
 #     df2 = df2["count"].to_frame()
 #     # print(df2)
 #     return df2
@@ -181,11 +181,11 @@ def filter_timeseries_df_on_scorpio_call(df: pd.DataFrame, scorpio_call: str):
     # print(df)
     df2 = df[df["scorpio_call"] == scorpio_call]
     # print(df2)
-    df2 = df2.groupby("RECEIVE_DATE")["count"].sum()
+    df2 = df2.groupby("Date")["count"].sum()
     df2 = df2.to_frame()
 
     # print(df2)
-    # df2 = helper.pandas_set_date_index(df=df2, date_column="RECEIVE_DATE")
+    # df2 = helper.pandas_set_date_index(df=df2, date_column="Date")
 
     # print(df2)
     return df2
@@ -215,8 +215,8 @@ for c in df_scorpio_top_ten_lastmonth.index:
 
 
 # replace missing / na values by 0
-df_sum_alltime = df_sum_alltime.fillna(0)
-df_sum_lastmonth = df_sum_lastmonth.fillna(0)
+df_sum_alltime.fillna(0, inplace=True)
+df_sum_lastmonth.fillna(0, inplace=True)
 
 
 # print(df_sum_alltime)
@@ -255,7 +255,9 @@ for c in df_sum_lastmonth_roll_av.columns:
     )
 
 
-df_sum_alltime_roll_av.to_csv("data/ts-de-mutations.csv")
+df_sum_alltime_roll_av.to_csv(
+    "data/ts-de-mutations.tsv", sep="\t", index=True, line_terminator="\n"
+)
 
 
 def plot_format(fig, axes, date_last, filename):
