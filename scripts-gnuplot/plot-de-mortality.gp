@@ -16,6 +16,8 @@ set ylabel "Sterbefälle"
 # set ytics nomirror
 # set yrange [0:]
 set ytics 500
+set mytics 5
+
 
 
 set style line 1 linetype 7 lw 2 dt 1 linecolor rgb 'black' 
