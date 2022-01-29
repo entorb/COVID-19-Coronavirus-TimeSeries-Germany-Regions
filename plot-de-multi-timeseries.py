@@ -57,6 +57,12 @@ df.rename(
 # filter out some values
 df.loc[df.index.date < pd.to_datetime("2020-03-01"), "InzidenzChange"] = None
 
+# drop deaths of last 4 weeks, as they are not final yet
+df.loc[
+    df.index.date >= pd.to_datetime(dt.date.today() - dt.timedelta(weeks=4)),
+    "Deaths_Covid",
+] = None
+
 # not for ICU!
 # df.fillna(0, inplace=True)
 
@@ -149,7 +155,7 @@ def plotit():
 
     num_plots = 9
     fig, axes = plt.subplots(
-        nrows=num_plots, ncols=1, sharex=True, dpi=100, figsize=(8, 20)
+        nrows=num_plots, ncols=1, sharex=True, dpi=100, figsize=(10, 20)
     )
 
     date_last = pd.to_datetime(df_covid.index[-1]).date()
@@ -254,7 +260,7 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("7-Tages Inzidenzanstieg")
+    axes[i].set_title("7-Tages-Inzidenzanstieg")
     axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     # layout tuning
@@ -271,6 +277,20 @@ def plotit():
     axes[0].tick_params(
         axis="x", bottom=False, top=True, labelbottom=False, labeltop=True
     )
+
+    axes[4].tick_params(
+        # axis="x", bottom=False, top=True, labelbottom=False, labeltop=True
+        axis="x",
+        bottom=True,
+        top=False,
+        labelbottom=True,
+        labeltop=False,
+    )
+
+    import matplotlib.dates as mdates
+
+    for i in range(0, num_plots):
+        axes[i].xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 
     helper.mpl_add_text_source(source="verschiedene", date=date_last)
     fig.set_tight_layout(True)
