@@ -24,10 +24,11 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 excelFile = "cache/de-rki-pcr-Testzahlen-gesamt.xlsx"
 
+# as file is stored in cache folder which is not part of the commit, we can use the caching here
 helper.download_from_url_if_old(
-    url=f"https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Testzahlen-gesamt.xlsx?__blob=publicationFile",
+    url="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Testzahlen-gesamt.xlsx?__blob=publicationFile",
     file_local=excelFile,
-    max_age=1800,
+    max_age=3600,
     verbose=True,
 )
 

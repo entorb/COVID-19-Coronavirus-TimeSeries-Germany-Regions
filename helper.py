@@ -139,14 +139,23 @@ def date_format(y: int, m: int, d: int) -> str:
 
 
 def pandas_set_date_index(df, date_column: str = "Date"):
-    """use date as index"""
-    df[date_column] = pd.to_datetime(df[date_column], format="%Y-%m-%d")
+    """
+    use date as index
+    source format: str of yyyy-mm-dd or dt.date
+    """
+    if type(date_column) == dt.date:
+        df[date_column] = pd.to_datetime(df[date_column])
+    elif type(date_column) == str:
+        df[date_column] = pd.to_datetime(df[date_column], format="%Y-%m-%d")
+    assert df[date_column].dtype == "datetime64[ns]"
     df.set_index([date_column], inplace=True)
+    assert df.index.dtype == "datetime64[ns]"
     return df
 
 
 def pandas_calc_roll_av(df, column: str, days: int = 7):
     """calc rolling average over column"""
+    assert type(days) == int
     df[column + "_roll_av"] = (
         df[column].rolling(window=days, min_periods=1).mean().round(1)
     )
