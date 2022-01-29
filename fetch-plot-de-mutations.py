@@ -70,19 +70,21 @@ def read_data() -> pd.DataFrame:
         "cache/rki-mutation-sequences/SARS-CoV-2-Sequenzdaten_Deutschland.csv",
         sep=",",
         usecols=["IMS_ID", "RECEIVE_DATE"],
+        parse_dates=[
+            "RECEIVE_DATE",  # ("DATE_DRAW", "RECEIVE_DATE", "PROCESSING_DATE"):
+        ],
+        index_col="IMS_ID",
     )
     df2 = pd.read_csv(
         "cache/rki-mutation-sequences/SARS-CoV-2-Entwicklungslinien_Deutschland.csv",
         sep=",",
         usecols=["IMS_ID", "lineage", "scorpio_call"],
+        index_col="IMS_ID",
     )
 
     # join dfs on ID column IMS_ID
-    df = df1.set_index("IMS_ID").join(df2.set_index("IMS_ID"))
+    df = df1.join(df2)
     del df1, df2
-    # convert date_str to date
-    for c in ("RECEIVE_DATE",):  # ("DATE_DRAW", "RECEIVE_DATE", "PROCESSING_DATE"):
-        df[c] = pd.to_datetime(df[c], format="%Y-%m-%d")
 
     # remove word "Probable" from scorpio_call for better clustering
     df["scorpio_call"] = df["scorpio_call"].replace(

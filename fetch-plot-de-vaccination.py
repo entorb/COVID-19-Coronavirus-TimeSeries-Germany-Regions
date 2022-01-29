@@ -38,7 +38,11 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     )
 
     df0 = pd.read_csv(
-        dataFileSource, sep=","  # , parse_dates=["Impfdatum"]  # , na_values=[None]
+        dataFileSource,
+        sep=",",
+        parse_dates=[
+            "Impfdatum",
+        ],
     )
 
     # df of doses per day

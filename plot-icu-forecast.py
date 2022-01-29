@@ -88,22 +88,23 @@ def load_divi_data() -> pd.DataFrame:
     old: rename faelle_covid_aktuell_invasiv_beatmet -> betten_covid
     new: rename faelle_covid_aktuell -> betten_covid
     """
-    df = pd.read_csv(f"data/de-divi/downloaded/latest.csv", sep=",")
-
-    # select columns
-    df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
-
-    df = df[
-        [
+    df = pd.read_csv(
+        f"data/de-divi/downloaded/latest.csv",
+        sep=",",
+        parse_dates=[
+            "date",
+        ],
+        usecols=[
             "date",
             "bundesland",
             "gemeindeschluessel",
             "faelle_covid_aktuell",
-            "betten_ges",
             "betten_frei",
             "betten_belegt",
-        ]
-    ]
+        ],
+    )
+
+    df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
 
     # check for for bad values
     if df["faelle_covid_aktuell"].isnull().values.any():
@@ -112,10 +113,9 @@ def load_divi_data() -> pd.DataFrame:
         raise f"ERROR: betten_ges has bad values"
 
     df = df.rename(
-        {
+        columns={
             "faelle_covid_aktuell": "betten_covid",
         },
-        axis=1,
         errors="raise",
     )
     return df
@@ -198,8 +198,15 @@ def load_and_sum_lk_case_data(l_lk_ids: list) -> pd.DataFrame:
             print(f"ERROR: file not found: {file_cases}")
             exit(1)
 
-        df_file_cases = pd.read_csv(file_cases, sep="\t")
-        df_file_cases = helper.pandas_set_date_index(df_file_cases)
+        df_file_cases = pd.read_csv(
+            file_cases,
+            sep="\t",
+            index_col="Date",
+            parse_dates=[
+                "Date",
+            ],
+        )
+        # df_file_cases = helper.pandas_set_date_index(df_file_cases)
 
         # check for bad values
         if df_file_cases["Cases_New"].isnull().values.any():
@@ -225,9 +232,16 @@ def load_bl_case_data(bl_code: str) -> pd.DataFrame:
     # skip missing files
     assert os.path.isfile(file_cases), f"ERROR: file not found {file_cases}"
 
-    df = pd.read_csv(file_cases, sep="\t")
+    df = pd.read_csv(
+        file_cases,
+        sep="\t",
+        index_col="Date",
+        parse_dates=[
+            "Date",
+        ],
+    )
     # print(df.head())
-    df = helper.pandas_set_date_index(df)
+    # df = helper.pandas_set_date_index(df)
     df = df["Cases_New"].to_frame()
     # print(df.head())
 

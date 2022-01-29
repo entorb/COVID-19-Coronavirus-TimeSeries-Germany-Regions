@@ -33,16 +33,10 @@ def read_alterstrukur() -> pd.DataFrame:
     """
     file = "data/DE_Bevoelkerung_nach_Altersgruppen-ges.tsv"
 
-    df = pd.read_csv(file, sep="\t")
-    # print(df)
-
-    df.set_index("Altersgruppe", inplace=True)
+    df = pd.read_csv(file, sep="\t", index_col="Altersgruppe")
 
     df = df.rename(
-        {
-            "Personen": "Bevölkerung",
-        },
-        axis=1,
+        columns={"Personen": "Bevölkerung"},
         errors="raise",
     )
     de_sum = df["Bevölkerung"].loc["Summe"]
@@ -92,10 +86,7 @@ def read_rki_cases() -> pd.DataFrame:
     if cols_to_drop:
         print("dropping these columns:")
         print(df[cols_to_drop])
-        df = df.drop(
-            cols_to_drop,
-            axis="columns",
-        )
+        df.drop(columns=cols_to_drop, inplace=True)
     # renaming the remaining columns to yearweek (int)
     df.columns = l2
 
@@ -144,7 +135,7 @@ def read_rki_deaths() -> pd.DataFrame:
     df["YearWeek"] = df["Sterbejahr"] * 100 + df["Sterbewoche"]
 
     df.set_index("YearWeek", inplace=True)
-    df = df.drop(["Sterbejahr", "Sterbewoche"], axis="columns")
+    df.drop(columns=["Sterbejahr", "Sterbewoche"], inplace=True)
     return df
 
 
@@ -156,16 +147,23 @@ def read_divi() -> pd.DataFrame:
     """
     file_local = "cache/de-divi/bund-covid-altersstruktur-zeitreihe_ab-2021-04-29.csv"
 
-    df = pd.read_csv(file_local, sep=",")
-    df["Date"] = df["Datum"].str[0:10]
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
+    # read only first 10 chars from 2021-04-29T12:15:00+02:00
+    pd_date_converter = lambda x: (x[0:10])
+    df = pd.read_csv(
+        file_local,
+        sep=",",
+        converters={"Datum": pd_date_converter},
+        parse_dates=[
+            "Datum",
+        ],
+    )
+    df = df.rename(columns={"Datum": "Date"}, errors="raise")
+    # df["Date"] = df["Datum"].str[0:10]
+    # df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
     df["Year"] = pd.DatetimeIndex(df["Date"]).year
-    # FutureWarning: weekofyear and week have been deprecated, please use DatetimeIndex.isocalendar().week instead
-    # df["Week"] = pd.DatetimeIndex(df["Date"]).week
-    # df["Week"] = df["Date"].isocalendar().week
     df["Week"] = df["Date"].map(lambda v: pd.to_datetime(v).isocalendar()[1])
     df["YearWeek"] = df["Year"] * 100 + df["Week"]
-    df = df.drop(["Bundesland", "Datum", "Week", "Year", "Date"], axis="columns")
+    df.drop(columns=["Bundesland", "Date", "Week", "Year"], inplace=True)
 
     # print(df)
 
@@ -326,7 +324,7 @@ def filter_divi(df_divi, start_yearweek: int = 202001, end_yearweek: int = 20305
     # print(df)
     # sum_icu includes the unknown age fraction
     sum_icu = int(df["ICU"].sum())
-    df = df.drop(["Unbekannt"], axis="index")
+    df.drop(columns=["Unbekannt"], inplace=True)
     # sum_icu does not include the unknown age fraction
     sum_icu2 = int(df["ICU"].sum())
     df["ICU"] = df["ICU"].round(0).astype(int)

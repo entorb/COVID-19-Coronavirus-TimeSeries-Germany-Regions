@@ -112,10 +112,11 @@ for d in l_groups:
 helper.write_json(fileout, d=l_groups)
 
 
-df = pd.read_csv(f"data/de-divi/downloaded/latest.csv", sep=",")
-
-# select columns
-df = df[["date", "gemeindeschluessel", "betten_frei", "betten_belegt"]]
+df = pd.read_csv(
+    f"data/de-divi/downloaded/latest.csv",
+    sep=",",
+    usecols=["date", "gemeindeschluessel", "betten_frei", "betten_belegt"],
+)
 
 df["betten_ges"] = df["betten_frei"] + df["betten_belegt"]
 

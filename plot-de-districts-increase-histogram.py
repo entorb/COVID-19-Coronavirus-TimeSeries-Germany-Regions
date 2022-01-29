@@ -40,7 +40,12 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 def read_and_prepare_data():
     # create empty data frame, based on data for Hamburg
     df_file = pd.read_csv(
-        "data/de-districts/de-district_timeseries-02000.tsv", sep="\t"
+        "data/de-districts/de-district_timeseries-02000.tsv",
+        sep="\t",
+        # parse_dates=[
+        #     "Date",
+        # ],
+        # index_col="Date",
     )
     df = pd.DataFrame()
     # df['Date'] = df_file['Date']
@@ -98,9 +103,16 @@ def read_and_prepare_data():
             # Eisenach problem, again...
             continue
 
-        df_file = pd.read_csv(filename, sep="\t")
-        df_file["Date"] = pd.to_datetime(df_file["Date"], format="%Y-%m-%d")
-        df_file.set_index(["Date"], inplace=True)
+        df_file = pd.read_csv(
+            filename,
+            sep="\t",
+            index_col="Date",
+            parse_dates=[
+                "Date",
+            ],
+        )
+        # df_file["Date"] = pd.to_datetime(df_file["Date"], format="%Y-%m-%d")
+        # df_file.set_index(["Date"], inplace=True)
 
         # convert Cases_Last_Week_Per_Million to Cases_Last_Week_Per_100000
         df_file["Cases_Last_Week_Per_100000"] = (
@@ -213,9 +225,15 @@ if (
 ):
     df = read_and_prepare_data()
 else:
-    df = pd.read_csv("cache/hist-de-districts.csv")
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
-    df.set_index(["Date"], inplace=True)
+    df = pd.read_csv(
+        "cache/hist-de-districts.csv",
+        parse_dates=[
+            "Date",
+        ],
+        index_col="Date",
+    )
+    # df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
+    # df.set_index(["Date"], inplace=True)
 
 date_last = pd.to_datetime(df.index[-1]).date()
 

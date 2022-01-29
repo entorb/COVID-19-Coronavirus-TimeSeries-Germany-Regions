@@ -155,23 +155,29 @@ def read_data(datafile: str) -> pd.DataFrame:
     #
     # Read and setup data
     #
-    df = pd.read_csv(datafile, sep="\t")
-    df = df[
-        [
+    df = pd.read_csv(
+        datafile,
+        sep="\t",
+        parse_dates=[
+            "Date",
+        ],
+        index_col="Date",
+        usecols=[
             "Date",
             "Cases_Last_Week_Per_Million",
             "Cases_Last_Week_7Day_Percent",
             "Deaths_Last_Week_Per_Million",
             "DIVI_Intensivstationen_Covid_Prozent",
-        ]
-    ]
-
-    # use date/current as index
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
-    df.set_index(["Date"], inplace=True)
+        ],
+    )
 
     df["Inzidenz"] = df["Cases_Last_Week_Per_Million"] / 10
-    df.drop("Cases_Last_Week_Per_Million", axis=1, inplace=True)
+    df.drop(
+        columns=[
+            "Cases_Last_Week_Per_Million",
+        ],
+        inplace=True,
+    )
     # nicer names for the data colums
     df = df.rename(
         {

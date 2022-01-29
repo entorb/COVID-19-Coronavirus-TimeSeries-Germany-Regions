@@ -25,30 +25,34 @@ import helper
 # 1. read and prepare my covid data
 
 
-def get_covid_data() -> pd.DataFrame:
+def prepare_covid_data() -> pd.DataFrame:
     """
     read my covid deaths data
     remove 29.2. (Schaltjahre)
     returns a df having the day as index in format "dd.mm."
     """
     df = pd.read_csv(
-        "data/de-states/de-state-DE-total.tsv", sep="\t", usecols=["Date", "Deaths_New"]
+        "data/de-states/de-state-DE-total.tsv",
+        sep="\t",
+        usecols=[
+            "Date",
+            "Deaths_New",
+        ],
+        parse_dates=[
+            "Date",
+        ],
+        index_col="Date",
     )
 
-    df = df.rename(columns={"Deaths_New": "Deaths_Covid"})
+    df = df.rename(columns={"Deaths_New": "Deaths_Covid"}, errors="raise")
 
-    assert df.iloc[0]["Date"] == "2020-01-02", (
-        "Error of start date, expecting 2020-01-02, got : " + df.iloc[0]["Date"]
-    )
+    assert df.index[0] == pd.to_datetime(
+        "2020-01-02"
+    ), f"Error of start date, expecting 2020-01-02, got : {df.index[0]}"
 
     # add dummy row for missing 1.1.2020
-    df.loc[-1] = "2020-01-01", 0
-    df.index = df.index + 1  # shifting index
+    df.loc[pd.to_datetime("2020-01-01")] = 0
     df = df.sort_index()  # sorting by index
-
-    # convert to date and use it as index
-    # df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d")
-    df = helper.pandas_set_date_index(df=df, date_column="Date")
 
     # drop deaths of last 4 weeks, as they are not final yet
     date_4w = dt.date.today() - dt.timedelta(weeks=4)
@@ -120,7 +124,7 @@ def convert2date(year: int, ddmm: str) -> dt.date:
     return date
 
 
-def get_mortality_data_timeseries() -> pd.DataFrame:
+def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
     """
     fetch and parse Excel of mortality data from Destatis
     """
@@ -193,7 +197,7 @@ def get_mortality_data_timeseries() -> pd.DataFrame:
     return df
 
 
-def mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
+def merge_mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
     """
     convert mortalitiy timeseries to format: day_str , 2016, 2017,...
     """
@@ -225,6 +229,10 @@ def mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
         df[df.index.year == 2022]["Deaths_roll_av"].tolist()
     )
 
+    # setting the index to the Day
+    df2.index = l_days
+    df2.index.name = "Day"
+
     # calculations
     df2["2016_2019_mean"] = df2[["2016", "2017", "2018", "2019"]].mean(axis=1)
 
@@ -238,17 +246,14 @@ def mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
         ["2016_roll_av", "2017_roll_av", "2018_roll_av", "2019_roll_av"]
     ].max(axis=1)
 
-    # setting the index to the Day
-    df2.index = l_days
-    df2.index.name = "Day"
     return df2
 
 
 if __name__ == "__main__":
-    df_covid = get_covid_data()
+    df_covid = prepare_covid_data()
 
-    df_mortality_ts = get_mortality_data_timeseries()
-    df_mortality = mortality_data_per_day(df_mortality_ts)
+    df_mortality_ts = fetch_and_prepare_mortality_data_timeseries()
+    df_mortality = merge_mortality_data_per_day(df_mortality_ts)
 
     df = df_mortality.join(df_covid)
 
