@@ -19,6 +19,10 @@ jobs:
     steps:
 
 # Initialize
+    - name: print start date
+      run: |
+        date +%Y-%m-%d_%H:%M
+
     - name: Checkout Repository
       uses: actions/checkout@v2
       with:
@@ -100,10 +104,6 @@ jobs:
         files: 
           cache/*.tgz
 
-#    - name: data upload via tip
-#      uses: eine/tip@master
-#      with:
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        tag: tip
-#        files: |
-#          cache/data.tgz
+    - name: print end date
+      run: |
+        date +%Y-%m-%d_%H:%M
