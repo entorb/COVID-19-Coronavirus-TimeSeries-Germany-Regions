@@ -13,12 +13,9 @@ __license__ = "GPL"
 # Built-in/Generic Imports
 import codecs
 import urllib
-import requests
 import csv
-import json
-import requests
 
-# my helper modules
+# My Helper Functions
 import helper
 
 # header row:

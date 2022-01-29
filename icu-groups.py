@@ -1,4 +1,18 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+Creates groups of ICU locations
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Further Modules
 import pandas as pd
+
+# My Helper Functions
 import helper
 
 fileout = "data/de-divi/lk-groups.json"

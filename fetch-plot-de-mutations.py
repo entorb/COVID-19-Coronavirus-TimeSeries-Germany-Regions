@@ -1,12 +1,27 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+This script downloads German SARS-COV-2 Mutation data from 
+https://github.com/robert-koch-institut/SARS-CoV-2-Sequenzdaten_aus_Deutschland/"
+and plots them
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import datetime as dt
+import subprocess
+
+# Further Modules
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import locale
 
-import urllib.request
-import subprocess
-
+# My Helper Functions
 import helper
 
 # siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
@@ -24,10 +39,16 @@ def fetch():
     ):
         url = f"https://github.com/robert-koch-institut/SARS-CoV-2-Sequenzdaten_aus_Deutschland/blob/master/{fname}.csv.xz?raw=true"
         filepath = f"cache/rki-mutation-sequences/{fname}.csv.xz"
-        filedata = urllib.request.urlopen(url)
-        datatowrite = filedata.read()
-        with open(filepath, mode="wb") as f:
-            f.write(datatowrite)
+
+        # this will always download, since the extraction of the .xz file removes the source
+        # hence helper.check_cache_file_available_and_recent is used below
+        helper.download_from_url_if_old(
+            url=url, file_local=filepath, max_age=3600, verbose=False
+        )
+        # filedata = urllib.request.urlopen(url)
+        # datatowrite = filedata.read()
+        # with open(filepath, mode="wb") as f:
+        #     f.write(datatowrite)
 
         # extract the .xz file
         subprocess.run(["xz", "-d", "-f", filepath], capture_output=False, text=False)
@@ -35,7 +56,7 @@ def fetch():
 
 if not helper.check_cache_file_available_and_recent(
     fname=f"cache/rki-mutation-sequences/SARS-CoV-2-Sequenzdaten_Deutschland.csv",
-    max_age=1800,
+    max_age=3600,
     verbose=True,
 ):
     fetch()

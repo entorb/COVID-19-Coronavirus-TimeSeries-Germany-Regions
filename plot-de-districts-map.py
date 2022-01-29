@@ -18,12 +18,9 @@ import sys
 import glob
 import subprocess
 
-# import json
-# import math
-# import statistics
 import re
 
-# my helper modules
+# My Helper Functions
 import helper
 
 # TODO: replace threshold magic based on all data by simple logic based on last value for cases and manually set threshold for other sets

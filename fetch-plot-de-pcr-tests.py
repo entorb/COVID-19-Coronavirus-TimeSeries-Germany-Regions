@@ -9,13 +9,15 @@ https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Testzahlen-ge
 """
 
 # Built-in/Generic Imports
+import datetime as dt
+
+# Further Modules
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import locale
-import datetime as dt
 
-# my helper modules
+# My Helper Functions
 import helper
 
 # DE date format: Okt instead of Oct

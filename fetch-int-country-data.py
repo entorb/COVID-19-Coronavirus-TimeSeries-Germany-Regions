@@ -15,16 +15,13 @@ __license__ = "GPL"
 # -> ]
 
 # Built-in/Generic Imports
-import os
-import time
 import urllib.request
 import csv
 
-# further modules
-# process bar
-from tqdm import tqdm
+# Further Modules
+from tqdm import tqdm  # process bar
 
-# my helper modules
+# My Helper Functions
 import helper
 
 file_cache = "cache/download-countries-timeseries.json"

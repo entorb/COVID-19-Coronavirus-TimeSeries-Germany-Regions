@@ -12,20 +12,13 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
+import datetime as dt
 
-# external packages
+# Further Modules
 import pandas as pd
 import openpyxl
 
-import datetime as dt
-
-# import csv
-import urllib.request
-
-from pandas.core.frame import DataFrame
-import numpy as np
-
-# my helper modules
+# My Helper Functions
 import helper
 
 

@@ -13,13 +13,20 @@ __author__ = "Dr. Torben Menke"
 __email__ = "https://entorb.net"
 __license__ = "GPL"
 
-import os
+# Built-in/Generic Imports
 import glob
+
+# Further Modules
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# my helper modules
+# My Helper Functions
 import helper
+
+# Set German date format for plots: Okt instead of Oct
+import locale
+
+locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 # 1. create empty data frame
 # 2. loop over all district data files, extract their 7-day incidence and increment the relevant field in the data frame

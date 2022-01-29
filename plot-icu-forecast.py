@@ -1,24 +1,34 @@
-# from datetime import timedelta  # , date
-import helper
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
-# import glob
-# import shutil
-import datetime
+"""
+forecast of ICU hospitals
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import os
 import datetime as dt
-import locale
-
 import time
-
-timestart = time.time()
-
-
 import multiprocessing as mp
 
+# Further Modules
 import pandas as pd
-from pandas.core.frame import DataFrame
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+
+# My Helper Functions
+import helper
+
+# Set German date format for plots: Okt instead of Oct
+import locale
+
+locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
+
+timestart = time.time()
 
 # from matplotlib.dates import MonthLocator, YearLocator, WeekdayLocator
 # import matplotlib.ticker as ticker
@@ -30,7 +40,6 @@ mpl.use("Agg")  # Cairo
 # turn off interactive mode
 plt.ioff()
 
-locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 # info : see icu-forecase/howto
 # model:
@@ -74,7 +83,7 @@ weeks_forcast = 2
 #
 # 1. data functions
 #
-def load_divi_data() -> DataFrame:
+def load_divi_data() -> pd.DataFrame:
     """
     load complete set of all divi data
     calc betten_belegt
@@ -121,8 +130,8 @@ def load_divi_data() -> DataFrame:
 
 
 def sum_divi_data(
-    mode, df_divi_all: DataFrame, l_lk_ids: list = (), bl_id: int = -1
-) -> DataFrame:
+    mode, df_divi_all: pd.DataFrame, l_lk_ids: list = (), bl_id: int = -1
+) -> pd.DataFrame:
     """
     filters df_divi_all by l_lk_ids  bl_id or all
     sums up betten_covid and betten_ges
@@ -163,7 +172,7 @@ def sum_divi_data(
 # exit()
 
 
-def load_and_sum_lk_case_data(l_lk_ids: list) -> DataFrame:
+def load_and_sum_lk_case_data(l_lk_ids: list) -> pd.DataFrame:
     """
     l_lk_ids : list of lk_ids:str
     grouping of lk data
@@ -208,7 +217,7 @@ def load_and_sum_lk_case_data(l_lk_ids: list) -> DataFrame:
     return df_sum
 
 
-def load_bl_case_data(bl_code: str) -> DataFrame:
+def load_bl_case_data(bl_code: str) -> pd.DataFrame:
     """
     Bundesland-Data
     """
@@ -231,7 +240,7 @@ def load_bl_case_data(bl_code: str) -> DataFrame:
     return df
 
 
-def join_cases_divi(df_cases: DataFrame, df_divi: DataFrame) -> DataFrame:
+def join_cases_divi(df_cases: pd.DataFrame, df_divi: pd.DataFrame) -> pd.DataFrame:
     # initialize new dataframe
     # print(df_cases.head())
     # print(df_divi.head())
@@ -258,7 +267,7 @@ def join_cases_divi(df_cases: DataFrame, df_divi: DataFrame) -> DataFrame:
     return df_sum
 
 
-def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
+def forecast(df_data: pd.DataFrame, l_prognosen_prozente: list, quote: float):
     """
     Fälle der letzten Woche für X Wochen in die Zukunft prognostizieren
     returns list of dataframes
@@ -278,7 +287,7 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
         df_prognose = pd.DataFrame()
         for week in range(1, weeks_forcast + 1):
             for i in range(1, 7 + 1):
-                day = date_today + datetime.timedelta(days=+i + 7 * (week - 1))
+                day = date_today + dt.timedelta(days=+i + 7 * (week - 1))
                 case_prognose = ds_last7[i - 1] * pow(1 + proz / 100, week)
                 new_row = {"Date": day, "Cases_New": case_prognose}
                 df_prognose = df_prognose.append(new_row, ignore_index=True)
@@ -309,7 +318,7 @@ def forecast(df_data: DataFrame, l_prognosen_prozente: list, quote: float):
 #
 
 
-def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str):
+def plot_2_its_per_21day_cases(df: pd.DataFrame, filename: str, landkreis_name: str):
     """
     plot 2.png
     """
@@ -346,7 +355,7 @@ def plot_2_its_per_21day_cases(df: DataFrame, filename: str, landkreis_name: str
 
 
 def plot_it(
-    df_divi: DataFrame,
+    df_divi: pd.DataFrame,
     l_df_prognosen: list,
     l_prognosen_prozente: list,
     filepath: str,
@@ -437,7 +446,7 @@ def plot_it(
     plt.close()
 
 
-def doit_de_district(lk_id: int, df_divi_all: DataFrame):
+def doit_de_district(lk_id: int, df_divi_all: pd.DataFrame):
     """
     for multiprocessing
     """
@@ -445,7 +454,7 @@ def doit_de_district(lk_id: int, df_divi_all: DataFrame):
     doit(mode="de-district", df_divi_all=df_divi_all, l_lk_ids=(lk_id,))
 
 
-def doit_de_state(bl_id: int, df_divi_all: DataFrame):
+def doit_de_state(bl_id: int, df_divi_all: pd.DataFrame):
     """
     for multiprocessing
     """
@@ -455,7 +464,7 @@ def doit_de_state(bl_id: int, df_divi_all: DataFrame):
 
 def doit(
     mode="de-district",
-    df_divi_all: DataFrame = None,
+    df_divi_all: pd.DataFrame = None,
     title="",
     l_lk_ids: list = (),
     bl_id: int = -1,

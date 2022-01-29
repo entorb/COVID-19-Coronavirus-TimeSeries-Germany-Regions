@@ -11,14 +11,10 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import os.path
 import re
 import csv
 
-# import requests  # for read_url_or_cachefile
-
-# my helper modules
+# My Helper Functions
 import helper
 
 

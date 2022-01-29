@@ -15,7 +15,6 @@ import os.path
 import time
 import datetime as dt
 
-# import argparse
 import csv
 import json
 import urllib.request
@@ -153,11 +152,11 @@ def pandas_set_date_index(df, date_column: str = "Date"):
     return df
 
 
-def pandas_calc_roll_av(df, column: str, days: int = 7):
+def pandas_calc_roll_av(df, column: str, days: int = 7, digits: int = 1):
     """calc rolling average over column"""
     assert type(days) == int
     df[column + "_roll_av"] = (
-        df[column].rolling(window=days, min_periods=1).mean().round(1)
+        df[column].rolling(window=days, min_periods=1).mean().round(digits)
     )
     return df
 

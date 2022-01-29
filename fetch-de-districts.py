@@ -11,24 +11,13 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import time
-import datetime
 import csv
 import json
 
-# further modules
-# fitting
-import numpy as np
+# Further Modules
+from tqdm import tqdm  # process bar
 
-# curve-fit() function imported from scipy
-# from scipy.optimize import curve_fit
-# from matplotlib import pyplot as plt
-
-# process bar
-from tqdm import tqdm
-
-# my helper modules
+# My Helper Functions
 import helper
 
 # idea:

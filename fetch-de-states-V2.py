@@ -14,7 +14,7 @@ __license__ = "GPL"
 import csv
 import json
 
-# my helper modules
+# My Helper Functions
 import helper
 
 

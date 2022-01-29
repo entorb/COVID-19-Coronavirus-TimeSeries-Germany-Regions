@@ -1,22 +1,37 @@
-# plot via pandas and matplotlib
-# from matplotlib.colors import LogNorm
-# from datetime import datetime
-import datetime as dt
-import glob
-import os
-from pandas.core.frame import DataFrame
-from math import log
-import locale
-import matplotlib as mpl
-import matplotlib.ticker as ticker
-import matplotlib.pyplot as plt
-import pandas as pd
-from scipy.sparse import data
-import helper  # my helper modules
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
+"""
+Plots DE Stats and Districts
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
+import os
+import glob
+import time
+import datetime as dt
+from math import log
 import multiprocessing as mp
 
-import time
+# Further Modules
+import pandas as pd
+
+# from pandas.core.frame import DataFrame
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+
+# My Helper Functions
+import helper
+
+# Set German date format for plots: Okt instead of Oct
+import locale
+
+locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 timestart = time.time()
 
@@ -26,15 +41,6 @@ timestart = time.time()
 mpl.use("Agg")  # Cairo
 # turn off interactive mode
 plt.ioff()
-
-
-# import numpy as np
-
-
-# plt.style.use('ggplot')
-
-# DE date format: Okt instead of Oct
-locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 
 def calc_doubling_time(percent_7day: float) -> float:
@@ -73,15 +79,15 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
     axes[1].right_ax.set_ylim(0, 50)
     # tick freq
     # all are set to make charts better compareable
-    # axes[0].yaxis.set_major_locator(ticker.MultipleLocator(50)) # uncommented, since some regions have incidences > 2000 nowadays
-    axes[0].right_ax.yaxis.set_major_locator(ticker.MultipleLocator(25))
-    axes[1].yaxis.set_major_locator(ticker.MultipleLocator(25))
-    axes[1].right_ax.yaxis.set_major_locator(ticker.MultipleLocator(10))
+    # axes[0].yaxis.set_major_locator(mtick.MultipleLocator(50)) # uncommented, since some regions have incidences > 2000 nowadays
+    axes[0].right_ax.yaxis.set_major_locator(mtick.MultipleLocator(25))
+    axes[1].yaxis.set_major_locator(mtick.MultipleLocator(25))
+    axes[1].right_ax.yaxis.set_major_locator(mtick.MultipleLocator(10))
     # tick format
-    axes[0].yaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
-    axes[0].right_ax.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
-    axes[1].yaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
-    axes[1].right_ax.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
+    axes[0].yaxis.set_major_formatter(mtick.FormatStrFormatter("%d"))
+    axes[0].right_ax.yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
+    axes[1].yaxis.set_major_formatter(mtick.FormatStrFormatter("%d"))
+    axes[1].right_ax.yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
     # color of label and ticks
     axes[0].yaxis.label.set_color(colors[0][0])
     axes[0].tick_params(axis="y", colors=colors[0][0])
@@ -149,7 +155,7 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
     fig.tight_layout()
 
 
-def read_data(datafile: str) -> DataFrame:
+def read_data(datafile: str) -> pd.DataFrame:
     #
     # Read and setup data
     #
@@ -194,7 +200,7 @@ df_DE = read_data(datafile="data/de-states/de-state-DE-total.tsv")
 date_last = pd.to_datetime(df_DE.index[-1]).date()
 
 
-def plot_it(df: DataFrame, code: str, long_name: str, mode: str):
+def plot_it(df: pd.DataFrame, code: str, long_name: str, mode: str):
     """
     source: de-states or de-districts
     """

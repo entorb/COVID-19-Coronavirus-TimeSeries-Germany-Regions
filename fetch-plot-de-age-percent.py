@@ -1,13 +1,10 @@
-from typing import DefaultDict
+# from typing import DefaultDict
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
 import matplotlib.ticker as mtick
 import datetime as dt
 import re
-
-# import urllib.request
-import requests
 
 
 import helper
