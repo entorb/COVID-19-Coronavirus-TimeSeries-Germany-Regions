@@ -69,7 +69,7 @@ jobs:
       run: python3 fetch-plot-de-mutations.py
 
     - name: Data+Plot fetch-plot-de-pcr-tests
-      run: fetch-plot-de-pcr-tests.py
+      run: python3 fetch-plot-de-pcr-tests.py
       
     - name: Data show dates
       run: bash show_data_dates.sh
