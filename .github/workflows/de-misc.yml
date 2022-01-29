@@ -1,4 +1,4 @@
-name: Update Data DE Misc
+name: Update DE Misc
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -55,22 +55,22 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-    - name: Data fetch-mortality-de
+    - name: fetch-de-mortality.py
       run: python3 fetch-de-mortality.py
 
-    - name: Data+Plot fetch-de-vaccination
+    - name: fetch-plot-de-vaccination.py
       run: python3 fetch-plot-de-vaccination.py
 
 # FIXME
-#    - name: Data+Plot fetch-plot-de-age-percent
+#    - name: fetch-plot-de-age-percent.py
 #      run: python3 fetch-plot-de-age-percent.py
 
-    - name: Data+Plot fetch-plot-de-mutations
+    - name: fetch-plot-de-mutations.py
       run: python3 fetch-plot-de-mutations.py
 
-    - name: Data+Plot fetch-plot-de-pcr-tests
+    - name: fetch-plot-de-pcr-tests.py
       run: python3 fetch-plot-de-pcr-tests.py
-      
+
     - name: Data show dates
       run: bash show_data_dates.sh
 
@@ -106,8 +106,11 @@ jobs:
         gnuplot all.gp
         cd ..
 
-    - name: Plot Python calc-increase-histogram
+    - name: plot-de-districts-increase-histogram.py
       run: python3 plot-de-districts-increase-histogram.py
+
+    - name: plot-de-multi-timeseries.py
+      run: python3 plot-de-multi-timeseries.py
 
 # Zipping Charts
     - name: Gnuplot zipping plots-gnuplot/
