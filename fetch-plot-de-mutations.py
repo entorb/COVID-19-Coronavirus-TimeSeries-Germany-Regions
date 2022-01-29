@@ -16,15 +16,17 @@ import datetime as dt
 import subprocess
 
 # Further Modules
-import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-import locale
+import pandas as pd
 
 # My Helper Functions
 import helper
 
 # siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
+
+# Set German date format for plots: Okt instead of Oct
+import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 

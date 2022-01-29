@@ -13,9 +13,9 @@ __license__ = "GPL"
 # Built-in/Generic Imports
 
 # Further Modules
-import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import pandas as pd
 
 # My Helper Functions
 import helper

@@ -10,15 +10,12 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import os.path
-import time
-import datetime as dt
-
 import csv
+import datetime as dt
 import json
-import urllib.request
-import requests  # for read_url_or_cachefile
+import math
+import os
+import time
 
 # multithreading
 # import multiprocessing as mp  # for fetching number of CPUs
@@ -27,13 +24,12 @@ import requests  # for read_url_or_cachefile
 # import concurrent.futures
 
 # further modules
-import math
-import numpy as np
-
-# curve-fit() function imported from scipy
-from scipy.optimize import curve_fit
-import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import requests  # for read_url_or_cachefile
+from scipy.optimize import curve_fit
+import urllib.request
 
 
 # ensure all output folders are present

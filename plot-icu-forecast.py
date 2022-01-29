@@ -10,15 +10,15 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
 import datetime as dt
-import time
 import multiprocessing as mp
+import time
+import os
 
 # Further Modules
-import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # My Helper Functions
 import helper

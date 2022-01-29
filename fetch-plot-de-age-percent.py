@@ -1,16 +1,33 @@
-# from typing import DefaultDict
-import pandas as pd
-import matplotlib.pyplot as plt
-from pandas.core.frame import DataFrame
-import matplotlib.ticker as mtick
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+plot a bar chart of various data
+"""
+
+__author__ = "Dr. Torben Menke"
+__email__ = "https://entorb.net"
+__license__ = "GPL"
+
+# Built-in/Generic Imports
 import datetime as dt
 import re
 
+# Further Modules
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import pandas as pd
 
+# My Helper Functions
 import helper
 
+# Set German date format for plots: Okt instead of Oct
+import locale
 
-def read_alterstrukur() -> DataFrame:
+locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
+
+
+def read_alterstrukur() -> pd.DataFrame:
     """
     read Alterstruktur for DE
     """
@@ -40,7 +57,7 @@ def read_alterstrukur() -> DataFrame:
     return df
 
 
-def read_rki_cases() -> DataFrame:
+def read_rki_cases() -> pd.DataFrame:
     """
     read Excel file and perform some transformations
     here the date is in columns and the age group is in rows
@@ -101,7 +118,7 @@ def read_rki_cases() -> DataFrame:
     return df
 
 
-def read_rki_deaths() -> DataFrame:
+def read_rki_deaths() -> pd.DataFrame:
     """
     read Excel file and perform some transformations
     here the date is in rows and the age group is in columns
@@ -131,7 +148,7 @@ def read_rki_deaths() -> DataFrame:
     return df
 
 
-def read_divi() -> DataFrame:
+def read_divi() -> pd.DataFrame:
     """
     read CSV file and perform some transformations
     here the date is in rows and the age group is in columns
@@ -193,10 +210,10 @@ def filter_rki_cases(df_rki, start_yearweek: int = 202001, end_yearweek: int = 2
     for col in df_rki.columns:
         d[col] = df_rki[col].sum()
 
-    print(df_rki.head())
-    print(df_rki.columns)
-    print(df_rki["0-4"].head())
-    print(df_rki["5-9"].head())
+    # print(df_rki.head())
+    # print(df_rki.columns)
+    # print(df_rki["0-4"].head())
+    # print(df_rki["5-9"].head())
 
     d2 = {
         "0-9": df_rki["0-4"].sum() + df_rki["5-9"].sum(),

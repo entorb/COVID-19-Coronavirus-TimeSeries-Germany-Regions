@@ -17,8 +17,8 @@ __license__ = "GPL"
 import glob
 
 # Further Modules
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # My Helper Functions
 import helper

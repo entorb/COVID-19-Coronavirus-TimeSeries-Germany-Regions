@@ -15,8 +15,8 @@ __license__ = "GPL"
 import datetime as dt
 
 # Further Modules
-import pandas as pd
 import openpyxl
+import pandas as pd
 
 # My Helper Functions
 import helper

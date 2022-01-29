@@ -13,12 +13,11 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import sys
 import glob
-import subprocess
-
+import os
 import re
+import subprocess
+import sys
 
 # My Helper Functions
 import helper

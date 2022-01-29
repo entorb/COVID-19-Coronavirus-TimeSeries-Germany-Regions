@@ -11,8 +11,8 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import re
 import csv
+import re
 
 # My Helper Functions
 import helper

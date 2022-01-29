@@ -15,11 +15,11 @@ __license__ = "GPL"
 # -> ]
 
 # Built-in/Generic Imports
-import urllib.request
 import csv
 
 # Further Modules
 from tqdm import tqdm  # process bar
+import urllib.request
 
 # My Helper Functions
 import helper

@@ -10,20 +10,18 @@ __email__ = "https://entorb.net"
 __license__ = "GPL"
 
 # Built-in/Generic Imports
-import os
-import glob
-import time
 import datetime as dt
-from math import log
+import glob
+import math
 import multiprocessing as mp
+import time
+import os
 
 # Further Modules
-import pandas as pd
-
-# from pandas.core.frame import DataFrame
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import pandas as pd
 
 # My Helper Functions
 import helper
@@ -45,7 +43,7 @@ plt.ioff()
 
 def calc_doubling_time(percent_7day: float) -> float:
     """convert 7-day-increase of incidence into doubling time"""
-    tD = -7 / log((1 / (percent_7day + 1)), 2)
+    tD = -7 / math.log((1 / (percent_7day + 1)), 2)
     return tD
 
 
