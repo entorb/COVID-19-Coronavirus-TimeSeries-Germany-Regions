@@ -16,7 +16,9 @@ __license__ = "GPL"
 # import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import numpy as np
 import pandas as pd
+
 
 # My Helper Functions
 import helper
@@ -28,7 +30,7 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 
 def fetch_and_prepare_data() -> pd.DataFrame:
-    dataFileSource = "cache\de-vaccination.csv"
+    dataFileSource = "cache/de-vaccination.csv"
 
     helper.download_from_url_if_old(
         url="https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv",
@@ -87,12 +89,10 @@ def plotit(df: pd.DataFrame):
     l2_cols_roll_av = [elem for elem in l1_cols if "_roll_av" in elem]
     i = 0
     for c in l2_cols_roll_av:
-        df[c].plot(
+        # print(df[c].replace({0: np.nan, "0": np.nan}).dropna())
+        df[c].replace({0: np.nan, "0": np.nan}).dropna().plot(
             ax=axes[0],
-            # color=colors[i],
-            legend=False,
-            secondary_y=False,
-            # zorder=2,
+            legend=True,
             linewidth=2.0,
         )
         colors.append(axes[0].lines[i].get_color())

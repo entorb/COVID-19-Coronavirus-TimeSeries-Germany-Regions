@@ -94,6 +94,9 @@ df = pd.read_csv(
     usecols=[
         "Date",
         "Anzahl_roll_av",
+        "Dose1_roll_av",
+        "Dose2_roll_av",
+        "Dose3_roll_av",
     ],
     parse_dates=[
         "Date",
@@ -108,7 +111,6 @@ df.rename(
 )
 df_vaccination = df
 # print(df_vaccination)
-
 
 df = pd.read_csv(
     "data/ts-de-pcr-tests.tsv",
@@ -161,97 +163,84 @@ def plotit():
     date_last = pd.to_datetime(df_covid.index[-1]).date()
 
     i = 0
+    axes[i].set_title("Inzidenz")
     df["Inzidenz"].plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Inzidenz")
 
     i += 1
+    axes[i].set_title("Wöchentliche PCR Test (in Millionen)")
     df["TestsMill"].dropna().plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Wöchentliche PCR Test (in Millionen)")
 
     i += 1
+    axes[i].set_title("PCR Positiv-Rate")
     df["PosRate"].dropna().plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("PCR Positiv-Rate")
     axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     i += 1
+    axes[i].set_title("Anteil COVID-Patienten auf den Intensivstationen")
     df["ICU_pct"].plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Anteil COVID-Patienten auf den Intensivstationen")
     axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
 
     i += 1
+    axes[i].set_title("Impfungen (in Millionen, 7-Tages-Mittel)")
     (df["Anzahl_Impfungen_ges"] / 1000000).plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
+        legend=True,
         linewidth=2.0,
     )
-    axes[i].set_title("Impfungen (in Millionen, 7-Tages-Mittel)")
+    (df["Dose1_roll_av"] / 1000000).plot(
+        ax=axes[i],
+        legend=True,
+        linewidth=2.0,
+    )
+    (df["Dose2_roll_av"] / 1000000).plot(
+        ax=axes[i],
+        legend=True,
+        linewidth=2.0,
+    )
+    (df["Dose3_roll_av"] / 1000000).plot(
+        ax=axes[i],
+        legend=True,
+        linewidth=2.0,
+    )
+    axes[i].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
 
     i += 1
     df["Deaths_Covid_roll_av"].plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
     axes[i].set_title("Tägliche COVID Opfer (7-Tages-Mittel)")
 
     i += 1
+    axes[i].set_title("Tägliche Todesfälle alle Ursachen (7-Tages-Mittel)")
     df["Deaths_roll_av"].plot(
         ax=axes[i],
-        # color=colors[i],
-        legend=False,
-        secondary_y=False,
-        # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("Tägliche Todesfälle alle Ursachen (7-Tages-Mittel)")
 
     i += 1
+    axes[i].set_title("Sequenzierte Virus Mutanten (7-Tages-Mittel)")
     for mutation in df_mutations.columns[1:9]:
         df[mutation].plot(
             ax=axes[i],
-            # color=colors[i],
             legend=True,
-            secondary_y=False,
-            # zorder=2,
             linewidth=2.0,
         )
-    axes[i].set_title("Sequenzierte Virus Mutanten (7-Tages-Mittel)")
 
     i += 1
+    axes[i].set_title("7-Tages-Inzidenzanstieg")
     df["InzidenzChange"].plot(
         ax=axes[i],
         # color=colors[i],
@@ -260,8 +249,8 @@ def plotit():
         # zorder=2,
         linewidth=2.0,
     )
-    axes[i].set_title("7-Tages-Inzidenzanstieg")
     axes[i].yaxis.set_major_formatter(mtick.PercentFormatter(decimals=0))
+    axes[i].set_ylim(0, 100)
 
     # layout tuning
     for i in range(0, num_plots):
@@ -269,8 +258,6 @@ def plotit():
         axes[i].grid(zorder=0)
         if i != 6:  # Deaths_roll_av
             axes[i].set_ylim(0, None)
-    if i == 8:  # InzidenzChange
-        axes[i].set_ylim(0, 100)
 
     #    axes2 = axes[0].twiny()
 
