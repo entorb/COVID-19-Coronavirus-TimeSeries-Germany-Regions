@@ -62,8 +62,8 @@ jobs:
       run: python3 fetch-plot-de-vaccination.py
 
 # FIXME
-#    - name: fetch-plot-de-age-percent.py
-#      run: python3 fetch-plot-de-age-percent.py
+    - name: fetch-plot-de-age-percent.py
+      run: python3 fetch-plot-de-age-percent.py
 
     - name: fetch-plot-de-mutations.py
       run: python3 fetch-plot-de-mutations.py
