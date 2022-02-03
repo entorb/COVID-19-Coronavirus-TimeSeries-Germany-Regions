@@ -124,7 +124,11 @@ def read_rki_deaths() -> pd.DataFrame:
     # RKI uses "<4" for values 1,2,3, fixing this via assuming 1
     # TODO: calc replacement based on sum over all ages (Sheet: COVID_Todesfälle)
     df.replace(
-        to_replace="<4", value=1, inplace=True, limit=None, regex=False, method="pad"
+        to_replace="<4",
+        value=1,
+        inplace=True,
+        regex=False,
+        # , limit=None, method="pad"
     )
 
     # convert str to int for all data columns
