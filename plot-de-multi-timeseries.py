@@ -279,7 +279,7 @@ def plotit():
     for i in range(0, num_plots):
         axes[i].xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 
-    helper.mpl_add_text_source(source="verschiedene", date=date_last)
+    helper.mpl_add_text_source(source="RKI, DIVI, Destatis", date=date_last)
     fig.set_tight_layout(True)
     fig.savefig(fname=f"plots-python/de-multi-timeseries.png", format="png")
     plt.close()
