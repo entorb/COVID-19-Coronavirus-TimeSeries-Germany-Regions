@@ -275,14 +275,22 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
     # f=json
     # &outFields=*
 
-    cont = helper.read_url_or_cachefile(
-        url=url,
-        cachefile=file_cache,
-        request_type="get",
-        cache_max_age=0,  # 0s because git pulled files are "new"
-        verbose=False,
-    )
-    json_cont = json.loads(cont)
+    retryNo = 0
+    while retryNo <= 3:
+        cont = helper.read_url_or_cachefile(
+            url=url,
+            cachefile=file_cache,
+            request_type="get",
+            cache_max_age=0,  # 0s because git pulled files are "new"
+            verbose=False,
+        )
+        json_cont = json.loads(cont)
+        if "features" in json_cont:
+            break
+        else:
+            retryNo += 1
+            print(f"retrying LK {lk_id} #{retryNo}")
+
     # flatten the json structure
     l2 = json_cont["features"]
     l_time_series = [v["attributes"] for v in l2]
