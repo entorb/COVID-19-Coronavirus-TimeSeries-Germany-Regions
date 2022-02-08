@@ -14,8 +14,8 @@ import csv
 import datetime as dt
 import json
 import math
-import os
 import time
+import os
 
 # multithreading
 # import multiprocessing as mp  # for fetching number of CPUs

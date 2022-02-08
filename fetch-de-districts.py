@@ -13,6 +13,7 @@ __license__ = "GPL"
 # Built-in/Generic Imports
 import csv
 import json
+import time
 
 # Further Modules
 from tqdm import tqdm  # process bar
@@ -289,6 +290,7 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
             break
         else:
             retryNo += 1
+            time.sleep(3)
             print(f"retrying LK {lk_id} #{retryNo}")
 
     # flatten the json structure
