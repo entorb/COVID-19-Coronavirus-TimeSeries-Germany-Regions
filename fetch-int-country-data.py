@@ -77,11 +77,12 @@ def read_json_data() -> dict:
     d_countries = {}
     # re-format date using my date_format(y,m,d) function
     for country, country_data in d_json_downloaded.items():
-        if country == "Summer Olympics 2020":
+        # if country in ("Summer Olympics 2020", "Winter Olympics 2022"):
+        if " Olympics " in country:
             continue
         assert (
             country in d_countries_ref
-        ), "E: Country missing in ref list d_countries_ref"
+        ), f"E: Country '{country}' missing in ref list d_countries_ref"
         l_time_series = []
 
         pop = read_population(country)

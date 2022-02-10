@@ -451,7 +451,9 @@ def add_per_million(d: dict, pop_in_million: float) -> dict:
             # else:
             #     perMillion = 0  # if pop is unknown
         d[key + "_Per_Million"] = perMillion
-    d["Cases_Last_Week_Per_100000"] = d["Cases_Last_Week_Per_Million"] / 10
+    d["Cases_Last_Week_Per_100000"] = None
+    if d["Cases_Last_Week_Per_Million"] != None:
+        d["Cases_Last_Week_Per_100000"] = d["Cases_Last_Week_Per_Million"] / 10
     return d
 
 
