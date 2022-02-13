@@ -53,14 +53,16 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     df = helper.pandas_set_date_index(df=df, date_column="Impfdatum")
     # rename index
     df.index.name = "Date"
+    
+    max_dose_no = 4 # todo: fetch dynamically
 
     # add a series filtered on the vaccination dose nummer 1..3
-    for vac_dose_no in range(1, 3 + 1, 1):
+    for vac_dose_no in range(1, max_dose_no + 1, 1):
         df_tmp = df0[df0["Impfserie"] == vac_dose_no]
         df_tmp = df_tmp.groupby(["Impfdatum"])["Anzahl"].sum().reset_index()
         df_tmp = helper.pandas_set_date_index(df=df_tmp, date_column="Impfdatum")
         df["Dose" + str(vac_dose_no)] = df_tmp["Anzahl"]
-    del df_tmp, vac_dose_no
+    del df_tmp, vac_dose_no, max_dose_no
 
     # set missing values to 0
     df.fillna(0, inplace=True)
