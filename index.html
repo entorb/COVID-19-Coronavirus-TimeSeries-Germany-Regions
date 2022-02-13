@@ -167,7 +167,8 @@
 							Landkreis-E-Mail-Newsletter</a></b>
 				</li>
 				<li>
-					<a href="#DeMortality">Vergleich der Sterbefälle 2016-2021 / Übersterblichkeit</a>
+					<a href="#DeMortality">Vergleich der Sterbefälle vor und während der Pandemie /
+						Übersterblichkeit</a>
 				</li>
 				<li>
 					<a href="#DeAgePercent">Altersverteilungen</a> <b>(neu)</b>
@@ -338,8 +339,10 @@
 	<h4>
 		<a id="DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a>
 	</h4>
-
+	<h5>Ganze Pandemie</h5>
 	<img src="plots-python/de-multi-timeseries.png" alt="de-multi-timeseries.png" width="1000" height="2000"><br />
+	<h5>Zoom auf das letzte halbe Jahr</h5>
+	<img src="plots-python/de-multi-timeseries.png" alt="de-multi-timeseries-180.png" width="1000" height="2000"><br />
 
 	<small>generated via Python <a
 			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/plot-de-multi-timeseries.py"
@@ -947,7 +950,7 @@
 	<hr />
 
 
-	<h4><a id="DeMortality"></a>Vergleich der Sterbefälle 2016-2021 / Übersterblichkeit</h4>
+	<h4><a id="DeMortality"></a>Vergleich der Sterbefälle vor und während der Pandemie / Übersterblichkeit</h4>
 
 	<p> Basierend auf den <a
 			href="https://www.destatis.de/DE/Themen/Querschnitt/Corona/Gesellschaft/bevoelkerung-sterbefaelle.html"
@@ -958,8 +961,10 @@
 	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality.png" width="640" height="480">
 
 	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro
-		Kalendertag gemittelt und zusammen mit den Daten von 2020 und 2021 aufgetragen. Im unteren Bereich ist die
+		Kalendertag gemittelt und zusammen mit den Daten von 2020, 2021 und 2022 aufgetragen. Im unteren Bereich ist die
 		Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
+	<img src="plots-gnuplot/de-mortality-covid-2022.png" alt="de-mortality-covid-2022.png" width="640" height="800">
+	<br />
 	<img src="plots-gnuplot/de-mortality-covid-2021.png" alt="de-mortality-covid-2021.png" width="640" height="800">
 	<br />
 	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800">

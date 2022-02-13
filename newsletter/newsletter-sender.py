@@ -387,7 +387,7 @@ for row in db_newsletter_cursor.execute(
         reason_for_sending = "Sonntäglicher Versand"
 
     if toSend:
-        # mailBody += f"Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n\n"
+        # mailBody += f"Hinweis: Ich habe mal versucht eine bessere Ordnung in meine vielen Auswertungen zu bringen, Ergebnis siehe: \nhttps://entorb.net/COVID-19-coronavirus/\nÜber weitere Verbesserungsvorschläge freue ich mich.\nKontakt: https://entorb.net/contact.php?origin=COVID-19\n\n"
         # table header
         mailBody += "Infektionen (Quelle: RKI)\n\n"
         mailBody += "Rel.¹ | Absolut² | Änderung³\n"
