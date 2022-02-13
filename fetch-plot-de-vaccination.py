@@ -54,7 +54,7 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     # rename index
     df.index.name = "Date"
     
-    max_dose_no = 4 # todo: fetch dynamically
+    max_dose_no = 3 # todo: fetch dynamically
 
     # add a series filtered on the vaccination dose nummer 1..3
     for vac_dose_no in range(1, max_dose_no + 1, 1):
