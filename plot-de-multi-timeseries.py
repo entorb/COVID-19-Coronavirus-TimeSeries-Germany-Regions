@@ -55,11 +55,12 @@ df.rename(
 )
 
 # filter out some values
-df.loc[df.index.date < pd.to_datetime("2020-03-01"), "InzidenzChange"] = None
+# df.loc[df.index.date < pd.to_datetime("2020-03-01"), "InzidenzChange"] = None
+df.loc[df.index < pd.Timestamp("2020-03-01"), "InzidenzChange"] = None
 
 # drop deaths of last 4 weeks, as they are not final yet
 df.loc[
-    df.index.date >= pd.to_datetime(dt.date.today() - dt.timedelta(weeks=4)),
+    df.index >= pd.Timestamp(dt.date.today() - dt.timedelta(weeks=4)),
     "Deaths_Covid",
 ] = None
 
@@ -282,6 +283,10 @@ def plotit():
     helper.mpl_add_text_source(source="RKI, DIVI, Destatis", date=date_last)
     fig.set_tight_layout(True)
     fig.savefig(fname=f"plots-python/de-multi-timeseries.png", format="png")
+
+    axes[0].set_xlim(dt.date.today() - dt.timedelta(days=180), None)
+    fig.savefig(fname=f"plots-python/de-multi-timeseries-180.png", format="png")
+
     plt.close()
 
 
