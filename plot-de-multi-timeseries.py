@@ -15,8 +15,10 @@ from this import d
 
 # Further Modules
 import pandas as pd
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+
 
 # My Helper Functions
 import helper
@@ -27,118 +29,116 @@ import locale
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 
-df = pd.read_csv(
-    "data/de-states/de-state-DE-total.tsv",
-    sep="\t",
-    usecols=[
-        "Date",
-        "Cases_Last_Week_Per_Million",
-        "Deaths_New",
-        "DIVI_Intensivstationen_Covid_Prozent",
-        "Cases_Last_Week_7Day_Percent",
-    ],  # only load these columns
-    parse_dates=[
-        "Date",
-    ],  # convert to date object if format is yyyy-mm-dd
-    index_col="Date",  # choose this column as index
-)
-df["Inzidenz"] = df["Cases_Last_Week_Per_Million"] / 10
-df.drop(columns="Cases_Last_Week_Per_Million", inplace=True)
-df.rename(
-    columns={
-        "Deaths_New": "Deaths_Covid",
-        "DIVI_Intensivstationen_Covid_Prozent": "ICU_pct",
-        "Cases_Last_Week_7Day_Percent": "InzidenzChange",
-    },
-    inplace=True,
-    errors="raise",
-)
+def read_data_covid():
+    df = pd.read_csv(
+        "data/de-states/de-state-DE-total.tsv",
+        sep="\t",
+        usecols=[
+            "Date",
+            "Cases_Last_Week_Per_Million",
+            "Deaths_New",
+            "DIVI_Intensivstationen_Covid_Prozent",
+            "Cases_Last_Week_7Day_Percent",
+        ],  # only load these columns
+        parse_dates=[
+            "Date",
+        ],  # convert to date object if format is yyyy-mm-dd
+        index_col="Date",  # choose this column as index
+    )
+    df["Inzidenz"] = df["Cases_Last_Week_Per_Million"] / 10
+    df.drop(columns="Cases_Last_Week_Per_Million", inplace=True)
+    df.rename(
+        columns={
+            "Deaths_New": "Deaths_Covid",
+            "DIVI_Intensivstationen_Covid_Prozent": "ICU_pct",
+            "Cases_Last_Week_7Day_Percent": "InzidenzChange",
+        },
+        inplace=True,
+        errors="raise",
+    )
 
-# filter out some values
-# df.loc[df.index.date < pd.to_datetime("2020-03-01"), "InzidenzChange"] = None
-df.loc[df.index < pd.Timestamp("2020-03-01"), "InzidenzChange"] = None
+    # filter out some values
+    # df.loc[df.index.date < pd.to_datetime("2020-03-01"), "InzidenzChange"] = None
+    df.loc[df.index < pd.Timestamp("2020-03-01"), "InzidenzChange"] = None
 
-# drop deaths of last 4 weeks, as they are not final yet
-df.loc[
-    df.index >= pd.Timestamp(dt.date.today() - dt.timedelta(weeks=4)),
-    "Deaths_Covid",
-] = None
+    # drop deaths of last 4 weeks, as they are not final yet
+    df.loc[
+        df.index >= pd.Timestamp(dt.date.today() - dt.timedelta(weeks=4)),
+        "Deaths_Covid",
+    ] = None
 
-# not for ICU!
-# df.fillna(0, inplace=True)
+    # not for ICU!
+    # df.fillna(0, inplace=True)
 
-df = helper.pandas_calc_roll_av(df=df, column="Deaths_Covid", days=7)
-df.drop(columns=["Deaths_Covid"], inplace=True)
-
-df_covid = df
-# print(df_covid)
-
-
-df = pd.read_csv(
-    "data/ts-de-mortality.tsv",
-    sep="\t",
-    parse_dates=[
-        "Date",
-    ],  # convert to date object if format is yyyy-mm-dd
-    index_col="Date",  # choose this column as index
-)
-df = df[df.index >= pd.to_datetime("2020-01-01")]
-df.drop(columns=["Deaths"], inplace=True)
-
-df_mortality = df
-# print(df_mortality)
+    df = helper.pandas_calc_roll_av(df=df, column="Deaths_Covid", days=7)
+    df.drop(columns=["Deaths_Covid"], inplace=True)
+    return df
 
 
-df = pd.read_csv(
-    "data/ts-de-vaccination.tsv",
-    sep="\t",
-    usecols=[
-        "Date",
-        "Anzahl_roll_av",
-        "Dose1_roll_av",
-        "Dose2_roll_av",
-        "Dose3_roll_av",
-    ],
-    parse_dates=[
-        "Date",
-    ],  # convert to date object if format is yyyy-mm-dd
-    index_col="Date",  # choose this column as index
-)
-df.rename(
-    columns={
-        "Anzahl_roll_av": "Anzahl_Impfungen_ges",
-    },
-    inplace=True,
-)
-df_vaccination = df
-# print(df_vaccination)
-
-df = pd.read_csv(
-    "data/ts-de-pcr-tests.tsv",
-    sep="\t",
-    parse_dates=[
-        "Date",
-    ],  # convert to date object if format is yyyy-mm-dd
-    index_col="Date",  # choose this column as index
-)
-# df.ffill(inplace=True)
-df_pcr = df
-# print(df_pcr)
+def read_data_mortality():
+    df = pd.read_csv(
+        "data/ts-de-mortality.tsv",
+        sep="\t",
+        parse_dates=[
+            "Date",
+        ],  # convert to date object if format is yyyy-mm-dd
+        index_col="Date",  # choose this column as index
+    )
+    df = df[df.index >= pd.to_datetime("2020-01-01")]
+    df.drop(columns=["Deaths"], inplace=True)
+    return df
 
 
-df = pd.read_csv(
-    "data/ts-de-mutations.tsv",
-    sep="\t",
-    parse_dates=[
-        "Date",
-    ],  # convert to date object if format is yyyy-mm-dd
-    index_col="Date",  # choose this column as index
-)
-df_mutations = df
-# print(df_mutations)
+def read_data_vaccination():
+    df = pd.read_csv(
+        "data/ts-de-vaccination.tsv",
+        sep="\t",
+        usecols=[
+            "Date",
+            "Anzahl_roll_av",
+            "Dose1_roll_av",
+            "Dose2_roll_av",
+            "Dose3_roll_av",
+        ],
+        parse_dates=[
+            "Date",
+        ],  # convert to date object if format is yyyy-mm-dd
+        index_col="Date",  # choose this column as index
+    )
+    df.rename(
+        columns={
+            "Anzahl_roll_av": "Anzahl_Impfungen_ges",
+        },
+        inplace=True,
+    )
+    return df
 
 
-df = df_covid.join(df_mortality).join(df_vaccination).join(df_pcr).join(df_mutations)
+def read_data_pcr():
+    df = pd.read_csv(
+        "data/ts-de-pcr-tests.tsv",
+        sep="\t",
+        parse_dates=[
+            "Date",
+        ],  # convert to date object if format is yyyy-mm-dd
+        index_col="Date",  # choose this column as index
+    )
+    # df.ffill(inplace=True)
+    return df
+
+
+def read_data_mutations():
+    df = pd.read_csv(
+        "data/ts-de-mutations.tsv",
+        sep="\t",
+        parse_dates=[
+            "Date",
+        ],  # convert to date object if format is yyyy-mm-dd
+        index_col="Date",  # choose this column as index
+    )
+    return df
+
+    return df_covid, df_mortality, df_vaccination, df_pcr, df_mutations
 
 
 # df.ffill(inplace=True)
@@ -152,7 +152,7 @@ df = df_covid.join(df_mortality).join(df_vaccination).join(df_pcr).join(df_mutat
 # print(df.columns)
 
 
-def plotit():
+def plotit(df: pd.DataFrame):
     # initialize plot
     axes = [None]
 
@@ -275,8 +275,6 @@ def plotit():
         labeltop=False,
     )
 
-    import matplotlib.dates as mdates
-
     for i in range(0, num_plots):
         axes[i].xaxis.set_major_locator(mdates.MonthLocator(interval=1))
 
@@ -291,8 +289,20 @@ def plotit():
 
 
 if __name__ == "__main__":
-    plotit()
-    # pass
+    df_covid = read_data_covid()
+    df_mortality = read_data_mortality()
+    df_vaccination = read_data_vaccination()
+    df_pcr = read_data_pcr()
+    df_mutations = read_data_mutations()
+
+    # merge
+    df = (
+        df_covid.join(df_mortality).join(df_vaccination).join(df_pcr).join(df_mutations)
+    )
+
+    plotit(df)
+
+
 """
 plot:
 df_covid
