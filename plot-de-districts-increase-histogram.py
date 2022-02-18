@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 converts the incidence data into a kind of histogram time series
@@ -8,10 +9,6 @@ converts the incidence data into a kind of histogram time series
 # TODO:
 # use rolling for finding the slope
 # https://stackoverflow.com/questions/49838315/python-pandas-apply-a-function-to-dataframe-rolling
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # Built-in/Generic Imports
 import glob

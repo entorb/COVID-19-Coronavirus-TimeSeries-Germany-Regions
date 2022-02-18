@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 Generates animated maps for Germany using Covid-19 data and Divi hospital data
@@ -7,10 +8,6 @@ Based on
 https://raw.githubusercontent.com/ythlev/covid-19/master/run.py
 by Chang Chia-huan
 """
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # Built-in/Generic Imports
 import glob

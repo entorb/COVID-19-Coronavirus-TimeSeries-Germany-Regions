@@ -1,11 +1,13 @@
-#!/usr/bin/python3.8
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 import os
 import sqlite3
-import json
-import hashlib
-import random
+
+# import json
+# import hashlib
+# import random
 from datetime import date
 from datetime import datetime
 

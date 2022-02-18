@@ -1,13 +1,10 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 Plots DE Stats and Districts
 """
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # Built-in/Generic Imports
 import datetime as dt

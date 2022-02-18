@@ -1,14 +1,17 @@
-#!/usr/bin/python3.8
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
-import os
-import re
-import sqlite3
-import random
-import hashlib
 import datetime
+import random
+import re
+import os
+
 import cgi
+import hashlib
+import sqlite3
 import json
+
 # errors and debugging info to browser
 # import cgitb
 # cgitb.enable()
@@ -60,7 +63,7 @@ https://entorb.net/COVID-19-coronavirus/newsletter-backend.py?action=setRegions&
 ##########################
 
 response = {}
-response['status'] = "ok"
+response["status"] = "ok"
 
 
 def checkRunningOnServer() -> bool:
@@ -79,23 +82,24 @@ def genHash(email: str) -> str:
 
 def gen_SHA256_string(s: str) -> str:
     m = hashlib.sha256()
-    m.update(s.encode('ascii'))
+    m.update(s.encode("ascii"))
     return m.hexdigest()
 
 
 def assert_valid_email_format(email: str):
     # from https://stackoverflow.com/posts/719543/timeline bottom edit
     assert re.fullmatch(
-        r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email), "Error: invalid email format"
+        r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email
+    ), "Error: invalid email format"
 
 
 def db_connect():
     "connect to sqlite DB"
     # check I running on entorb.net webserver
     if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        pathToDb = '/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db'
+        pathToDb = "/var/www/virtual/entorb/data-web-pages/covid-19/newsletter.db"
     else:
-        pathToDb = 'cache/newsletter.db'
+        pathToDb = "cache/newsletter.db"
     con = sqlite3.connect(pathToDb)
     con.row_factory = sqlite3.Row  # allows for access via row["name"]
     cur = con.cursor()
@@ -112,7 +116,12 @@ def db_updateHash(email) -> str:
     return h
 
 
-def sendmail(to: str, body: str, subject: str = "[COVID-19 Landkreis Benachrichtigung]", sender: str = "no-reply@entorb.net"):
+def sendmail(
+    to: str,
+    body: str,
+    subject: str = "[COVID-19 Landkreis Benachrichtigung]",
+    sender: str = "no-reply@entorb.net",
+):
 
     if checkRunningOnServer():
         # V1: via SENDMAIL
@@ -124,24 +133,33 @@ def sendmail(to: str, body: str, subject: str = "[COVID-19 Landkreis Benachricht
         # p.close()
 
         # V2: via my Mailer Daemon
-        insertNewEMail(send_to=to, subject=subject, body=body,
-                       send_from=sender)
+        insertNewEMail(send_to=to, subject=subject, body=body, send_from=sender)
 
     else:
         print(f"To: {to}\nSubject: {subject}\nFrom: {sender}\n{body}")
 
 
-def insertNewEMail(send_to: str, subject: str, body: str, send_from: str = 'no-reply@entorb.net', send_cc: str = '', send_bcc: str = ''):
+def insertNewEMail(
+    send_to: str,
+    subject: str,
+    body: str,
+    send_from: str = "no-reply@entorb.net",
+    send_cc: str = "",
+    send_bcc: str = "",
+):
     # This is a copy from mailer-daemon/insert.py
     import sqlite3
+
     PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
 
     # ensureValidEMail(send_to) # uncommented, because send_to might contain the name as well
 
     con = sqlite3.connect(PATH)
     cur = con.cursor()
-    cur.execute("INSERT INTO outbox(send_to, subject, body, send_from, send_cc, send_bcc, date_created, date_sent) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP, NULL)",
-                (send_to, subject, body, send_from, send_cc, send_bcc))
+    cur.execute(
+        "INSERT INTO outbox(send_to, subject, body, send_from, send_cc, send_bcc, date_created, date_sent) VALUES (?,?,?,?,?,?,CURRENT_TIMESTAMP, NULL)",
+        (send_to, subject, body, send_from, send_cc, send_bcc),
+    )
     con.commit()
     cur.close()
     con.close()
@@ -154,8 +172,9 @@ def send_email_register(email: str, h: str):
     # body = f"Bitte diesen Link öffnen um die Anmeldung abzuschließen und die Einstellungen vorzunehmen:\n ... "
     # TODO: BUG: Umlaute funktioniere hier nicht
     body = f"Bitte diesen Link oeffnen um die Anmeldung abzuschliessen und die Einstellungen vorzunehmen:\n https://entorb.net/COVID-19-coronavirus/newsletter-frontend.html?action=verify&hash={h}"
-    sendmail(to=email, body=body,
-             subject="[COVID-19 Landkreis Benachrichtigung] - Anmeldung")
+    sendmail(
+        to=email, body=body, subject="[COVID-19 Landkreis Benachrichtigung] - Anmeldung"
+    )
 
 
 def get_form_parameter(para: str) -> str:
@@ -170,12 +189,12 @@ def get_userdata():
     sql = "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE hash = ? LIMIT 1"
     row = cur.execute(sql, (h,)).fetchone()
     userdata = {
-        "email": row['email'],
-        "verified": row['verified'],
-        "threshold": row['threshold'],
-        "regions": row['regions'],
-        "frequency": row['frequency'],
-        "date_registered": row['date_registered']
+        "email": row["email"],
+        "verified": row["verified"],
+        "threshold": row["threshold"],
+        "regions": row["regions"],
+        "frequency": row["frequency"],
+        "date_registered": row["date_registered"],
     }
     response["userdata"] = userdata
 
@@ -247,22 +266,22 @@ try:
 
     # fetch ref list of regions/district ids
     if checkRunningOnServer():
-        pathToData = '/var/www/virtual/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json'
+        pathToData = "/var/www/virtual/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json"
     else:
-        pathToData = 'data/de-districts/de-districts-results.json'
-    with open(pathToData, mode='r', encoding='utf-8') as fh:
+        pathToData = "data/de-districts/de-districts-results.json"
+    with open(pathToData, mode="r", encoding="utf-8") as fh:
         d_district_ids = list(json.load(fh).keys())
 
     con, cur = db_connect()
 
     # ensure that this script is accessed using url parameters
-    assert os.environ.get('QUERY_STRING') != "", "Error: no parameters given"
+    assert os.environ.get("QUERY_STRING") != "", "Error: no parameters given"
 
     # Create instance of FieldStorage
     form = cgi.FieldStorage()
 
     action = get_form_parameter("action")
-    response['action'] = action
+    response["action"] = action
 
     # for all actions except subscribe the parameter hash needs to be set and present in the db
     if action != "subscribe":
@@ -330,7 +349,7 @@ try:
 
     elif action == "setRegions":
         regions = get_form_parameter("regions")
-        l_regions = regions.split(',')
+        l_regions = regions.split(",")
         # ensure all regions are numeric
         for region in l_regions:
             assert_region_valid(region)
@@ -345,7 +364,7 @@ try:
         sql = "SELECT regions FROM newsletter WHERE hash = ? LIMIT 1"
         row = cur.execute(sql, (h,)).fetchone()
         if row["regions"]:
-            l_regions = row["regions"].split(',')
+            l_regions = row["regions"].split(",")
         else:
             l_regions = []
         if region not in l_regions:
@@ -363,7 +382,7 @@ try:
         sql = "SELECT regions FROM newsletter WHERE hash = ? LIMIT 1"
         row = cur.execute(sql, (h,)).fetchone()
         if row["regions"]:
-            l_regions = row["regions"].split(',')
+            l_regions = row["regions"].split(",")
             if region in l_regions:
                 l_regions.remove(region)
                 if len(l_regions) > 0:
@@ -379,7 +398,7 @@ try:
         get_userdata()
 
     else:
-        response['status'] = "error"
+        response["status"] = "error"
         response["message"] = f"unknown action {action}"
 
     # for most actions we want to return the userdata
@@ -388,7 +407,7 @@ try:
 
 
 except Exception as e:
-    response['status'] = "error"
+    response["status"] = "error"
     d = {"type": str(type(e)), "text": str(e)}
     response["exception"] = d
 

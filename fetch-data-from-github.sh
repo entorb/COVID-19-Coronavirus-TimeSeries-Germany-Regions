@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 mkdir tmp
 
 wget --quiet -P tmp https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/tip/data.tgz

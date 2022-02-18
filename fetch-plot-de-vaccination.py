@@ -1,14 +1,11 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 This script downloads COVID-19 vaccination data by RKI from
 https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/blob/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv
 """
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # Built-in/Generic Imports
 

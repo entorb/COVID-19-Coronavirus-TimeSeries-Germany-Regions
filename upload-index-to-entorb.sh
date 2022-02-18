@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # rsync -rvhu --delete --delete-excluded --no-perms index-url.html entorb@entorb.net:html/COVID-19-coronavirus/
 # rsync -rvhu --delete --delete-excluded --no-perms eCharts/myHelper-url.js entorb@entorb.net:html/COVID-19-coronavirus/eCharts/

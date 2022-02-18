@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # initialdir=$PWD
 DATE=`date +"%Y-%m-%d_%H-%M"`
 

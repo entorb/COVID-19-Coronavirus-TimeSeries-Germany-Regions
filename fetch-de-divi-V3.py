@@ -1,14 +1,11 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 fetched German hospital occupancy data from DIVI https://www.intensivregister.de
 lk_id sind https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
 """
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # Built-in/Generic Imports
 import csv

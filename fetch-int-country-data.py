@@ -1,14 +1,11 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
 """
 This script downloads COVID-19 / coronavirus data provided by https://github.com/pomber/covid19
 Data is enriched by calculated values and exported
 """
-
-__author__ = "Dr. Torben Menke"
-__email__ = "https://entorb.net"
-__license__ = "GPL"
 
 # TODO: modify cache to plot old data via
 # ,\n\s+\{[\n]\s+"date": "2020-4-1",[^\]]*\]

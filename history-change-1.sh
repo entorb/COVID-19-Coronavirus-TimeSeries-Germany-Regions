@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+# by Dr. Torben Menke https://entorb.net
+# https://github.com/entorb/COVID-19-Coronavirus-German-Regions
+
 myFilePath=data/de-districts/de-district_timeseries-09562.tsv
 # myFilePath=data/de-states/de-state-MV.tsv
 # 02000 : Hamburg
