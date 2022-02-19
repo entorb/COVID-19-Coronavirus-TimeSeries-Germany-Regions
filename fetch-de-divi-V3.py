@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.9
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 
