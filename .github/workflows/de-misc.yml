@@ -56,8 +56,8 @@ jobs:
 
 # Update data
 # 220309: source added some browser magic, needs to be run manually from now on :-( 
-    - name: fetch-de-mortality.py
-      run: python3 fetch-de-mortality.py
+#    - name: fetch-de-mortality.py
+#      run: python3 fetch-de-mortality.py
 
     - name: fetch-plot-de-vaccination.py
       run: python3 fetch-plot-de-vaccination.py
