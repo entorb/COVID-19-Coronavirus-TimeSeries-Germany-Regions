@@ -127,8 +127,8 @@ def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
 
     # as file is stored in cache folder which is not part of the commit, we can use the caching here
     helper.download_from_url_if_old(
-        # url="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile",
-        url="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx;jsessionid=FB723BC229CAC6B6302FF752CC66DE7C.live742?__blob=publicationFile",
+        url="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile",
+        # url="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx;jsessionid=FB723BC229CAC6B6302FF752CC66DE7C.live742?__blob=publicationFile",
         file_local=excelFile,
         max_age=3600,
         verbose=True,
