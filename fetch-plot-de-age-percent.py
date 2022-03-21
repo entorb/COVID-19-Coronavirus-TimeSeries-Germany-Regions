@@ -58,7 +58,7 @@ def read_rki_cases() -> pd.DataFrame:
     """
     excelFile = "cache/de-rki-Altersverteilung.xlsx"
     df = pd.read_excel(
-        open(excelFile, "rb"), sheet_name="fallzahl-tabelle", engine="openpyxl"
+        open(excelFile, "rb"), sheet_name="Fallzahlen", engine="openpyxl"
     )
     df.set_index("Altersgruppe", inplace=True)
 
