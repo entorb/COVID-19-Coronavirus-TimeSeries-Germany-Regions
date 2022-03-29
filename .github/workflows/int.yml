@@ -5,8 +5,8 @@ name: International
 on:  
   workflow_dispatch:    
   schedule:
-  # UTC ! -> 4:03 DE (Wintertime)
-    - cron: "3 3 * * *"
+  # UTC ! -> 3:59 DE (Wintertime)
+    - cron: "59 2 * * *"
 # TODO       
 #  push: 
 #    branches: [ master ]
