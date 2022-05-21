@@ -53,6 +53,7 @@ def read_json_data() -> dict:
     d_countries_to_rename = {}
     d_countries_to_rename["US"] = "United States"
     d_countries_to_rename["Korea, South"] = "South Korea"
+    d_countries_to_rename["Korea, North"] = "Korea, North"
     d_countries_to_rename["Taiwan*"] = "Taiwan"
     d_countries_to_rename["Burma"] = "Myanmar"
     d_countries_to_rename["Cote d'Ivoire"] = "Ivory Coast"
