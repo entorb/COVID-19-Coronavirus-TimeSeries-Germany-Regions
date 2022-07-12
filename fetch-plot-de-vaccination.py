@@ -101,7 +101,7 @@ def plotit(df: pd.DataFrame):
 
     # Labels
     fig.suptitle("COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
-    axes[0].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
+    axes[0].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen", "Viertimpfungen"))
     axes[0].set_xlabel("")
 
     # y min to 0
