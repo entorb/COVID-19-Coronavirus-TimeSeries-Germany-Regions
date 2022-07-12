@@ -212,7 +212,7 @@ def plotit(df: pd.DataFrame):
         legend=True,
         linewidth=2.0,
     )
-    axes[i].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen"))
+    axes[i].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen", "Viertimpfungen"))
 
     i += 1
     df["Deaths_Covid_roll_av"].plot(
