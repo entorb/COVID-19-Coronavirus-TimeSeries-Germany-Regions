@@ -77,36 +77,22 @@
 
 	<h1>COVID-19 Coronavirus Disease Spread Analysis in German Regions and the World</h1>
 
-	<p> In early 2020 the SARS-CoV-2 virus (colloquially known as the coronavirus) spread across the globe and caused a
-		pandemic of COVID-19 disease. This page presents a collection of daily updated charts and analysis of disease
-		spread in German regions and the world. The focus lies on displaying the data of the past and deriving trends
-		for the near future. In order to compare data of different regions, data is scaled by the regions' population.
-		Charts are updated daily in the morning (UTC). Raw data and plot scripts are available in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions" target="_blank">my GitHub
-			repository</a>. This is a private non-profit spare-time project. All data shown here rely on the quality of
-		the data sources. I cannot guarantee for the correctness of my derived data.</p>
+	<p> In early 2020 the SARS-CoV-2 virus (colloquially known as the coronavirus) spread across the globe and caused a pandemic of COVID-19 disease. This page presents a collection of daily updated charts and analysis of disease spread in German regions and the world. The focus lies on displaying the data of the past and deriving trends for the near future. In order to compare data of different regions, data is scaled by the regions' population. Charts are updated daily in the morning (UTC). Raw data and plot scripts are available in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions" target="_blank">my GitHub repository</a>. This is a private non-profit spare-time project. All data shown here rely on the quality of the data sources. I cannot guarantee for the correctness of my derived data.</p>
 
 	<p>Data sources</p>
 	<ul>
-		<li> German data is mostly from Robert Koch Institut (RKI), fetched from <a
-				href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/"
-				target="_blank">COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
+		<li> German data is mostly from Robert Koch Institut (RKI), fetched from <a href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/" target="_blank">COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
 		</li>
 		<!-- <li> German "Bundesland" data is from <a
 				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
 				target="_blank">Robert Koch Institut</a> fetched from <a href="https://github.com/swildermann/COVID-19"
 				target="_blank">github.com/swildermann/COVID-19</a> where the RKI data is already converted to CSV
 			format. </li> -->
-		<li> German hospital data is from <a href="https://www.divi.de/register/tagesreport"
-				target="_blank">DIVI-Intensivregister</a>. (Thanks to Mr. Parvu for granting usage permission) </li>
-		<li> International data is from <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Johns
-				Hopkins University Center for Systems Science and Engineering (JHU CSSE)</a>, fetched from <a
-				href="https://github.com/pomber/covid19" target="_blank">github.com/pomber/covid19</a> where the JHU
-			data is merged into one json file. </li>
+		<li> German hospital data is from <a href="https://www.divi.de/register/tagesreport" target="_blank">DIVI-Intensivregister</a>. (Thanks to Mr. Parvu for granting usage permission) </li>
+		<li> International data is from <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE)</a>, fetched from <a href="https://github.com/pomber/covid19" target="_blank">github.com/pomber/covid19</a> where the JHU data is merged into one json file. </li>
 	</ul>
 
-	<p>Feel free to drop me a <a href="/contact.php?origin=COVID-19">message</a> if you find a typo, bug or bigger
-		issue. I am happy for inspirations for further analyses as well.</p>
+	<p>Feel free to drop me a <a href="/contact.php?origin=COVID-19">message</a> if you find a typo, bug or bigger issue. I am happy for inspirations for further analyses as well.</p>
 
 	<p>Stay safe, <i>Torben</i></p>
 
@@ -119,7 +105,7 @@
 		</li>
 		<ul>
 			<li>
-				<a href="#DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a> <b>(neu)</b>
+				<a href="#DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a>
 			</li>
 			<li>
 				<a href="#DeDistrictAni">Karte: Animation der Ausbreitung in den Landkreisen</a>
@@ -138,7 +124,6 @@
 					<a href="#DeStates-cases-deaths-divi">Kombinierte Bundeslandgrafik</a>
 				</li>
 			</ul>
-
 			<li>
 				<a href="#DeDistricts">Landkreise</a>
 			</li>
@@ -160,31 +145,28 @@
 			</li>
 			<ul>
 				<li>
-					<a href="#DeStatesIcuForecast">Intensivstationsprognose</a> <b>(neu)</b>
+					<a href="#DeStatesIcuForecast">Intensivstationsprognose</a>
 				</li>
 				<li>
-					<b><a href="newsletter-register.html" target="_blank">Konfigurierbarer
-							Landkreis-E-Mail-Newsletter</a></b>
+					<b><a href="newsletter-register.html" target="_blank">Konfigurierbarer Landkreis-E-Mail-Newsletter</a></b>
 				</li>
 				<li>
-					<a href="#DeMortality">Vergleich der Sterbefälle vor und während der Pandemie /
-						Übersterblichkeit</a>
+					<a href="#DeMortality">Vergleich der Sterbefälle vor und während der Pandemie / Übersterblichkeit</a>
 				</li>
 				<li>
-					<a href="#DeAgePercent">Altersverteilungen</a> <b>(neu)</b>
+					<a href="#DeAgePercent">Altersverteilungen</a>
 				</li>
 				<li>
-					<a href="#DE_impfungen">Impfdaten</a> <b>(neu)</b>
+					<a href="#DE_impfungen">Impfdaten</a>
 				</li>
 				<li>
-					<a href="#DE_mutations">Mutationen</a> <b>(neu)</b>
+					<a href="#DE_mutations">Mutationen</a>
 				</li>
 				<li>
-					<a href="#DE_PCR-Tests">PCR Tests: Anzahl und Positiv-Rate</a> <b>(neu)</b>
+					<a href="#DE_PCR-Tests">PCR Tests: Anzahl und Positiv-Rate</a>
 				</li>
 				<li>
-					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wahrscheinlichkeit einen Infizierten zu
-						treffen</a>
+					<a href="#DE_wahrscheinlichkeit-infizierten-treffen">Wahrscheinlichkeit einen Infizierten zu treffen</a>
 				</li>
 				<li>
 					<a href="#event_risk_calculator_DE">Veranstaltungsrisikoabschätzung</a>
@@ -238,8 +220,7 @@
 			<li>Archive</li>
 			<ul>
 				<li>
-					<a href="expGrowth.html#countries-fit-results">Death toll regression analyses results for selected
-						countries</a>
+					<a href="expGrowth.html#countries-fit-results">Death toll regression analyses results for selected countries</a>
 				</li>
 			</ul>
 		</ul>
@@ -248,81 +229,62 @@
 	<h2>Further good information sources</h2>
 	<ul>
 		<li>
-			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html"
-				target="_blank">Robert Koch Institut</a>: German data and situation reports
+			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Fallzahlen.html" target="_blank">Robert Koch Institut</a>: German data and situation reports
 		</li>
 		<li>
 			<a href="https://covid19.who.int/" target="_blank">WHO Dashboard</a>
 		</li>
 		<li>
-			<a href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/"
-				target="_blank">RKI: COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
+			<a href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/" target="_blank">RKI: COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
 		</li>
 		<li>
 			<a href="https://www.worldometers.info/coronavirus/" target="_blank">Worldometers.info - Coronavirus</a>
 		</li>
 		<li>
-			<a href="https://www.ndr.de/nachrichten/info/podcast4684.html" target="_blank">Podcast NDR Info: Das
-				Coronavirus-Update mit Christian Drosten</a>
+			<a href="https://www.ndr.de/nachrichten/info/podcast4684.html" target="_blank">Podcast NDR Info: Das Coronavirus-Update mit Christian Drosten</a>
 		</li>
 		<li>
-			<a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/" target="_blank">Washington
-				Post: Virus exponential spread simulator</a>: random live simulations of the effect of social distancing
+			<a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/" target="_blank">Washington Post: Virus exponential spread simulator</a>: random live simulations of the effect of social distancing
 		</li>
 		<li>
-			<a href="https://inno.uni-hohenheim.de/corona-modell" target="_blank">Simulator by Uni Hohenheim: An
-				agent-based policy laboratory for COVID-19 containment strategies</a>
+			<a href="https://inno.uni-hohenheim.de/corona-modell" target="_blank">Simulator by Uni Hohenheim: An agent-based policy laboratory for COVID-19 containment strategies</a>
 		</li>
 		<li>
-			<a href="https://www.youtube.com/watch?v=Kas0tIxDvrg" target="_blank">Youtube: Exponential growth and
-				epidemics</a>
+			<a href="https://www.youtube.com/watch?v=Kas0tIxDvrg" target="_blank">Youtube: Exponential growth and epidemics</a>
 		</li>
 		<li>
-			<a href="https://docs.google.com/document/d/e/2PACX-1vS0asYZNC46ZDNTlIQsy2zajEsjpqDJcASwENq4_7qUrvbPx0NRigko7Vy5XMdG9NDWR__xNkBdkKQM/pub"
-				target="_blank">Meine DE Linkliste für Kinderbeschäftigungsideen</a>
+			<a href="https://docs.google.com/document/d/e/2PACX-1vS0asYZNC46ZDNTlIQsy2zajEsjpqDJcASwENq4_7qUrvbPx0NRigko7Vy5XMdG9NDWR__xNkBdkKQM/pub" target="_blank">Meine DE Linkliste für Kinderbeschäftigungsideen</a>
 		</li>
 		<li>
-			<a href="https://www.intensivregister.de/#/aktuelle-lage/kartenansichten" target="_blank">DIVI
-				Intensivregister: Aktuelle Belegungssituation intensivmedizinischer Bereiche der Kliniken
-				Deutschlands</a>
+			<a href="https://www.intensivregister.de/#/aktuelle-lage/kartenansichten" target="_blank">DIVI Intensivregister: Aktuelle Belegungssituation intensivmedizinischer Bereiche der Kliniken Deutschlands</a>
 		</li>
 		<li>
-			<a href="https://www.peira.org/das-virus-die-menschen-und-das-leben/" target="_blank">E. Huber @ peira.org:
-				Das Virus, die Menschen und das Leben</a>
+			<a href="https://www.peira.org/das-virus-die-menschen-und-das-leben/" target="_blank">E. Huber @ peira.org: Das Virus, die Menschen und das Leben</a>
 		</li>
 		<li>
-			<a href="https://www.quarks.de/gesundheit/was-die-daten-zu-corona-aussagen-und-was-nicht/"
-				target="_blank">Quarks: Was die Daten zu Corona aussagen und was nicht</a>
+			<a href="https://www.quarks.de/gesundheit/was-die-daten-zu-corona-aussagen-und-was-nicht/" target="_blank">Quarks: Was die Daten zu Corona aussagen und was nicht</a>
 		</li>
 		<li>
-			<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/sterbefallzahlen.html"
-				target="_blank">Quarks: Statistisches Bundesamt (Destatis): Sonderauswertung zu Sterbefallzahlen des
-				Jahres 2020</a>
+			<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/sterbefallzahlen.html" target="_blank">Quarks: Statistisches Bundesamt (Destatis): Sonderauswertung zu Sterbefallzahlen des Jahres 2020</a>
 		</li>
 		<li>
-			<a href="https://euromomo.eu/graphs-and-maps/#z-scores-by-country" target="_blank">EuroMOMO: mortality
-				graphs and maps</a>
+			<a href="https://euromomo.eu/graphs-and-maps/#z-scores-by-country" target="_blank">EuroMOMO: mortality graphs and maps</a>
 		</li>
 		<li>
-			<a href="https://ourworldindata.org/grapher/full-list-cumulative-total-tests-per-thousand"
-				target="_blank">Our World In Data: COVID-19 tests per 1,000 people</a>
+			<a href="https://ourworldindata.org/grapher/full-list-cumulative-total-tests-per-thousand" target="_blank">Our World In Data: COVID-19 tests per 1,000 people</a>
 		</li>
 		<li>
 			<a href="https://www.youtube.com/watch?v=59tQeL0ehbM" target="_blank">Clearing the Air Effectively</a>
 		</li>
 		<li>
-			<a href="https://impfdashboard.de/" target="_blank">Impfdashboard des Bundesministeriums für Gesundheit
-				(BMG)</a>
+			<a href="https://impfdashboard.de/" target="_blank">Impfdashboard des Bundesministeriums für Gesundheit (BMG)</a>
 		</li>
 		<li>
 			<a href="https://risklayer-explorer.com/event/100/detail" target="_blank">Risklayer Explorer</a>
 		</li>
 		<li>
-			<a href="https://www.kbv.de/html/corona-report.php" target="_blank">Corona Report der Kassenärztlichen
-				Vereinigung</a>
+			<a href="https://www.kbv.de/html/corona-report.php" target="_blank">Corona Report der Kassenärztlichen Vereinigung</a>
 		</li>
-
-
 	</ul>
 
 	<h2><a id="Germany"></a>Germany / Deutschland</h2>
@@ -335,26 +297,20 @@
 	<small>Eingebettet von <a href="https://commons.wikimedia.org/wiki/File:COVID-19_outbreak_Germany_per_capita_cases_map.svg" target="_blank">Wikipedia</a>, Erstell-Skript dazu wurde hier publiziert: <a href="https://github.com/ythlev/covid-19" target="_blank">github.com/ythlev/covid-19</a>
 	</small> -->
 
-
 	<h4>
 		<a id="DeAllInOne">Alle Zeitverläufe für Deutschland komibiniert</a>
 	</h4>
+
 	<h5>Ganze Pandemie</h5>
 	<img src="plots-python/de-multi-timeseries.png" alt="de-multi-timeseries.png" width="1000" height="2000"><br />
+
 	<h5>Zoom auf das letzte halbe Jahr</h5>
-	<img src="plots-python/de-multi-timeseries.png" alt="de-multi-timeseries-180.png" width="1000" height="2000"><br />
-
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/plot-de-multi-timeseries.py"
-			target="_blank">plot-de-multi-timeseries.py</a>, raw data can be found here in the files <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/" target="_blank">
-			ts-de-*.tsv</a>
+	<img src="plots-python/de-multi-timeseries-180.png" alt="de-multi-timeseries-180.png" width="1000" height="2000"><br />
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/plot-de-multi-timeseries.py" target="_blank">plot-de-multi-timeseries.py</a>, raw data can be found here in the files <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/" target="_blank"> ts-de-*.tsv</a>
 	</small>
-
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 	<h4><a id="DeDistrictAni"></a>Karte: Animation der Ausbreitung in den Landkreisen</h4>
 
@@ -366,13 +322,10 @@
 		</tr> -->
 		<tr>
 			<td>
-				<a href="maps-de-districts.html"><img src="maps/de-districts-Cases_Last_Week_Per_100000-latest.gif"
-						alt="de-districts-Cases_Last_Week_Per_100000-latest.gif" width="480" height="651"></a>
+				<a href="maps-de-districts.html"><img src="maps/de-districts-Cases_Last_Week_Per_100000-latest.gif" alt="de-districts-Cases_Last_Week_Per_100000-latest.gif" width="480" height="651"></a>
 			</td>
 			<td>
-				<a href="maps-de-districts.html"><img
-						src="maps/de-districts-DIVI_Intensivstationen_Covid_Prozent-latest.gif"
-						alt="de-districts-DIVI_Intensivstationen_Covid_Prozent-latest.gif" width="480" height="651"></a>
+				<a href="maps-de-districts.html"><img src="maps/de-districts-DIVI_Intensivstationen_Covid_Prozent-latest.gif" alt="de-districts-DIVI_Intensivstationen_Covid_Prozent-latest.gif" width="480" height="651"></a>
 			</td>
 		</tr>
 		<!-- <tr>
@@ -380,31 +333,21 @@
 		</tr> -->
 		<tr>
 			<td>
-				<a href="maps-de-districts.html"><img src="maps/de-districts-Cases_Per_Million-latest.gif"
-						alt="de-districts-Cases_Per_Million-latest.gif" width="480" height="651"></a>
+				<a href="maps-de-districts.html"><img src="maps/de-districts-Cases_Per_Million-latest.gif" alt="de-districts-Cases_Per_Million-latest.gif" width="480" height="651"></a>
 			</td>
 			<td>
-				<a href="maps-de-districts.html"><img src="maps/de-districts-Deaths_Per_Million-latest.gif"
-						alt="de-districts-Deaths_Per_Million-latest.gif" width="480" height="651"></a>
+				<a href="maps-de-districts.html"><img src="maps/de-districts-Deaths_Per_Million-latest.gif" alt="de-districts-Deaths_Per_Million-latest.gif" width="480" height="651"></a>
 			</td>
 		</tr>
 	</table>
 	<ul>
-		<li>Datenquelle: <a
-				href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/"
-				target="_blank">RKI: COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
+		<li>Datenquelle: <a href="https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_1/" target="_blank">RKI: COVID-19-Dashboard der Nationale Plattform für geographische Daten (NPGEO-DE)</a>
 		</li>
-		<li> Skript Quellcode: ist in meinem <a
-				href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/gen-de-districts-map.py"
-				target="_blank">gen-de-districts-map.py</a>. Es basiert zum Großteil auf der Arbeit von <a
-				href="https://github.com/ythlev/covid-19" target="_blank">ythlev</a>. </li>
+		<li> Skript Quellcode: ist in meinem <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/gen-de-districts-map.py" target="_blank">gen-de-districts-map.py</a>. Es basiert zum Großteil auf der Arbeit von <a href="https://github.com/ythlev/covid-19" target="_blank">ythlev</a>. </li>
 	</ul>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
-
-
 
 	<h3>
 		<a id="DeStates"></a>Bundesländer
@@ -412,34 +355,28 @@
 
 	<h4><a id="DeStatesLatestCases"></a>Ranking</h4>
 
-	<p> Ranking der Bundesländer nach Inzidenz und farbkodiert die
-		Gesamtzahl der Infektionen bisher. </p>
+	<p> Ranking der Bundesländer nach Inzidenz und farbkodiert die Gesamtzahl der Infektionen bisher. </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Cases_Last_Week_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
 
-	<p> Ranking der Bundesländer nach Gesamtzahl der Infektionen bisher und farbkodiert
-		die Inzidenz. </p>
+	<p> Ranking der Bundesländer nach Gesamtzahl der Infektionen bisher und farbkodiert die Inzidenz. </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Cases_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
 
-	<p> Ranking der Bundesländer nach Opferzahl der letzten Woche
-		und farbkodiert die Gesamtzahl der Opfer bisher. </p>
+	<p> Ranking der Bundesländer nach Opferzahl der letzten Woche und farbkodiert die Gesamtzahl der Opfer bisher. </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Deaths_Last_Week_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
 
-	<p> Ranking der Bundesländer nach Gesamtzahl der Opfer bisher und farbkodiert
-		die Neu-Verstorbenen. </p>
+	<p> Ranking der Bundesländer nach Gesamtzahl der Opfer bisher und farbkodiert die Neu-Verstorbenen. </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_DeStates_Deaths_Per_Million" style="height: 675px;width: 675px;"></div>
 	</div>
 
-
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 	<h4><a id="DeStatesChart"></a>Bundesland-Zeitverlauf</h4>
 	<!--  -->
@@ -459,9 +396,7 @@
 	</table>
 	<!--  -->
 	<div id="div_eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
-	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
-			target="_blank">de-states</a></small>
+	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-states/" target="_blank">de-states</a></small>
 	<!-- 
 		JS for eCharts DE States 
 	-->
@@ -517,8 +452,8 @@
 	<hr />
 
 	<h4><a id="DeStates-cases-deaths-divi"></a>Kombinierte Bundeslandgrafik</h4>
-	<p>Zeitverlauf von Infizierten, Opfern und Intensivstationsauslastung durch COVID-19 pro
-		Bundesland</p>
+
+	<p>Zeitverlauf von Infizierten, Opfern und Intensivstationsauslastung durch COVID-19 pro Bundesland</p>
 	<ul>
 		<li>Oben</li>
 		<ul>
@@ -559,80 +494,59 @@
 		<div class="af_gallery_results" id="results_cases-deaths-divi" style="display: flex;flex-flow:column">
 			<div class="af_gallery_results_plot" id="results_DE_states_plot1">
 				<article id="#article-cases-deaths-divi-DE-total">
-					<img src="plots-python/de-states/de-state-DE-total.png"
-						alt="plots-python/de-states/de-state-DE-total.png" width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-DE-total.png" alt="plots-python/de-states/de-state-DE-total.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-BW">
-					<img src="plots-python/de-states/de-state-BW.png" alt="plots-python/de-states/de-state-BW.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-BW.png" alt="plots-python/de-states/de-state-BW.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-BY">
-					<img src="plots-python/de-states/de-state-BY.png" alt="plots-python/de-states/de-state-BY.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-BY.png" alt="plots-python/de-states/de-state-BY.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-BE">
-					<img src="plots-python/de-states/de-state-BE.png" alt="plots-python/de-states/de-state-BE.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-BE.png" alt="plots-python/de-states/de-state-BE.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-BB">
-					<img src="plots-python/de-states/de-state-BB.png" alt="plots-python/de-states/de-state-BB.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-BB.png" alt="plots-python/de-states/de-state-BB.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-HB">
-					<img src="plots-python/de-states/de-state-HB.png" alt="plots-python/de-states/de-state-HB.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-HB.png" alt="plots-python/de-states/de-state-HB.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-HH">
-					<img src="plots-python/de-states/de-state-HH.png" alt="plots-python/de-states/de-state-HH.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-HH.png" alt="plots-python/de-states/de-state-HH.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-HE">
-					<img src="plots-python/de-states/de-state-HE.png" alt="plots-python/de-states/de-state-HE.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-HE.png" alt="plots-python/de-states/de-state-HE.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-MV">
-					<img src="plots-python/de-states/de-state-MV.png" alt="plots-python/de-states/de-state-MV.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-MV.png" alt="plots-python/de-states/de-state-MV.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-NI">
-					<img src="plots-python/de-states/de-state-NI.png" alt="plots-python/de-states/de-state-NI.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-NI.png" alt="plots-python/de-states/de-state-NI.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-NW">
-					<img src="plots-python/de-states/de-state-NW.png" alt="plots-python/de-states/de-state-NW.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-NW.png" alt="plots-python/de-states/de-state-NW.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-RP">
-					<img src="plots-python/de-states/de-state-RP.png" alt="plots-python/de-states/de-state-RP.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-RP.png" alt="plots-python/de-states/de-state-RP.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-SL">
-					<img src="plots-python/de-states/de-state-SL.png" alt="plots-python/de-states/de-state-SL.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-SL.png" alt="plots-python/de-states/de-state-SL.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-SN">
-					<img src="plots-python/de-states/de-state-SN.png" alt="plots-python/de-states/de-state-SN.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-SN.png" alt="plots-python/de-states/de-state-SN.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-ST">
-					<img src="plots-python/de-states/de-state-ST.png" alt="plots-python/de-states/de-state-ST.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-ST.png" alt="plots-python/de-states/de-state-ST.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-SH">
-					<img src="plots-python/de-states/de-state-SH.png" alt="plots-python/de-states/de-state-SH.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-SH.png" alt="plots-python/de-states/de-state-SH.png" width="800" height="800"><br />
 				</article>
 				<article id="#article-cases-deaths-divi-TH">
-					<img src="plots-python/de-states/de-state-TH.png" alt="plots-python/de-states/de-state-TH.png"
-						width="800" height="800"><br />
+					<img src="plots-python/de-states/de-state-TH.png" alt="plots-python/de-states/de-state-TH.png" width="800" height="800"><br />
 				</article>
 			</div>
 			<div class="af_gallery_results_footer" id="results_DE_states-cases-deaths-divi_footer">
-				<small>generated via Python <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-states-V2.py"
-						target="_blank">plot-de-states-V2.py</a>, raw data can be found in <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
-						target="_blank">de-states</a>
+				<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-states-V2.py" target="_blank">plot-de-states-V2.py</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-states/" target="_blank">de-states</a>
 					<br /> Many thanks to Alex Friedl for writing this gallery feature! </small>
 			</div>
 		</div>
@@ -641,25 +555,13 @@
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
-
-
-
-
-
-
 	<h3><a id="DeDistricts"></a>Landkreise</h3>
-
-
 
 	<h4><a id="DeDistrictTable"></a>Landkreistabelle mit Intensivstationsauslastung</h4>
 
-	<p>Siehe auch meinen konfigurierbaren <a href="https://entorb.net/COVID-19-coronavirus/newsletter-register.html"
-			target="_blank">E-Mail Newsletter</a> für Landkreisdaten.</p>
+	<p>Siehe auch meinen konfigurierbaren <a href="https://entorb.net/COVID-19-coronavirus/newsletter-register.html" target="_blank">E-Mail Newsletter</a> für Landkreisdaten.</p>
 
-	<p>Ein Klick auf eine Zeile fügt diesen Landkreis in den <a href="#DeDistrictChart">interaktiven Landkreis
-			Vergleich</a> unten hinzu.</p>
-
+	<p>Ein Klick auf eine Zeile fügt diesen Landkreis in den <a href="#DeDistrictChart">interaktiven Landkreis Vergleich</a> unten hinzu.</p>
 	<div id="div_table-de-districts"></div>
 	<script>
 
@@ -667,40 +569,31 @@
 		promises.push(table_DeDistricts.setData("https://entorb.net/COVID-19-coronavirus/data/de-districts/de-districts-results-V2.json", {}, "get"));
 
 	</script>
-	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts"
-			target="_blank">here</a>
+	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts" target="_blank">here</a>
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h4><a id="DeDistrictChart"></a>Interaktiver Landkreis Vergleich</h4>
 
-	<p>Landkreise und Städte in obiger <a href="#DeDistrictTable">Tabelle</a> auswählen. Mit dem Button über der Legende
-		kann in die Daten hinein gezoomt werden. Die Konfiguration der Grafik ist in der URL (Adresszeile des Browsers)
-		hinterlegt und lässt sich so speichern und teilen.</p>
+	<p>Landkreise und Städte in obiger <a href="#DeDistrictTable">Tabelle</a> auswählen. Mit dem Button über der Legende kann in die Daten hinein gezoomt werden. Die Konfiguration der Grafik ist in der URL (Adresszeile des Browsers) hinterlegt und lässt sich so speichern und teilen.</p>
 	<table>
 		<tr>
 			<td>y-Achse:</td>
-			<td><select id="sel_y_axis_field_DeDistricts" name="sel_y_axis_field_DeDistricts"
-					style="width:200px"></select>
+			<td><select id="sel_y_axis_field_DeDistricts" name="sel_y_axis_field_DeDistricts" style="width:200px"></select>
 			</td>
 			<td><select id="sel_sorting_DeDistricts" name="sel_sorting_DeDistricts" style="width:200px"></select></td>
 		</tr>
 		<tr>
 			<td>x-Achse:</td>
-			<td><select id="sel_x_axis_time_range_DeDistricts" name="sel_x_axis_time_range_DeDistricts"
-					style="width:200px">
+			<td><select id="sel_x_axis_time_range_DeDistricts" name="sel_x_axis_time_range_DeDistricts" style="width:200px">
 				</select></td>
 			<td><input type="reset" onclick="resetChart('DeDistrict')"></td>
 		</tr>
 	</table>
 	<div id="div_eChartsDeDistrictsContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
-	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts"
-			target="_blank">here</a>
+	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts" target="_blank">here</a>
 	</small>
 	<!-- 
 		JS for eCharts DE Districts 
@@ -756,8 +649,8 @@
 	<hr />
 
 	<h4><a id="DeDistricts-cases-deaths-divi"></a>Kombinierte Landkreisgrafik</h4>
-	<p>Zeitverlauf von Infizierten, Opfern und Intensivstationsauslastung durch COVID-19 pro
-		Landkreis</p>
+
+	<p>Zeitverlauf von Infizierten, Opfern und Intensivstationsauslastung durch COVID-19 pro Landkreis</p>
 	<ul>
 		<li>Oben</li>
 		<ul>
@@ -777,39 +670,20 @@
 		<select id="de_district_multiplot_sel_kreis" style="width:200px" onchange="de_district_multiplot_selected()">
 		</select>
 	</p>
+	<img id="de_district_multiplot_img" src="plots-python/de-districts/de-district-02000.png" alt="plots-python/de-districts/de-district-02000.png" width="800" height="800" />
 
-
-	<img id="de_district_multiplot_img" src="plots-python/de-districts/de-district-02000.png"
-		alt="plots-python/de-districts/de-district-02000.png" width="800" height="800" />
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
-
 
 	<h4>
 		<a id="DeStatesIcuForecast"></a> Intensivstationsprognose
 	</h4>
-	<p>
-		Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">stark
-			vereinfachten Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognose für den
-		Bedarf an Intensivbetten für COVID Patienten implementiert.
-		Diese wird täglich um 15:00 für alle <a href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a
-			href="#DeStates-cases-deaths-divi">Bundesländer</a>
-		aktualisiert.
-	</p>
-	<p>
-		Eingangsparameter der Prognose ist die künftige Entwicklung der 7-Tages-Inzidenz.
-		In orange ist der aktuelle Anstieg der letzten Woche für 2 Wochen fortgeschrieben.
-		In anderen Farben sind Inzidenz-Veränderungen von +50%, +25%, 0% und -25% pro Woche skizziert.
-		Blau zeigt die Historie der ans <a href="https://www.intensivregister.de/"
-			target="_blank">DIVI-Intensivregister</a> gemeldeten
-		Bettenbelegung.
-		Details zum Modell siehe <a href="#DeStatesIcuForecastHinweise">unten</a>.
-	</p>
 
-	<p>
-		Hier die Region auswählen:
-	</p>
+	<p> Basierend auf diesem <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">stark vereinfachten Modell von Dirk Paessler</a> habe ich eine 2-Wochen Prognose für den Bedarf an Intensivbetten für COVID Patienten implementiert. Diese wird täglich um 15:00 für alle <a href="#DeDistricts-cases-deaths-divi">Landkreise</a> und <a href="#DeStates-cases-deaths-divi">Bundesländer</a> aktualisiert. </p>
+
+	<p> Eingangsparameter der Prognose ist die künftige Entwicklung der 7-Tages-Inzidenz. In orange ist der aktuelle Anstieg der letzten Woche für 2 Wochen fortgeschrieben. In anderen Farben sind Inzidenz-Veränderungen von +50%, +25%, 0% und -25% pro Woche skizziert. Blau zeigt die Historie der ans <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a> gemeldeten Bettenbelegung. Details zum Modell siehe <a href="#DeStatesIcuForecastHinweise">unten</a>. </p>
+
+	<p> Hier die Region auswählen: </p>
 	<table>
 		<tr>
 			<th>Bundesland</th>
@@ -818,8 +692,7 @@
 		</tr>
 		<tr>
 			<td>
-				<select id="icu_forecast_sel_de_states" style="width:200px"
-					onchange="icu_forecast_sel_de_states_selected()">
+				<select id="icu_forecast_sel_de_states" style="width:200px" onchange="icu_forecast_sel_de_states_selected()">
 					<option value="DE-total" selected>Deutschland gesamt</option>
 					<option value="BW">Baden-Württemberg</option>
 					<option value="BY">Bayern</option>
@@ -840,219 +713,136 @@
 				</select>
 			</td>
 			<td>
-				<select id="icu_forecast_sel_de_districts" style="width:200px"
-					onchange="icu_forecast_sel_de_districts_selected()">
+				<select id="icu_forecast_sel_de_districts" style="width:200px" onchange="icu_forecast_sel_de_districts_selected()">
 					<option value="0" selected>Auswählen</option>
 				</select>
 			</td>
 			<td>
-				<select id="icu_forecast_sel_de_district_group" style="width:200px"
-					onchange="icu_forecast_sel_de_district_group_selected()">
+				<select id="icu_forecast_sel_de_district_group" style="width:200px" onchange="icu_forecast_sel_de_district_group_selected()">
 					<option value="0" selected>Auswählen</option>
 				</select>
 			</td>
 		</tr>
 	</table>
-
-	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600"
-		alt="keine Daten gefunden" />
+	<img id="icu_forecast_img_zoom" src="plots-python/icu-forecast/de-states/DE-total-zoom.png" width="800" height="600" alt="keine Daten gefunden" />
 	<br />
 	<img id="icu_forecast_img" src="plots-python/icu-forecast/de-states/DE-total.png" width="800" height="600" alt="" />
 	<br />
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py"
-			target="_blank">plot-icu-forecast.py</a>
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-icu-forecast.py" target="_blank">plot-icu-forecast.py</a>
 	</small>
 
 	<p>
 		<a id="DeStatesIcuForecastHinweise"></a>Hinweise
 	<ul>
-		<li>Das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a>
-			aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 15:15</li>
-		<li>Verwendete <a href="https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table"
-				target="_blank">DIVI Rohdaten (CSV Format)</a> Datenreihe "faelle_covid_aktuell"</li>
-		<li>Nicht alle Intensivstationen melden ihre Zahlen an das <a href="https://www.intensivregister.de/"
-				target="_blank">DIVI-Intensivregister</a> </li>
-		<li>Daher spiegeln die obigen Zahlen (Vergangenheit, wie auch Prognose) nur die Krankenhäuser wider, die ans
-			DIVI melden. Die Gesamtzahl ist um einen konstanten Faktor höher.</li>
-		<li>Das Modell ist sehr einfach gehalten und sicher nicht exakt. Trotzdem kann es helfen die aktuelle Lage
-			besser zu bewerten.</li>
-		<li>Ich freue mich über <a href="/contact.php?origin=COVID-19">Verbesserungsvorschläge</a> und Vorschläge für
-			weitere
-			<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/icu-groups.py"
-				target="_blank">Landkreisgruppierungen</a>, bevorzugt unter Angabe der <a
-				href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/mapping_landkreis_ID_name.json"
-				target="_blank">Gemeindeschlüssel</a>.
-		</li>
+		<li>Das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a> aktualisiert seine Daten täglich um 13:30, ich aktualisiere diese Grafiken um 15:15</li>
+		<li>Verwendete <a href="https://www.divi.de/divi-intensivregister-tagesreport-archiv-csv?layout=table" target="_blank">DIVI Rohdaten (CSV Format)</a> Datenreihe "faelle_covid_aktuell"</li>
+		<li>Nicht alle Intensivstationen melden ihre Zahlen an das <a href="https://www.intensivregister.de/" target="_blank">DIVI-Intensivregister</a> </li>
+		<li>Daher spiegeln die obigen Zahlen (Vergangenheit, wie auch Prognose) nur die Krankenhäuser wider, die ans DIVI melden. Die Gesamtzahl ist um einen konstanten Faktor höher.</li>
+		<li>Das Modell ist sehr einfach gehalten und sicher nicht exakt. Trotzdem kann es helfen die aktuelle Lage besser zu bewerten.</li>
+		<li>Ich freue mich über <a href="/contact.php?origin=COVID-19">Verbesserungsvorschläge</a> und Vorschläge für weitere <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/icu-groups.py" target="_blank">Landkreisgruppierungen</a>, bevorzugt unter Angabe der <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-districts/mapping_landkreis_ID_name.json" target="_blank">Gemeindeschlüssel</a>. </li>
 	</ul>
 	</p>
-	<p>
-		Modell<br />
-		Vorgeschlagen von <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">Dirk
-			Paessler</a>
+
+	<p> Modell<br /> Vorgeschlagen von <a href="https://twitter.com/dpaessler/status/1458397649690927105" target="_blank">Dirk Paessler</a>
 	<ol>
 		<li>Auswahl einer Region (Landkreise/Landkreisgruppe/Bundesland)</li>
-		<li>Verhältnis von dort gemeldeten COVID-Beatmungs-Betten (DIVI Datenreihe
-			"faelle_covid_aktuell") zu 21-Tages-Inzidenz für die letzten 7 Tage berechnet</li>
-		<li>Mittelwert dieses Verhältnisses über diese 7 Tage gebildet
-			(und für die 2-Wochen-Prognose als konstant angenommen)</li>
-		<li>Neue Fälle der letzten 7 Tage werden mit verschiedenen Wachstums-Annahmen für 2 Wochen in die Zukunft
-			prognostiziert</li>
-		<li>Die aus der Prognose resultierende zukünftige 21-Tages-Inzidenz mit dem obigen Mittelwert (Betten zu
-			21-Tages-Inzidenz) in eine Betten-Prognose umgerechnet</li>
+		<li>Verhältnis von dort gemeldeten COVID-Beatmungs-Betten (DIVI Datenreihe "faelle_covid_aktuell") zu 21-Tages-Inzidenz für die letzten 7 Tage berechnet</li>
+		<li>Mittelwert dieses Verhältnisses über diese 7 Tage gebildet (und für die 2-Wochen-Prognose als konstant angenommen)</li>
+		<li>Neue Fälle der letzten 7 Tage werden mit verschiedenen Wachstums-Annahmen für 2 Wochen in die Zukunft prognostiziert</li>
+		<li>Die aus der Prognose resultierende zukünftige 21-Tages-Inzidenz mit dem obigen Mittelwert (Betten zu 21-Tages-Inzidenz) in eine Betten-Prognose umgerechnet</li>
 	</ol>
 	</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h4><a id="DeDistrictZeroCases"></a>Anzahl der Landkreise mit Neu-Infektionen in der letzten Woche</h4>
 
-	<p>In der folgenden Grafik ist als Zeitverlauf die Anzahl der deutschen Land- und Stadtkreise pro
-		Inzidenz-Intervallen aufgetragen.</p>
-	<img src="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png"
-		alt="hist-de-districts-Cases_Last_Week_Per_100000.png" width="800" height="600">
+	<p>In der folgenden Grafik ist als Zeitverlauf die Anzahl der deutschen Land- und Stadtkreise pro Inzidenz-Intervallen aufgetragen.</p>
+	<img src="plots-python/hist-de-districts-Cases_Last_Week_Per_100000.png" alt="hist-de-districts-Cases_Last_Week_Per_100000.png" width="800" height="600">
 
 	<p>Analog dazu hier Zunahme und Abnahme der Inzidenzen im Vergleich zur Vorwoche:</p>
-	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="800" height="600"><br />
-	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png"
-		alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="800" height="600">
+	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="800" height="600"><br />
+	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="800" height="600">
 	<!-- 
 		min 1. COVID-19 Neu-Infektionen in der letzten Woche vermeldet haben und darunter die mit einer Inzidenz über 50.</p>
 	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="800" height="600"> <br />
 	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="800" height="600">
-	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-districts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-districts/de-districts-zero_cases_last_week.tsv" target="_blank">de-districts-zero_cases_last_week.tsv</a></small> -->
-	<br /><small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-districts-increase-histogram.py"
-			target="_blank">plot-de-districts-increase-histogram.py</a>
+	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-districts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-districts/de-districts-zero_cases_last_week.tsv" target="_blank">de-districts-zero_cases_last_week.tsv</a></small> -->
+	<br /><small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/plot-de-districts-increase-histogram.py" target="_blank">plot-de-districts-increase-histogram.py</a>
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 	<h3>
 		<a id="DeAnalyses"></a>Weitere Auswertungen
 	</h3>
 
-
 	<h4>Konfigurierbarer Landkreis-E-Mail-Newsletter</h4>
 
 	<p>(Screenshot anklicken um zur Anmeldung zu gelangen)</p>
 	<a href="https://entorb.net/COVID-19-coronavirus/newsletter-register.html" target="_blank">
-		<img src="newsletter-screenshot-2-mail.png" width="512" height="428" style="border: 5px solid #555;"
-			alt="newsletter-screenshot-2-mail.png">
+		<img src="newsletter-screenshot-2-mail.png" width="512" height="428" style="border: 5px solid #555;" alt="newsletter-screenshot-2-mail.png">
 	</a>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h4><a id="DeMortality"></a>Vergleich der Sterbefälle vor und während der Pandemie / Übersterblichkeit</h4>
 
-	<p> Basierend auf den <a
-			href="https://www.destatis.de/DE/Themen/Querschnitt/Corona/Gesellschaft/bevoelkerung-sterbefaelle.html"
-			target="_blank">Daten</a> des Deutschen Statistischen Bundesamts habe ich die Gesamtzahl der Sterbefälle
-		während der Pandemie mit den Vorjahren verglichen. Hinweis: Alle Datenreihen wurden mit einem gleitenden
-		Durchschnitt von
-		7 Tagen geglättet und der 29.2. wurde entfernt. </p>
+	<p> Basierend auf den <a href="https://www.destatis.de/DE/Themen/Querschnitt/Corona/Gesellschaft/bevoelkerung-sterbefaelle.html" target="_blank">Daten</a> des Deutschen Statistischen Bundesamts habe ich die Gesamtzahl der Sterbefälle während der Pandemie mit den Vorjahren verglichen. Hinweis: Alle Datenreihen wurden mit einem gleitenden Durchschnitt von 7 Tagen geglättet und der 29.2. wurde entfernt. </p>
 	<img src="plots-gnuplot/de-mortality.png" alt="de-mortality.png" width="640" height="480">
 
-	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro
-		Kalendertag gemittelt und zusammen mit den Daten von 2020, 2021 und 2022 aufgetragen. Im unteren Bereich ist die
-		Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
+	<p>Für den Vergleich mit den Opferzahlen von COVID-19 habe ich den zunächst für 2016-2019 die Sterbefälle pro Kalendertag gemittelt und zusammen mit den Daten von 2020, 2021 und 2022 aufgetragen. Im unteren Bereich ist die Differenz dieser zwei Datenreihen neben den COVID-19 Opferzahlen zu sehen.</p>
 	<img src="plots-gnuplot/de-mortality-covid-2022.png" alt="de-mortality-covid-2022.png" width="640" height="800">
 	<br />
 	<img src="plots-gnuplot/de-mortality-covid-2021.png" alt="de-mortality-covid-2021.png" width="640" height="800">
 	<br />
 	<img src="plots-gnuplot/de-mortality-covid.png" alt="de-mortality-covid.png" width="640" height="800">
-	<br /> <small>generated via Gnuplot <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
-			target="_blank">plot-de-mortality.gp</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-mortality.tsv"
-			target="_blank">de-mortality.tsv</a></small>
+	<br /> <small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-mortality.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-mortality.tsv" target="_blank">de-mortality.tsv</a></small>
 
-	<p>Hier Daten einiger unserer Nachbarländer: <a href="https://statbel.fgov.be/de/visuals/mortalitaet"
-			target="_blank">Belgien</a>, <a
-			href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregisteredweeklyinenglandandwalesprovisional/previousReleases"
-			target="_blank">Großbritannien</a>, <a href="https://www.insee.fr/en/statistiques/4493806?sommaire=4493845"
-			target="_blank">Frankreich</a>, <a
-			href="https://www.bfs.admin.ch/bfs/de/home/statistiken/gesundheit/gesundheitszustand/sterblichkeit-todesursachen.html"
-			target="_blank">Schweiz</a>, <a
-			href="https://www.isciii.es/QueHacemos/Servicios/VigilanciaSaludPublicaRENAVE/EnfermedadesTransmisibles/MoMo/Paginas/Informes-MoMo-2020.aspx"
-			target="_blank">Spanien</a>.</p>
+	<p>Hier Daten einiger unserer Nachbarländer: <a href="https://statbel.fgov.be/de/visuals/mortalitaet" target="_blank">Belgien</a>, <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregisteredweeklyinenglandandwalesprovisional/previousReleases" target="_blank">Großbritannien</a>, <a href="https://www.insee.fr/en/statistiques/4493806?sommaire=4493845" target="_blank">Frankreich</a>, <a href="https://www.bfs.admin.ch/bfs/de/home/statistiken/gesundheit/gesundheitszustand/sterblichkeit-todesursachen.html" target="_blank">Schweiz</a>, <a href="https://www.isciii.es/QueHacemos/Servicios/VigilanciaSaludPublicaRENAVE/EnfermedadesTransmisibles/MoMo/Paginas/Informes-MoMo-2020.aspx" target="_blank">Spanien</a>.</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
 	<h4><a id="DeAgePercent"></a>Altersverteilungen</h4>
-	<p>
-		Hier eine Auswertung der Altersverteilungen. Ich habe die Zeit bis Sommer 2021 und danach unterschieden um den
-		Effekt der Impfungen sehen zu können.
+
+	<p> Hier eine Auswertung der Altersverteilungen. Ich habe die Zeit bis Sommer 2021 und danach unterschieden um den Effekt der Impfungen sehen zu können.
 	<ul>
-		<li>
-			Grün ist der Anteil der Altersgruppe an der Gesamtbevölkerung
-		</li>
-		<li>
-			Blau zeigt den Anteil dieser Gruppe an allen positiv getesteten Personen
-		</li>
-		<li>
-			Rot zeigt die (zeitlich gemittelte) Intensivstationsbelegung durch diese Altersgruppe
-		</li>
-		<li>
-			Schwarz ist der Anteil dieser Gruppe an den Opferzahlen (diese meldet das RKI allerdings mit ca. 4 Wochen
-			Verzögerung, so dass die letzten Wochen hier noch fehlen)
-		</li>
+		<li> Grün ist der Anteil der Altersgruppe an der Gesamtbevölkerung </li>
+		<li> Blau zeigt den Anteil dieser Gruppe an allen positiv getesteten Personen </li>
+		<li> Rot zeigt die (zeitlich gemittelte) Intensivstationsbelegung durch diese Altersgruppe </li>
+		<li> Schwarz ist der Anteil dieser Gruppe an den Opferzahlen (diese meldet das RKI allerdings mit ca. 4 Wochen Verzögerung, so dass die letzten Wochen hier noch fehlen) </li>
 	</ul>
 	</p>
-
-	<img src="plots-python/de_age_percent_2_post_2021_summer.png" width="800" height="800"
-		alt="de_age_percent_2_post_2021_summer" />
+	<img src="plots-python/de_age_percent_2_post_2021_summer.png" width="800" height="800" alt="de_age_percent_2_post_2021_summer" />
 	<br />
-	<img src="plots-python/de_age_percent_1_pre_2021_summer.png" width="800" height="800"
-		alt="de_age_percent_1_pre_2021_summer" />
+	<img src="plots-python/de_age_percent_1_pre_2021_summer.png" width="800" height="800" alt="de_age_percent_1_pre_2021_summer" />
 	<br />
-	<p>
-		Hinweis: Die Zahl der Intensivbetten für die Altersgruppen unter 20 Jahren liegen in der DIVI Quelle in anderer
-		Gruppierung vor, daher sind die Zahlen hier nicht ganz korrekt, der Effekt sollte aber vernachlässigbar sein.
-	</p>
 
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch_de_age_percent.py"
-			target="_blank">fetch-de-age-percent.py</a>
-		<br />
-		Daten:
-		<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de_age_percent_2_post_2021_summer.tsv"
-			target="_blank">de_age_percent_2_post_2021_summer.tsv</a>
-		und
-		<a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de_age_percent_1_pre_2021_summer.tsv"
-			target="_blank">de_age_percent_1_pre_2021_summer.tsv</a>
+	<p> Hinweis: Die Zahl der Intensivbetten für die Altersgruppen unter 20 Jahren liegen in der DIVI Quelle in anderer Gruppierung vor, daher sind die Zahlen hier nicht ganz korrekt, der Effekt sollte aber vernachlässigbar sein. </p>
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch_de_age_percent.py" target="_blank">fetch-de-age-percent.py</a>
+		<br /> Daten: <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de_age_percent_2_post_2021_summer.tsv" target="_blank">de_age_percent_2_post_2021_summer.tsv</a> und <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de_age_percent_1_pre_2021_summer.tsv" target="_blank">de_age_percent_1_pre_2021_summer.tsv</a>
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 	<h4>
 		<a id="DE_impfungen"></a>Impfdaten
 	</h4>
 	<img src="plots-python/de-vaccination.png" width="800" height="600" alt="plots-python/de-vaccination.png" />
 	<br />
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py"
-			target="_blank">fetch-de-vaccination.py</a>
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-de-vaccination.py" target="_blank">fetch-de-vaccination.py</a>
 	</small>
-	<br /> Hinweis: täglich haben in Deutschland etwa 2000 Kinder ihren 12. Geburtstag, was damit die Baseline für die
-	täglichen Impfungen werden sollte. <ul>
+	<br /> Hinweis: täglich haben in Deutschland etwa 2000 Kinder ihren 12. Geburtstag, was damit die Baseline für die täglichen Impfungen werden sollte. <ul>
 		<li>
-			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html"
-				target="_blank"> RKI Auswertung der Impfdaten, mit Rohdaten </a>
+			<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html" target="_blank"> RKI Auswertung der Impfdaten, mit Rohdaten </a>
 		</li>
 		<li>
-			<a href="https://impfdashboard.de/" target="_blank"> Impfdashboard des Bundesministeriums für Gesundheit
-				(BMG) </a>
+			<a href="https://impfdashboard.de/" target="_blank"> Impfdashboard des Bundesministeriums für Gesundheit (BMG) </a>
 		</li>
 	</ul>
 	<!-- 
@@ -1067,36 +857,22 @@
 	<hr />
 
 	<h4>
-		<a id="DE_impf_fakten"></a>
-		Fakten zum Thema Impfung
+		<a id="DE_impf_fakten"></a> Fakten zum Thema Impfung
 	</h4>
 	<ul>
 		<!-- <li>Die Entscheidung sich impfen zu lassen soll jeder für sich treffen.</li> -->
 		<li>Die Impfung reduziert die Wahrscheinlichkeit sich zu infizieren.</li>
 		<li>Die Impfung reduziert die Wahrscheinlichkeit andere zu infizieren.</li>
 		<li>Die Impfung reduziert die Wahrscheinlichkeit für einen schweren Krankheitsverlauf.</li>
-		<li>Zahlenbeispiel: Obwohl 71% der 18-59-Jährigen geimpft sind, sind 88% der hospitalisierten dieser
-			Altersgruppe ungeimpft.<br />
-			<small>Quelle: <a href="https://www.kbv.de/media/sp/2021-11-12_Corona_Report.pdf" target="_blank">
-					Corona Report der Kassenärztlichen Vereinigung vom 12.11.2021</a></small>
+		<li>Zahlenbeispiel: Obwohl 71% der 18-59-Jährigen geimpft sind, sind 88% der hospitalisierten dieser Altersgruppe ungeimpft.<br />
+			<small>Quelle: <a href="https://www.kbv.de/media/sp/2021-11-12_Corona_Report.pdf" target="_blank"> Corona Report der Kassenärztlichen Vereinigung vom 12.11.2021</a></small>
 		</li>
-		<li>Die Impfung birgt (wie jede andere Impfung) eine geringe Wahrscheinlichkeit für Impfkomplikationen.
-		</li>
-		<li>
-			Die <a href="https://www.pei.de/DE/newsroom/dossier/coronavirus/arzneimittelsicherheit.html"
-				target="_blank">Studie "Sicherheitsbericht 27.12.2020 bis 30.09.2021" des Paul-Ehrich-Instituts</a>
-			dazu:
-			"Die Melderate betrug für alle Impfstoffe zusammen 1,6 Meldungen pro 1.000 Impfdosen, für schwerwiegende
-			Reaktionen 0,2 Meldungen pro 1.000 Impfdosen."
-		</li>
-		<li>Die Wahrscheinlichkeit für Folgeschäden einer COVID Erkrankung ist für Ungeimpfte höher als die von
-			Impfkomplikationen.</li>
+		<li>Die Impfung birgt (wie jede andere Impfung) eine geringe Wahrscheinlichkeit für Impfkomplikationen. </li>
+		<li> Die <a href="https://www.pei.de/DE/newsroom/dossier/coronavirus/arzneimittelsicherheit.html" target="_blank">Studie "Sicherheitsbericht 27.12.2020 bis 30.09.2021" des Paul-Ehrich-Instituts</a> dazu: "Die Melderate betrug für alle Impfstoffe zusammen 1,6 Meldungen pro 1.000 Impfdosen, für schwerwiegende Reaktionen 0,2 Meldungen pro 1.000 Impfdosen." </li>
+		<li>Die Wahrscheinlichkeit für Folgeschäden einer COVID Erkrankung ist für Ungeimpfte höher als die von Impfkomplikationen.</li>
 		<li>Es ist sehr wahrscheinlich, dass sich ein Großteil der Deutschen im Laufe der Zeit infizieren werden.</li>
-		<li>Wer sich gegen eine Impfung entscheidet, entscheidet sich dafür mit hoher Wahrscheinlichkeit dem Virus
-			"unvorbereitet" zu begegnen.</li>
-		<li>Daher ist ein Vergleich "Risiko für Schaden durch Impfung" vs. "Nicht-Impfen" unrealistisch. Korrekter ist
-			der Vergleich "Risiko für "Schaden durch Impfung" vs. "Risiko für Schaden durch Covid-Erkrankung bei
-			Ungeimpften"</li>
+		<li>Wer sich gegen eine Impfung entscheidet, entscheidet sich dafür mit hoher Wahrscheinlichkeit dem Virus "unvorbereitet" zu begegnen.</li>
+		<li>Daher ist ein Vergleich "Risiko für Schaden durch Impfung" vs. "Nicht-Impfen" unrealistisch. Korrekter ist der Vergleich "Risiko für "Schaden durch Impfung" vs. "Risiko für Schaden durch Covid-Erkrankung bei Ungeimpften"</li>
 	</ul>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -1106,59 +882,35 @@
 		<a id="DE_mutations"></a>Mutationen
 	</h4>
 
-	<p>
-		Siehe auch diesen <a
-			href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile"
-			target="_blank">tagesaktuellen Omikron-Report</a> des RKI.
-	</p>
-
-	<img src="plots-python/mutations-de-lastmonth.png" width="800" height="600"
-		alt="plots-python/mutations-de-lastmonth.png" />
+	<p> Siehe auch diesen <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile" target="_blank">tagesaktuellen Omikron-Report</a> des RKI. </p>
+	<img src="plots-python/mutations-de-lastmonth.png" width="800" height="600" alt="plots-python/mutations-de-lastmonth.png" />
 	<br />
 	<img src="plots-python/mutations-de-all.png" width="800" height="600" alt="plots-python/mutations-de-all.png" />
 	<br />
-	<img src="plots-python/mutations-de-all-absolute.png" width="800" height="600"
-		alt="plots-python/mmutations-de-all-absolute.png" />
+	<img src="plots-python/mutations-de-all-absolute.png" width="800" height="600" alt="plots-python/mmutations-de-all-absolute.png" />
 	<br />
-
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-plot-de-mutations.py"
-			target="_blank">fetch-plot-de-mutations.py</a>
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-plot-de-mutations.py" target="_blank">fetch-plot-de-mutations.py</a>
 	</small>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
 	<h4><a id="DE_PCR-Tests"></a>PCR Tests: Anzahl und Positiv-Rate</h4>
-	<p>Datenquelle: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Testzahl.html"
-			target="_blank">RKI</a>
+
+	<p>Datenquelle: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Testzahl.html" target="_blank">RKI</a>
 	</p>
 	<img src="plots-python/de-pcr-tests.png" width="800" height="600" alt="plots-python/de-pcr-tests.png" /><br />
-	<small>generated via Python <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-plot-de-pcr-tests.py"
-			target="_blank">fetch-plot-de-pcr-tests.py</a>
+	<small>generated via Python <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/fetch-plot-de-pcr-tests.py" target="_blank">fetch-plot-de-pcr-tests.py</a>
 	</small>
-
-
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h4><a id="DE_wahrscheinlichkeit-infizierten-treffen"></a>Wahrscheinlichkeit einen Infizierten zu treffen</h4>
 
-	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion
-		beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche
-		entspricht der Zahl der aktuell infektiösen Personen. Wichtig ist die Dunkelziffer der unbemerkt infizierten
-		Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind
-		also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro
-		100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen
-		ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch
-		einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
-	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="488" height="622"
-		alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
-	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx"
-			target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
+	<p>Hier eine kleine Exkursion in die Stochastik/Wahrscheinlichkeitsrechnung mit dem Ziel das Risiko einer Infektion beim Treffen von Personen abzuschätzen. <br /> Annahme zur Abschätzung: die Zahl der Neu-Infektionen pro Woche entspricht der Zahl der aktuell infektiösen Personen. Wichtig ist die Dunkelziffer der unbemerkt infizierten Personen nicht außer Acht zu lassen, ein Faktor 4 auf die offiziellen Fallzahlen erscheint mir realistisch. Sind also in einer Region 25 Neu-Infektionen pro 100000 Einwohner gemeldet, so nehme ich an, dass 100 Personen pro 100000 Einwohner derzeit ansteckend sind. Aus der Tabelle unten kann man nun für verschiedene Gruppengrößen ablesen wie wahrscheinlich es ist, dass eine ansteckende Person dabei ist. Die Excel-Berechnung dazu, die auch einen "Taschenrechner" für die freie Eingabe von Werten enthält, ist unter der Tabelle verlinkt. </p>
+	<img src="data/wahrscheinlichkeit-infizierten-treffen.png" width="488" height="622" alt="DE_wahrscheinlichkeit-infizierten-treffen" /><br />
+	<small>generated via Excel <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>
 		<br />
 	</small>
 
@@ -1167,10 +919,7 @@
 
 	<h4><a id="event_risk_calculator_DE"></a>Veranstaltungsrisikoabschätzung</h4>
 
-	<p>Basierend auf den Annahmen des <a href="#DE_wahrscheinlichkeit-infizierten-treffen">letzten Abschnitts</a>, hier
-		ein "Taschenrechner" für die Risikoabschätzung von Veranstaltungen/Menschenansammlungen. Der Anspruch dieser
-		groben Abschätzung ist nicht eine exakte Zahl, sondern die Größenordnung der Wahrscheinlichkeit in Abhängigkeit
-		von Infektionslage und Teilnehmerzahl zu liefern.</p>
+	<p>Basierend auf den Annahmen des <a href="#DE_wahrscheinlichkeit-infizierten-treffen">letzten Abschnitts</a>, hier ein "Taschenrechner" für die Risikoabschätzung von Veranstaltungen/Menschenansammlungen. Der Anspruch dieser groben Abschätzung ist nicht eine exakte Zahl, sondern die Größenordnung der Wahrscheinlichkeit in Abhängigkeit von Infektionslage und Teilnehmerzahl zu liefern.</p>
 	<table style="text-align: left;">
 		<tr>
 			<th>Eingangsgrößen</th>
@@ -1178,8 +927,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_input_num_people" type="number" value="20" min="5" max="10000" step="1"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()">
+				<input id="rc_input_num_people" type="number" value="20" min="5" max="10000" step="1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()">
 			</td>
 			<td>Anzahl Personen</td>
 		</tr>
@@ -1189,23 +937,18 @@
 			</td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_cases_last_week_100k" type="number" value="10" min="1" max="1000" step="0.1"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
-			<td>Inzidenz (Neu-Infektionen in Region pro Woche pro 100.000 Einwohner), Zahlen können auch der obigen <a
-					href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
+			<td><input id="rc_input_cases_last_week_100k" type="number" value="10" min="1" max="1000" step="0.1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
+			<td>Inzidenz (Neu-Infektionen in Region pro Woche pro 100.000 Einwohner), Zahlen können auch der obigen <a href="#DeDistrictTable">Landkreistabelle</a> entnommen werden </td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_factor_unreported" type="number" value="3" min="1" max="20" step="0.5"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
+			<td><input id="rc_input_factor_unreported" type="number" value="3" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc()"></td>
 			<td>Schätzung Faktor Dunkelziffer</td>
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_output_infectious_pop" type="text" readonly disabled value=""
-					style="text-align: right; font-size:20px; width: 100px;">
+				<input id="rc_output_infectious_pop" type="text" readonly disabled value="" style="text-align: right; font-size:20px; width: 100px;">
 			</td>
-			<td>Geschätzte Gesamtzahl infektiöser Personen (inklusive Dunkelziffer) in Region (pro 100.000 Einwohner)
-			</td>
+			<td>Geschätzte Gesamtzahl infektiöser Personen (inklusive Dunkelziffer) in Region (pro 100.000 Einwohner) </td>
 		</tr>
 		<tr>
 			<th>Ergebnis</th>
@@ -1213,12 +956,9 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_output_prop_someone_at_event_is_infectious" type="text" readonly value=""
-					style="text-align: right; font-size:20px; width: 100px; background-color: orange; color: black; font-weight: bold;">
+				<input id="rc_output_prop_someone_at_event_is_infectious" type="text" readonly value="" style="text-align: right; font-size:20px; width: 100px; background-color: orange; color: black; font-weight: bold;">
 			</td>
-			<td>Wahrscheinlichkeit, dass eine aktuell infektiöse Person dabei ist (Berechnungslogik siehe <a
-					href="data/wahrscheinlichkeit-infizierten-treffen.xlsx"
-					target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>) </td>
+			<td>Wahrscheinlichkeit, dass eine aktuell infektiöse Person dabei ist (Berechnungslogik siehe <a href="data/wahrscheinlichkeit-infizierten-treffen.xlsx" target="_blank">wahrscheinlichkeit-infizierten-treffen.xlsx</a>) </td>
 		</tr>
 	</table>
 	<script>
@@ -1229,25 +969,13 @@
 
 	<p>Anmerkungen zu den Eingangsgrößen, Annahmen und Vereinfachungen für dieses grobe Modell:</p>
 	<ul>
-		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Dies
-			wird unterstützt durch die <a
-				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11"
-				target="_blank">Angabe des RKI einer durchschnittlichen Infektiösitätsdauer von 8-9 Tage</a>.</li>
-		<li>Dunkelziffer: <a
-				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14"
-				target="_blank">das RKI schätzt einen Bereich von 4,5–11,1</a>.</li>
-		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des
-			Dunkelziffer-Faktors um bis zu 1 einrechnen (nur die infektiösen und dennoch herumlaufenden Personen bilden
-			eine Gefahr für ihre Umgebung). Allerdings erfahren viele Leute ihr Testergebnis erst wenn sie bereits
-			infektiös sind.</li>
-		<li>Die infektiösen Personen werden gleichverteilt auf die gesamte Bevölkerung angenommen und nicht nach
-			Altersgruppen etc. unterschieden.</li>
+		<li>Die Zahl der Neu-Infektionen pro Woche ist genähert durch die Zahl der aktuell infektiösen Personen. Dies wird unterstützt durch die <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank">Angabe des RKI einer durchschnittlichen Infektiösitätsdauer von 8-9 Tage</a>.</li>
+		<li>Dunkelziffer: <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank">das RKI schätzt einen Bereich von 4,5–11,1</a>.</li>
+		<li>Verordnete Quarantäne ist nicht berücksichtigt. Diese ließe sich durch die Reduktion des Dunkelziffer-Faktors um bis zu 1 einrechnen (nur die infektiösen und dennoch herumlaufenden Personen bilden eine Gefahr für ihre Umgebung). Allerdings erfahren viele Leute ihr Testergebnis erst wenn sie bereits infektiös sind.</li>
+		<li>Die infektiösen Personen werden gleichverteilt auf die gesamte Bevölkerung angenommen und nicht nach Altersgruppen etc. unterschieden.</li>
 	</ul>
 
-	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weiteren
-		Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwierig als
-		Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a
-			href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
+	<p>Anmerkung zum Ergebnis: <br />Die Wahrscheinlichkeit das es zu einer Ansteckung kommt, hängt von vielen weiteren Faktoren wie Dauer, Umgebung, getroffenen Schutzmaßnahmen ab und lässt sich nur sehr schwierig als Wahrscheinlichkeit in % abschätzen. Über Ideen und Hinweise dazu bin ich dankbar, <a href="/contact.php?origin=COVID-19">hier</a> können Sie mich kontaktieren.</p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 	<hr />
@@ -1256,22 +984,11 @@
 		<a id="DeStatesCasesDoubling"></a> Verdopplungszeit der Neu-Infektionen
 	</h4>
 
-	<p> 22.08.2020 Bis heute hatte ich gedacht und gehofft, dass das Thema "exponentielles Wachstum der Fallzahlen" vom
-		Tisch ist. Leider sprechen die jüngsten Zahlen eine andere Sprache. Daher habe ich heute eine neue Auswertung
-		erstellt, die den Trend (Zunahme und Abfall) quantifiziert. Ich habe dazu die Verdopplungszeit bzw.
-		Halbwertszeit der Neu-Infektionen berechnet. Verdopplungszeit ist die Zeit in der sich ein Wert verdoppelt hat,
-		Halbwertszeit analog halbiert. </p>
+	<p> 22.08.2020 Bis heute hatte ich gedacht und gehofft, dass das Thema "exponentielles Wachstum der Fallzahlen" vom Tisch ist. Leider sprechen die jüngsten Zahlen eine andere Sprache. Daher habe ich heute eine neue Auswertung erstellt, die den Trend (Zunahme und Abfall) quantifiziert. Ich habe dazu die Verdopplungszeit bzw. Halbwertszeit der Neu-Infektionen berechnet. Verdopplungszeit ist die Zeit in der sich ein Wert verdoppelt hat, Halbwertszeit analog halbiert. </p>
 
-	<p>Zahlenbeispiel zur Verdeutlichung<br /> Angenommen es sind heute 10 Neu-Infektionen und die Verdopplungszeit von
-		20 Tagen bleibt konstant, so ergibt sich in<br /> 20 Tagen &rarr; 20 Neu-Infektionen<br /> 40 Tagen &rarr; 40
-		Neu-Infektionen<br /> 60 Tagen &rarr; 80 Neu-Infektionen<br /> 80 Tagen &rarr; 160 Neu-Infektionen<br />
-		...<br />Aus diesem Grund ist eine kurze Verdopplungszeit gefährlich und eine kurze Halbwertszeit gut. </p>
+	<p>Zahlenbeispiel zur Verdeutlichung<br /> Angenommen es sind heute 10 Neu-Infektionen und die Verdopplungszeit von 20 Tagen bleibt konstant, so ergibt sich in<br /> 20 Tagen &rarr; 20 Neu-Infektionen<br /> 40 Tagen &rarr; 40 Neu-Infektionen<br /> 60 Tagen &rarr; 80 Neu-Infektionen<br /> 80 Tagen &rarr; 160 Neu-Infektionen<br /> ...<br />Aus diesem Grund ist eine kurze Verdopplungszeit gefährlich und eine kurze Halbwertszeit gut. </p>
 
-	<p> In den folgenden Grafiken ist basierend auf den Neu-Infektionen pro Woche die dazugehörige Verdopplungszeit
-		(rot) beziehungsweise Halbwertszeit (grün) dargestellt. Diese wurden ermittelt durch Regression über jeweils
-		einen Zeitraum von 14 Tagen in die Vergangenheit, Details dazu siehe unten. Die Auswertung ist inspiriert von <a
-			href="https://www.facebook.com/photo.php?fbid=3693003034046469&set=a.1346612112018918&type=3&theater"
-			target="_blank">Konstantin Tavan's Darstellung</a>. </p>
+	<p> In den folgenden Grafiken ist basierend auf den Neu-Infektionen pro Woche die dazugehörige Verdopplungszeit (rot) beziehungsweise Halbwertszeit (grün) dargestellt. Diese wurden ermittelt durch Regression über jeweils einen Zeitraum von 14 Tagen in die Vergangenheit, Details dazu siehe unten. Die Auswertung ist inspiriert von <a href="https://www.facebook.com/photo.php?fbid=3693003034046469&set=a.1346612112018918&type=3&theater" target="_blank">Konstantin Tavan's Darstellung</a>. </p>
 	<div class="af_gallery_container">
 		<div class="af_gallery_select" id="dropdown_cases-de-doubling">
 			<!-- <input type="text" placeholder="Filter.." id="filter" onkeyup="filter()"> -->
@@ -1298,154 +1015,98 @@
 		<div class="af_gallery_results" id="results_cases-de-doubling" style="display: flex;flex-flow:column">
 			<div class="af_gallery_results_plot" id="results_DE_states_plot2">
 				<article id="#article-cases-de-doubling-DE-total">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-DE-total.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-DE-total.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-DE-total.png" alt="plots-gnuplot/de-states/cases-de-doubling-DE-total.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BW">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-BW.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BW.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-BW.png" alt="plots-gnuplot/de-states/cases-de-doubling-BW.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BY">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-BY.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BY.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-BY.png" alt="plots-gnuplot/de-states/cases-de-doubling-BY.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BE">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-BE.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BE.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-BE.png" alt="plots-gnuplot/de-states/cases-de-doubling-BE.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-BB">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-BB.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-BB.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-BB.png" alt="plots-gnuplot/de-states/cases-de-doubling-BB.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HB">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-HB.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HB.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-HB.png" alt="plots-gnuplot/de-states/cases-de-doubling-HB.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HH">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-HH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HH.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-HH.png" alt="plots-gnuplot/de-states/cases-de-doubling-HH.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-HE">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-HE.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-HE.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-HE.png" alt="plots-gnuplot/de-states/cases-de-doubling-HE.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-MV">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-MV.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-MV.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-MV.png" alt="plots-gnuplot/de-states/cases-de-doubling-MV.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-NI">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-NI.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-NI.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-NI.png" alt="plots-gnuplot/de-states/cases-de-doubling-NI.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-NW">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-NW.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-NW.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-NW.png" alt="plots-gnuplot/de-states/cases-de-doubling-NW.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-RP">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-RP.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-RP.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-RP.png" alt="plots-gnuplot/de-states/cases-de-doubling-RP.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SL">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-SL.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SL.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-SL.png" alt="plots-gnuplot/de-states/cases-de-doubling-SL.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SN">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-SN.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SN.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-SN.png" alt="plots-gnuplot/de-states/cases-de-doubling-SN.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-ST">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-ST.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-ST.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-ST.png" alt="plots-gnuplot/de-states/cases-de-doubling-ST.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-SH">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-SH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-SH.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-SH.png" alt="plots-gnuplot/de-states/cases-de-doubling-SH.png" width="640" height="480"><br />
 				</article>
 				<article id="#article-cases-de-doubling-TH">
-					<img src="plots-gnuplot/de-states/cases-de-doubling-TH.png"
-						alt="plots-gnuplot/de-states/cases-de-doubling-TH.png" width="640" height="480"><br />
+					<img src="plots-gnuplot/de-states/cases-de-doubling-TH.png" alt="plots-gnuplot/de-states/cases-de-doubling-TH.png" width="640" height="480"><br />
 				</article>
 			</div>
 			<div class="af_gallery_results_footer" id="results_DE_states_footer">
-				<small>generated via Gnuplot <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot"
-						target="_blank">plot-de-states-doubling.gp</a>, raw data can be found in <a
-						href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/"
-						target="_blank">de-states</a>
+				<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot" target="_blank">plot-de-states-doubling.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-states/" target="_blank">de-states</a>
 					<br /> Many thanks to Alex Friedl for writing this gallery feature! </small>
 			</div>
 		</div>
 	</div>
 
-	<p> Ergebnis: Im März betrug die Verdopplungszeit in Deutschland meist weniger als 5 Tage. Der Abschwung ab Anfang
-		April war mit 10-15 Tagen Halbwertszeit deutlich langsamer als der Anstieg zuvor. Seit Ende Juli sind wir im
-		Bereich einer Verdopplungszeit von 20 Tagen. </p>
+	<p> Ergebnis: Im März betrug die Verdopplungszeit in Deutschland meist weniger als 5 Tage. Der Abschwung ab Anfang April war mit 10-15 Tagen Halbwertszeit deutlich langsamer als der Anstieg zuvor. Seit Ende Juli sind wir im Bereich einer Verdopplungszeit von 20 Tagen. </p>
 
 	<h4>Nun der Vollständig halber eine kurze Erklärung zum mathematischen Hintergrund</h4>
 
-	<p>Zur Ermittlung der Verdopplungszeit bzw. Halbwertszeit habe ich die Daten eines Intervalls mit einer
-		exponentiellen Wachstumsfunktion "gefittet" (angenähert über eine <a
-			href="https://de.wikipedia.org/wiki/Regressionsanalyse" target="_blank">Regressionsanalyse</a>). Dabei
-		werden vom Algorithmus 2 Parameter der Wachstumsfunktion so ermittelt, dass die Wachstumsfunktion zu einer
-		optimalen Übereinstimmung mit den Daten skaliert wird. Aus den so ermittelten Werten der Parameter lassen sich
-		dann Aussagen zum Wachstum treffen. </p>
+	<p>Zur Ermittlung der Verdopplungszeit bzw. Halbwertszeit habe ich die Daten eines Intervalls mit einer exponentiellen Wachstumsfunktion "gefittet" (angenähert über eine <a href="https://de.wikipedia.org/wiki/Regressionsanalyse" target="_blank">Regressionsanalyse</a>). Dabei werden vom Algorithmus 2 Parameter der Wachstumsfunktion so ermittelt, dass die Wachstumsfunktion zu einer optimalen Übereinstimmung mit den Daten skaliert wird. Aus den so ermittelten Werten der Parameter lassen sich dann Aussagen zum Wachstum treffen. </p>
 
-	<p> Exponentielle Wachstumsfunktion:<br /> f(x) = N0 &middot; exp(b &middot; x)<br /> mit N0: Skalierungsfaktor/Wert
-		zum Zeitpunkt (x = 0 = heute)<br /> und b: allgemeiner Parameter der das Wachstum beschreibt. </p>
+	<p> Exponentielle Wachstumsfunktion:<br /> f(x) = N0 &middot; exp(b &middot; x)<br /> mit N0: Skalierungsfaktor/Wert zum Zeitpunkt (x = 0 = heute)<br /> und b: allgemeiner Parameter der das Wachstum beschreibt. </p>
 
-	<p> Um den Parameter b in eine besser verständlichere Verdopplungszeit T umzurechnen, trifft man einfach folgenden
-		Festlegung: <br /> f(T) = 2 &middot; f(x=0) <br /> &rarr; N0 &middot; exp (b &middot; T) = 2 &middot; N0 <br />
-		&rarr; b = ln (2) &divide; T <br> Analog lässt sich dies für eine Halbierung durchführen. Da aber ln(0,5) =
-		-ln(2) ist, ist das Ergebnis fast identisch, nur das Vorzeichen der Halbwertszeit T ist negativ.
-		<br />Anmerkung: Die Verdopplungszeit/Halbwertszeit T ist unabhängig vom Skalierungsfaktor N0. Daher ist es für
-		die Bestimmung der Verdopplungszeit nicht notwendig die Daten auf die Bevölkerung zu skalieren.
-	</p>
+	<p> Um den Parameter b in eine besser verständlichere Verdopplungszeit T umzurechnen, trifft man einfach folgenden Festlegung: <br /> f(T) = 2 &middot; f(x=0) <br /> &rarr; N0 &middot; exp (b &middot; T) = 2 &middot; N0 <br /> &rarr; b = ln (2) &divide; T <br> Analog lässt sich dies für eine Halbierung durchführen. Da aber ln(0,5) = -ln(2) ist, ist das Ergebnis fast identisch, nur das Vorzeichen der Halbwertszeit T ist negativ. <br />Anmerkung: Die Verdopplungszeit/Halbwertszeit T ist unabhängig vom Skalierungsfaktor N0. Daher ist es für die Bestimmung der Verdopplungszeit nicht notwendig die Daten auf die Bevölkerung zu skalieren. </p>
 
-	<p> Obige Routine habe ich nun für jeder Tag auf der x-Achse wiederholt um einen Zeitverlauf der Verdopplungszeit
-		bzw. Halbwertszeit (bei Abnahme) zu bestimmen. Dabei verwende ich pro Tag das Intervall der y-Werte der Daten
-		dieses Tages und der jeweils 13 vorangegangenen Tage. Als x-Werte verwende ich für jedes dieser Intervalle die
-		Werte -13..0 (Tage). Der N0 Skalierungsfaktor wird mit dem y-Wert des aktuellen Tages initiiert (aber auch durch
-		den Algorithmus optimiert).</p>
+	<p> Obige Routine habe ich nun für jeder Tag auf der x-Achse wiederholt um einen Zeitverlauf der Verdopplungszeit bzw. Halbwertszeit (bei Abnahme) zu bestimmen. Dabei verwende ich pro Tag das Intervall der y-Werte der Daten dieses Tages und der jeweils 13 vorangegangenen Tage. Als x-Werte verwende ich für jedes dieser Intervalle die Werte -13..0 (Tage). Der N0 Skalierungsfaktor wird mit dem y-Wert des aktuellen Tages initiiert (aber auch durch den Algorithmus optimiert).</p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h4>
-		<a id="DE_calc-cases-from-deaths-DE-total"></a> Wie hoch ist die Dunkelziffer der Infizierten im Vergleich zu
-		den offiziellen Fallzahlen?
+		<a id="DE_calc-cases-from-deaths-DE-total"></a> Wie hoch ist die Dunkelziffer der Infizierten im Vergleich zu den offiziellen Fallzahlen?
 	</h4>
 	<!-- <p> 04.04.2020: In der letzten Woche habe ich immer mehr Stimmen gehört und gelesen, die den offiziellen Zahlen nicht trauen. Höhepunkt war, dass ein Dresdner Freund, der positiv auf COVID-19 getestet wurde, berichtete, dass von seinen Kontakten der letzten 2 Wochen (vor der Ausgangssperre) keiner einen Test bewilligt bekam. Dies ist vermutlich in der ausgereizten Testkapazität der Labore begründet. Daher habe ich mal versucht eine Abschätzung der Dunkelziffer (=Differenz zwischen der Gesamtzahl der Infizierten und den positiv getesteten Personen) zu treffen. </p> -->
 
-	<p>Hier der Versuch einer Abschätzung der Dunkelziffer (=Differenz zwischen der Gesamtzahl der Infizierten und den
-		positiv getesteten Personen). Folgende sehr vereinfachte grobe Annahmen (Inspiriert von <a
-			href="https://medium.com/@tomaspueyo/coronavirus-act-today-or-people-will-die-f4d3d9cd99ca"
-			target="_blank">diesem Artikel, Abschnitt "Washington State"</a>) habe ich getroffen: </p>
+	<p>Hier der Versuch einer Abschätzung der Dunkelziffer (=Differenz zwischen der Gesamtzahl der Infizierten und den positiv getesteten Personen). Folgende sehr vereinfachte grobe Annahmen (Inspiriert von <a href="https://medium.com/@tomaspueyo/coronavirus-act-today-or-people-will-die-f4d3d9cd99ca" target="_blank">diesem Artikel, Abschnitt "Washington State"</a>) habe ich getroffen: </p>
 	<ul>
 		<li> Wer heute stirbt, hat sich vor 3 Wochen infiziert</li>
 		<li> Ein Infizierter stirbt mit einer Wahrscheinlichkeit von 1%</li>
-		<li> Die Verdopplungszeit der Opferzahl wird aus den Daten der letzten Woche ermittelt und für die Prognose in
-			die Zukunft konstant gehalten </li>
+		<li> Die Verdopplungszeit der Opferzahl wird aus den Daten der letzten Woche ermittelt und für die Prognose in die Zukunft konstant gehalten </li>
 	</ul>
 
-	<p>Damit lässt sich die Gesamtzahl der Infizierten vor 3 Wochen rückwärts berechnen aus 100x (Kehrwert von 1%) die
-		Zahl der heute Verstorbenen. Diese Rechnung lässt such nun für jeden Tag X durchführen: Zahl der Toten am Tag X
-		mal 100 zugeordnet zum Tag X-14. Daraus lässt sich auf die Gesamtzahl der <u>heute</u> infizierten Personen über
-		eine Regressionsanalyse/Fit der Daten (mehr dazu <a href="#Exp_Wachstum">unten</a>) extrapolieren. Graphisch
-		sieht dies wie folgt aus: </p>
-	<img src="plots-gnuplot/de-states/calc-cases-from-deaths-DE-total.png" alt="calc-cases-from-deaths-DE-total.png"
-		width="640" height="480">
+	<p>Damit lässt sich die Gesamtzahl der Infizierten vor 3 Wochen rückwärts berechnen aus 100x (Kehrwert von 1%) die Zahl der heute Verstorbenen. Diese Rechnung lässt such nun für jeden Tag X durchführen: Zahl der Toten am Tag X mal 100 zugeordnet zum Tag X-14. Daraus lässt sich auf die Gesamtzahl der <u>heute</u> infizierten Personen über eine Regressionsanalyse/Fit der Daten (mehr dazu <a href="#Exp_Wachstum">unten</a>) extrapolieren. Graphisch sieht dies wie folgt aus: </p>
+	<img src="plots-gnuplot/de-states/calc-cases-from-deaths-DE-total.png" alt="calc-cases-from-deaths-DE-total.png" width="640" height="480">
 	<br />
-	<small>generated via Gnuplot <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/"
-			target="_blank">plot-de-calc-deaths.gp</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/de-states/de-state-DE-total.tsv"
-			target="_blank">de-state-DE-total.tsv</a>
+	<small>generated via Gnuplot <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/scripts-gnuplot/" target="_blank">plot-de-calc-deaths.gp</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-states/de-state-DE-total.tsv" target="_blank">de-state-DE-total.tsv</a>
 	</small>
 
-	<p> Anmerkung zu den Annahmen: Die Sterblichkeit ist vermutlich geringer als die angenommenen 1%. Es dauert wohl
-		üblicherweise eher 3-4 Wochen von Infektion bis zum Tode, nicht wie von mir gerechnet nur 3 Wochen. Beide
-		Effekte wirken sich vergrößernd auf die Dunkelziffer aus.</p>
+	<p> Anmerkung zu den Annahmen: Die Sterblichkeit ist vermutlich geringer als die angenommenen 1%. Es dauert wohl üblicherweise eher 3-4 Wochen von Infektion bis zum Tode, nicht wie von mir gerechnet nur 3 Wochen. Beide Effekte wirken sich vergrößernd auf die Dunkelziffer aus.</p>
 	<!-- <p> Update vom 18.04.2020: Spiegel Online zitiert in <a href="https://www.spiegel.de/wissenschaft/medizin/coronavirus-wie-antikoerpertests-dabei-helfen-die-pandemie-zu-verstehen-a-2258edcd-a304-4ee0-83cc-76a24f340c45" target="_blank">diesem Artikel</a> Thomas Fenner mit der Schätzung, dass 1,9% der Deutschen Bevölkerung bereits von Covid-19 infiziert waren. Meine grobe Abschätzung lieferte an diesem Tag 1.5%, was überraschend dicht dran ist. (Am 04.05.2020 ist diese meine Abschätzung auf 1.1% gesunken. Ursache ist die starke Reduktion des exponentiellen Wachstums, durch die erfolgreichen Lockdown Maßnahmen in der Zwischenzeit.</p> -->
 	<!-- <p> Mein persönliches Fazit aus dieser sehr groben Abschätzung ist, dass die Dunkelziffer recht groß zu sein scheint und aufgrund der beschränkten Testkapazität in Zukunft wohl weiter zunehmen wird. Dies bewirkt in den Grafiken und Auswertungen eine stärkere Zunahme der berechneten Verdopplungszeit als es in der Realität der Fall sein sollte. Die wirkliche Verdopplungszeit ist daher vermutlich kürzer als von mir <a href="#Exp_Wachstum">unten</a> pro Bundesland ermittelt. Für meine <a href="#Countries">internationalen Vergleiche</a> habe ich mich ausschließlich auf die Opferzahlen gestützt, diese halte ich weiterhin für belastbar. Die folgenden Kapitel belasse ich trotzdem online, so kann jeder Leser selber entscheiden welche Schlüsse er aus den Daten zieht. </p> -->
 	<!-- <p> Nun folgen noch drei Beispiele die die Idee hinter meiner groben Abschätzung verdeutlichen sollen, da es berechtigte Kritik an der ersten Fassung dieses Abschnitts gab.</p>
@@ -1455,8 +1116,6 @@
 	<p> Beispiel 2: Eine Insel mit 1000 Einwohnern von denen bisher keiner infiziert war, auf der aber getestet wird.<br /> Ergebnis ist das gleiche, mit dem Unterschied, dass die Zahl der positiv getesteten Personen ungleich 0 ist, was aber nicht die Abschätzung einfließt. </p>
 	<p> Beispiel 3: Eine Insel mit 16000 Einwohnern von denen bisher keiner infiziert war.<br /> Werden nun 1000 am 01.01.2020 infiziert, so werden am 15.01. immer noch 10 sterben. Am 15.01. lässt sich daher wie oben beschrieben auf die Gesamtzahl von 1000 am 01.01. schließen. Allerdings werden weiter Menschen infiziert. Nehmen wir z.B. exemplarisch eine Verdopplungszeit von 7 Tagen an, so ist am 8.01. eine Gesamtzahl von 2000 Personen infiziert, am 15.01. dann 4000. Somit ist die Gesamtzahl der Infizierten am 15.01. größer als 1000, was zur Folge hat, dass an den Folgetagen weitere Menschen sterben werden. Am 15.01. sind 4000 infiziert (Verstorbene mitgezählt) aber nur 10 verstorben. Würde man am 15.01. großangelegte Tests durchführen, so würde man im Idealfall alle 4000 infizierten Personen bestimmen und die Dunkelziffer wäre 0. Bestimmt man an diesem Tag die Sterblichkeit, so würde man am 15.01.2020 10 Tote auf 4000 Infizierte = 0.25% finden, was der Eingangsgröße/Annahme widerspricht. Wartet man allerdings weiteren 2 Verdopplungszeiten ab, so sind am 29.01. alle 16000 Einwohner infiziert. Wartet man nochmal 2 Wochen, bis die unglücklichen schweren Fälle verstorben sind, so findet man dann dass von den 16000 Einwohnern 160 verstorben sind, und die Sterblichkeit ist wie erwartet 1%. Dies verdeutlicht, dass die Sterblichkeit erst korrekt ermittelt werden kann, wenn das exponentielle Wachstum vorbei ist. </p> -->
 
-
-
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
@@ -1464,21 +1123,12 @@
 		<a id="ArduinoSensorics-De"></a>Nebenprojekt: CO<sub>2</sub>-Ampel
 	</h4>
 
-	<p>Hier der Verweis auf mein anderes Corona-Projekt <a
-			href="https://github.com/entorb/arduino-sensorics/blob/main/CO2-Ampel-Bauanleitung.md"
-			target="_blank">CO<sub>2</sub>-Ampeln für unsere Schule und KiTa</a>. Motivation: Die
-		CO<sub>2</sub>-Konzentration in der Luft ist ein guter Indikator dafür, dass es Zeit zum Lüften ist. Wer sich
-		beteiligen möchte kann gerne <a href="/contact.php?origin=CO2Ampel">Kontakt</a> zu mir aufnehmen. Aktueller
-		Stand: </p>
-	<img alt="ASGS-V1.jpg" src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg"
-		width="1280" height="960" /><br />
-	<img alt="4xCO2-in-Holz.jpg"
-		src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg" width="1280"
-		height="720" />
+	<p>Hier der Verweis auf mein anderes Corona-Projekt <a href="https://github.com/entorb/arduino-sensorics/blob/main/CO2-Ampel-Bauanleitung.md" target="_blank">CO<sub>2</sub>-Ampeln für unsere Schule und KiTa</a>. Motivation: Die CO<sub>2</sub>-Konzentration in der Luft ist ein guter Indikator dafür, dass es Zeit zum Lüften ist. Wer sich beteiligen möchte kann gerne <a href="/contact.php?origin=CO2Ampel">Kontakt</a> zu mir aufnehmen. Aktueller Stand: </p>
+	<img alt="ASGS-V1.jpg" src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/ASGS-V1.jpg" width="1280" height="960" /><br />
+	<img alt="4xCO2-in-Holz.jpg" src="https://raw.githubusercontent.com/entorb/arduino-sensorics/main/photos/4xCO2-in-Holz.jpg" width="1280" height="720" />
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
-
 
 	<h2>
 		<a id="Countries"></a>Countries Worldwide
@@ -1487,18 +1137,9 @@
 	<h3>
 		<a id="MapCountries"></a>Map: Country Casualties
 	</h3>
-	<a title="Dan Polansky and authors of File:BlankMap-World.svg. / CC BY-SA (https://creativecommons.org/licenses/by-sa/4.0)"
-		href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg"
-		target="_blank"><img alt="COVID-19 Outbreak World Map Total Deaths per Capita"
-			src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg/1024px-COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg.png"></a>
+	<a title="Dan Polansky and authors of File:BlankMap-World.svg. / CC BY-SA (https://creativecommons.org/licenses/by-sa/4.0)" href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg" target="_blank"><img alt="COVID-19 Outbreak World Map Total Deaths per Capita" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg/1024px-COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg.png"></a>
 
-	<p>Map deaths per million population, borrowed from <a
-			href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg"
-			target="_blank">Wikipedia</a>. Data source: the <a href="https://pomber.github.io/covid19/timeseries.json"
-			target="_blank">json</a> file provided by <a href="https://github.com/pomber/covid19"
-			target="_blank">github.com/pomber/covid19</a> is based on <a
-			href="https://github.com/CSSEGISandData/COVID-19" target="_blank">data of Johns Hopkins University Center
-			for Systems Science and Engineering (JHU CSSE)</a> </p>
+	<p>Map deaths per million population, borrowed from <a href="https://commons.wikimedia.org/wiki/File:COVID-19_Outbreak_World_Map_Total_Deaths_per_Capita.svg" target="_blank">Wikipedia</a>. Data source: the <a href="https://pomber.github.io/covid19/timeseries.json" target="_blank">json</a> file provided by <a href="https://github.com/pomber/covid19" target="_blank">github.com/pomber/covid19</a> is based on <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">data of Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE)</a> </p>
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
@@ -1515,11 +1156,7 @@
 		promises.push(table_Countries.setData("https://entorb.net/COVID-19-coronavirus/data/int/countries-latest-all.json", {}, "get"));
 
 	</script>
-	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.tsv"
-			target="_blank">countries-latest-all.tsv</a> / <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/countries-latest-all.json"
-			target="_blank">countries-latest-all.json</a></small>
+	<small> generated via <a href="http://tabulator.info/" target="_blank">Tabulator</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/int/countries-latest-all.tsv" target="_blank">countries-latest-all.tsv</a> / <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/int/countries-latest-all.json" target="_blank">countries-latest-all.json</a></small>
 	<!-- <script type="text/javascript" src="tabulator/tabulator.min.js"></script> -->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -1529,26 +1166,21 @@
 
 	<p>Usage hints</p>
 	<ul>
-		<li>Browse and click in <a href="#CountryTable">country table</a> above to search and select or deselect
-			interesting countries </li>
+		<li>Browse and click in <a href="#CountryTable">country table</a> above to search and select or deselect interesting countries </li>
 		<li>Download your chart using the button top right</li>
 		<li>Share a link to your chart by copying the updated URL of this page</li>
 	</ul>
 
 	<p>Nomenclature</p>
 	<ul>
-		<li><b>Cases</b> means positively tested on COVID-19 and reported to JHU. Note: I do not trust <b>Cases</b> data
-			for international comparison too much, as it strongly depends on testing and reporting.</li>
-		<li><b>Deaths</b> are much more reliable than <b>Cases</b>, I suppose. <b>Deaths</b> are furthermore stronger
-			related to the hospital workload.</li>
-		<li><b>Per Million</b> means scaled per million population. These series should be used when comparing
-			countries. </li>
+		<li><b>Cases</b> means positively tested on COVID-19 and reported to JHU. Note: I do not trust <b>Cases</b> data for international comparison too much, as it strongly depends on testing and reporting.</li>
+		<li><b>Deaths</b> are much more reliable than <b>Cases</b>, I suppose. <b>Deaths</b> are furthermore stronger related to the hospital workload.</li>
+		<li><b>Per Million</b> means scaled per million population. These series should be used when comparing countries. </li>
 		<!-- <li><b>Doubling Time</b> is in days. For each day it is calculated from the 7 previous days, for details see <a
 				href="#CountriesDeathTimeSeries">below</a>. Higher value is better, of cause, therefore I inverted the y axis.
 		</li> -->
 		<li><b>New</b> means change with respect to the previous day.</li>
-		<li><b>Last Week</b> means change with respect to 7 days in the past (=rolling week). It is therefore is
-			smoother than the <b>New</b> series.</li>
+		<li><b>Last Week</b> means change with respect to 7 days in the past (=rolling week). It is therefore is smoother than the <b>New</b> series.</li>
 	</ul>
 	<form>
 
@@ -1622,11 +1254,8 @@
 
 	<h4><a id="CountriesCustomChart"></a>3. Chart</h4>
 	<div id="div_eChartsCountryContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
-	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a
-			href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/master/data/int/"
-			target="_blank">country-XX.tsv / .json</a>
-		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version of
-		the select data logic!</small>
+	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/int/" target="_blank">country-XX.tsv / .json</a>
+		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version of the select data logic!</small>
 	<!-- 
 		JS for eCharts Countries
 	-->
@@ -1715,64 +1344,49 @@
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h3><a id="CountryRankings"></a>Country Rankings</h3>
 
 	<h4><a id="CountriesLatestCases"></a>Cases</h4>
 
-	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their
-		total cases (series "Cases per Million Population").</p>
+	<p> Ranking countries by current new cases (series "Cases Last Week per 100.000 Population") and color-coding their total cases (series "Cases per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Cases_Last_Week_Per_Million" style="height: 4000px">
 		</div>
 	</div>
 
-	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new
-		cases (series "Cases Last Week per 100.000 Population"). </p>
+	<p> Ranking countries by total cases (series "Cases per Million Population") and color-coding their current new cases (series "Cases Last Week per 100.000 Population"). </p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Cases_Per_Million" style="height: 4000px">
 		</div>
 	</div>
-
-
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
 	<h4><a id="CountriesLatestDeaths"></a>Deaths</h4>
 
-	<p> Ranking countries by last week's deaths (series "Deaths Last Week per Million Population") and color-coding
-		their total deaths (series "Deaths per Million Population").</p>
+	<p> Ranking countries by last week's deaths (series "Deaths Last Week per Million Population") and color-coding their total deaths (series "Deaths per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Deaths_Last_Week_Per_Million" style="height: 4000px">
 		</div>
 	</div>
 
-	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their last week's
-		deaths (series "Deaths Last Week per Million Population").</p>
+	<p> Ranking countries by total deaths (series "Deaths per Million Population") and color-coding their last week's deaths (series "Deaths Last Week per Million Population").</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Deaths_Per_Million" style="height: 4000px">
 		</div>
 	</div>
 
-
 	<p><small><a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
-
 	<h3><a id="CountriesDoublingTime"></a>Doubling Time of New Infections</h3>
 
-	<p> In the following the exponential growth of the new infections is analyzed. If an increase is present, I fit the
-		data with an exponential function to derive the new cases doubling time. As data I used the "Cases Last Week"
-		series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new
-		cases, shorter is worse, of cause. Color coded is the current 7-day incidence as additional
-		information, red means high.</p>
+	<p> In the following the exponential growth of the new infections is analyzed. If an increase is present, I fit the data with an exponential function to derive the new cases doubling time. As data I used the "Cases Last Week" series of the last 14 days. The resulting doubling time is the number of days it takes for a doubling of new cases, shorter is worse, of cause. Color coded is the current 7-day incidence as additional information, red means high.</p>
 	<div class="echart-latest-data-wrapper">
 		<div id="div_eChart_Country_Doubling_Time" style="height: 3000px">
 		</div>
 	</div>
-
 	<!-- <div id="div_table-countries-doubling"></div> -->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -1780,8 +1394,7 @@
 
 	<h4><a id="event_risk_calculator_EN"></a>Event Risk Calculator</h4>
 
-	<p>Assuming an event/company/school with many people attending. What is the probability of a COVID-19 infectious
-		person being there?
+	<p>Assuming an event/company/school with many people attending. What is the probability of a COVID-19 infectious person being there?
 		<!-- Der Anspruch dieser groben Abschätzung ist nicht eine exakte Zahl sondern die Größenordnung der Wahrscheinlichkeit in Abhängigkeit von Infektionslage und Teilnehmerzahl zu liefern. -->
 	</p>
 	<table style="text-align: left;">
@@ -1791,8 +1404,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_input_num_people_en" type="number" value="20" min="5" max="10000" step="1"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()">
+				<input id="rc_input_num_people_en" type="number" value="20" min="5" max="10000" step="1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()">
 			</td>
 			<td>Number of people attending</td>
 		</tr>
@@ -1801,20 +1413,16 @@
 			<td><select id="rc_sel_bundesland" style="width:200px" onchange="rc_sel_bundesland_selected()"> </select></td>
 		</tr> -->
 		<tr>
-			<td><input id="rc_input_cases_last_week_100k_en" type="number" value="20" min="1" max="1000" step="0.1"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
-			<td>New cases in your region (per last week per 100.000 population), numbers can be found at <a
-					href="#CountryTable">Country Table</a> above. </td>
+			<td><input id="rc_input_cases_last_week_100k_en" type="number" value="20" min="1" max="1000" step="0.1" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
+			<td>New cases in your region (per last week per 100.000 population), numbers can be found at <a href="#CountryTable">Country Table</a> above. </td>
 		</tr>
 		<tr>
-			<td><input id="rc_input_factor_unreported_en" type="number" value="3" min="1" max="20" step="0.5"
-					style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
+			<td><input id="rc_input_factor_unreported_en" type="number" value="3" min="1" max="20" step="0.5" style="text-align: right; font-size:20px; width: 100px;" onchange="rc_calc_en()"></td>
 			<td>Estimated factor of unreported cases</td>
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_output_infectious_pop_en" type="text" readonly disabled value=""
-					style="text-align: right; font-size:20px; width: 100px;">
+				<input id="rc_output_infectious_pop_en" type="text" readonly disabled value="" style="text-align: right; font-size:20px; width: 100px;">
 			</td>
 			<td>Estimated total amount of infectious people in population (last week per 100.000 population)</td>
 		</tr>
@@ -1824,8 +1432,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="rc_output_prop_someone_at_event_is_infectious_en" type="text" readonly value=""
-					style="text-align: right; font-size:20px; width: 100px; background-color: orange; color: black; font-weight: bold;">
+				<input id="rc_output_prop_someone_at_event_is_infectious_en" type="text" readonly value="" style="text-align: right; font-size:20px; width: 100px; background-color: orange; color: black; font-weight: bold;">
 			</td>
 			<td>Probability for 1 or more infective people are attending</td>
 		</tr>
@@ -1838,30 +1445,16 @@
 
 	<p>I made the following simplifications for this rough model</p>
 	<ul>
-		<li> The number of new infections per week is approximated by the number of currently infectious people. This is
-			supported by the<a
-				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11"
-				target="_blank"> German RKI, stating an average duration of infection of 8 -9 days </a>. </li>
-		<li> Unreported cases: For Germany the <a
-				href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14"
-				target="_blank"> RKI expects a range of 4.5-11.1</a>. The more tests are performed, the lower this
-			number should be.</li>
-		<li> Quarantine is not taken into account. This could be accounted for by reducing the factor of unreported
-			cases by up to 1 (only the infected and walking around are a threat to their surroundings). However, many
-			people retrieve their test results when they are already infectious and are still around others. </li>
-		<li> The infectious people are assumed to be evenly distributed across the entire population and not
-			differentiated according to age groups, etc. </li>
+		<li> The number of new infections per week is approximated by the number of currently infectious people. This is supported by the<a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText11" target="_blank"> German RKI, stating an average duration of infection of 8 -9 days </a>. </li>
+		<li> Unreported cases: For Germany the <a href="https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Steckbrief.html#doc13776792bodyText14" target="_blank"> RKI expects a range of 4.5-11.1</a>. The more tests are performed, the lower this number should be.</li>
+		<li> Quarantine is not taken into account. This could be accounted for by reducing the factor of unreported cases by up to 1 (only the infected and walking around are a threat to their surroundings). However, many people retrieve their test results when they are already infectious and are still around others. </li>
+		<li> The infectious people are assumed to be evenly distributed across the entire population and not differentiated according to age groups, etc. </li>
 	</ul>
 
-	<p>Comment on the result: The likelihood that an infection will occur depends additionally on many other factors
-		such as duration, environment and protective measures taken and is very difficult to estimate as a probability
-		in %. I am grateful for ideas and hints, here you can <a href="/contact.php?origin=COVID-19">contact</a> me.
-	</p>
+	<p>Comment on the result: The likelihood that an infection will occur depends additionally on many other factors such as duration, environment and protective measures taken and is very difficult to estimate as a probability in %. I am grateful for ideas and hints, here you can <a href="/contact.php?origin=COVID-19">contact</a> me. </p>
 
 	<p><small><a href=" #ToC">Back to top</a></small></p>
 	<hr />
-
-
 
 	<h3>
 		<a id="RefDeathCauses"></a> Reference data: deaths by other causes per year.
@@ -1874,8 +1467,7 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.rki.de/DE/Content/Service/Presse/Pressemitteilungen/2019/13_2019.html"
-					target="_blank"> DE: HIV deaths 2018</a>
+				<a href="https://www.rki.de/DE/Content/Service/Presse/Pressemitteilungen/2019/13_2019.html" target="_blank"> DE: HIV deaths 2018</a>
 			</td>
 			<td style="text-align: right">440</td>
 			<td style="text-align: right">5</td>
@@ -1889,40 +1481,35 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.destatis.de/DE/Presse/Pressemitteilungen/2019/02/PD19_069_46241.html"
-					target="_blank"> DE: traffic deaths 2018</a>
+				<a href="https://www.destatis.de/DE/Presse/Pressemitteilungen/2019/02/PD19_069_46241.html" target="_blank"> DE: traffic deaths 2018</a>
 			</td>
 			<td style="text-align: right">3265</td>
 			<td style="text-align: right">39</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Todesursachen/Tabellen/suizide.html"
-					target="_blank"> DE: suicides 2017</a>
+				<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Todesursachen/Tabellen/suizide.html" target="_blank"> DE: suicides 2017</a>
 			</td>
 			<td style="text-align: right">9235</td>
 			<td style="text-align: right">111</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://edoc.rki.de/bitstream/handle/176904/6253/RKI_Influenzabericht_2018-19.pdf"
-					target="_blank"> DE: flu 2017/18 (estimated)</a>
+				<a href="https://edoc.rki.de/bitstream/handle/176904/6253/RKI_Influenzabericht_2018-19.pdf" target="_blank"> DE: flu 2017/18 (estimated)</a>
 			</td>
 			<td style="text-align: right">25100</td>
 			<td style="text-align: right">302</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Todesursachen/todesfaelle.html"
-					target="_blank"> DE: cancer 2017</a>
+				<a href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Todesursachen/todesfaelle.html" target="_blank"> DE: cancer 2017</a>
 			</td>
 			<td style="text-align: right">227590</td>
 			<td style="text-align: right">2741</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://de.wikipedia.org/wiki/Demografie_Deutschlands#Demographie_seit_1900"
-					target="_blank">DE: total death rate 2018</a>
+				<a href="https://de.wikipedia.org/wiki/Demografie_Deutschlands#Demographie_seit_1900" target="_blank">DE: total death rate 2018</a>
 			</td>
 			<td style="text-align: right">954874</td>
 			<td style="text-align: right">11502</td>
@@ -1936,40 +1523,35 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="https://en.wikipedia.org/wiki/Gun_violence_in_the_United_States" target="_blank"> US: gun
-					deaths 2017</a>
+				<a href="https://en.wikipedia.org/wiki/Gun_violence_in_the_United_States" target="_blank"> US: gun deaths 2017</a>
 			</td>
 			<td style="text-align: right">14542</td>
 			<td style="text-align: right">44</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.cdc.gov/flu/about/burden/2018-2019.html" target="_blank"> US: flu 2018/19
-					(estimated)</a>
+				<a href="https://www.cdc.gov/flu/about/burden/2018-2019.html" target="_blank"> US: flu 2018/19 (estimated)</a>
 			</td>
 			<td style="text-align: right">34200</td>
 			<td style="text-align: right">104</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://en.wikipedia.org/wiki/Motor_vehicle_fatality_rate_in_U.S._by_year" target="_blank"> US:
-					traffic deaths 2018</a>
+				<a href="https://en.wikipedia.org/wiki/Motor_vehicle_fatality_rate_in_U.S._by_year" target="_blank"> US: traffic deaths 2018</a>
 			</td>
 			<td style="text-align: right">36560</td>
 			<td style="text-align: right">111</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://en.wikipedia.org/wiki/Suicide_in_the_United_States" target="_blank"> US: suicides
-					2018</a>
+				<a href="https://en.wikipedia.org/wiki/Suicide_in_the_United_States" target="_blank"> US: suicides 2018</a>
 			</td>
 			<td style="text-align: right">48344</td>
 			<td style="text-align: right">147</td>
 		</tr>
 		<tr>
 			<td>
-				<a href="https://www.cdc.gov/drugoverdose/data/statedeaths.html" target="_blank"> US: drug overdose
-					2018</a>
+				<a href="https://www.cdc.gov/drugoverdose/data/statedeaths.html" target="_blank"> US: drug overdose 2018</a>
 			</td>
 			<td style="text-align: right">67367</td>
 			<td style="text-align: right">205</td>
@@ -1993,20 +1575,16 @@
 			<a href="#ToC">Back to top</a></small></p>
 	<hr />
 
-
 	<h3>
 		<a id="CountriesDeathTimeSeries"></a>Time series, doubling time calculation and forecast for selected countries
 	</h3>
 
-	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter has
-		been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
+	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter has been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
 	<!-- 
 		Footer
 	 -->
 	<hr>
 	<a href="/">Home</a> - <a href="/contact.php?origin=COVID-19">Contact</a> - <a href="/impressum.php">Impressum</a>
-
-
 	<script>
 		// fetch data and populate html Elements after fetching the page
 		promises.push(fetch_countries_latest(array_countries_latest));
@@ -2034,9 +1612,6 @@
 
 
 	</script>
-
-
-
 </body>
 
 </html>
