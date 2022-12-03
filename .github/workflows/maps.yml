@@ -51,10 +51,8 @@ jobs:
 
     - name: install Ubuntu packages
       run: | 
-        sudo apt-get update > /dev/null
-        # sudo apt-get install imagemagick > /dev/null
-        sudo apt-get install ghostscript gsfonts > /dev/null
-        sudo apt-get install ffmpeg > /dev/null
+        sudo apt-get install ghostscript gsfonts ffmpeg > /dev/null
+#        sudo apt-get update > /dev/null
 
     - name: Generate + zip maps
       run: | 
@@ -64,7 +62,7 @@ jobs:
         cd ..
 
 # Publish to release       
-    - name: Upload to realase
+    - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net

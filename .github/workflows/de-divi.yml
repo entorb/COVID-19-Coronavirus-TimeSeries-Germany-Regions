@@ -92,7 +92,7 @@ jobs:
         cd ..
 
 # Publish to release       
-    - name: Upload to realase
+    - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net

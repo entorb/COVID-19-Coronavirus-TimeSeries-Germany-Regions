@@ -71,27 +71,9 @@ jobs:
         cd data
         tar cfz ../cache/data.tgz *
         cd ..
-
-# Update Charts
-#    - name: Gnuplot install 
-#      run: |
-#        sudo apt-get update > /dev/null
-#        sudo apt-get install gnuplot > /dev/null
-#
-#    - name: Gnuplot plotting
-#      run: |
-#        cd scripts-gnuplot
-#        gnuplot all.gp
-#        cd ..
-#
-#    - name: Gnuplot zipping plots-gnuplot/
-#      run: |
-#        cd plots-gnuplot
-#        tar cfz ../cache/plots-gnuplot.tgz *
-#        cd ..       
-
+  
 # Publish to release       
-    - name: Upload to realase
+    - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net

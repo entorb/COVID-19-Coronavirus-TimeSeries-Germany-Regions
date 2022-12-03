@@ -102,8 +102,8 @@ jobs:
 # Update Charts
     - name: Gnuplot install 
       run: |
-        sudo apt-get update > /dev/null
         sudo apt-get install gnuplot > /dev/null
+#        sudo apt-get update > /dev/null
 
     - name: Gnuplot plotting
       run: |
@@ -134,7 +134,7 @@ jobs:
         cd ..
 
 # Publish to release       
-    - name: Upload to realase
+    - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net
@@ -147,52 +147,3 @@ jobs:
         date +%Y-%m-%d_%H:%M
         tail -n 1 data/de-districts/de-district_timeseries-02000.tsv
 
-# old stuff
-
-
-#    - name: data upload via tip
-#      uses: eine/tip@master
-#      with:
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        tag: tip
-#        files: |
-#          cache/data.tgz
-
-
-# moved as a separate action, as it takes quite long
-# Generate maps
-#    - name: Generate + zip maps
-#      run: | 
-#        # sudo apt-get update > /dev/null
-#        # sudo apt-get install imagemagick > /dev/null
-#        python3 gen-map-de-districts.py
-#        cd maps
-#        tar cfz ../cache/maps.tgz *.gif
-
-
-
-
-# Create pre-releases of tgz files
-
-
-# not accessable anonymously
-#    - name: Upload data artifact
-#      uses: actions/upload-artifact@v1
-#      with:
-#        name: data
-#        path: cache/data.tgz
-
-
-# https://github.com/marketplace/actions/deploy-nightly
-#    - name: Upload data artifact via deploy-nightly
-#      uses: WebFreak001/deploy-nightly@v1.0.3
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # automatically provided by github actions
-#      with:
-#        upload_url: https://uploads.github.com/repos/entorb/COVID-19-Coronavirus-German-Regions/releases/27395320/assets{?name,label} 
-## find out this value by opening https://api.github.com/repos/<owner>/<repo>/releases in your browser and copy the full "upload_url" value including the {?name,label} part
-#        release_id: 27395320 # same as above (id can just be taken out the upload_url, it's used to find old releases)
-#        asset_path: cache/data.tgz # path to archive to upload
-#        asset_name: data.tgz # name to upload the release as, use $$ to insert date (YYYYMMDD) and 6 letter commit hash
-#        asset_content_type: application/tgz # required by GitHub API
-##        max_releases: 7 # optional, if there are more releases than this matching the asset_name, the oldest ones are going to be deleted  
