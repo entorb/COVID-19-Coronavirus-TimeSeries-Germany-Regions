@@ -33,7 +33,7 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Python cached pip
+    - name: Python cache setup
       uses: actions/cache@v3
       with:
         path: ${{ env.pythonLocation }}
