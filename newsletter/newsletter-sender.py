@@ -20,14 +20,11 @@ from datetime import timedelta
 
 
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def genHash(email: str) -> str:
-    s = email + str(random.random())
+    s = email + str(random.random())  # noqa: S311
     return gen_SHA256_string(s)
 
 
@@ -176,8 +173,9 @@ def get_slope_text_from_dict(d: dict) -> str:
     slope = 0
     # if "Slope_Cases_Last_Week_Percent" in d:
     #     slope = d["Slope_Cases_Last_Week_Percent"]
-    if "Cases_Last_Week_7Day_Percent" in d:
-        slope = d["Cases_Last_Week_7Day_Percent"]
+    # if "Cases_Last_Week_7Day_Percent" in d:
+    #     slope = d["Cases_Last_Week_7Day_Percent"]
+    slope = d.get("Cases_Last_Week_7Day_Percent")
     return get_slope_text(slope)
 
 
@@ -240,7 +238,7 @@ for lk_id, d in d_data_DeDistricts.items():
     d_id_cases_DeDistricts[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
-for lk_id, value in sorted(
+for lk_id, _value in sorted(
     d_id_cases_DeDistricts.items(),
     key=lambda item: item[1],
     reverse=True,
@@ -260,7 +258,7 @@ for lk_id, d in d_data_DeStates.items():
         d_id_cases_DeStates[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
         d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
-for lk_id, value in sorted(
+for lk_id, _value in sorted(
     d_id_cases_DeStates.items(),
     key=lambda item: item[1],
     reverse=True,
@@ -274,7 +272,7 @@ for lk_id, d in d_data_Countries.items():
     d_id_cases_Countries[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
-for lk_id, value in sorted(
+for lk_id, _value in sorted(
     d_id_cases_Countries.items(),
     key=lambda item: item[1],
     reverse=True,
@@ -288,7 +286,7 @@ for lk_id, d in d_data_Countries.items():
     d_id_deaths_Countries[lk_id] = d["Deaths_Last_Week_Per_Million"]
     # d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids_deaths = []
-for lk_id, value in sorted(
+for lk_id, _value in sorted(
     d_id_deaths_Countries.items(),
     key=lambda item: item[1],
     reverse=True,
@@ -406,7 +404,7 @@ for row in db_newsletter_cursor.execute(
         mailBody += "Rel.¹ | Absolut² | Änderung³\n"
         mailBody += "Deine Landkreisauswahl\n"
         # table body
-        for lk_id, value in sorted(
+        for lk_id, _value in sorted(
             d_this_regions_cases_100k.items(),
             key=lambda item: item[1],
             reverse=True,

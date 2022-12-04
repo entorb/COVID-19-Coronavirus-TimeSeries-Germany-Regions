@@ -69,7 +69,7 @@ def checkRunningOnServer() -> bool:
 
 def genHash(email: str) -> str:
     "generate SHA256 hash based on email and random number"
-    s = email + str(random.random())
+    s = email + str(random.random())  # noqa: S311
     return gen_SHA256_string(s)
 
 

@@ -21,7 +21,7 @@ def checkRunningOnServer() -> bool:
 
 
 def genHash(email: str) -> str:
-    s = email + str(random.random())
+    s = email + str(random.random())  # noqa: S311
     return gen_SHA256_string(s)
 
 

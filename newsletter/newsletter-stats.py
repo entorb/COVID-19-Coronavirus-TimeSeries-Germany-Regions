@@ -16,10 +16,7 @@ print()
 # Copy of common functions
 ##########################
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def db_connect():
@@ -100,7 +97,7 @@ print("<h2>Landkreis-Ranking</h2>")
 print('<table border="1">')
 print("<tr><th>Anzahl</th><th>Landkreis</th></tr>")
 # print("Anz : Landkreis")
-for id, value in sorted(
+for my_id, value in sorted(
     d_counter_region.items(),
     key=lambda item: item[1],
     reverse=True,
@@ -108,7 +105,7 @@ for id, value in sorted(
     if value < 5:
         break
     lk_name = (
-        d_districts_latest[id]["Landkreis"]
+        d_districts_latest[my_id]["Landkreis"]
         .encode("ascii", "xmlcharrefreplace")
         .decode()
     )
@@ -121,7 +118,7 @@ print("<h2>Anmeldungen</h2>")
 print('<table border="1">')
 print("<tr><th>Woche</th><th>Neue Abonnenten</th></tr>")
 # print("Anz : Landkreis")
-for week, value in reversed(sorted(d_counter_week.items())):
+for week, value in sorted(d_counter_week.items(), reverse=True):
     # print(f"%3d : {d_districts_latest[id]['Landkreis']}" % value)
     print(f"<tr><td>{week}</td><td>{value}</td></tr>")
 print("</table>")
