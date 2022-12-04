@@ -59,16 +59,12 @@ print()
 # Copy of common functions
 ##########################
 
-response = {}
-response["status"] = "ok"
+response = {"status": "ok"}
 
 
 def checkRunningOnServer() -> bool:
     "am I running on the webserver entorb.net?"
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def genHash(email: str) -> str:

@@ -82,6 +82,12 @@ jobs:
         tar cfz ../cache/data.tgz *
         cd ..
 
+    - name: Data zipping data-json/
+      run: |
+        cd data-json/
+        tar cfz ../cache/data-json-de.tgz *
+        cd ..
+
     - name: Plotting plot-icu-forecast.py
       run: python3 plot-icu-forecast.py
 

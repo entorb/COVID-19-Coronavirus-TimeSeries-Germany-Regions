@@ -3,9 +3,9 @@
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
 import os
 import sqlite3
-from datetime import date
 from datetime import datetime
 
+# from datetime import date
 # import json
 # import hashlib
 # import random
@@ -16,10 +16,7 @@ from datetime import datetime
 
 
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def db_connect():
@@ -122,7 +119,7 @@ for row in cur.execute(
         continue
     # delete old and forgotten ones
     if days_since > 60:
-        print(f"deleted old entry", row["email"])
+        print("deleted old entry", row["email"])
         cur.execute("DELETE FROM newsletter WHERE email = ?", (row["email"],))
         con.commit()
         continue
@@ -137,9 +134,9 @@ for row in cur.execute(
 
     mailBody += f"\n2. Abmelden: https://entorb.net/COVID-19-coronavirus/newsletter-frontend.html?action=unsubscribe&hash={h}\n"
 
-    mailBody += f"\n3. Diese E-Mail ignorieren und in einer Woche eine erneute Erinnerung zu bekommen ;-)\n"
+    mailBody += "\n3. Diese E-Mail ignorieren und in einer Woche eine erneute Erinnerung zu bekommen ;-)\n"
 
-    mailBody += f"\nBleib gesund\nTorben"
+    mailBody += "\nBleib gesund\nTorben"
 
     sendmail(
         to=row["email"],

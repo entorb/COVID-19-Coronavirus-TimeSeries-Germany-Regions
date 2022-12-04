@@ -313,7 +313,9 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         del d_de
 
     helper.write_json(
-        "data-json/de-states/de-states-latest.json", d_states_latest, indent=1
+        "data-json/de-states/de-states-latest.json",
+        d_states_latest,
+        indent=1,
     )
 
     l_for_export = []

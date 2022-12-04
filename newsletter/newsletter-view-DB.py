@@ -12,10 +12,7 @@ import sqlite3
 # Copy of common functions
 ##########################
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def db_connect():
@@ -91,14 +88,14 @@ for row in cur.execute(sql):
 print("")
 print("=== Landkreis-Ranking ===")
 print("id    : Anz : Landkreis")
-for id, value in sorted(
+for my_id, value in sorted(
     d_region_counter.items(),
     key=lambda item: item[1],
     reverse=True,
 ):
     if value <= 2:
         break
-    print(f"{id} : %3d : {d_districts_latest[id]['Landkreis']}" % value)
+    print(f"{my_id} : %3d : {d_districts_latest[my_id]['Landkreis']}" % value)
 
 print(f"{count_rows} Abonnenten")
 cur.close()

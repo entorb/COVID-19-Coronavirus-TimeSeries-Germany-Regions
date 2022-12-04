@@ -17,10 +17,7 @@ import sqlite3
 # Copy of common functions
 ##########################
 def checkRunningOnServer() -> bool:
-    if os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19"):
-        return True
-    else:
-        return False
+    return os.path.isdir("/var/www/virtual/entorb/data-web-pages/covid-19")
 
 
 def genHash(email: str) -> str:
@@ -47,7 +44,7 @@ def insertNewEMail(email: str):
     checkValidEMail(email)
     h = genHash(email)
     cur.execute(
-        f"INSERT INTO newsletter(email, verified, hash, threshold, frequency) VALUES (?,?,?)",
+        "INSERT INTO newsletter(email, verified, hash, threshold, frequency) VALUES (?,?,?)",
         (email, 1, h, 300, 7),
     )
     con.commit()

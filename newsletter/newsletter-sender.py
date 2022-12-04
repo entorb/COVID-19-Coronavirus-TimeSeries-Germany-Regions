@@ -232,78 +232,78 @@ del code, fh, l, d
 
 # Ranking of worst Landkreise
 d_id_cases_DeDistricts = {}
-for id, d in d_data_DeDistricts.items():
+for lk_id, d in d_data_DeDistricts.items():
     # handling of missing disticts from API response
-    if id not in d_data_DeDistricts or "Cases_Last_Week_Per_Million" not in d:
+    if lk_id not in d_data_DeDistricts or "Cases_Last_Week_Per_Million" not in d:
         # print(id, d)
         continue
-    d_id_cases_DeDistricts[id] = d["Cases_Last_Week_Per_Million"] / 10
+    d_id_cases_DeDistricts[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
-for id, value in sorted(
+for lk_id, value in sorted(
     d_id_cases_DeDistricts.items(),
     key=lambda item: item[1],
     reverse=True,
 ):
-    l_worst_lk_ids.append(id)
-del d_id_cases_DeDistricts, id
+    l_worst_lk_ids.append(lk_id)
+del d_id_cases_DeDistricts, lk_id
 
 # Ranking of worst Bundesländer
 d_id_cases_DeStates = {}
-for id, d in d_data_DeStates.items():
-    if id == "DE-total":
+for lk_id, d in d_data_DeStates.items():
+    if lk_id == "DE-total":
         cases_DE_last_week_100k = d["Cases_Last_Week_Per_Million"] / 10
         cases_DE_last_week = d["Cases_Last_Week"]
         slope_DE = get_slope_text_from_dict(d)
 
     else:
-        d_id_cases_DeStates[id] = d["Cases_Last_Week_Per_Million"] / 10
+        d_id_cases_DeStates[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
         d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
-for id, value in sorted(
+for lk_id, value in sorted(
     d_id_cases_DeStates.items(),
     key=lambda item: item[1],
     reverse=True,
 ):
-    l_worst_bl_ids.append(id)
-del d_id_cases_DeStates, id
+    l_worst_bl_ids.append(lk_id)
+del d_id_cases_DeStates, lk_id
 
 # Ranking of worst Countries - Cases
 d_id_cases_Countries = {}
-for id, d in d_data_Countries.items():
-    d_id_cases_Countries[id] = d["Cases_Last_Week_Per_Million"] / 10
+for lk_id, d in d_data_Countries.items():
+    d_id_cases_Countries[lk_id] = d["Cases_Last_Week_Per_Million"] / 10
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
-for id, value in sorted(
+for lk_id, value in sorted(
     d_id_cases_Countries.items(),
     key=lambda item: item[1],
     reverse=True,
 ):
-    l_worst_country_ids.append(id)
-del d_id_cases_Countries, id
+    l_worst_country_ids.append(lk_id)
+del d_id_cases_Countries, lk_id
 
 # Ranking of worst Countries - Cases
 d_id_deaths_Countries = {}
-for id, d in d_data_Countries.items():
-    d_id_deaths_Countries[id] = d["Deaths_Last_Week_Per_Million"]
+for lk_id, d in d_data_Countries.items():
+    d_id_deaths_Countries[lk_id] = d["Deaths_Last_Week_Per_Million"]
     # d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids_deaths = []
-for id, value in sorted(
+for lk_id, value in sorted(
     d_id_deaths_Countries.items(),
     key=lambda item: item[1],
     reverse=True,
 ):
-    l_worst_country_ids_deaths.append(id)
-del id
+    l_worst_country_ids_deaths.append(lk_id)
+del lk_id
 
 
 # string snippet of worst DeDistricts
 s_worst_lk = ""
 max_lines = 10
 count = 0
-for id in l_worst_lk_ids:
+for lk_id in l_worst_lk_ids:
     count += 1
-    d = d_data_DeDistricts[id]
+    d = d_data_DeDistricts[lk_id]
     s_worst_lk += format_line(
         value_relative=d["Cases_Last_Week_Per_Million"] / 10,
         value_absolute=d["Cases_Last_Week"],
@@ -315,8 +315,8 @@ for id in l_worst_lk_ids:
 
 # string snippet of worst Bundesländer
 s_worst_bl = ""
-for id in l_worst_bl_ids:
-    d = d_data_DeStates[id]
+for lk_id in l_worst_bl_ids:
+    d = d_data_DeStates[lk_id]
     s_worst_bl += format_line(
         value_relative=d["Cases_Last_Week_Per_Million"] / 10,
         value_absolute=d["Cases_Last_Week"],
@@ -328,9 +328,9 @@ for id in l_worst_bl_ids:
 s_worst_countries = ""
 max_lines = 30
 count = 0
-for id in l_worst_country_ids:
+for lk_id in l_worst_country_ids:
     count += 1
-    d = d_data_Countries[id]
+    d = d_data_Countries[lk_id]
     s_worst_countries += format_line(
         value_relative=d["Cases_Last_Week_Per_Million"] / 10,
         value_absolute=d["Cases_Last_Week"],
@@ -345,11 +345,11 @@ for id in l_worst_country_ids:
 s_worst_countries_deaths = ""
 max_lines = 30
 count = 0
-for id in l_worst_country_ids_deaths:
+for lk_id in l_worst_country_ids_deaths:
     count += 1
-    d = d_data_Countries[id]
+    d = d_data_Countries[lk_id]
     s_worst_countries_deaths += format_line_no_slope(
-        value_relative=d_id_deaths_Countries[id],
+        value_relative=d_id_deaths_Countries[lk_id],
         value_absolute=d["Deaths_Last_Week"],
         location=f"{d['Country']}",
     )
@@ -427,7 +427,7 @@ for row in db_newsletter_cursor.execute(
 
         mailBody += f"Datenstand Landkreisdaten: {s_date_data_hh}\n"
 
-        mailBody += f"Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n"
+        mailBody += "Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n"
 
         mailBody += "\nBundesländer\n" + s_worst_bl
 
