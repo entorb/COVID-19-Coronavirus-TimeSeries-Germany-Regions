@@ -114,7 +114,7 @@ d_color_scales = {
 d_all_date_data = {}
 l_month = []
 count = 0
-for f in glob.glob("data/de-districts/de-district_timeseries-*.json"):
+for f in glob.glob("data-json/de-districts/de-district_timeseries-*.json"):
     count += 1
     lk_id = int(re.search(r"^.*de-district_timeseries\-(\d+)\.json$", f).group(1))
     l = helper.read_json_file(f)

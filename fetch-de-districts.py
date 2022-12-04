@@ -136,7 +136,6 @@ def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
 
 
 def fetch_and_prepare_ref_landkreise() -> dict:
-    file_out = "data/de-districts/ref-de-districts"
     l_landkreise = fetch_ref_landkreise(readFromCache=True)
     d_landkreise = {}
 
@@ -169,12 +168,17 @@ def fetch_and_prepare_ref_landkreise() -> dict:
     del d_this_landkreis
 
     helper.write_json(
-        filename=file_out + ".json",
+        filename="data-json/de-districts/ref-de-districts.json",
         d=d_landkreise,
         sort_keys=True,
     )
 
-    with open(file_out + ".tsv", mode="w", encoding="utf-8", newline="\n") as fh_csv:
+    with open(
+        "data/de-districts/ref-de-districts.tsv",
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh_csv:
         csvwriter = csv.DictWriter(
             fh_csv,
             delimiter="\t",
@@ -389,11 +393,17 @@ def export_data(d_districts_data: dict):
     """export timeseries as JSON and CSV"""
     for lk_id, l_time_series in d_districts_data.items():
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
-        file_out = f"data/de-districts/de-district_timeseries-{lk_id}"
-        helper.write_json(file_out + ".json", d=l_time_series, sort_keys=True)
+        file_out = f"data-json/de-districts/de-district_timeseries-{lk_id}.json"
+        helper.write_json(
+            file_out,
+            d=l_time_series,
+            sort_keys=True,
+            indent=1,
+        )
 
+        file_out = f"data/de-districts/de-district_timeseries-{lk_id}.tsv"
         with open(
-            file_out + ".tsv",
+            file_out,
             mode="w",
             encoding="utf-8",
             newline="\n",
@@ -460,13 +470,13 @@ def export_latest_data(d_districts_data: dict):
 
     # Export as JSON
     helper.write_json(
-        "data/de-districts/de-districts-results.json",
+        "data-json/de-districts/de-districts-results.json",
         d=d_for_export_V1,
         sort_keys=True,
     )
 
     helper.write_json(
-        filename="data/de-districts/de-districts-results-V2.json",
+        filename="data-json/de-districts/de-districts-results-V2.json",
         d=l_for_export_V2,
         sort_keys=True,
     )

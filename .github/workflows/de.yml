@@ -99,6 +99,12 @@ jobs:
         tar cfz ../cache/data.tgz *
         cd ..
 
+    - name: Data zipping data-json/
+      run: |
+        cd data-json/
+        tar cfz ../cache/data-json-de.tgz *
+        cd ..
+
 # Update Charts
     - name: Gnuplot install
       run: |

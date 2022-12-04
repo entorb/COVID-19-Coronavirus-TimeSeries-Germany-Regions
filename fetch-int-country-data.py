@@ -135,7 +135,7 @@ def read_ref_selected_countries() -> dict:
 def extract_latest_date_data():
     """
     for all countries in json: extract latest entry
-    write to data/int/countries-latest-all.tsv and data/int/countries-latest-all.json
+    write to data/int/countries-latest-all.tsv and data-json/int/countries-latest-all.json
     """
 
     d_countries_latest = helper.extract_latest_data(
@@ -181,7 +181,7 @@ def extract_latest_date_data():
 
     # JSON export
     helper.write_json(
-        filename="data/int/countries-latest-all.json",
+        filename="data-json/int/countries-latest-all.json",
         d=l_for_export,
         sort_keys=True,
     )
@@ -309,7 +309,7 @@ def export_time_series_all_countries():
         l_time_series = d_countries_timeseries[country]
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
 
-        helper.write_json(f"data/int/country-{code}.json", l_time_series)
+        helper.write_json(f"data-json/int/country-{code}.json", l_time_series, indent=1)
 
         with open(
             f"data/int/country-{code}.tsv",

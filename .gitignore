@@ -2,6 +2,7 @@
 .vscode/
 __pycache__/
 cache/
+data-json/
 plots-gnuplot/
 plots-python/
 maps/*.gif

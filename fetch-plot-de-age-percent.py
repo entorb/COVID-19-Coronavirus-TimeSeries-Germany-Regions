@@ -150,7 +150,7 @@ def read_divi() -> pd.DataFrame:
     file_local = "cache/de-divi/bund-covid-altersstruktur-zeitreihe_ab-2021-04-29.csv"
 
     # read only first 10 chars from 2021-04-29T12:15:00+02:00
-    pd_date_converter = lambda x: (x[0:10])
+    pd_date_converter = lambda x: (x[0:10])  # noqa: E731
     df = pd.read_csv(
         file_local,
         sep=",",

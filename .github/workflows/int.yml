@@ -72,6 +72,12 @@ jobs:
         tar cfz ../cache/data.tgz *
         cd ..
 
+    - name: Data zipping data-json/
+      run: |
+        cd data-json/
+        tar cfz ../cache/data-json-int.tgz *
+        cd ..
+
 # Publish to release
     - name: Upload to release
       uses: softprops/action-gh-release@v1

@@ -260,9 +260,10 @@ def export_data(d_states_data: dict):
 
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
         helper.write_json(
-            f"data/de-states/de-state-{code}.json",
+            f"data-json/de-states/de-state-{code}.json",
             d=l_time_series,
             sort_keys=True,
+            indent=1,
         )
 
 
@@ -311,7 +312,9 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         csvwriter.writerow(d_de)
         del d_de
 
-    helper.write_json("data/de-states/de-states-latest.json", d_states_latest)
+    helper.write_json(
+        "data-json/de-states/de-states-latest.json", d_states_latest, indent=1
+    )
 
     l_for_export = []
     for code in sorted(d_states_latest.keys(), key=str.casefold):
@@ -319,8 +322,9 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         d2["Code"] = code
         l_for_export.append(d2)
     helper.write_json(
-        filename="data/de-states/de-states-latest-list.json",
+        filename="data-json/de-states/de-states-latest-list.json",
         d=l_for_export,
+        indent=1,
     )
 
 
