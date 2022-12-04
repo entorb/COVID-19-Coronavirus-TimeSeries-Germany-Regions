@@ -14,4 +14,3 @@ rsync -rvhu --delete --delete-excluded --no-perms expGrowth.html entorb@entorb.n
 rsync -rvhu --delete --delete-excluded --no-perms style-covid.css entorb@entorb.net:html/COVID-19-coronavirus/
 
 # rsync -rvhu --delete --delete-excluded --no-perms index-nav*.html entorb@entorb.net:html/COVID-19-coronavirus/
-

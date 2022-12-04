@@ -1,19 +1,16 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 fetches a ref table of country data from geonames.org
 is based on https://raw.githubusercontent.com/lorey/list-of-l_countries/master/generator.py
 """
-
-# Built-in/Generic Imports
 import codecs
 import csv
 import urllib
 
-# My Helper Functions
 import helper
+
 
 # header row:
 # ISO	ISO3	ISO-Numeric	fips	Country	Capital	Area(in sq km)	Population	Continent	tld	CurrencyCode	CurrencyName	Phone	Postal Code Format	Postal Code Regex	Languages	geonameid	neighbours	EquivalentFipsCode
@@ -69,16 +66,16 @@ del row, non_comment_rows, d, country_name, col_title, col
 
 for country_name in d_country_ref_data:
     d_country_ref_data[country_name]["Population"] = int(
-        d_country_ref_data[country_name]["Population"]
+        d_country_ref_data[country_name]["Population"],
     )
     d_country_ref_data[country_name]["geonameid"] = int(
-        d_country_ref_data[country_name]["geonameid"]
+        d_country_ref_data[country_name]["geonameid"],
     )
     d_country_ref_data[country_name]["ISO-Numeric"] = int(
-        d_country_ref_data[country_name]["ISO-Numeric"]
+        d_country_ref_data[country_name]["ISO-Numeric"],
     )
     d_country_ref_data[country_name]["Area(in sq km)"] = float(
-        d_country_ref_data[country_name]["Area(in sq km)"]
+        d_country_ref_data[country_name]["Area(in sq km)"],
     )
 
 

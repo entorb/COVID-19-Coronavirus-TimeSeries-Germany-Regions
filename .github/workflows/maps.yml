@@ -2,25 +2,25 @@ name: Update Maps
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
-on:  
+on:
   workflow_dispatch:
   schedule:
   # UTC ! -> 11:03 DE (Wintertime)
     - cron: "3 10 * * 0"
-# TODO       
+# TODO
 #  push:
 #    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  
+
   # This workflow contains a single job
   job1:
     # runs-on: ubuntu-latest
     runs-on: ubuntu-22.04
 
     steps:
-    
+
     - name: print start date
       run: |
         date +%Y-%m-%d_%H:%M
@@ -39,7 +39,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Python cache setup
       uses: actions/cache@v3
       with:
@@ -50,24 +50,24 @@ jobs:
       run: pip install -r py-requirements.txt
 
     - name: install Ubuntu packages
-      run: | 
+      run: |
         sudo apt-get install ghostscript gsfonts ffmpeg > /dev/null
 #        sudo apt-get update > /dev/null
 
     - name: Generate + zip maps
-      run: | 
+      run: |
         python3 plot-de-districts-map.py
         cd maps
         tar cfz ../cache/maps.tgz *.gif *.mp4
         cd ..
 
-# Publish to release       
+# Publish to release
     - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net
         prerelease: true
-        files: 
+        files:
           cache/*.tgz
 
 

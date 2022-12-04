@@ -1,25 +1,20 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This script downloads COVID-19 / coronavirus data provided by https://github.com/pomber/covid19
 Data is enriched by calculated values and exported
 """
-
 # TODO: modify cache to plot old data via
 # ,\n\s+\{[\n]\s+"date": "2020-4-1",[^\]]*\]
 # -> ]
-
-# Built-in/Generic Imports
 import csv
-
-# Further Modules
-from tqdm import tqdm  # process bar
 import urllib.request
 
-# My Helper Functions
+from tqdm import tqdm  # process bar
+
 import helper
+
 
 file_cache = "cache/download-countries-timeseries.json"
 
@@ -50,16 +45,17 @@ def read_json_data() -> dict:
     # del d_json_downloaded['Diamond Princess']
 
     # rename some countries
-    d_countries_to_rename = {}
-    d_countries_to_rename["US"] = "United States"
-    d_countries_to_rename["Korea, South"] = "South Korea"
-    d_countries_to_rename["Korea, North"] = "Korea, North"
-    d_countries_to_rename["Taiwan*"] = "Taiwan"
-    d_countries_to_rename["Burma"] = "Myanmar"
-    d_countries_to_rename["Cote d'Ivoire"] = "Ivory Coast"
-    d_countries_to_rename["West Bank and Gaza"] = "Palestinian Territory"
-    d_countries_to_rename["Timor-Leste"] = "Timor Leste"
-    d_countries_to_rename["Holy See"] = "Vatican"
+    d_countries_to_rename = {
+        "US": "United States",
+        "Korea, South": "South Korea",
+        "Korea, North": "Korea, North",
+        "Taiwan*": "Taiwan",
+        "Burma": "Myanmar",
+        "Cote d'Ivoire": "Ivory Coast",
+        "West Bank and Gaza": "Palestinian Territory",
+        "Timor-Leste": "Timor Leste",
+        "Holy See": "Vatican",
+    }
     for country_name_old, country_name_new in d_countries_to_rename.items():
         d_json_downloaded[country_name_new] = d_json_downloaded[country_name_old]
         del d_json_downloaded[country_name_old]
@@ -84,7 +80,7 @@ def read_json_data() -> dict:
         l_time_series = []
 
         pop = read_population(country)
-        if pop != None:
+        if pop is not None:
             pop_in_million = pop / 1000000
         else:
             pop_in_million = None
@@ -119,7 +115,7 @@ def read_ref_selected_countries() -> dict:
     the population value of this field is no longer used, since I switched to using d_ref_country_database instead
     """
     d_selected_countries = {}
-    with open("data/ref_selected_countries.tsv", mode="r", encoding="utf-8") as f:
+    with open("data/ref_selected_countries.tsv", encoding="utf-8") as f:
         csv_reader = csv.DictReader(f, dialect="excel", delimiter="\t")
         for row in csv_reader:
             # skip commented lines
@@ -143,12 +139,16 @@ def extract_latest_date_data():
     """
 
     d_countries_latest = helper.extract_latest_data(
-        d_countries_ref, d_countries_timeseries
+        d_countries_ref,
+        d_countries_timeseries,
     )
 
     l_for_export = []
     with open(
-        "data/int/countries-latest-all.tsv", mode="w", encoding="utf-8", newline="\n"
+        "data/int/countries-latest-all.tsv",
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
     ) as fh:
         csvwriter = csv.DictWriter(
             fh,
@@ -181,7 +181,9 @@ def extract_latest_date_data():
 
     # JSON export
     helper.write_json(
-        filename="data/int/countries-latest-all.json", d=l_for_export, sort_keys=True
+        filename="data/int/countries-latest-all.json",
+        d=l_for_export,
+        sort_keys=True,
     )
 
     # for selected countries write to separate file, for Gnuplot plotting
@@ -221,14 +223,14 @@ def check_for_further_interesting_countries():
     """
     global d_countries_timeseries
     global d_selected_countries
-    min_death = 10
-    min_confirmed = 1000
+    # min_death = 10
+    # min_confirmed = 1000
     min_death_per_million = 100
     print("further interesting countries")
     print("Country\tConfirmed\tDeaths\tDeathsPerMillion")
     #    list_of_countries = sorted(d_countries_timeseries.keys(), key=str.casefold)
     for country in sorted(d_countries_timeseries.keys(), key=str.casefold):
-        if country in d_selected_countries.keys():
+        if country in d_selected_countries:
             continue
         l_country_data = d_countries_timeseries[country]
         entry = l_country_data[-1]  # latest entry
@@ -238,7 +240,7 @@ def check_for_further_interesting_countries():
             and entry["Deaths_Per_Million"] >= min_death_per_million
         ):
             print(
-                f"{country}\t{entry['Cases']}\t{entry['Deaths']}\t{int(entry['Deaths_Per_Million'])}"
+                f"{country}\t{entry['Cases']}\t{entry['Deaths']}\t{int(entry['Deaths_Per_Million'])}",
             )
 
 
@@ -280,7 +282,9 @@ def fit_doubling_time():
         #     data, fit_range=7, max_days_past=28)
         data = list(zip(data_t, data_deaths))
         fit_series_res_deaths = helper.series_of_fits(
-            data, fit_range=7, max_days_past=60
+            data,
+            fit_range=7,
+            max_days_past=60,
         )
 
         for i in range(len(l_country_data)):
@@ -308,7 +312,10 @@ def export_time_series_all_countries():
         helper.write_json(f"data/int/country-{code}.json", l_time_series)
 
         with open(
-            f"data/int/country-{code}.tsv", mode="w", encoding="utf-8", newline="\n"
+            f"data/int/country-{code}.tsv",
+            mode="w",
+            encoding="utf-8",
+            newline="\n",
         ) as fh:
             csvwriter = csv.DictWriter(
                 fh,
@@ -342,7 +349,7 @@ def export_time_series_all_countries():
 
 def read_population(country_name: str, verbose: bool = False) -> int:
     pop = d_countries_ref[country_name]["Population"]
-    if verbose and pop == None:
+    if verbose and pop is None:
         print(f"No Population found for {country_name}")
     return pop
 
@@ -371,7 +378,7 @@ def read_ref_data_countries() -> dict:
         elif name == "Democratic Republic of the Congo":
             name = "Congo (Kinshasa)"
         pop = d["Population"]
-        if pop != None:
+        if pop is not None:
             pop = int(pop)
         if pop == 0:
             pop = None
@@ -380,7 +387,7 @@ def read_ref_data_countries() -> dict:
         if name == "Turkey":
             continent = "EU"
 
-        if continent != None:
+        if continent is not None:
             if continent == "AF":
                 continent = "Africa"
             elif continent == "AN":
@@ -416,7 +423,9 @@ d_countries_ref = read_ref_data_countries()
 d_selected_countries = read_ref_selected_countries()
 
 if not helper.check_cache_file_available_and_recent(
-    fname=file_cache, max_age=0, verbose=True
+    fname=file_cache,
+    max_age=0,
+    verbose=True,
 ):
     download_new_data()
 
@@ -425,5 +434,5 @@ check_for_further_interesting_countries()
 extract_latest_date_data()
 export_time_series_all_countries()
 print(
-    f"int: countries: latest date in DE set: {d_countries_timeseries['Germany'][-1]['Date']}"
+    f"int: countries: latest date in DE set: {d_countries_timeseries['Germany'][-1]['Date']}",
 )

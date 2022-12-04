@@ -1,5 +1,5 @@
-/* 
-From entorb.net/style.css 
+/*
+From entorb.net/style.css
 */
 
 body {
@@ -26,35 +26,35 @@ a:hover { color: blue; text-decoration: underline; }
   }
 
 
-/* 
+/*
 New Corona specific stuff
 */
-  
+
 
 body {
-  padding-bottom: 20px; 
+  padding-bottom: 20px;
   line-height: 1.5;
-  /* 
-  display: block; 
-  margin: auto; 
-  max-width: 80%; 
+  /*
+  display: block;
+  margin: auto;
+  max-width: 80%;
   */
   }
 
-  
+
 
 
 p {
-  max-width: 1000px; 
+  max-width: 1000px;
   text-align: justify;
-  /* display: block; 
+  /* display: block;
   margin: auto;  */
 }
 
 ul {
-  max-width: 900px; 
+  max-width: 900px;
   text-align: left;
-  /* display: block; 
+  /* display: block;
   margin: auto;  */
 }
 

@@ -1,17 +1,13 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 fetched German hospital occupancy data from DIVI https://www.intensivregister.de
 lk_id sind https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
 """
-
-# Built-in/Generic Imports
 import csv
 import re
 
-# My Helper Functions
 import helper
 
 
@@ -75,11 +71,12 @@ def fetch_latest_csv():
     # latest_filename = l[-1]
     # latest_url = d_csvs_in_table[latest_filename]
 
-    file = f"data/de-divi/downloaded/latest.csv"
+    file = "data/de-divi/downloaded/latest.csv"
 
     url = "https://diviexchange.blob.core.windows.net/%24web/zeitreihe-tagesdaten.csv"
 
-    cont = helper.read_url_or_cachefile(
+    # cont =
+    helper.read_url_or_cachefile(
         url=url,
         cachefile=file,
         request_type="get",
@@ -193,7 +190,7 @@ def generate_database() -> dict:
     # file 2021-10-29.csv
     # date,bundesland,gemeindeschluessel,anzahl_standorte,anzahl_meldebereiche,faelle_covid_aktuell,faelle_covid_aktuell_invasiv_beatmet,betten_frei,betten_belegt,betten_belegt_nur_erwachsen,betten_frei_nur_erwachsen
 
-    with open(csv_file, mode="r", encoding="utf-8") as f:
+    with open(csv_file, encoding="utf-8") as f:
         csv_reader = csv.DictReader(f, delimiter=",")
         for row in csv_reader:
             assert len(row) >= 8, "Error: too few rows found"
@@ -208,7 +205,7 @@ def generate_database() -> dict:
                 "faelle_covid_aktuell": int(row["faelle_covid_aktuell"]),
                 "anzahl_standorte": int(row["anzahl_standorte"]),
                 "faelle_covid_aktuell_invasiv_beatmet": int(
-                    row["faelle_covid_aktuell_invasiv_beatmet"]
+                    row["faelle_covid_aktuell_invasiv_beatmet"],
                 ),
                 "betten_frei": int(float(row["betten_frei"])),
                 "betten_belegt": int(float(row["betten_belegt"])),
@@ -224,10 +221,12 @@ def generate_database() -> dict:
             d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
             if d["betten_ges"] > 0:
                 d["betten_belegt_proz"] = round(
-                    100 * d["betten_belegt"] / d["betten_ges"], 1
+                    100 * d["betten_belegt"] / d["betten_ges"],
+                    1,
                 )
                 d["faelle_covid_aktuell_proz"] = round(
-                    100 * d["faelle_covid_aktuell"] / d["betten_ges"], 1
+                    100 * d["faelle_covid_aktuell"] / d["betten_ges"],
+                    1,
                 )
             else:
                 d["betten_belegt_proz"] = None
@@ -275,12 +274,16 @@ def generate_database() -> dict:
                 # print(d_database_states[bl_id][date])
 
     helper.write_json(
-        "cache/de-divi/de-divi-V3.json", d_database, sort_keys=True, indent=1
+        "cache/de-divi/de-divi-V3.json",
+        d_database,
+        sort_keys=True,
     )
 
     l_lkids = d_database.keys()
     helper.write_json(
-        "data/de-divi/lkids.json", sorted(set(l_lkids)), sort_keys=True, indent=1
+        "data/de-divi/lkids.json",
+        sorted(set(l_lkids)),
+        sort_keys=True,
     )
 
     d_database_states2 = {}
@@ -293,10 +296,12 @@ def generate_database() -> dict:
             d["betten_ges"] = d["betten_frei"] + d["betten_belegt"]
             if d["betten_ges"] > 0:
                 d["betten_belegt_proz"] = round(
-                    100 * d["betten_belegt"] / d["betten_ges"], 1
+                    100 * d["betten_belegt"] / d["betten_ges"],
+                    1,
                 )
                 d["faelle_covid_aktuell_proz"] = round(
-                    100 * d["faelle_covid_aktuell"] / d["betten_ges"], 1
+                    100 * d["faelle_covid_aktuell"] / d["betten_ges"],
+                    1,
                 )
             else:
                 d["betten_belegt_proz"] = None
@@ -318,7 +323,6 @@ def generate_database() -> dict:
         "cache/de-divi/de-divi-V3-states.json",
         d_database_states2,
         sort_keys=True,
-        indent=1,
     )
 
     return d_database
@@ -414,7 +418,7 @@ def generate_database() -> dict:
 #                     # print(d_database_states[bl_id][date])
 
 #     helper.write_json('cache/de-divi/de-divi-V3.json',
-#                       d_database, sort_keys=True, indent=1)
+#                       d_database, sort_keys=True,)
 
 #     d_database_states2 = {}
 #     for bl_id in d_database_states.keys():
@@ -442,7 +446,7 @@ def generate_database() -> dict:
 #     del d_database_states
 
 #     helper.write_json('cache/de-divi/de-divi-V3-states.json',
-#                       d_database_states2, sort_keys=True, indent=1)
+#                       d_database_states2, sort_keys=True, )
 
 #     return d_database
 

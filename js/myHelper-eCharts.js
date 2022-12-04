@@ -409,8 +409,8 @@ function refreshCountryChart(
     }
 
 
-    // disable time selection for non-time series 
-    if (select_xAxisProperty.value == "Date") { 
+    // disable time selection for non-time series
+    if (select_xAxisProperty.value == "Date") {
         select_xAxisTimeRange.disabled = false;
     } else {
         select_xAxisTimeRange.disabled = true;
@@ -799,7 +799,7 @@ function refreshCountryChart(
                     // value: 'value',
                     label: {
                         position: 'insideStartTop',
-                        formatter: '{b}' // b -> name        
+                        formatter: '{b}' // b -> name
                     },
                 },
             ]
@@ -821,7 +821,7 @@ function refreshCountryChart(
                     // value: 'value',
                     label: {
                         position: 'insideStartTop',
-                        formatter: '{b}' // b -> name        
+                        formatter: '{b}' // b -> name
                     },
                 },
             ]

@@ -1,14 +1,12 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 import datetime
-import os
-import re
-import random
-
-import sqlite3
 import hashlib
+import os
+import random
+import re
+import sqlite3
 
 # import bcrypt
 
@@ -92,7 +90,7 @@ def create_table():
           frequency int,
           date_registered date
           )
-      """
+      """,
     )
 
 
@@ -101,7 +99,7 @@ def test_select():
         print(row)
     print(
         "%s rows in the DB table"
-        % cur.execute("SELECT count(*) FROM newsletter").fetchone()[0]
+        % cur.execute("SELECT count(*) FROM newsletter").fetchone()[0],
     )
 
 

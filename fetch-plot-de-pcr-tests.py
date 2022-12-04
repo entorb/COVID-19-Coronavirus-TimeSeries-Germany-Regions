@@ -1,27 +1,22 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This script downloads COVID-19 vaccination data by RKI from
 https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Testzahl.html
--> 
+->
 https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Testzahlen-gesamt.xlsx?__blob=publicationFile
 """
-
-# Built-in/Generic Imports
 import datetime as dt
+import locale
 
-# Further Modules
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -52,7 +47,9 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     #     fetch()
 
     df = pd.read_excel(
-        open(excelFile, "rb"), sheet_name="1_Testzahlerfassung", engine="openpyxl"
+        open(excelFile, "rb"),  # noqa: SIM115
+        sheet_name="1_Testzahlerfassung",
+        engine="openpyxl",
     )
 
     # drop first row
@@ -123,7 +120,7 @@ def plotit(df: pd.DataFrame):
     date_last = pd.to_datetime(df.index[-1]).date()
     helper.mpl_add_text_source(source="RKI", date=date_last)
     fig.set_tight_layout(True)
-    plt.savefig(fname=f"plots-python/de-pcr-tests.png", format="png")
+    plt.savefig(fname="plots-python/de-pcr-tests.png", format="png")
     plt.close()
 
 

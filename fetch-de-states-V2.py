@@ -1,18 +1,16 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This script downloads COVID-19 / coronavirus data of German regions (Bu8ndesländer) provided by
 GUI: https://experience.arcgis.com/
 """
-
-# Built-in/Generic Imports
 import csv
 import json
 
-# My Helper Functions
 import helper
+
+# My Helper Functions
 
 
 def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list:
@@ -82,7 +80,8 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
     returns list
     """
     l_time_series_fetched = fetch_bundesland_time_series(
-        bl_id=bl_id, readFromCache=True
+        bl_id=bl_id,
+        readFromCache=True,
     )
 
     # code = helper.d_BL_code_from_BL_ID(bl_id)
@@ -91,14 +90,14 @@ def fetch_and_prepare_bl_time_series(bl_id: int) -> list:
 
     # entry = one data point
     for entry in l_time_series_fetched:
-        d = {}
-        # covert to int
-        d["Cases"] = int(entry["SumSummeFall"])
-        d["Deaths"] = int(entry["SumSummeTodesfall"])
-        # calc Date from 'Meldedatum' (ms)
-        d["Date"] = helper.convert_timestamp_to_date_str(
-            int(entry["Meldedatum"] / 1000)
-        )
+        d = {
+            "Cases": int(entry["SumSummeFall"]),
+            "Deaths": int(entry["SumSummeTodesfall"]),
+            # calc Date from 'Meldedatum' (ms)
+            "Date": helper.convert_timestamp_to_date_str(
+                int(entry["Meldedatum"] / 1000),
+            ),
+        }
         l_time_series.append(d)
     l_time_series = helper.prepare_time_series(l_time_series)
     return l_time_series
@@ -116,12 +115,13 @@ def download_all_data():
 
     # add to German sum
     d_german_sums = {}
-    for code, l_time_series in d_states_data.items():
+    for _code, l_time_series in d_states_data.items():
         for d in l_time_series:
             if d["Date"] not in d_german_sums:
-                d2 = {}
-                d2["Cases"] = d["Cases"]
-                d2["Deaths"] = d["Deaths"]
+                d2 = {
+                    "Cases": d["Cases"],
+                    "Deaths": d["Deaths"],
+                }
             else:
                 d2 = d_german_sums[d["Date"]]
                 d2["Cases"] += d["Cases"]
@@ -166,18 +166,22 @@ def fit_doubling_or_halftime(d_states_data) -> dict:
             dataCases.append(
                 (
                     l_time_series[i]["Days_Past"],
-                    l_time_series[i]["Cases_Last_Week_Per_100000"]
+                    l_time_series[i]["Cases_Last_Week_Per_100000"],
                     # l_time_series[i]['Cases_New_Per_Million']
                     # this set to very noisy results, so using Last_week data instead
-                )
+                ),
             )
 
         fit_series_res = helper.series_of_fits(
-            dataCases, fit_range=14, max_days_past=365, mode="exp"
+            dataCases,
+            fit_range=14,
+            max_days_past=365,
+            mode="exp",
         )
         for i in range(0, len(l_time_series)):
             this_Doubling_Time = ""
             this_days_past = l_time_series[i]["Days_Past"]
+
             if this_days_past in fit_series_res:
                 this_Doubling_Time = fit_series_res[this_days_past]
             l_time_series[i]["Cases_Last_Week_Doubling_Time"] = this_Doubling_Time
@@ -245,7 +249,10 @@ def export_data(d_states_data: dict):
 
         with open(outfile, mode="w", encoding="utf-8", newline="\n") as fh:
             csvwriter = csv.DictWriter(
-                fh, delimiter="\t", extrasaction="ignore", fieldnames=fields_for_csv
+                fh,
+                delimiter="\t",
+                extrasaction="ignore",
+                fieldnames=fields_for_csv,
             )
             csvwriter.writeheader()
             for d in l_time_series:
@@ -253,7 +260,9 @@ def export_data(d_states_data: dict):
 
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
         helper.write_json(
-            f"data/de-states/de-state-{code}.json", d=l_time_series, sort_keys=True
+            f"data/de-states/de-state-{code}.json",
+            d=l_time_series,
+            sort_keys=True,
         )
 
 
@@ -261,7 +270,10 @@ def export_latest_data(d_ref_states, d_states_data: dict):
     d_states_latest = helper.extract_latest_data(d_ref_states, d_states_data)
 
     with open(
-        "data/de-states/de-states-latest.tsv", mode="w", encoding="utf-8", newline="\n"
+        "data/de-states/de-states-latest.tsv",
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
     ) as fh:
         csvwriter = csv.DictWriter(
             fh,
@@ -299,7 +311,7 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         csvwriter.writerow(d_de)
         del d_de
 
-    helper.write_json(f"data/de-states/de-states-latest.json", d_states_latest)
+    helper.write_json("data/de-states/de-states-latest.json", d_states_latest)
 
     l_for_export = []
     for code in sorted(d_states_latest.keys(), key=str.casefold):
@@ -307,7 +319,8 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         d2["Code"] = code
         l_for_export.append(d2)
     helper.write_json(
-        filename="data/de-states/de-states-latest-list.json", d=l_for_export
+        filename="data/de-states/de-states-latest-list.json",
+        d=l_for_export,
     )
 
 

@@ -1,27 +1,20 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This script downloads COVID-19 vaccination data by RKI from
 https://github.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/blob/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv
 """
+import locale
 
-# Built-in/Generic Imports
-
-# Further Modules
-# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 
-
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -101,7 +94,15 @@ def plotit(df: pd.DataFrame):
 
     # Labels
     fig.suptitle("COVID-19 Impfungen in Deutschland (7-Tagesmittel)")
-    axes[0].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen", "Viertimpfungen"))
+    axes[0].legend(
+        (
+            "Gesamt",
+            "Erstimpfungen",
+            "Zweitimpfungen",
+            "Drittimpfungen",
+            "Viertimpfungen",
+        ),
+    )
     axes[0].set_xlabel("")
 
     # y min to 0
@@ -115,12 +116,12 @@ def plotit(df: pd.DataFrame):
 
     # tick formatting: "1,000,000"
     axes[0].yaxis.set_major_formatter(
-        mtick.FuncFormatter(lambda x, p: format(int(x), ","))
+        mtick.FuncFormatter(lambda x, p: format(int(x), ",")),
     )
 
     helper.mpl_add_text_source(source="RKI", date=date_last)
     fig.set_tight_layout(True)
-    fig.savefig(fname=f"plots-python/de-vaccination.png", format="png")
+    fig.savefig(fname="plots-python/de-vaccination.png", format="png")
     plt.close()
 
 

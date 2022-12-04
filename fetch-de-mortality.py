@@ -1,21 +1,16 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 fetches mortality data from Destatis
 see https://www.destatis.de/DE/Themen/Querschnitt/Corona/Gesellschaft/bevoelkerung-sterbefaelle.html
 data: https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.html;jsessionid=3B59CB1FA0C08C059243535606A41FBF.internet8721
 """
-
-# Built-in/Generic Imports
 import datetime as dt
 
-# Further Modules
 import openpyxl
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 
@@ -44,7 +39,7 @@ def prepare_covid_data() -> pd.DataFrame:
     df = df.rename(columns={"Deaths_New": "Deaths_Covid"}, errors="raise")
 
     assert df.index[0] == pd.to_datetime(
-        "2020-01-02"
+        "2020-01-02",
     ), f"Error of start date, expecting 2020-01-02, got : {df.index[0]}"
 
     # add dummy row for missing 1.1.2020
@@ -221,7 +216,7 @@ def merge_mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
     # add current year
     df2["2022"] = pd.Series(df[df.index.year == 2022]["Deaths"].tolist())
     df2["2022_roll_av"] = pd.Series(
-        df[df.index.year == 2022]["Deaths_roll_av"].tolist()
+        df[df.index.year == 2022]["Deaths_roll_av"].tolist(),
     )
 
     # setting the index to the Day

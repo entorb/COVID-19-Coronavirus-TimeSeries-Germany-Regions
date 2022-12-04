@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 # TODO: shall this go to de-states or to int/countries?
@@ -9,9 +7,9 @@ load "header.gp"
 
 set style data linespoints
 set style increment user # important!!! switch between linetypes (default) and userdefined linestyles
-set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'blue' 
-set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'red' 
-set style line 3 linetype 7 dt "-" lw 3 linecolor rgb 'red' 
+set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'blue'
+set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'red'
+set style line 3 linetype 7 dt "-" lw 3 linecolor rgb 'red'
 
 
 
@@ -42,7 +40,7 @@ set ylabel "Infizierte letzte Woche" offset 0,0 textcolor ls 1
 set y2label "Tote letzte Woche" offset -0,0 textcolor ls 2
 
 set ytics textcolor ls 1
-set y2tics textcolor ls 2 
+set y2tics textcolor ls 2
 
 # x_min = -10
 # set xrange [x_min:0]
@@ -70,14 +68,14 @@ unset output
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
 y_max = GPVAL_DATA_Y_MAX * 1.1
 set yrange [0:y_max]
-set y2range [0:y_max*mortality] 
+set y2range [0:y_max*mortality]
 set output output
 replot
 unset output
 
 
 # cases last week per million
-set ylabel "Infizierte letzte Woche pro Millionen" 
+set ylabel "Infizierte letzte Woche pro Millionen"
 set y2label "Tote letzte Woche pro Millionen"
 
 set yrange [0:*]
@@ -92,9 +90,7 @@ unset output
 # bug in Gnuplot 5.2: GPVAL_Y_MAX is set to GPVAL_DATA_Y_MAX , so hard coding the range
 y_max = GPVAL_DATA_Y_MAX * 1.1
 set yrange [0:y_max]
-set y2range [0:y_max*mortality] 
+set y2range [0:y_max*mortality]
 set output output
 replot
 unset output
-
-

@@ -1,33 +1,8 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
-import datetime
-import random
-import re
-import os
-
-import cgi
-import hashlib
-import sqlite3
-import json
-
-# errors and debugging info to browser
-# import cgitb
-# cgitb.enable()
-
-
-# Print necessary headers.
-print("Content-type: application/json")
-print()
-# see https://stackoverflow.com/questions/4315900/how-can-i-send-a-json-object-from-a-python-script-to-jquery/4315936
-
-
-# TODO
-
-
 """
-Features
+Features.
 
 
 subscribe
@@ -57,6 +32,28 @@ https://entorb.net/COVID-19-coronavirus/newsletter-backend.py?action=removeRegio
 setRegions
 https://entorb.net/COVID-19-coronavirus/newsletter-backend.py?action=setRegions&region=09562,02000&hash=822a384fdc5757f2020a886caa9db5f11686e41d895e33c56167c0d9a19a1c34
 """
+import cgi
+import datetime
+import hashlib
+import json
+import os
+import random
+import re
+import sqlite3
+
+# errors and debugging info to browser
+# import cgitb
+# cgitb.enable()
+
+
+# Print necessary headers.
+print("Content-type: application/json")
+print()
+# see https://stackoverflow.com/questions/4315900/how-can-i-send-a-json-object-from-a-python-script-to-jquery/4315936
+
+
+# TODO
+
 
 ##########################
 # Copy of common functions
@@ -89,7 +86,8 @@ def gen_SHA256_string(s: str) -> str:
 def assert_valid_email_format(email: str):
     # from https://stackoverflow.com/posts/719543/timeline bottom edit
     assert re.fullmatch(
-        r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email
+        r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+        email,
     ), "Error: invalid email format"
 
 
@@ -173,7 +171,9 @@ def send_email_register(email: str, h: str):
     # TODO: BUG: Umlaute funktioniere hier nicht
     body = f"Bitte diesen Link oeffnen um die Anmeldung abzuschliessen und die Einstellungen vorzunehmen:\n https://entorb.net/COVID-19-coronavirus/newsletter-frontend.html?action=verify&hash={h}"
     sendmail(
-        to=email, body=body, subject="[COVID-19 Landkreis Benachrichtigung] - Anmeldung"
+        to=email,
+        body=body,
+        subject="[COVID-19 Landkreis Benachrichtigung] - Anmeldung",
     )
 
 
@@ -269,7 +269,7 @@ try:
         pathToData = "/var/www/virtual/entorb/html/COVID-19-coronavirus/data/de-districts/de-districts-results.json"
     else:
         pathToData = "data/de-districts/de-districts-results.json"
-    with open(pathToData, mode="r", encoding="utf-8") as fh:
+    with open(pathToData, encoding="utf-8") as fh:
         d_district_ids = list(json.load(fh).keys())
 
     con, cur = db_connect()

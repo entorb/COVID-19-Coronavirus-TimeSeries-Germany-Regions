@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 set terminal pngcairo size 640,480 font 'Verdana,9'

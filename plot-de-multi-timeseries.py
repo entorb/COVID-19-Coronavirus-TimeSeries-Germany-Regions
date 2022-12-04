@@ -1,27 +1,22 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This is my test playground and template for new scripts
 """
-
-# Built-in/Generic Imports
 import datetime as dt
-from this import d
+import locale
 
-# Further Modules
-import pandas as pd
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import pandas as pd
 
-
-# My Helper Functions
 import helper
 
+# from this import d
+
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -155,7 +150,11 @@ def plotit(df: pd.DataFrame):
 
     num_plots = 9
     fig, axes = plt.subplots(
-        nrows=num_plots, ncols=1, sharex=True, dpi=100, figsize=(10, 20)
+        nrows=num_plots,
+        ncols=1,
+        sharex=True,
+        dpi=100,
+        figsize=(10, 20),
     )
 
     date_last = pd.to_datetime(df_covid.index[-1]).date()
@@ -212,7 +211,15 @@ def plotit(df: pd.DataFrame):
         legend=True,
         linewidth=2.0,
     )
-    axes[i].legend(("Gesamt", "Erstimpfungen", "Zweitimpfungen", "Drittimpfungen", "Viertimpfungen"))
+    axes[i].legend(
+        (
+            "Gesamt",
+            "Erstimpfungen",
+            "Zweitimpfungen",
+            "Drittimpfungen",
+            "Viertimpfungen",
+        ),
+    )
 
     i += 1
     df["Deaths_Covid_roll_av"].plot(
@@ -260,7 +267,11 @@ def plotit(df: pd.DataFrame):
     #    axes2 = axes[0].twiny()
 
     axes[0].tick_params(
-        axis="x", bottom=False, top=True, labelbottom=False, labeltop=True
+        axis="x",
+        bottom=False,
+        top=True,
+        labelbottom=False,
+        labeltop=True,
     )
 
     axes[4].tick_params(
@@ -277,10 +288,10 @@ def plotit(df: pd.DataFrame):
 
     helper.mpl_add_text_source(source="RKI, DIVI, Destatis", date=date_last)
     fig.set_tight_layout(True)
-    fig.savefig(fname=f"plots-python/de-multi-timeseries.png", format="png")
+    fig.savefig(fname="plots-python/de-multi-timeseries.png", format="png")
 
     axes[0].set_xlim(dt.date.today() - dt.timedelta(days=180), None)
-    fig.savefig(fname=f"plots-python/de-multi-timeseries-180.png", format="png")
+    fig.savefig(fname="plots-python/de-multi-timeseries-180.png", format="png")
 
     plt.close()
 
@@ -300,20 +311,18 @@ if __name__ == "__main__":
     plotit(df)
 
 
-"""
-plot:
-df_covid
- Inzidenz
- ICU_pct
- Deaths_Covid_roll_av
+# plot:
+# df_covid
+#  Inzidenz
+#  ICU_pct
+#  Deaths_Covid_roll_av
 
-df_mortality
- Deaths_roll_av
+# df_mortality
+#  Deaths_roll_av
 
-df_vaccination
- Anzahl_Impfungen_ges
+# df_vaccination
+#  Anzahl_Impfungen_ges
 
-df_pcr
- TestsMill
- PosRate
-"""
+# df_pcr
+#  TestsMill
+#  PosRate

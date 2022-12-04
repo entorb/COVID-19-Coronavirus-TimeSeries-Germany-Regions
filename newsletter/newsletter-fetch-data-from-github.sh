@@ -15,4 +15,3 @@ tar xfz tmp-dl/maps.tgz -C maps/
 chmod o+r -R /home/entorb/html/COVID-19-coronavirus
 
 rm -r tmp-dl
-

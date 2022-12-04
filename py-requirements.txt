@@ -1,7 +1,7 @@
-numpy
-scipy
-requests
-tqdm
-pandas
-openpyxl
 matplotlib
+numpy
+openpyxl
+pandas
+requests
+scipy
+tqdm

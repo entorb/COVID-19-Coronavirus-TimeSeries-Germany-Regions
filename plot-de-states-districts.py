@@ -1,30 +1,25 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 Plots DE Stats and Districts
 """
-
-# Built-in/Generic Imports
 import datetime as dt
 import glob
+import locale
 import math
 import multiprocessing as mp
-import time
 import os
+import time
 
-# Further Modules
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -131,7 +126,7 @@ def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
         color=colors[0][1],
     )
 
-    if thisIsDE_total == False:
+    if thisIsDE_total is False:
         # add label text to bottom left
         plt.gcf().text(
             0.12,
@@ -208,7 +203,11 @@ def plot_it(df: pd.DataFrame, code: str, long_name: str, mode: str):
     # TODO: try out if creating once and than using fig = copy.copy(fig_template)
     # to prevent "Fail to allocate bitmap" -> no working
     fig, axes = plt.subplots(
-        nrows=2, ncols=1, sharex=True, figsize=(8, 8), dpi=100  # default = 6.4,4.8
+        nrows=2,
+        ncols=1,
+        sharex=True,
+        figsize=(8, 8),
+        dpi=100,  # default = 6.4,4.8
     )
 
     fig.suptitle(f"COVID-19 in {long_name}")  # super title
@@ -257,7 +256,7 @@ def plot_it(df: pd.DataFrame, code: str, long_name: str, mode: str):
         linewidth=1.0,
     )
 
-    if b_thisIsDE_total == False:
+    if b_thisIsDE_total is False:
         global df_DE
         # DE data for comparison
         df_DE["Inzidenz"].plot(
@@ -320,7 +319,7 @@ def doit_lk(datafile: str):
 
 
 d_landkreisNames = helper.read_json_file(
-    "data/de-districts/mapping_landkreis_ID_name.json"
+    "data/de-districts/mapping_landkreis_ID_name.json",
 )
 
 
@@ -342,7 +341,7 @@ def main():
     for datafile in glob.glob("data/de-districts/de-district_timeseries-*.tsv"):
         l_pile_of_work.append(datafile)
         # doit_lk(datafile=datafile)
-    res = pool.map(doit_lk, l_pile_of_work)
+    res = pool.map(doit_lk, l_pile_of_work)  # noqa: F841
 
 
 if __name__ == "__main__":

@@ -1,27 +1,22 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 forecast of ICU hospitals
 """
-
-# Built-in/Generic Imports
 import datetime as dt
+import locale
 import multiprocessing as mp
-import time
 import os
+import time
 
-# Further Modules
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -86,7 +81,7 @@ def load_divi_data() -> pd.DataFrame:
     new: rename faelle_covid_aktuell -> betten_covid
     """
     df = pd.read_csv(
-        f"data/de-divi/downloaded/latest.csv",
+        "data/de-divi/downloaded/latest.csv",
         sep=",",
         parse_dates=[
             "date",
@@ -105,9 +100,9 @@ def load_divi_data() -> pd.DataFrame:
 
     # check for for bad values
     if df["faelle_covid_aktuell"].isnull().values.any():
-        raise f"ERROR: faelle_covid_aktuell has bad values"
+        raise Exception("ERROR: faelle_covid_aktuell has bad values")
     if df["betten_ges"].isnull().values.any():
-        raise f"ERROR: betten_ges has bad values"
+        raise Exception("ERROR: betten_ges has bad values")
 
     df = df.rename(
         columns={
@@ -125,7 +120,10 @@ def load_divi_data() -> pd.DataFrame:
 
 
 def sum_divi_data(
-    mode, df_divi_all: pd.DataFrame, l_lk_ids: list = (), bl_id: int = -1
+    mode,
+    df_divi_all: pd.DataFrame,
+    l_lk_ids: list = (),
+    bl_id: int = -1,
 ) -> pd.DataFrame:
     """
     filters df_divi_all by l_lk_ids  bl_id or all
@@ -184,7 +182,7 @@ def load_and_sum_lk_case_data(l_lk_ids: list) -> pd.DataFrame:
 
         # load cases data
         if lk_id == 11000:  # Berlin
-            file_cases = f"data/de-states/de-state-BE.tsv"
+            file_cases = "data/de-states/de-state-BE.tsv"
         else:
             file_cases = (
                 f'data/de-districts/de-district_timeseries-{"%05d" % lk_id}.tsv'
@@ -336,8 +334,11 @@ def plot_2_its_per_21day_cases(df: pd.DataFrame, filename: str, landkreis_name: 
 
     colors = ("blue", "black")
 
-    myPlot = df["quote_betten_covid_pro_cases_roll_sum_21"].plot(
-        linewidth=2.0, legend=False, zorder=1, color=colors[0]
+    myPlot = df["quote_betten_covid_pro_cases_roll_sum_21"].plot(  # noqa: F841
+        linewidth=2.0,
+        legend=False,
+        zorder=1,
+        color=colors[0],
     )
 
     plt.title(f"{landkreis_name}: Quote ITS-Belegung pro 21-Tages-Fallzahl")
@@ -381,20 +382,28 @@ def plot_it(
     max_value = df_divi["betten_covid"].max()
     max_value_date = df_divi["betten_covid"].idxmax()
 
-    myPlot = df_divi.iloc[:]["betten_covid"].plot(
-        linewidth=1.0, zorder=1, label="_nolegend_"
+    myPlot = df_divi.iloc[:]["betten_covid"].plot(  # noqa: F841
+        linewidth=1.0,
+        zorder=1,
+        label="_nolegend_",
     )
 
     axes.hlines(
-        y=max_value, xmin=max_value_date, xmax=date_max, color="grey", linestyles="--"
+        y=max_value,
+        xmin=max_value_date,
+        xmax=date_max,
+        color="grey",
+        linestyles="--",
     )
 
     l_df_prognosen[0]["betten_covid_calc"].plot(
-        linewidth=2.0, label=f"{l_prognosen_prozente[0]}% (aktuell)"
+        linewidth=2.0,
+        label=f"{l_prognosen_prozente[0]}% (aktuell)",
     )
     for i in reversed(range(1, len(l_df_prognosen))):
         l_df_prognosen[i]["betten_covid_calc"].plot(
-            linewidth=2.0, label=f"{l_prognosen_prozente[i]}%"
+            linewidth=2.0,
+            label=f"{l_prognosen_prozente[i]}%",
         )
 
     axes.set_ylim(
@@ -553,7 +562,9 @@ def doit(
     l_prognosen_prozente = (change, -25, 0, 25, 50)
 
     l_df_prognosen = forecast(
-        df_data=df_data, l_prognosen_prozente=l_prognosen_prozente, quote=quote
+        df_data=df_data,
+        l_prognosen_prozente=l_prognosen_prozente,
+        quote=quote,
     )
 
     if mode == "DE-total":
@@ -584,21 +595,21 @@ def main():
     print("de-states")
     l1 = range(1, 16 + 1)
     l2 = [df_divi_all] * len(l1)
-    res = pool.starmap(func=doit_de_state, iterable=zip(l1, l2))
+    res = pool.starmap(func=doit_de_state, iterable=zip(l1, l2))  # noqa: F841
 
     print("de-district-group")
     # groups generated via icu-groups.py
     l_groupes = helper.read_json_file("data/de-divi/lk-groups.json")
     for d in l_groupes:
         title = d["title"]
-        id = d["id"]
+        my_id = d["id"]
         l_lk_ids = [int(x) for x in d["lk_ids"]]
         doit(
             mode="de-district-group",
             df_divi_all=df_divi_all,
             title=title,
             l_lk_ids=l_lk_ids,
-            filename=str(id),
+            filename=str(my_id),
         )
 
     print("de-districts")
@@ -612,7 +623,7 @@ def main():
         l_pile_of_work.append(lk_id)
     l1 = l_pile_of_work
     l2 = [df_divi_all] * len(l1)
-    res = pool.starmap(doit_de_district, iterable=zip(l1, l2))
+    res = pool.starmap(doit_de_district, iterable=zip(l1, l2))  # noqa: F841
 
     #
     # Tests

@@ -1,23 +1,20 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 Generates animated maps for Germany using Covid-19 data and Divi hospital data
 Based on
 https://raw.githubusercontent.com/ythlev/covid-19/master/run.py
 by Chang Chia-huan
 """
-
-# Built-in/Generic Imports
 import glob
 import os
 import re
-import subprocess
+import subprocess  # noqa: S404
 import sys
 
-# My Helper Functions
 import helper
+
 
 # TODO: replace threshold magic based on all data by simple logic based on last value for cases and manually set threshold for other sets
 
@@ -25,7 +22,8 @@ unit = 1000000
 
 
 def run_imagemagick_convert(
-    l_imagemagick_parameters: list, wait_for_finish: bool = True
+    l_imagemagick_parameters: list,
+    wait_for_finish: bool = True,
 ):
     """
     wait_for_finish = False: the calling function needs to handle the returned process
@@ -43,7 +41,7 @@ def run_imagemagick_convert(
         print("unknown os")
         sys.exit(1)  # throws exception, use quit() to close silently
 
-    process = subprocess.Popen(
+    process = subprocess.Popen(  # noqa: S603
         l_imagemagick_parameters,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -118,7 +116,7 @@ l_month = []
 count = 0
 for f in glob.glob("data/de-districts/de-district_timeseries-*.json"):
     count += 1
-    lk_id = int(re.search("^.*de-district_timeseries\-(\d+)\.json$", f).group(1))
+    lk_id = int(re.search(r"^.*de-district_timeseries\-(\d+)\.json$", f).group(1))
     l = helper.read_json_file(f)
     for d in l:
         date = d["Date"]
@@ -127,10 +125,9 @@ for f in glob.glob("data/de-districts/de-district_timeseries-*.json"):
         if thisMonth in ("2020-01", "2020-02"):
             continue
         # add to list of months for later creations of 1 gif per month
-        if count == 1:
-            if thisMonth not in l_month:
-                l_month.append(thisMonth)
-        if not d["Date"] in d_all_date_data:
+        if count == 1 and thisMonth not in l_month:
+            l_month.append(thisMonth)
+        if d["Date"] not in d_all_date_data:
             d_all_date_data[d["Date"]] = {}
         # del d['Timestamp'], d['Date'], d['Days_Past'], d['Days_Since_2nd_Death']
         d_all_date_data[date][lk_id] = d
@@ -185,7 +182,7 @@ for property_to_plot in (
     # # TODO filter here on selected month as well?
     # for date_str, l_districts in d_all_date_data.items():
     #     for lk_id, d in l_districts.items():
-    #         if property_to_plot in d and d[property_to_plot] != None and d[property_to_plot] > 0:
+    #         if property_to_plot in d and d[property_to_plot] is not None and d[property_to_plot] > 0:
     #             values.append(d[property_to_plot])
     # del d, l_districts, lk_id
 
@@ -252,17 +249,19 @@ for property_to_plot in (
 
     # read template and generate image per day
     with open(
-        "maps/template_de-districts.svg", mode="r", newline="", encoding="utf-8"
+        "maps/template_de-districts.svg",
+        newline="",
+        encoding="utf-8",
     ) as file_in:
         # plot loop for each date
         # date_str = '2020-04-24'
         # l_districts = d_all_date_data[date_str]
-        print(f"generating SVGs")
+        print("generating SVGs")
         for date_str, l_districts in d_all_date_data.items():
             # skip date if for this month I already have a month .gif
             thisMonth = date_str[0:7]
             if os.path.isfile(
-                f"maps/out/de-districts/{property_to_plot}-{thisMonth}.gif"
+                f"maps/out/de-districts/{property_to_plot}-{thisMonth}.gif",
             ):
                 continue
 
@@ -271,7 +270,7 @@ for property_to_plot in (
             at_least_one_value_found = False
             for lk_id, d in l_districts.items():
                 area = lk_id
-                if property_to_plot in d and d[property_to_plot] != None:
+                if property_to_plot in d and d[property_to_plot] is not None:
                     pcapita = d[property_to_plot]
                     at_least_one_value_found = True
                 else:
@@ -292,9 +291,9 @@ for property_to_plot in (
 
             with open(outfile, mode="w", newline="", encoding="utf-8") as file_out:
                 # decide on the digits for the legend
-                if property_to_plot == "DIVI_Intensivstationen_Covid_Prozent":
-                    num = "{:.0f}%"
-                elif property_to_plot == "DIVI_Intensivstationen_Betten_belegt_Prozent":
+                if (property_to_plot == "DIVI_Intensivstationen_Covid_Prozent") or (
+                    property_to_plot == "DIVI_Intensivstationen_Betten_belegt_Prozent"
+                ):
                     num = "{:.0f}%"
                 # elif threshold[7-1] >= 10000:
                 #     num = "{:.0f}"
@@ -314,7 +313,7 @@ for property_to_plot in (
                                     row.replace(
                                         'id="{}"'.format(area),
                                         'style="fill:{}"'.format("#ffffff"),
-                                    )
+                                    ),
                                 )
                             # else paint it in the correct color
                             else:
@@ -328,11 +327,11 @@ for property_to_plot in (
                                     row.replace(
                                         'id="{}"'.format(area),
                                         'style="fill:{}"'.format(meta["colour"][i]),
-                                    )
+                                    ),
                                 )
                             written = True
                             break
-                    if written == False:
+                    if written is False:
                         # 2. check if row contains Date placeholder
                         if row.find(">!!!Date!!!") > -1:
                             file_out.write(row.replace("!!!Date!!!", date_str))
@@ -346,9 +345,10 @@ for property_to_plot in (
                                                 "!!!Level{}".format(i),
                                                 "≤ "
                                                 + num.format(threshold[i]).replace(
-                                                    "_", "&#8201;"
+                                                    "_",
+                                                    "&#8201;",
                                                 ),
-                                            )
+                                            ),
                                         )
                                     else:
                                         file_out.write(
@@ -356,16 +356,18 @@ for property_to_plot in (
                                                 "!!!Level{}".format(i),
                                                 "> "
                                                 + num.format(threshold[i - 1]).replace(
-                                                    "_", "&#8201;"
+                                                    "_",
+                                                    "&#8201;",
                                                 ),
-                                            )
+                                            ),
                                         )
                         # 4. check if row contains legend color box
                         elif row.find('<path fill="#') > -1:
                             s = row
                             for i in range(7 + 1):
                                 s = s.replace(
-                                    d_color_scales["template"][i], meta["colour"][i]
+                                    d_color_scales["template"][i],
+                                    meta["colour"][i],
                                 )
                             file_out.write(s)
                         # 5. check if row contains Title
@@ -375,17 +377,21 @@ for property_to_plot in (
                                     row.replace(
                                         "!!!TITLE!!!",
                                         "Neu-Infizierte 7 Tage pro 100000 EW",
-                                    )
+                                    ),
                                 )
                             elif property_to_plot == "Cases_Per_Million":
                                 file_out.write(
                                     row.replace(
-                                        "!!!TITLE!!!", "Infizierte pro Millionen EW."
-                                    )
+                                        "!!!TITLE!!!",
+                                        "Infizierte pro Millionen EW.",
+                                    ),
                                 )
                             elif property_to_plot == "Deaths_Per_Million":
                                 file_out.write(
-                                    row.replace("!!!TITLE!!!", "Tote pro Millionen EW.")
+                                    row.replace(
+                                        "!!!TITLE!!!",
+                                        "Tote pro Millionen EW.",
+                                    ),
                                 )
                             elif (
                                 property_to_plot
@@ -395,7 +401,7 @@ for property_to_plot in (
                                     row.replace(
                                         "!!!TITLE!!!",
                                         "Intensivstationen: COVID-19 Patienten",
-                                    )
+                                    ),
                                 )
                             elif (
                                 property_to_plot
@@ -405,21 +411,21 @@ for property_to_plot in (
                                     row.replace(
                                         "!!!TITLE!!!",
                                         "Intensivstationen: Betten belegt",
-                                    )
+                                    ),
                                 )
                             else:
                                 file_out.write(
                                     row.replace(
                                         "!!!TITLE!!!",
                                         property_to_plot.replace("_", " "),
-                                    )
+                                    ),
                                 )
                         else:
                             file_out.write(row)
         #     break
         # break
     l_subprocesses = []
-    print(f"svg -> month-gif")
+    print("svg -> month-gif")
     for month in l_month:
         if f"{property_to_plot}-{month}" in [
             "DIVI_Intensivstationen_Betten_belegt_Prozent-2020-03",
@@ -448,7 +454,8 @@ for property_to_plot in (
 
         # parallel processing ran into mem limits, fixed by editing the /etc/ImageMagick-6/policy.xml file
         process = run_imagemagick_convert(
-            l_imagemagick_parameters, wait_for_finish=False
+            l_imagemagick_parameters,
+            wait_for_finish=False,
         )
         l_subprocesses.append(process)
 
@@ -486,7 +493,7 @@ for property_to_plot in (
 
     outfile = f"maps/de-districts-{property_to_plot}.gif"
 
-    print(f"join monthly gifs")
+    print("join monthly gifs")
     l_imagemagick_parameters = [
         f"maps/out/de-districts/{property_to_plot}-*.gif",
         "-coalesce",
@@ -540,8 +547,11 @@ for property_to_plot in (
         "scale=trunc(iw/2)*2:trunc(ih/2)*2",
         f"maps/de-districts-{property_to_plot}.mp4",
     ]
-    process = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True
+    process = subprocess.Popen(  # noqa: S603
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
     )
     # wait_for_finish
     stdout, stderr = process.communicate()

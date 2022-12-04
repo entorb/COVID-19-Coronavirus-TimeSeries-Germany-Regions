@@ -12,15 +12,15 @@ Scripts
 * converting data to common format
 * calculating new entities from data
 * plotting charts and uploading them to my analyis and report https://entorb.net/COVID-19-coronavirus/
-* empowering an [interactive country comparison chart](https://entorb.net/COVID-19-coronavirus/#CountriesCustomChart) 
+* empowering an [interactive country comparison chart](https://entorb.net/COVID-19-coronavirus/#CountriesCustomChart)
 * empowering https://covid19-trends.de
 * empowering https://github.com/pschwede/covid19plots
 
-Resulting data in JSON and CSV/TSV format can be browsed [here at GitHub](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data). 
+Resulting data in JSON and CSV/TSV format can be browsed [here at GitHub](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data).
 
 Sources
 * [German districts data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts) is from [ArcGIS Covid19_RKI_Sums](https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/)
-* [German hospital data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-divi) is from [DIVI-Intensivregister](https://www.divi.de/register/tagesreport). (Thanks to Mr. Parvu for granting usage permission!) 
+* [German hospital data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-divi) is from [DIVI-Intensivregister](https://www.divi.de/register/tagesreport). (Thanks to Mr. Parvu for granting usage permission!)
 * [International data](https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/int) is from Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE)  obtained via [pomber/covid19](https://github.com/pomber/covid19)
 
 List of provided/generated data fields

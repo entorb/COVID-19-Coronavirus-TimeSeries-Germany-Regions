@@ -1,27 +1,21 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 converts the incidence data into a kind of histogram time series
 """
-
 # TODO:
 # use rolling for finding the slope
 # https://stackoverflow.com/questions/49838315/python-pandas-apply-a-function-to-dataframe-rolling
-
-# Built-in/Generic Imports
 import glob
+import locale
 
-# Further Modules
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -216,9 +210,11 @@ def read_and_prepare_data():
 
 if (
     helper.check_cache_file_available_and_recent(
-        fname="cache/hist-de-districts.csv", max_age=0, verbose=True
+        fname="cache/hist-de-districts.csv",
+        max_age=0,
+        verbose=True,
     )
-    == False
+    is False
 ):
     df = read_and_prepare_data()
 else:
@@ -269,7 +265,7 @@ def plot_hist_de_districts_Cases_Last_Week_Per_100000():
 
     # print(df_sums_gt.head())
 
-    myPlot = df_sums_gt.plot()
+    myPlot = df_sums_gt.plot()  # noqa: F841
 
     # fig, ax = myplot.subplots(constrained_layout=True)
 
@@ -307,7 +303,7 @@ def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Incr():
 
     df_sums_gt = df[["+1%", "+25%", "+50%", "+100%", "+200%"]]
 
-    myPlot = df_sums_gt.plot()
+    myPlot = df_sums_gt.plot()  # noqa: F841
     plt.title("Anzahl der Landkreise pro Inzidenz-Anstiegs-Intervall")
 
     fig.set_tight_layout(True)
@@ -334,7 +330,7 @@ def plot_hist_de_districts_Cases_Last_Week_7Day_Percent_Decr():
 
     df_sums_gt = df[["-1%", "-25%", "-50%", "-75%", "-100%"]]
 
-    myPlot = df_sums_gt.plot()
+    myPlot = df_sums_gt.plot()  # noqa: F841
     plt.title("Anzahl der Landkreise pro Inzidenz-Abnahme-Intervall")
 
     fig.set_tight_layout(True)

@@ -2,13 +2,13 @@ name: International
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
-on:  
-  workflow_dispatch:    
+on:
+  workflow_dispatch:
   schedule:
   # UTC ! -> 3:59 DE (Wintertime)
     - cron: "59 2 * * *"
-# TODO       
-#  push: 
+# TODO
+#  push:
 #    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -29,7 +29,7 @@ jobs:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-    - name: Setup environment 
+    - name: Setup environment
       run: |
         cd /usr/share/locales
         sudo ./install-language-pack de_DE.UTF-8
@@ -38,7 +38,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Python cache setup
       uses: actions/cache@v3
       with:
@@ -71,14 +71,14 @@ jobs:
         cd data
         tar cfz ../cache/data.tgz *
         cd ..
-  
-# Publish to release       
+
+# Publish to release
     - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net
         prerelease: true
-        files: 
+        files:
           cache/*.tgz
 
     - name: print end date

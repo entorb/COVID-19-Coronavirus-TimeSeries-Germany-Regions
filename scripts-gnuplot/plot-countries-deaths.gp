@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 load "header.gp"

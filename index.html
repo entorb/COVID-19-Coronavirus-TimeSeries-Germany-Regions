@@ -397,8 +397,8 @@
 	<!--  -->
 	<div id="div_eChartsDeStatesContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/de-states/" target="_blank">de-states</a></small>
-	<!-- 
-		JS for eCharts DE States 
+	<!--
+		JS for eCharts DE States
 	-->
 	<script>
 		const eChart_DeStates = echarts.init(document.getElementById("div_eChartsDeStatesContainer"));
@@ -595,8 +595,8 @@
 	<div id="div_eChartsDeDistrictsContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/tree/master/data/de-districts" target="_blank">here</a>
 	</small>
-	<!-- 
-		JS for eCharts DE Districts 
+	<!--
+		JS for eCharts DE Districts
 	-->
 	<script>
 		const eChart_DeDistricts = echarts.init(document.getElementById("div_eChartsDeDistrictsContainer"));
@@ -764,7 +764,7 @@
 	<p>Analog dazu hier Zunahme und Abnahme der Inzidenzen im Vergleich zur Vorwoche:</p>
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Incr.png" width="800" height="600"><br />
 	<img src="plots-python/hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" alt="hist-de-districts-Cases_Last_Week_7Day_Percent-Decr.png" width="800" height="600">
-	<!-- 
+	<!--
 		min 1. COVID-19 Neu-Infektionen in der letzten Woche vermeldet haben und darunter die mit einer Inzidenz über 50.</p>
 	<img src="plots-gnuplot/de-districts/zero_cases_last_week.png" alt="zero_cases_last_week.png" width="800" height="600"> <br />
 	<img src="plots-gnuplot/de-districts/50_cases_last_week.png" alt="50_cases_last_week.png" width="800" height="600">
@@ -845,12 +845,12 @@
 			<a href="https://impfdashboard.de/" target="_blank"> Impfdashboard des Bundesministeriums für Gesundheit (BMG) </a>
 		</li>
 	</ul>
-	<!-- 
+	<!--
 			Die folgenden Grafik ist vom RKI und hier nur eingebettet.
 				<br />
 				<img
 			src="https://www.rki.de/SharedDocs/Bilder/InfAZ/neuartiges_Coronavirus/Impfquotenmonitoring_Balken.png;?__blob=poster"
-			width="800px" /> 
+			width="800px" />
 		-->
 
 	<p><small><a href="#ToC">Back to top</a></small></p>
@@ -1248,22 +1248,22 @@
 			</tr>
 		</table>
 	</form>
-	<!-- 
-		End Form 
+	<!--
+		End Form
 		-->
 
 	<h4><a id="CountriesCustomChart"></a>3. Chart</h4>
 	<div id="div_eChartsCountryContainer" style="height: 600px; width: 1000px; background-color: white;"></div>
 	<small> generated via <a href="https://echarts.apache.org" target="_blank">eCharts</a>, raw data can be found in <a href="https://github.com/entorb/COVID-19-Coronavirus-German-Regions/blob/main/data/int/" target="_blank">country-XX.tsv / .json</a>
 		<br /> Many thanks to Attila Andrási-Nagy for code review, cleanup and implementation of the first version of the select data logic!</small>
-	<!-- 
+	<!--
 		JS for eCharts Countries
 	-->
 	<script>
 		const eChart_countries = echarts.init(document.getElementById("div_eChartsCountryContainer"));
 		promises.push(fetch_mapRefCountryData(mapCountryNames, mapContinentCountries));
 
-		// Wait for all async promises to be done (all data is fetched), 
+		// Wait for all async promises to be done (all data is fetched),
 		// populates the select dropdowns
 		// refreshes the chart
 		Promise.all(promises).then(function () {
@@ -1580,7 +1580,7 @@
 	</h3>
 
 	<p><strike>As in all countries the exponentially increase of the death toll is stopped,</strike> this chapter has been <a href="expGrowth.html#CountriesDeathTimeSeries">archived</a>.</p>
-	<!-- 
+	<!--
 		Footer
 	 -->
 	<hr>

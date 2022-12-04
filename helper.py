@@ -1,32 +1,28 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 Helper functions collections
 """
-
-# Built-in/Generic Imports
 import csv
 import datetime as dt
 import json
 import math
-import time
 import os
+import time
+import urllib.request
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import requests  # for read_url_or_cachefile
+from scipy.optimize import curve_fit
 
 # multithreading
 # import multiprocessing as mp  # for fetching number of CPUs
 # import logging
 # import threading
 # import concurrent.futures
-
-# further modules
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import requests  # for read_url_or_cachefile
-from scipy.optimize import curve_fit
-import urllib.request
 
 # Matplotlib: disable interactive mode
 # mpl.use("Agg")  # Cairo
@@ -57,10 +53,15 @@ os.makedirs("maps/out/de-districts/", exist_ok=True)
 
 
 def download_from_url_if_old(
-    url: str, file_local: str, max_age: int = 3600, verbose=False
+    url: str,
+    file_local: str,
+    max_age: int = 3600,
+    verbose=False,
 ):
     if not check_cache_file_available_and_recent(
-        fname=file_local, max_age=max_age, verbose=verbose
+        fname=file_local,
+        max_age=max_age,
+        verbose=verbose,
     ):
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:97.0) Gecko/20100101 Firefox/97.0 ",
@@ -75,12 +76,16 @@ def read_url_or_cachefile(
     url: str,
     cachefile: str,
     request_type: str = "get",
-    payload: dict = {},
+    payload: dict = None,
     cache_max_age: int = 1800,
     verbose: bool = True,
 ) -> str:
+    if payload is None:
+        payload = {}
     b_cache_is_recent = check_cache_file_available_and_recent(
-        fname=cachefile, max_age=cache_max_age, verbose=verbose
+        fname=cachefile,
+        max_age=cache_max_age,
+        verbose=verbose,
     )
     if not b_cache_is_recent:
         headers = {
@@ -94,7 +99,7 @@ def read_url_or_cachefile(
             fh.write(cont)
         cont = cont.decode("utf-8")
     else:
-        with open(cachefile, mode="r", encoding="utf-8") as fh:
+        with open(cachefile, encoding="utf-8") as fh:
             cont = fh.read()
     return cont
 
@@ -103,11 +108,11 @@ def read_json_file(filename: str):
     """
     returns list or dict
     """
-    with open(filename, mode="r", encoding="utf-8") as fh:
+    with open(filename, encoding="utf-8") as fh:
         return json.load(fh)
 
 
-def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 1):
+def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 2):
     with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
         json.dump(d, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
 
@@ -164,7 +169,9 @@ def pandas_calc_roll_av(df, column: str, days: int = 7, digits: int = 1):
 #
 
 
-def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = dt.date.today()):
+def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = None):
+    if date is None:
+        dt.date.today()
     plt.gcf().text(
         1.0,
         0.0,
@@ -252,7 +259,7 @@ d_BL_name_from_BL_Code = {
 }
 
 d_lk_name_from_lk_id = read_json_file(
-    "data/de-districts/mapping_landkreis_ID_name.json"
+    "data/de-districts/mapping_landkreis_ID_name.json",
 )
 
 
@@ -366,7 +373,8 @@ def prepare_time_series(l_time_series: list) -> list:
             and d["Deaths_Last_Week"] > 0
         ):
             d["Deaths_Per_Cases_Last_Week"] = round(
-                d["Deaths_Last_Week"] / d["Cases_Last_Week"], 3
+                d["Deaths_Last_Week"] / d["Cases_Last_Week"],
+                3,
             )
 
         last_cases = d["Cases"]
@@ -391,7 +399,7 @@ def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
 def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
     d_data_latest = dict(d_ref_data)
     for code, l_time_series in d_data_all.items():
-        assert code in d_data_latest.keys()
+        assert code in d_data_latest
         if len(l_time_series) == 0:  # handling of empty data set
             continue
         d = l_time_series[-1]
@@ -436,24 +444,25 @@ def add_per_million(d: dict, pop_in_million: float) -> dict:
         "Deaths_Last_Week",
     ):
         perMillion = 0
-        if key in d and d[key] is not None:
-            if pop_in_million:
-                perMillion = d[key] / pop_in_million
-                if key in ("Deaths_New",):
-                    perMillion = round(perMillion, 3)
-                elif key in ("Deaths_Last_Week",):
-                    perMillion = round(perMillion, 2)
-                else:
-                    perMillion = int(round(perMillion, 3))
-            # else:
-            #     perMillion = 0  # if pop is unknown
+        if key in d and d[key] is not None and pop_in_million:
+            perMillion = d[key] / pop_in_million
+            if key in ("Deaths_New",):
+                perMillion = round(perMillion, 3)
+            elif key in ("Deaths_Last_Week",):
+                perMillion = round(perMillion, 2)
+            else:
+                perMillion = int(round(perMillion, 3))
+        # else:
+        #     perMillion = 0  # if pop is unknown
         d[key + "_Per_Million"] = perMillion
     d["Cases_Last_Week_Per_100000"] = d["Cases_Last_Week_Per_Million"] / 10
     return d
 
 
 def check_cache_file_available_and_recent(
-    fname: str, max_age: int = 3600, verbose: bool = False
+    fname: str,
+    max_age: int = 3600,
+    verbose: bool = False,
 ) -> bool:
     b_cache_good = True
     if not os.path.exists(fname):
@@ -500,7 +509,9 @@ def extract_x_and_y_data(data: list) -> list:
 
 
 def extract_data_according_to_fit_ranges(
-    data: list, fit_range_x: list, fit_range_y: list
+    data: list,
+    fit_range_x: list,
+    fit_range_y: list,
 ) -> list:
     """
     filters the data on which we fit
@@ -534,7 +545,7 @@ def fit_slopes(l_time_series: list) -> dict:
     data_deaths_new_pm = []
     data_cases_last_week = []
     data_cases_last_week_percent = []
-    data_deaths_last_week_percent = []
+    # data_deaths_last_week_percent = []
 
     # TODO: should I increase againg reduce to 14 days?
     days_used_for_slope_fit = 7
@@ -560,7 +571,7 @@ def fit_slopes(l_time_series: list) -> dict:
         for i in range(-days_used_for_slope_fit, 0):
             d = l_time_series[i]
             data_cases_last_week_percent.append(
-                (d["Days_Past"], d["Cases_Last_Week"] / avg_Cases_Last_Week * 100)
+                (d["Days_Past"], d["Cases_Last_Week"] / avg_Cases_Last_Week * 100),
             )
         N0, m = 0, 0
         d_res = fit_routine(data=data_cases_last_week_percent, mode="lin")
@@ -573,7 +584,7 @@ def fit_slopes(l_time_series: list) -> dict:
         for i in range(-days_used_for_slope_fit, 0):
             d = l_time_series[i]
             data_cases_last_week_percent.append(
-                (d["Days_Past"], d["Deaths_Last_Week"] / avg_Deaths_Last_Week * 100)
+                (d["Days_Past"], d["Deaths_Last_Week"] / avg_Deaths_Last_Week * 100),
             )
         N0, m = 0, 0
         d_res = fit_routine(data=data_cases_last_week_percent, mode="lin")
@@ -611,7 +622,8 @@ def fit_slopes(l_time_series: list) -> dict:
             N0, doubling_time = d_res["fit_res"]
             if doubling_time > 1 and doubling_time <= 60:
                 d_slopes["DoublingTime_Cases_Last_Week_Per_100000"] = round(
-                    doubling_time, 1
+                    doubling_time,
+                    1,
                 )
                 # TODO: DoublingTime_Cases_Last_Week_Per_100000 -> DoublingTime_Cases_Last_Week
     else:
@@ -651,7 +663,9 @@ def fit_routine(
     assert len(data) >= 2
     assert mode in ("exp", "lin")
     (data_x_for_fit, data_y_for_fit) = extract_data_according_to_fit_ranges(
-        data, fit_range_x, fit_range_y
+        data,
+        fit_range_x,
+        fit_range_y,
     )
     if len(data_x_for_fit) < 3:
         return {}
@@ -727,7 +741,10 @@ def fit_routine(
 
 
 def series_of_fits(
-    data: list, fit_range: int = 7, max_days_past=14, mode="exp"
+    data: list,
+    fit_range: int = 7,
+    max_days_past=14,
+    mode="exp",
 ) -> list:
     """
     perform a series of fits: per day on data of 7 days back
@@ -787,12 +804,13 @@ def read_ref_data_de_states() -> dict:
     read pop etc from ref table and returns it as dict of dict
     """
     d_states_ref = {}
-    with open("data/ref_de-states.tsv", mode="r", encoding="utf-8") as f:
+    with open("data/ref_de-states.tsv", encoding="utf-8") as f:
         csv_reader = csv.DictReader(f, delimiter="\t")
         for row in csv_reader:
-            d = {}
-            d["State"] = row["State"]
-            d["Population"] = int(row["Population"])
-            d["Pop Density"] = float(row["Pop Density"])
+            d = {
+                "State": row["State"],
+                "Population": int(row["Population"]),
+                "Pop Density": float(row["Pop Density"]),
+            }
             d_states_ref[row["Code"]] = d
     return d_states_ref

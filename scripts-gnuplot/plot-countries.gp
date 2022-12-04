@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 load "header.gp"
@@ -143,7 +141,7 @@ set ytics
 set title "Fit Result: Deaths Doubling Time (Days)"
 set ylabel "Deaths Doubling Time (Days)"
 set xtics rotate by 60 offset 1,0 right
-set ytics 7 format "%g" 
+set ytics 7 format "%g"
 unset bmargin
 set style fill solid 0.5 border 0
 set boxwidth 0.75 relative
@@ -154,7 +152,7 @@ set yrange [0:21]
 # plot fit_data_file using (column("Deaths_Doubling_Time")):xticlabels(1) with boxes ls 11
 # unset output
 set yrange [0:*]
-set ytics autofreq format "%g%%" 
+set ytics autofreq format "%g%%"
 set title "Fit Result: Increase of Deaths per Day"
 set ylabel "Increase Deaths per Day"
 # TODO
@@ -163,7 +161,7 @@ set ylabel "Increase Deaths per Day"
 # set output '../plots-gnuplot/int/countries-fit-deaths-increase-1-day.png'
 # plot fit_data_file using ((column("Factor at t+1")-1)*100):xticlabels(1) with boxes ls 11
 # unset output
-set ytics autofreq format "%g" 
+set ytics autofreq format "%g"
 
 # # combining the duplications until reaching IT level from countries-latest-selected.tsv and the duplication time from countries-gnuplot-fit.tsv
 # # this needs the python script join-country-latest-and-fit-data.py to run first after plotting

@@ -1,14 +1,13 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
-import os
-import sqlite3
-import json
 import hashlib
+import json
+import os
 import random
-from datetime import date, timedelta
 import sqlite3
+from datetime import date
+from datetime import timedelta
 
 # import time
 
@@ -121,7 +120,10 @@ def insertNewEMail(
 
 
 def format_line(
-    value_relative: str, value_absolute: str, location: str, slope: str
+    value_relative: str,
+    value_absolute: str,
+    location: str,
+    slope: str,
 ) -> str:
     return "%5d | %8d | %3s | %s\n" % (
         value_relative,
@@ -140,7 +142,9 @@ def format_line_only_rel(value_relative: str, location: str, slope: str) -> str:
 
 
 def format_line_no_slope(
-    value_relative: str, value_absolute: str, location: str
+    value_relative: str,
+    value_absolute: str,
+    location: str,
 ) -> str:
     return "%5.1f | %8d | %s\n" % (
         value_relative,
@@ -201,7 +205,7 @@ if checkRunningOnServer():
 
 # load latest data
 d_data_DeDistricts = {}
-with open(pathToDataDeDistricts, mode="r", encoding="utf-8") as fh:
+with open(pathToDataDeDistricts, encoding="utf-8") as fh:
     d_data_DeDistricts = json.load(fh)
 
 s_date_data_hh = d_data_DeDistricts["02000"]["Date_Latest"]
@@ -213,11 +217,11 @@ assert (
 del date_data_hh, date_yesterday
 
 d_data_DeStates = {}
-with open(pathToDataDeStates, mode="r", encoding="utf-8") as fh:
+with open(pathToDataDeStates, encoding="utf-8") as fh:
     d_data_DeStates = json.load(fh)
 
 d_data_Countries = {}
-with open(pathToDataCountries, mode="r", encoding="utf-8") as fh:
+with open(pathToDataCountries, encoding="utf-8") as fh:
     # convert list to dict
     l = json.load(fh)
     for d in l:
@@ -237,7 +241,9 @@ for id, d in d_data_DeDistricts.items():
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_lk_ids = []
 for id, value in sorted(
-    d_id_cases_DeDistricts.items(), key=lambda item: item[1], reverse=True
+    d_id_cases_DeDistricts.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     l_worst_lk_ids.append(id)
 del d_id_cases_DeDistricts, id
@@ -255,7 +261,9 @@ for id, d in d_data_DeStates.items():
         d["Slope"] = get_slope_text_from_dict(d)
 l_worst_bl_ids = []
 for id, value in sorted(
-    d_id_cases_DeStates.items(), key=lambda item: item[1], reverse=True
+    d_id_cases_DeStates.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     l_worst_bl_ids.append(id)
 del d_id_cases_DeStates, id
@@ -267,7 +275,9 @@ for id, d in d_data_Countries.items():
     d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids = []
 for id, value in sorted(
-    d_id_cases_Countries.items(), key=lambda item: item[1], reverse=True
+    d_id_cases_Countries.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     l_worst_country_ids.append(id)
 del d_id_cases_Countries, id
@@ -279,7 +289,9 @@ for id, d in d_data_Countries.items():
     # d["Slope"] = get_slope_text_from_dict(d)
 l_worst_country_ids_deaths = []
 for id, value in sorted(
-    d_id_deaths_Countries.items(), key=lambda item: item[1], reverse=True
+    d_id_deaths_Countries.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     l_worst_country_ids_deaths.append(id)
 del id
@@ -347,7 +359,7 @@ for id in l_worst_country_ids_deaths:
 
 # loop over subscriptions
 for row in db_newsletter_cursor.execute(
-    "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL"
+    "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE verified = 1 AND regions IS NOT NULL",
 ):
     mailBody = ""
     # TODO
@@ -395,7 +407,9 @@ for row in db_newsletter_cursor.execute(
         mailBody += "Deine Landkreisauswahl\n"
         # table body
         for lk_id, value in sorted(
-            d_this_regions_cases_100k.items(), key=lambda item: item[1], reverse=True
+            d_this_regions_cases_100k.items(),
+            key=lambda item: item[1],
+            reverse=True,
         ):
             d = d_data_DeDistricts[lk_id]
             if "Slope" not in d:  # handling of missing disticts from API response
@@ -418,7 +432,10 @@ for row in db_newsletter_cursor.execute(
         mailBody += "\nBundesländer\n" + s_worst_bl
 
         mailBody += "\nDeutschland gesamt\n" + format_line(
-            cases_DE_last_week_100k, cases_DE_last_week, "Deutschland", slope_DE
+            cases_DE_last_week_100k,
+            cases_DE_last_week,
+            "Deutschland",
+            slope_DE,
         )
         # mailBody += "\nDeutschland\n" + format_line_only_rel(
         #     cases_DE_last_week_100k, "Deutschland", slope_DE

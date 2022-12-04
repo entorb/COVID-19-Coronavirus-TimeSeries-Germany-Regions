@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 # 17.10.2020: Umstellung von Exp Fit auf Lin Fit, da exp Anstieg der Gesamtzahl keinen Sinn mehr macht
@@ -12,11 +10,11 @@ load "header.gp"
 
 set style data linespoints
 set style increment user # important!!! switch between linetypes (default) and userdefined linestyles
-set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'red' 
-set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'blue' 
+set style line 1 linetype 7 dt 1 lw 2 linecolor rgb 'red'
+set style line 2 linetype 7 dt 1 lw 2 linecolor rgb 'blue'
 
 
-death_offset = 21 # 
+death_offset = 21 #
 fit_days = 7
 
 
@@ -80,11 +78,11 @@ set label 2 \
  right front at graph 0.98, graph 0.6
 #  Verdopplungszeit Opfer: %d Tage\n\
 # Exp Vergleich Abschätzung zu\noffizieller Fallzahl: %.1fx höher\
- 
+
 
 set key right bottom width -2
 
-set xtic add (date_last 0) 
+set xtic add (date_last 0)
 #set logscale y
 set xrange [-35:0]
 set yrange  [0:]
@@ -92,7 +90,7 @@ set yrange  [0:]
 set output '../plots-gnuplot/de-states/calc-cases-from-deaths-DE-total.png'
 plot data using (column("Days_Past")-death_offset):(column("Deaths")*100) title "geschätze Infizierte" with linespoints ls 1 ,\
      data using (column("Days_Past")):(column("Cases")) title "positiv getestet" with linespoints ls 2 ,\
-     (x<=xmin_for_fit)?1/0:f_lin(x) title "Fit/Modell" with lines ls 1 dt "-" linecolor rgb 'black' 
+     (x<=xmin_for_fit)?1/0:f_lin(x) title "Fit/Modell" with lines ls 1 dt "-" linecolor rgb 'black'
 
 #     (x<=xmin_for_fit)?1/0:f_exp(x) title "ExpFit/Modell" with lines ls 1 dt "-" linecolor rgb 'black' ,\
 

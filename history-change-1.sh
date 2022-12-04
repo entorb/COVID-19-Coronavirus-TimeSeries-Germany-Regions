@@ -43,7 +43,7 @@ while read line ; do
     echo "$myCommit ; $myDate"
 	# revert file from commit
 	git checkout $myCommit $myFilePath
-	# copy to 
+	# copy to
 	cp $myFilePath cache/history-change/${myFileName}_${myDate}.${myFileExt}
 done <"$myCommitLogFile"
 # rm $myCommitLogFile

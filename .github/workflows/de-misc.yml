@@ -2,13 +2,13 @@ name: DE Misc
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
-on:  
+on:
   workflow_dispatch:
   schedule:
   # UTC ! -> 8:59 DE (Wintertime)
-    - cron: "59 7 * * *" 
+    - cron: "59 7 * * *"
 # TODO
-#  push: 
+#  push:
 #    branches: [ main ]
 
 
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
 
-# Initialize    
+# Initialize
     - name: print start date
       run: |
         date +%Y-%m-%d_%H:%M
@@ -30,7 +30,7 @@ jobs:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-    - name: Setup environment 
+    - name: Setup environment
       run: |
         cd /usr/share/locales
         sudo ./install-language-pack de_DE.UTF-8
@@ -39,7 +39,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Python cache setup
       uses: actions/cache@v3
       with:
@@ -50,7 +50,7 @@ jobs:
       run: pip install -r py-requirements.txt
 
 # Update data
-# 220309: source added some browser magic, needs to be run manually from now on :-( 
+# 220309: source added some browser magic, needs to be run manually from now on :-(
 #    - name: fetch-de-mortality.py
 #      run: python3 fetch-de-mortality.py
 
@@ -90,7 +90,7 @@ jobs:
         cd ..
 
 # Update Charts
-    - name: Gnuplot install 
+    - name: Gnuplot install
       run: |
         sudo apt-get install gnuplot > /dev/null
 #        sudo apt-get update > /dev/null
@@ -120,13 +120,13 @@ jobs:
         tar cfz ../cache/plots-python.tgz *
         cd ..
 
-# Publish to release       
+# Publish to release
     - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net
         prerelease: true
-        files: 
+        files:
           cache/*.tgz
 
     - name: print end date

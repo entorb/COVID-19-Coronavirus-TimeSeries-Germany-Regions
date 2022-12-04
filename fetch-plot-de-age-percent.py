@@ -1,25 +1,20 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 plot a bar chart of various data
 """
-
-# Built-in/Generic Imports
 import datetime as dt
+import locale
 import re
 
-# Further Modules
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -58,7 +53,9 @@ def read_rki_cases() -> pd.DataFrame:
     """
     excelFile = "cache/de-rki-Altersverteilung.xlsx"
     df = pd.read_excel(
-        open(excelFile, "rb"), sheet_name="Fallzahlen", engine="openpyxl"
+        open(excelFile, "rb"),  # noqa: SIM115
+        sheet_name="Fallzahlen",
+        engine="openpyxl",
     )
     assert df.columns[0] == "Altersgruppe", print(df.columns[0])
     assert df.columns[1] == "2020_10", print(df.columns[1])
@@ -76,7 +73,7 @@ def read_rki_cases() -> pd.DataFrame:
     l2 = []
     cols_to_drop = []
     for c in df.columns:
-        if re.match("^\d{4}_\d{1,2}$", c) != None:
+        if re.match(r"^\d{4}_\d{1,2}$", c) is not None:
             year = int(c[0:4])
             week = int(c[5:7])
             l2.append(year * 100 + week)
@@ -117,7 +114,9 @@ def read_rki_deaths() -> pd.DataFrame:
     excelFile = "cache/de-rki-COVID-19_Todesfaelle.xlsx"
 
     df = pd.read_excel(
-        open(excelFile, "rb"), sheet_name="COVID_Todesfälle_KW_AG10", engine="openpyxl"
+        open(excelFile, "rb"),  # noqa: SIM115
+        sheet_name="COVID_Todesfälle_KW_AG10",
+        engine="openpyxl",
     )
 
     # RKI uses "<4" for values 1,2,3, fixing this via assuming 1
@@ -376,7 +375,7 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
             "Anteil ges. Covid Fälle",
             "Anteil Intensivbetten (gemittelt)",
             "Anteil ges. Covid Tote",
-        ]
+        ],
     )
 
     plt.gca().invert_yaxis()
@@ -387,7 +386,7 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
     plt.gca().xaxis.set_major_locator(mtick.MultipleLocator(5))
 
     plt.title(
-        f"Covid pro Altersgruppe in DE {title_time}\n{sum_cases} Fälle, {sum_deaths} Tote, {sum_icu} ICU Betten (gemittelt)"
+        f"Covid pro Altersgruppe in DE {title_time}\n{sum_cases} Fälle, {sum_deaths} Tote, {sum_icu} ICU Betten (gemittelt)",
     )
 
     # plt.xlabel("Prozent")
@@ -395,7 +394,8 @@ def plotit(df, outfile, title_time, sum_cases: int, sum_deaths: int, sum_icu: in
     plt.ylabel("Altersgruppe (Jahre)")
     fig.set_tight_layout(True)
     helper.mpl_add_text_source(
-        source="RKI and DIVI", date=(dt.date.today() - dt.timedelta(days=1))
+        source="RKI and DIVI",
+        date=(dt.date.today() - dt.timedelta(days=1)),
     )
 
     plt.savefig(fname=f"plots-python/{outfile}.png", format="png")

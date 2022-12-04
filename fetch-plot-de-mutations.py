@@ -1,36 +1,31 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
-This script downloads German SARS-COV-2 Mutation data from 
+This script downloads German SARS-COV-2 Mutation data from
 https://github.com/robert-koch-institut/SARS-CoV-2-Sequenzdaten_aus_Deutschland/"
 and plots them
 siehe auch https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Omikron-Faelle/Omikron-Faelle.html?__blob=publicationFile
 """
-
-# Built-in/Generic Imports
 import datetime as dt
-import subprocess
+import locale
+import subprocess  # noqa: S404
 
-# Further Modules
-# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 
-# My Helper Functions
 import helper
 
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
+
 
 # TODO. replace by helper.download_from_url_if_old(
 def fetch():
     """
-    fetch/download data from rki github account
+    Download data from rki github account.
     """
     for fname in (
         "SARS-CoV-2-Sequenzdaten_Deutschland",
@@ -42,7 +37,10 @@ def fetch():
         # this will always download, since the extraction of the .xz file removes the source
         # hence helper.check_cache_file_available_and_recent is used below
         helper.download_from_url_if_old(
-            url=url, file_local=filepath, max_age=3600, verbose=False
+            url=url,
+            file_local=filepath,
+            max_age=3600,
+            verbose=False,
         )
         # filedata = urllib.request.urlopen(url)
         # datatowrite = filedata.read()
@@ -50,11 +48,15 @@ def fetch():
         #     f.write(datatowrite)
 
         # extract the .xz file
-        subprocess.run(["xz", "-d", "-f", filepath], capture_output=False, text=False)
+        subprocess.run(  # noqa: S607,S603
+            ["xz", "-d", "-f", filepath],
+            capture_output=False,
+            text=False,
+        )
 
 
 if not helper.check_cache_file_available_and_recent(
-    fname=f"cache/rki-mutation-sequences/SARS-CoV-2-Sequenzdaten_Deutschland.csv",
+    fname="cache/rki-mutation-sequences/SARS-CoV-2-Sequenzdaten_Deutschland.csv",
     max_age=3600,
     verbose=True,
 ):
@@ -88,7 +90,9 @@ def read_data() -> pd.DataFrame:
 
     # remove word "Probable" from scorpio_call for better clustering
     df["scorpio_call"] = df["scorpio_call"].replace(
-        to_replace=r"^Probable ", value="", regex=True
+        to_replace=r"^Probable ",
+        value="",
+        regex=True,
     )
 
     return df
@@ -279,7 +283,10 @@ for c in df_sum_lastmonth_roll_av.columns:
 
 
 df_sum_alltime_roll_av.to_csv(
-    "data/ts-de-mutations.tsv", sep="\t", index=True, line_terminator="\n"
+    "data/ts-de-mutations.tsv",
+    sep="\t",
+    index=True,
+    line_terminator="\n",
 )
 
 
@@ -351,7 +358,10 @@ def plotit2():
     # tick formatter
     axes[0].get_yaxis().set_major_formatter(mtick.PercentFormatter(decimals=0))
     plot_format(
-        fig, axes, date_last, filename="plots-python/mutations-de-lastmonth.png"
+        fig,
+        axes,
+        date_last,
+        filename="plots-python/mutations-de-lastmonth.png",
     )
 
 
@@ -374,7 +384,10 @@ def plotit3():
     # tick formatter
     # axes[0].get_yaxis().set_major_formatter(mtick.PercentFormatter(decimals=0))
     plot_format(
-        fig, axes, date_last, filename="plots-python/mutations-de-all-absolute.png"
+        fig,
+        axes,
+        date_last,
+        filename="plots-python/mutations-de-all-absolute.png",
     )
 
 

@@ -10,4 +10,3 @@ tar xfz tmp/plots-gnuplot.tgz -C plots-gnuplot/
 tar xfz tmp/maps.tgz -C maps/
 
 rm -r tmp
-

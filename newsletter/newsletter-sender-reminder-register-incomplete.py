@@ -1,15 +1,14 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 import os
 import sqlite3
+from datetime import date
+from datetime import datetime
 
 # import json
 # import hashlib
 # import random
-from datetime import date
-from datetime import datetime
 
 ##########################
 # Copy of common functions
@@ -113,7 +112,7 @@ con, cur = db_connect()
 # loop over subscriptions
 date_now = datetime.now()
 for row in cur.execute(
-    "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE (verified = 0) or (verified = 1 AND regions IS NULL) ORDER BY date_registered DESC"
+    "SELECT email, verified, hash, threshold, regions, frequency, date_registered FROM newsletter WHERE (verified = 0) or (verified = 1 AND regions IS NULL) ORDER BY date_registered DESC",
 ):
     date_registered = datetime.strptime(row["date_registered"], "%Y-%m-%d")
     days_since = (date_now - date_registered).days

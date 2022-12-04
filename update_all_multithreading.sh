@@ -3,7 +3,7 @@ echo === git pull
 git pull
 
 echo === fetching index.html -> index-online.html
-wget -q -O index-online.html https://entorb.net/COVID-19-coronavirus/index.html 
+wget -q -O index-online.html https://entorb.net/COVID-19-coronavirus/index.html
 
 echo === fetching and generating new data
 # echo ==== de-districts
@@ -56,5 +56,3 @@ echo  === git: add and commit
 git add data/*
 git commit -m "update"  | grep -v rewrite
 git push --quiet
-
-

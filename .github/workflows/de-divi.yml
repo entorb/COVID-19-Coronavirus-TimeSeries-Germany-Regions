@@ -2,13 +2,13 @@ name: DE DIVI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
-on:  
+on:
   workflow_dispatch:
   schedule:
   # UTC ! -> 13:59 DE (Wintertime)
-    - cron: "59 12 * * *" 
+    - cron: "59 12 * * *"
 # TODO
-#  push: 
+#  push:
 #    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -18,18 +18,18 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
 
-# Initialize    
+# Initialize
     - name: print start date
       run: |
         date +%Y-%m-%d_%H:%M
-        
+
     - name: Checkout Repository
       uses: actions/checkout@v3
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-    - name: Setup environment 
+    - name: Setup environment
       run: |
         cd /usr/share/locales
         sudo ./install-language-pack de_DE.UTF-8
@@ -38,7 +38,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Python cache setup
       uses: actions/cache@v3
       with:
@@ -58,9 +58,9 @@ jobs:
 # also update districts and states to have as accurate numbers as possible
     - name: Data fetch-de-states
       run: python3 fetch-de-states-V2.py
-      
+
     - name: Data fetch-de-districts
-      run: python3 fetch-de-districts.py      
+      run: python3 fetch-de-districts.py
 
     - name: Data commit new files
       run: |
@@ -91,13 +91,13 @@ jobs:
         tar cfz ../cache/plots-python.tgz *
         cd ..
 
-# Publish to release       
+# Publish to release
     - name: Upload to release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: data-for-entorb.net
         prerelease: true
-        files: 
+        files:
           cache/*.tgz
 
     - name: print end date

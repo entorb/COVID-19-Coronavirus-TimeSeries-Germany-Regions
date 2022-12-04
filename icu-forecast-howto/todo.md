@@ -58,7 +58,7 @@ Wenn wir nicht sofort heftig bremsen, sind wir auf den sehr steilen gezeigten Ku
 
 Keine guten Aussichten.
 
-PS: Das ist jetzt alles keine obskure Modellrechnung, sondern einfachste Mathematik der einfachsten Grundrechenarten, die jeder Erwachsene mit etwas guten Willen verstehen können sollte. 
+PS: Das ist jetzt alles keine obskure Modellrechnung, sondern einfachste Mathematik der einfachsten Grundrechenarten, die jeder Erwachsene mit etwas guten Willen verstehen können sollte.
 
 PPS: Den Trick mit dem Zusammenhang der 20-Tage-Fallzahlen und der ITS-Belegung habe ich von [@aloa5](https://twitter.com/aloa5)
 . Danke dafür.

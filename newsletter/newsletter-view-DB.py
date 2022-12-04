@@ -1,10 +1,9 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
+import json
 import os
 import sqlite3
-import json
 
 # import datetime
 
@@ -43,7 +42,7 @@ else:
 
 # load latest data
 d_districts_latest = {}
-with open(pathToData, mode="r", encoding="utf-8") as fh:
+with open(pathToData, encoding="utf-8") as fh:
     d_districts_latest = json.load(fh)
 
 con, cur = db_connect()
@@ -78,9 +77,9 @@ for row in cur.execute(sql):
             row["date_registered"],
             row["regions"],
             row["hash"],
-        )
+        ),
     )
-    if row["verified"] == 1 and row["regions"] != None:
+    if row["verified"] == 1 and row["regions"] is not None:
         count_rows += 1
         l_this_regions = row["regions"].split(",")
         for region in l_this_regions:
@@ -93,7 +92,9 @@ print("")
 print("=== Landkreis-Ranking ===")
 print("id    : Anz : Landkreis")
 for id, value in sorted(
-    d_region_counter.items(), key=lambda item: item[1], reverse=True
+    d_region_counter.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     if value <= 2:
         break

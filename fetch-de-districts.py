@@ -1,80 +1,73 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 This script downloads COVID-19 / coronavirus data of German disticts (Landkreise) provided by
 GUI: https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4/page/page_0/
 """
-
 # Built-in/Generic Imports
 import csv
 import json
 import time
 
-# Further Modules
 from tqdm import tqdm  # process bar
 
-# My Helper Functions
 import helper
+
 
 # idea:
 # fetch data from risklayer instead:
 # http://www.risklayer-explorer.com/media/data/events/GermanyValues.csv
 
 
-"""
-Further details and Endpoints
-LK_ID is https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
-Amtliche Gemeindeschlüssel (AGS)
-bzw Kreisschlüssel ohne letzte 3 Stellen
-03 2 54 021 = Hildesheim
-  03 Niedersachsen
-   2 ehemaliger Regierungsbezirk Hannover
-  54 Landkreis Hildesheim
-( 021 Stadt Hildesheim)
--> LK_ID = 03254
+# Further details and Endpoints
+# LK_ID is https://de.wikipedia.org/wiki/Amtlicher_Gemeindeschl%C3%BCssel
+# Amtliche Gemeindeschlüssel (AGS)
+# bzw Kreisschlüssel ohne letzte 3 Stellen
+# 03 2 54 021 = Hildesheim
+#   03 Niedersachsen
+#    2 ehemaliger Regierungsbezirk Hannover
+#   54 Landkreis Hildesheim
+# ( 021 Stadt Hildesheim)
+# -> LK_ID = 03254
 
-Endpoint: RKI_Landkreisdaten
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0
+# Endpoint: RKI_Landkreisdaten
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0
 
-f=json or f=html
-via f=html can be experimented using a nice form
+# f=json or f=html
+# via f=html can be experimented using a nice form
 
-resultRecordCount: max=2000 -> multiple calls needed
-
+# resultRecordCount: max=2000 -> multiple calls needed
 
 
-Endpoint: Covid19_RKI_Sums
-API-Doc: https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0
-API-Test: https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
-Examples
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=json&where=(Bundesland%3D%27Baden-W%C3%BCrttemberg%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=ObjectId%2CSummeFall%2CMeldedatum&orderByFields=Meldedatum%20asc&resultOffset=0&resultRecordCount=2000&cacheHint=true
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=json&where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=Meldedatum%2C+IdBundesland%2C+IdLandkreis&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
+# Endpoint: Covid19_RKI_Sums
+# API-Doc: https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0
+# API-Test: https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
+# Examples
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=json&where=(Bundesland%3D%27Baden-W%C3%BCrttemberg%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=ObjectId%2CSummeFall%2CMeldedatum&orderByFields=Meldedatum%20asc&resultOffset=0&resultRecordCount=2000&cacheHint=true
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=json&where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=Meldedatum%2C+IdBundesland%2C+IdLandkreis&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
 
-# Report of cases and deaths per Bundesland using sum
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=IdBundesland%3D%2702%27&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=true&orderByFields=Bundesland%2C+Meldedatum+asc&groupByFieldsForStatistics=Bundesland%2C+Meldedatum&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22SummeFall%22%2C%22outStatisticFieldName%22%3A%22SumSummeFall%22%7D%2C%0D%0A%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22SummeTodesfall%22%2C%22outStatisticFieldName%22%3A%22SumSummeTodesfall%22%7D%5D&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
+# # Report of cases and deaths per Bundesland using sum
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=IdBundesland%3D%2702%27&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=true&orderByFields=Bundesland%2C+Meldedatum+asc&groupByFieldsForStatistics=Bundesland%2C+Meldedatum&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22SummeFall%22%2C%22outStatisticFieldName%22%3A%22SumSummeFall%22%7D%2C%0D%0A%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22SummeTodesfall%22%2C%22outStatisticFieldName%22%3A%22SumSummeTodesfall%22%7D%5D&having=&resultOffset=&resultRecordCount=&sqlFormat=none&token=
 
-List of Bundesländer and lastest number of cases/deaths, not time series
-Endpoint: Coronafälle_in_den_Bundesländern
--> BL_mit_EW_und_Faellen
-API-Doc
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0
-API-Test
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Fallzahl%20desc&resultOffset=0&resultRecordCount=25&cacheHint=true
+# List of Bundesländer and lastest number of cases/deaths, not time series
+# Endpoint: Coronafälle_in_den_Bundesländern
+# -> BL_mit_EW_und_Faellen
+# API-Doc
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0
+# API-Test
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/Coronaf%C3%A4lle_in_den_Bundesl%C3%A4ndern/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=Fallzahl%20desc&resultOffset=0&resultRecordCount=25&cacheHint=true
 
-Example
-Man / Woman & Age Distribution
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=html&where=(Geschlecht%3C%3E%27unbekannt%27%20AND%20Altersgruppe%3C%3E%27unbekannt%27%20AND%20NeuerFall%20IN(0%2C%201))%20AND%20(Bundesland%3D%27Nordrhein-Westfalen%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&groupByFieldsForStatistics=Altersgruppe%2CGeschlecht&orderByFields=Altersgruppe%20asc&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlFall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true
+# Example
+# Man / Woman & Age Distribution
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?f=html&where=(Geschlecht%3C%3E%27unbekannt%27%20AND%20Altersgruppe%3C%3E%27unbekannt%27%20AND%20NeuerFall%20IN(0%2C%201))%20AND%20(Bundesland%3D%27Nordrhein-Westfalen%27)&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&groupByFieldsForStatistics=Altersgruppe%2CGeschlecht&orderByFields=Altersgruppe%20asc&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22AnzahlFall%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true
 
 
-Endpoint: RKI_COVID19
-API-Doc
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0
-API-Test
-https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=Meldedatum&groupByFieldsForStatistics=&outStatistics=%0D%0A&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
-
-"""
+# Endpoint: RKI_COVID19
+# API-Doc
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0
+# API-Test
+# https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=*&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=Meldedatum&groupByFieldsForStatistics=&outStatistics=%0D%0A&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=html&token=
 
 
 # args = helper.read_command_line_parameters()
@@ -157,7 +150,7 @@ def fetch_and_prepare_ref_landkreise() -> dict:
             continue
 
         assert type(lk_id) == str
-        assert lk_id.isdecimal() == True
+        assert lk_id.isdecimal() is True
 
         d = {}
         d["Population"] = d_this_landkreis["EWZ"]
@@ -176,7 +169,9 @@ def fetch_and_prepare_ref_landkreise() -> dict:
     del d_this_landkreis
 
     helper.write_json(
-        filename=file_out + ".json", d=d_landkreise, sort_keys=True, indent=1
+        filename=file_out + ".json",
+        d=d_landkreise,
+        sort_keys=True,
     )
 
     with open(file_out + ".tsv", mode="w", encoding="utf-8", newline="\n") as fh_csv:
@@ -230,10 +225,12 @@ def gen_mapping_BL2LK_json():
             d_bundeslaender[lk["BL_Code"]]["LK_IDs"].append((lk_id, lk["LK_Name"]))
 
     helper.write_json(
-        "data/de-districts/mapping_bundesland_landkreis.json", d_bundeslaender
+        "data/de-districts/mapping_bundesland_landkreis.json",
+        d_bundeslaender,
     )
     helper.write_json(
-        "data/de-districts/mapping_landkreis_ID_name.json", d_landkreis_id_name_mapping
+        "data/de-districts/mapping_landkreis_ID_name.json",
+        d_landkreis_id_name_mapping,
     )
 
 
@@ -310,14 +307,15 @@ def fetch_and_prepare_lk_time_series(lk_id: str) -> list:
 
     # entry = one data point
     for entry in l_time_series_fetched:
-        d = {}
-        # covert to int
-        d["Cases"] = int(entry["SummeFall"])
-        d["Deaths"] = int(entry["SummeTodesfall"])
+        d = {
+            # covert to int
+            "Cases": int(entry["SummeFall"]),
+            "Deaths": int(entry["SummeTodesfall"]),
+            "Date": helper.convert_timestamp_to_date_str(
+                int(entry["Meldedatum"] / 1000),
+            ),
+        }
         # calc Date from 'Meldedatum' (ms)
-        d["Date"] = helper.convert_timestamp_to_date_str(
-            int(entry["Meldedatum"] / 1000)
-        )
         l_time_series.append(d)
     l_time_series = helper.prepare_time_series(l_time_series)
 
@@ -337,7 +335,7 @@ def download_all_data():
     # for lk_id in d_ref_landkreise.keys():
     # for lk_id in tqdm(('09562',)):
     for lk_id in tqdm(d_ref_landkreise.keys()):
-        lk_name = get_lk_name_from_lk_id(lk_id)
+        # lk_name = get_lk_name_from_lk_id(lk_id)
         # print(f"{lk_id} {lk_name}")
 
         # 03353   LK Harburg      252776
@@ -395,7 +393,10 @@ def export_data(d_districts_data: dict):
         helper.write_json(file_out + ".json", d=l_time_series, sort_keys=True)
 
         with open(
-            file_out + ".tsv", mode="w", encoding="utf-8", newline="\n"
+            file_out + ".tsv",
+            mode="w",
+            encoding="utf-8",
+            newline="\n",
         ) as fh_csv:
             csvwriter = csv.DictWriter(
                 fh_csv,
@@ -459,7 +460,9 @@ def export_latest_data(d_districts_data: dict):
 
     # Export as JSON
     helper.write_json(
-        "data/de-districts/de-districts-results.json", d=d_for_export_V1, sort_keys=True
+        "data/de-districts/de-districts-results.json",
+        d=d_for_export_V1,
+        sort_keys=True,
     )
 
     helper.write_json(
@@ -495,7 +498,7 @@ def export_latest_data(d_districts_data: dict):
 
         csvwriter.writeheader()
 
-        for lk_id, d in d_for_export_V1.items():
+        for _lk_id, d in d_for_export_V1.items():
             csvwriter.writerow(d)
 
 

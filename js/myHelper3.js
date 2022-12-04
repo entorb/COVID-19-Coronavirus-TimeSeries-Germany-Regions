@@ -261,9 +261,9 @@ function arrayRemoveValueTextPairByValue(arr, key) {
   }
 }
 
-// from https://stackoverflow.com/questions/4297765/make-a-javascript-array-from-url 
-// needed as 
-// const urlParams = new URLSearchParams(window.location.search); 
+// from https://stackoverflow.com/questions/4297765/make-a-javascript-array-from-url
+// needed as
+// const urlParams = new URLSearchParams(window.location.search);
 // is not available in Edge and IE :-(
 function URLToParameterArray(url) {
   var request = {};
@@ -281,7 +281,7 @@ function URLToParameterArray(url) {
 // Adds options to the select, after removing all existing options
 // select: The select object
 // optionsArray: the options to add
-// if optionsArray item consists of key, values pairs, than use the value for display, 
+// if optionsArray item consists of key, values pairs, than use the value for display,
 // else format the key to sentenceLike style
 // if placeholdertext != "" than add this word as first dummy entry (for example "Choose"), important for onchange event on first selection
 function setOptionsToSelect(select, optionsArray, placeholdertext) {
@@ -478,4 +478,3 @@ function update_country_selects(country_code_to_add) { // , select_country, opti
     // });
   }
 }
-

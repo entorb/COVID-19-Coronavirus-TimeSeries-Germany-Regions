@@ -1,6 +1,4 @@
-#!/usr/bin/gnuplot
-
-# by Torben Menke
+# by Dr. Torben Menke
 # https://entorb.net
 
 load "header.gp"
@@ -16,7 +14,7 @@ set yrange [0:]
 set ytics nomirror tc rgb "blue"
 # set ytics 25
 
-set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 tc rgb "red" 
+set y2label "Verdopplungs- / Halbwertszeit (Tage)" offset -1,0 tc rgb "red"
 set y2tics nomirror tc rgb "red"
 set y2range [30:0]
 # set y2tics 5
@@ -47,4 +45,3 @@ short_name = 'ST' ; long_name = "Sachsen-Anhalt" ; load "plot-de-states-doubling
 short_name = 'SH' ; long_name = "Schleswig-Holstein" ; load "plot-de-states-doubling-sub1.gp"
 short_name = 'TH' ; long_name = "Thüringen" ; load "plot-de-states-doubling-sub1.gp"
 short_name = 'DE-total' ; long_name = "Deutschland" ; load "plot-de-states-doubling-sub1.gp"
-

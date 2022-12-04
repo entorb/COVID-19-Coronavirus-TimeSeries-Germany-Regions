@@ -1,16 +1,13 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
 Creates groups of ICU locations
 """
-
-# Further Modules
 import pandas as pd
 
-# My Helper Functions
 import helper
+
 
 fileout = "data/de-divi/lk-groups.json"
 
@@ -110,7 +107,7 @@ helper.write_json(fileout, d=l_groups)
 
 
 df = pd.read_csv(
-    f"data/de-divi/downloaded/latest.csv",
+    "data/de-divi/downloaded/latest.csv",
     sep=",",
     usecols=["date", "gemeindeschluessel", "betten_frei", "betten_belegt"],
 )

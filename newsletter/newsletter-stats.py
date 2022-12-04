@@ -1,11 +1,10 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 import datetime
 import json
-import sqlite3
 import os
+import sqlite3
 
 
 # Print necessary headers.
@@ -51,7 +50,7 @@ print(
 </head>
 
 <body>
-"""
+""",
 )
 
 
@@ -63,7 +62,7 @@ else:
 
 # load latest data
 d_districts_latest = {}
-with open(pathToData, mode="r", encoding="utf-8") as fh:
+with open(pathToData, encoding="utf-8") as fh:
     d_districts_latest = json.load(fh)
 
 con, cur = db_connect()
@@ -102,7 +101,9 @@ print('<table border="1">')
 print("<tr><th>Anzahl</th><th>Landkreis</th></tr>")
 # print("Anz : Landkreis")
 for id, value in sorted(
-    d_counter_region.items(), key=lambda item: item[1], reverse=True
+    d_counter_region.items(),
+    key=lambda item: item[1],
+    reverse=True,
 ):
     if value < 5:
         break

@@ -1,24 +1,20 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 # by Dr. Torben Menke https://entorb.net
 # https://github.com/entorb/COVID-19-Coronavirus-German-Regions
-
 """
-This is my test playground and template for new scripts
+This is my test playground and template for new scripts.
 """
+# import datetime as dt
+import locale
 
-# Built-in/Generic Imports
-import datetime as dt
-
-# Further Modules
-import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
+import pandas as pd
 
-# My Helper Functions
 import helper
 
+# import matplotlib.ticker as mtick
+
 # Set German date format for plots: Okt instead of Oct
-import locale
 
 locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
@@ -117,7 +113,7 @@ def plotit():
 
     helper.mpl_add_text_source(source="RKI", date=date_last)
     fig.set_tight_layout(True)
-    fig.savefig(fname=f"plots-python/de-ts-multi.png", format="png")
+    fig.savefig(fname="plots-python/de-ts-multi.png", format="png")
     plt.close()
 
 
@@ -130,12 +126,3 @@ df = df_covid.join(df_mortality).join(df_vaccination).join(df_mutations)
 
 if __name__ == "__main__":
     pass
-"""
-plot:
-df_covid
- Inzidenz
- ICU_pct
- Deaths_Covid_roll_av
-
-
-"""

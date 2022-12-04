@@ -1,4 +1,4 @@
-Problem mit 
+Problem mit
 16056 {'BL_Code': 'TH', 'BL_Name': 'Thüringen', 'LK_ID': '16056', 'LK_Name': 'Eisenach', 'LK_Typ': 'Kreisfreie Stadt', 'Population': 41970}
 
 
@@ -11,7 +11,7 @@ https://github.com/actions/upload-release-asset instead of eine/tip
 
 in
 https://docs.google.com/spreadsheets/d/13la9BFcPUeZKnx6amfwogzmhcNxtF_ouBiV6aOpDHFM/edit#gid=0
-is a link 
+is a link
 https://npgeo-corona-npgeo-de.hub.arcgis.com/search?groupIds=b28109b18022405bb965c602b13e1bbc
 for RKI Daten auf Bundesländer und Landkreis-Ebene
 
