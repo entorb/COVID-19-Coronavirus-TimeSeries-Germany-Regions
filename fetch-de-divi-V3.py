@@ -71,7 +71,7 @@ def fetch_latest_csv():
     # latest_filename = l[-1]
     # latest_url = d_csvs_in_table[latest_filename]
 
-    file = "data/de-divi/downloaded/latest.csv"
+    file = "cache/de-divi/latest.csv"
 
     url = "https://diviexchange.blob.core.windows.net/%24web/zeitreihe-tagesdaten.csv"
 
@@ -174,7 +174,7 @@ def generate_database() -> dict:
     # 00 = DE-total
 
     # csv_file = sorted(glob.glob('data/de-divi/downloaded/*.csv'))[-1]
-    csv_file = "data/de-divi/downloaded/latest.csv"
+    csv_file = "cache/de-divi/latest.csv"
     # (filepath, fileName) = os.path.split(csv_file)
     # (fileBaseName, fileExtension) = os.path.splitext(fileName)
     # del filepath, fileName, fileBaseName, fileExtension
