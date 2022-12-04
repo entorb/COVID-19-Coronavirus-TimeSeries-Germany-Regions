@@ -91,6 +91,7 @@ def read_data_vaccination():
             "Dose1_roll_av",
             "Dose2_roll_av",
             "Dose3_roll_av",
+            "Dose4_roll_av",
         ],
         parse_dates=[
             "Date",
@@ -207,6 +208,11 @@ def plotit(df: pd.DataFrame):
         linewidth=2.0,
     )
     (df["Dose3_roll_av"] / 1000000).plot(
+        ax=axes[i],
+        legend=True,
+        linewidth=2.0,
+    )
+    (df["Dose4_roll_av"] / 1000000).plot(
         ax=axes[i],
         legend=True,
         linewidth=2.0,

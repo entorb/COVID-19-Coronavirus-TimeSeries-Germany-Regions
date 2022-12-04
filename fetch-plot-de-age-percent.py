@@ -460,7 +460,7 @@ def main():
         "data/de_age_percent_1_pre_2021_summer.tsv",
         sep="\t",
         index=True,
-        line_terminator="\n",
+        lineterminator="\n",
     )
 
     start_year = 2021
@@ -499,7 +499,7 @@ def main():
         "data/de_age_percent_2_post_2021_summer.tsv",
         sep="\t",
         index=True,
-        line_terminator="\n",
+        lineterminator="\n",
     )
 
 

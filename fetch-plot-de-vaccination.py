@@ -62,7 +62,7 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     for c in cols:
         df = helper.pandas_calc_roll_av(df=df, column=c, days=7)
     del cols
-    df.to_csv("data/ts-de-vaccination.tsv", sep="\t", index=True, line_terminator="\n")
+    df.to_csv("data/ts-de-vaccination.tsv", sep="\t", index=True, lineterminator="\n")
 
     return df
 

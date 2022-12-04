@@ -73,7 +73,7 @@ def fetch_and_prepare_data() -> pd.DataFrame:
     df2["PosRate"] = (100.0 * df["Positiv getestet"] / df["Anzahl Testungen"]).round(3)
     # df2["TestsMill"] =
 
-    df2.to_csv("data/ts-de-pcr-tests.tsv", sep="\t", index=True, line_terminator="\n")
+    df2.to_csv("data/ts-de-pcr-tests.tsv", sep="\t", index=True, lineterminator="\n")
 
     return df2
 

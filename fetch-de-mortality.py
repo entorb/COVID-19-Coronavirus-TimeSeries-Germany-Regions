@@ -182,7 +182,7 @@ def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
     df[["Deaths", "Deaths_roll_av"]].to_csv(
         "data/ts-de-mortality.tsv",
         sep="\t",
-        line_terminator="\n",
+        lineterminator="\n",
     )
     return df
 
@@ -247,4 +247,4 @@ if __name__ == "__main__":
 
     df = df_mortality.join(df_covid)
 
-    df.to_csv("data/de-mortality.tsv", sep="\t", index=True, line_terminator="\n")
+    df.to_csv("data/de-mortality.tsv", sep="\t", index=True, lineterminator="\n")

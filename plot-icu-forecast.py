@@ -296,8 +296,11 @@ def forecast(df_data: pd.DataFrame, l_prognosen_prozente: list, quote: float):
             for i in range(1, 7 + 1):
                 day = date_today + dt.timedelta(days=+i + 7 * (week - 1))
                 case_prognose = ds_last7[i - 1] * pow(1 + proz / 100, week)
-                new_row = {"Date": day, "Cases_New": case_prognose}
-                df_prognose = df_prognose.append(new_row, ignore_index=True)
+                # new_row = {"Date": day, "Cases_New": case_prognose}
+                # df_prognose = df_prognose.append(new_row, ignore_index=True)
+                df_new_row = pd.DataFrame({"Date": [day], "Cases_New": [case_prognose]})
+                df_prognose = pd.concat([df_prognose, df_new_row])
+
         df_prognose = helper.pandas_set_date_index(df_prognose)
         l_df_prognosen.append(df_prognose)
 
@@ -305,7 +308,9 @@ def forecast(df_data: pd.DataFrame, l_prognosen_prozente: list, quote: float):
     for i in range(len(l_df_prognosen)):
         df_prognose = l_df_prognosen[i]
         # prepend last 21 days to calc the 21 day sum
-        df_prognose = df_last21.append(df_prognose)
+        # df_prognose = df_last21.append(df_prognose)
+        df_prognose = pd.concat([df_last21, df_prognose])
+
         df_prognose["Cases_New_roll_sum_21"] = (
             df_prognose["Cases_New"].rolling(window=21, min_periods=1).sum()
         )

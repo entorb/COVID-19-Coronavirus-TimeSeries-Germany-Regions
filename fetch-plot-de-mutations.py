@@ -114,7 +114,7 @@ df_lineages_lastmonth = df_lineages_alltime[
 
 df_lineages_top_ten_alltime = (
     df_lineages_alltime.groupby("lineage")
-    .sum()
+    .sum(numeric_only=True)
     .sort_values(by="count", ascending=False)
     .head(10)
 )
@@ -124,7 +124,7 @@ df_lineages_top_ten_alltime = (
 
 df_lineages_top_ten_lastmonth = (
     df_lineages_alltime.groupby("lineage")
-    .sum()
+    .sum(numeric_only=True)
     .sort_values(by="count", ascending=False)
 )
 df_lineages_top_ten_lastmonth = df_lineages_top_ten_lastmonth.head(10)
@@ -160,8 +160,8 @@ df_lineages_top_ten_lastmonth = df_lineages_top_ten_lastmonth.head(10)
 # 3. sum df
 
 # 3.1 add column of total number of sequences per day
-df_sum_alltime = df_lineages_alltime.groupby("Date").sum()
-df_sum_lastmonth = df_lineages_lastmonth.groupby("Date").sum()
+df_sum_alltime = df_lineages_alltime.groupby("Date").sum(numeric_only=True)
+df_sum_lastmonth = df_lineages_lastmonth.groupby("Date").sum(numeric_only=True)
 # df_sum_alltime = df_scorpio_alltime.groupby("Date").sum()
 # df_sum_lastmonth = df_scorpio_lastmonth.groupby("Date").sum()
 
@@ -286,7 +286,7 @@ df_sum_alltime_roll_av.to_csv(
     "data/ts-de-mutations.tsv",
     sep="\t",
     index=True,
-    line_terminator="\n",
+    lineterminator="\n",
 )
 
 
