@@ -81,7 +81,7 @@ def load_divi_data() -> pd.DataFrame:
     new: rename faelle_covid_aktuell -> betten_covid
     """
     df = pd.read_csv(
-        "data/de-divi/downloaded/latest.csv",
+        "cache/de-divi/latest.csv",
         sep=",",
         parse_dates=[
             "date",

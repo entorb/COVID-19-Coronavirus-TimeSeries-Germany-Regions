@@ -107,7 +107,7 @@ helper.write_json(fileout, d=l_groups)
 
 
 df = pd.read_csv(
-    "data/de-divi/downloaded/latest.csv",
+    "cache/de-divi/latest.csv",
     sep=",",
     usecols=["date", "gemeindeschluessel", "betten_frei", "betten_belegt"],
 )
