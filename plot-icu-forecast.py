@@ -122,7 +122,7 @@ def load_divi_data() -> pd.DataFrame:
 def sum_divi_data(
     mode,
     df_divi_all: pd.DataFrame,
-    l_lk_ids: list = (),
+    l_lk_ids: tuple = (),
     bl_id: int = -1,
 ) -> pd.DataFrame:
     """
@@ -165,7 +165,7 @@ def sum_divi_data(
 # exit()
 
 
-def load_and_sum_lk_case_data(l_lk_ids: list) -> pd.DataFrame:
+def load_and_sum_lk_case_data(l_lk_ids: tuple) -> pd.DataFrame:
     """
     l_lk_ids : list of lk_ids:str
     grouping of lk data
@@ -274,7 +274,7 @@ def join_cases_divi(df_cases: pd.DataFrame, df_divi: pd.DataFrame) -> pd.DataFra
     return df_sum
 
 
-def forecast(df_data: pd.DataFrame, l_prognosen_prozente: list, quote: float):
+def forecast(df_data: pd.DataFrame, l_prognosen_prozente: tuple, quote: float):
     """
     Fälle der letzten Woche für X Wochen in die Zukunft prognostizieren
     returns list of dataframes
@@ -371,8 +371,8 @@ def plot_2_its_per_21day_cases(df: pd.DataFrame, filename: str, landkreis_name: 
 
 def plot_it(
     df_divi: pd.DataFrame,
-    l_df_prognosen: list,
-    l_prognosen_prozente: list,
+    l_df_prognosen: tuple,
+    l_prognosen_prozente: tuple,
     filepath: str,
     landkreis_name: str,
 ):
@@ -489,7 +489,7 @@ def doit(
     mode="de-district",
     df_divi_all: pd.DataFrame = None,
     title="",
-    l_lk_ids: list = (),
+    l_lk_ids: tuple = (),
     bl_id: int = -1,
     filename="",
 ):
@@ -506,6 +506,7 @@ def doit(
 
     if 16056 in l_lk_ids:  # Eisenach
         l_lk_ids.remove(16056)
+    l_lk_ids = tuple(l_lk_ids)
 
     if mode == "de-district":
         assert len(l_lk_ids) == 1

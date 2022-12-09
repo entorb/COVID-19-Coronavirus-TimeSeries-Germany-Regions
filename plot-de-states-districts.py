@@ -40,7 +40,7 @@ def calc_doubling_time(percent_7day: float) -> float:
 assert calc_doubling_time(1.00) == 7
 
 
-def plot_layout(fig, axes: list, colors: list, thisIsDE_total: bool = False):
+def plot_layout(fig, axes: list, colors: tuple, thisIsDE_total: bool = False):
     """
     Axis layout, label text and range
     """
@@ -284,6 +284,8 @@ def plot_it(df: pd.DataFrame, code: str, long_name: str, mode: str):
         fname = f"plots-python/de-states/de-state-{code}.png"
     elif mode == "de-districts":
         fname = f"plots-python/de-districts/de-district-{code}.png"
+    else:
+        raise ValueError
     plt.savefig(fname=fname, format="png")
 
     # cleanup

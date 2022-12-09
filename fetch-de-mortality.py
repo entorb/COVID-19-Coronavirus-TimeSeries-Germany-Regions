@@ -154,7 +154,7 @@ def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
         assert year >= 2016
         assert year <= 2028
         for col2 in range(2, 368):
-            day_str = sheetIn.cell(column=col2, row=9).value
+            day_str = str(sheetIn.cell(column=col2, row=9).value)
             deaths = sheetIn.cell(column=col2, row=row).value
             if deaths in (
                 "X",  # 29.2. and not "Schaltjahr"

@@ -217,7 +217,7 @@ def db_check_email_is_verified(email: str) -> int:
         return -1
 
 
-def db_check_hash_is_verified(h: str) -> int:
+def db_check_hash_is_verified(h: str) -> tuple:
     """
     returns verified column if found
     returns -1 if not found
@@ -233,14 +233,14 @@ def db_check_hash_is_verified(h: str) -> int:
         return "unknown", -1
 
 
-def db_assert_hash_correct(email: str, h: str) -> bool:
+def db_assert_hash_correct(email: str, h: str):
     "checks if hash and mail fit"
     sql = "SELECT 1 FROM newsletter WHERE email = ? AND hash = ? LIMIT 1"
     row = cur.execute(sql, (email, h)).fetchone()
     assert row, "Error: invalid hash"
 
 
-def db_assert_hash_exists(h: str) -> bool:
+def db_assert_hash_exists(h: str):
     "checks if hash is in DB"
     sql = "SELECT 1 FROM newsletter WHERE hash = ? LIMIT 1"
     row = cur.execute(sql, (h,)).fetchone()

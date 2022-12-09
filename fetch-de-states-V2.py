@@ -13,7 +13,7 @@ import helper
 # My Helper Functions
 
 
-def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list:
+def fetch_bundesland_time_series(bl_id: int, readFromCache: bool = True) -> list:
     """
     for a given bl_id: fetches its time series and returns as list
     Fetches data from arcgis Covid19_RKI_Sums endpoint: Bundesland, Landkreis, etc.
@@ -60,7 +60,7 @@ def fetch_bundesland_time_series(bl_id: str, readFromCache: bool = True) -> list
 
     cont = helper.read_url_or_cachefile(
         url=url,
-        cachefile=file_cache,
+        file_cache=file_cache,
         request_type="get",
         cache_max_age=0,  # 0s because git pulled files are "new"
         verbose=False,
@@ -260,7 +260,7 @@ def export_data(d_states_data: dict):
 
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
         helper.write_json(
-            f"data-json/de-states/de-state-{code}.json",
+            filename=f"data-json/de-states/de-state-{code}.json",
             d=l_time_series,
             sort_keys=True,
             indent=1,
@@ -323,9 +323,9 @@ def export_latest_data(d_ref_states, d_states_data: dict):
         d2 = d_states_latest[code]
         d2["Code"] = code
         l_for_export.append(d2)
-    helper.write_json(
+    helper.write_json_list(
         filename="data-json/de-states/de-states-latest-list.json",
-        d=l_for_export,
+        l=l_for_export,
         indent=1,
     )
 

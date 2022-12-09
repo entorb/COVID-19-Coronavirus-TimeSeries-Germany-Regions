@@ -78,7 +78,7 @@ def fetch_latest_csv():
     # cont =
     helper.read_url_or_cachefile(
         url=url,
-        cachefile=file,
+        file_cache=file,
         request_type="get",
         payload={},
         cache_max_age=0,  # 0s because the git pull created files are "new"
@@ -280,9 +280,9 @@ def generate_database() -> dict:
     )
 
     l_lkids = d_database.keys()
-    helper.write_json(
-        "data/de-divi/lkids.json",
-        sorted(set(l_lkids)),
+    helper.write_json_list(
+        filename="data/de-divi/lkids.json",
+        l=sorted(set(l_lkids)),
         sort_keys=True,
     )
 
@@ -320,8 +320,8 @@ def generate_database() -> dict:
     del d_database_states
 
     helper.write_json(
-        "cache/de-divi/de-divi-V3-states.json",
-        d_database_states2,
+        filename="cache/de-divi/de-divi-V3-states.json",
+        d=d_database_states2,
         sort_keys=True,
     )
 

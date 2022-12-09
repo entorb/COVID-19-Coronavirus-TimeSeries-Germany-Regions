@@ -2,7 +2,7 @@
 echo === git pull
 git pull
 
-echo === fetching index.html -> index-online.html
+echo === fetching index.html - >index-online.html
 wget -q -O index-online.html https://entorb.net/COVID-19-coronavirus/index.html
 
 echo === fetching and generating new data
@@ -20,7 +20,6 @@ wait
 
 # IDEA: run in background processes via appending '&'. Problem 1: how to know when ready for plotting? Problem 2: Errors are no longer displayed at the terminal
 
-
 echo === plotting + uploading plots
 # DO NOT DELETE because I stopped updateing the doubling time data !!! rm plots-gnuplot/*/*.png
 cd scripts-gnuplot
@@ -28,19 +27,18 @@ gnuplot all.gp
 bash upload-to-entorb.sh
 cd ..
 
-echo  === uploading data
+echo === uploading data
 # (after plotting because gnuplot generates 2 data files as well)
 cd data
 bash upload-to-entorb.sh
 cd ..
 
-echo  === uploading maps
+echo === uploading maps
 cd maps
 bash upload-to-entorb.sh
 cd ..
 
-
-echo  === date of data
+echo === date of data
 bash show_data_dates.sh
 
 # echo === Check local html. Enter to copy and commit, CTRG+C to cancel
@@ -51,8 +49,7 @@ bash show_data_dates.sh
 # scp index.html entorb@entorb.net:html/COVID-19-coronavirus/
 rsync -vhu --no-perms index.html entorb@entorb.net:html/COVID-19-coronavirus/
 
-
-echo  === git: add and commit
+echo === git: add and commit
 git add data/*
-git commit -m "update"  | grep -v rewrite
+git commit -m "update" | grep -v rewrite
 git push --quiet

@@ -180,9 +180,9 @@ def extract_latest_date_data():
             l_for_export.append(d2)
 
     # JSON export
-    helper.write_json(
+    helper.write_json_list(
         filename="data-json/int/countries-latest-all.json",
-        d=l_for_export,
+        l=l_for_export,
         sort_keys=True,
     )
 
@@ -309,7 +309,9 @@ def export_time_series_all_countries():
         l_time_series = d_countries_timeseries[country]
         l_time_series = helper.timeseries_export_drop_irrelevant_columns(l_time_series)
 
-        helper.write_json(f"data-json/int/country-{code}.json", l_time_series, indent=1)
+        helper.write_json_list(
+            filename=f"data-json/int/country-{code}.json", l=l_time_series, indent=1
+        )
 
         with open(
             f"data/int/country-{code}.tsv",

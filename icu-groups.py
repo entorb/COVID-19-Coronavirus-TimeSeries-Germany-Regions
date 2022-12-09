@@ -103,7 +103,7 @@ for d in l_groups:
     assert d["id"] not in l_ids, f'{d["title"]} has non-unique id: {d["id"]}'
     l_ids.append(d["id"])
 
-helper.write_json(fileout, d=l_groups)
+helper.write_json_list(filename=fileout, l=l_groups)
 
 
 df = pd.read_csv(

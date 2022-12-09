@@ -10,6 +10,7 @@ import json
 import math
 import os
 import time
+from typing import Optional
 import urllib.request
 
 import matplotlib.pyplot as plt
@@ -29,25 +30,25 @@ from scipy.optimize import curve_fit
 plt.ioff()
 
 # ensure all output folders are present
-os.makedirs("cache", exist_ok=True)
-os.makedirs("cache/de-districts/", exist_ok=True)
-os.makedirs("cache/de-divi/", exist_ok=True)
-os.makedirs("cache/de-states/", exist_ok=True)
-os.makedirs("cache/rki-mutation-sequences", exist_ok=True)
-os.makedirs("cache/int/", exist_ok=True)
-# os.makedirs("data/de-districts/latest/", exist_ok=True)
-os.makedirs("data-json/de-districts/", exist_ok=True)
-os.makedirs("data-json/de-states/", exist_ok=True)
-os.makedirs("data-json/int/", exist_ok=True)
-os.makedirs("plots-gnuplot/", exist_ok=True)
-os.makedirs("plots-gnuplot/de-districts/", exist_ok=True)
-os.makedirs("plots-gnuplot/de-divi/", exist_ok=True)
-os.makedirs("plots-gnuplot/de-states/", exist_ok=True)
-os.makedirs("plots-gnuplot/int/", exist_ok=True)
-os.makedirs("plots-python/", exist_ok=True)
-os.makedirs("plots-python/de-states/", exist_ok=True)
-os.makedirs("plots-python/de-districts/", exist_ok=True)
-os.makedirs("maps/out/de-districts/", exist_ok=True)
+os.makedirs(name="cache", exist_ok=True)
+os.makedirs(name="cache/de-districts/", exist_ok=True)
+os.makedirs(name="cache/de-divi/", exist_ok=True)
+os.makedirs(name="cache/de-states/", exist_ok=True)
+os.makedirs(name="cache/rki-mutation-sequences", exist_ok=True)
+os.makedirs(name="cache/int/", exist_ok=True)
+# os.makedirs(name="data/de-districts/latest/", exist_ok=True)
+os.makedirs(name="data-json/de-districts/", exist_ok=True)
+os.makedirs(name="data-json/de-states/", exist_ok=True)
+os.makedirs(name="data-json/int/", exist_ok=True)
+os.makedirs(name="plots-gnuplot/", exist_ok=True)
+os.makedirs(name="plots-gnuplot/de-districts/", exist_ok=True)
+os.makedirs(name="plots-gnuplot/de-divi/", exist_ok=True)
+os.makedirs(name="plots-gnuplot/de-states/", exist_ok=True)
+os.makedirs(name="plots-gnuplot/int/", exist_ok=True)
+os.makedirs(name="plots-python/", exist_ok=True)
+os.makedirs(name="plots-python/de-states/", exist_ok=True)
+os.makedirs(name="plots-python/de-districts/", exist_ok=True)
+os.makedirs(name="maps/out/de-districts/", exist_ok=True)
 
 
 #
@@ -77,16 +78,16 @@ def download_from_url_if_old(
 
 def read_url_or_cachefile(
     url: str,
-    cachefile: str,
+    file_cache: str,
     request_type: str = "get",
-    payload: dict = None,
+    payload: Optional[dict] = None,
     cache_max_age: int = 1800,
     verbose: bool = True,
 ) -> str:
     if payload is None:
         payload = {}
     b_cache_is_recent = check_cache_file_available_and_recent(
-        fname=cachefile,
+        fname=file_cache,
         max_age=cache_max_age,
         verbose=verbose,
     )
@@ -98,16 +99,18 @@ def read_url_or_cachefile(
             cont = requests.get(url, headers=headers).content
         elif request_type == "post":
             cont = requests.post(url, headers=headers, data=payload).content
-        with open(cachefile, mode="wb") as fh:
+        else:
+            raise Exception("unknown request type " + request_type)
+        with open(file_cache, mode="wb") as fh:
             fh.write(cont)
         cont = cont.decode("utf-8")
     else:
-        with open(cachefile, encoding="utf-8") as fh:
+        with open(file_cache, encoding="utf-8") as fh:
             cont = fh.read()
     return cont
 
 
-def read_json_file(filename: str):
+def read_json_file(filename: str) -> dict:
     """
     returns list or dict
     """
@@ -120,9 +123,14 @@ def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 2):
         json.dump(d, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
 
 
+def write_json_list(filename: str, l: list, sort_keys: bool = True, indent: int = 2):
+    with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
+        json.dump(l, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
+
+
 def convert_timestamp_to_date_str(ts: int) -> str:
     """
-    converts a ms timestand to date string (without time)
+    converts a ms timestamp to date string (without time)
     format: 2020-03-29
     """
     d = dt.datetime.fromtimestamp(ts)
@@ -141,7 +149,7 @@ def date_format(y: int, m: int, d: int) -> str:
 #
 
 
-def pandas_set_date_index(df, date_column: str = "Date"):
+def pandas_set_date_index(df: pd.DataFrame, date_column: str = "Date") -> pd.DataFrame:
     """
     use date as index
     source format: str of yyyy-mm-dd or dt.date
@@ -158,7 +166,12 @@ def pandas_set_date_index(df, date_column: str = "Date"):
     return df
 
 
-def pandas_calc_roll_av(df, column: str, days: int = 7, digits: int = 1):
+def pandas_calc_roll_av(
+    df: pd.DataFrame,
+    column: str,
+    days: int = 7,
+    digits: int = 1,
+) -> pd.DataFrame:
     """calc rolling average over column"""
     assert type(days) == int
     df[column + "_roll_av"] = (
@@ -172,7 +185,7 @@ def pandas_calc_roll_av(df, column: str, days: int = 7, digits: int = 1):
 #
 
 
-def mpl_add_text_source(source: str = "RKI and DIVI", date: dt.date = None):
+def mpl_add_text_source(source: str = "RKI and DIVI", date: Optional[dt.date] = None):
     if date is None:
         dt.date.today()
     plt.gcf().text(
@@ -480,21 +493,23 @@ def check_cache_file_available_and_recent(
 
 
 def fetch_json_as_dict_from_url(url: str) -> dict:
-    filedata = urllib.request.urlopen(url)
+    if not url.lower().startswith("http"):
+        raise ValueError from None
+    filedata = urllib.request.urlopen(url)  # noqa: S310
     contents = filedata.read()
     d_json = json.loads(contents.decode("utf-8"))
     # retry on error:
     if "error" in d_json:
         print("retrying upon error...")
         time.sleep(3)
-        filedata = urllib.request.urlopen(url)
+        filedata = urllib.request.urlopen(url)  # noqa: S310
         contents = filedata.read()
         d_json = json.loads(contents.decode("utf-8"))
     assert "error" not in d_json, d_json["error"]["details"][0] + "\n" + url
     return d_json
 
 
-def extract_x_and_y_data(data: list) -> list:
+def extract_x_and_y_data(data: list) -> tuple:
     """
     data of (x,y) -> data_x, data_y
     """
@@ -513,9 +528,9 @@ def extract_x_and_y_data(data: list) -> list:
 
 def extract_data_according_to_fit_ranges(
     data: list,
-    fit_range_x: list,
-    fit_range_y: list,
-) -> list:
+    fit_range_x: tuple,
+    fit_range_y: tuple,
+) -> tuple:
     """
     filters the data on which we fit
     data ist list of (x,y) value pairs
@@ -636,7 +651,7 @@ def fit_slopes(l_time_series: list) -> dict:
 
 
 # Fit functions with coefficients as parameters
-def fit_function_exp_growth(t, N0, T):
+def fit_function_exp_growth(t, N0, T) -> float:
     """
     N0 = values at t = 0
     T = time it takes for t duplication: f(t+T) = 2 x f(t)
@@ -645,7 +660,7 @@ def fit_function_exp_growth(t, N0, T):
     return N0 * np.exp(t * math.log(2) / T)
 
 
-def fit_function_linear(t, N0, m):
+def fit_function_linear(t, N0, m) -> float:
     """
     y  = N0 + m * t
     N0 : offset / value at t=0 (today)
@@ -657,8 +672,8 @@ def fit_function_linear(t, N0, m):
 def fit_routine(
     data: list,
     mode: str = "exp",
-    fit_range_x: list = (-np.inf, np.inf),
-    fit_range_y: list = (-np.inf, np.inf),
+    fit_range_x: tuple = (-np.inf, np.inf),
+    fit_range_y: tuple = (-np.inf, np.inf),
 ) -> dict:
     """
     data: list of x,y pairs
@@ -748,7 +763,7 @@ def series_of_fits(
     fit_range: int = 7,
     max_days_past=14,
     mode="exp",
-) -> list:
+) -> dict:
     """
     perform a series of fits: per day on data of 7 days back
     fit_range: fit over how many days

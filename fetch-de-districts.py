@@ -89,7 +89,7 @@ def get_lk_name_from_lk_id(lk_id: str) -> str:
 # Code functions
 
 
-def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
+def fetch_ref_landkreise(readFromCache: bool = True) -> list:
     """
     fetches ref-data for the German districts (Landkreise) via rest API from arcgis
     GUI
@@ -122,7 +122,7 @@ def fetch_ref_landkreise(readFromCache: bool = True) -> dict:
 
     cont = helper.read_url_or_cachefile(
         url=url,
-        cachefile=file_cache,
+        file_cache=file_cache,
         request_type="get",
         cache_max_age=0,  # 0s because git pulled files are "new"
         verbose=False,
@@ -278,7 +278,7 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
     while retryNo <= 3:
         cont = helper.read_url_or_cachefile(
             url=url,
-            cachefile=file_cache,
+            file_cache=file_cache,
             request_type="get",
             cache_max_age=0,  # 0s because git pulled files are "new"
             verbose=False,
