@@ -5,8 +5,8 @@ name: Update Maps
 on:
   workflow_dispatch:
   schedule:
-  # UTC ! -> 11:03 DE (Wintertime)
-    - cron: "3 10 * * 0"
+  # UTC ! -> 13:59 DE (Wintertime)
+    - cron: "59 12 * * 0"
 # TODO
 #  push:
 #    branches: [ main ]
