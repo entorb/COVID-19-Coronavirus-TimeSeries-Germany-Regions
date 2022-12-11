@@ -56,7 +56,9 @@ jobs:
 
     - name: Generate + zip maps
       run: |
-        wget --quiet -P tmp-dl https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/data-for-entorb.net/data-json-de.tgz
+        wget --quiet https://github.com/entorb/COVID-19-Coronavirus-German-Regions/releases/download/data-for-entorb.net/data-json-de.tgz
+        mkdir data-json
+        tar xfz data-json-de.tgz -C data-json
         python3 plot-de-districts-map.py
         cd maps
         tar cfz ../cache/maps.tgz *.gif *.mp4

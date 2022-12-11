@@ -32,7 +32,7 @@ def run_imagemagick_convert(
     l_imagemagick_parameters.insert(0, "convert")
     if os.name == "posix":
         # print ('posix/Unix/Linux')
-        1
+        pass
     elif os.name == "nt":
         # print ('Windows')
         # prepend 'magick
@@ -114,9 +114,17 @@ d_color_scales = {
 d_all_date_data = {}
 l_month = []
 count = 0
-for f in glob.glob("data-json/de-districts/de-district_timeseries-*.json"):
+f = "data-json/de-districts/de-district_timeseries-02000.json"
+if not os.path.exists(f):
+    raise Exception(f"file missing: {f}")
+
+l = glob.glob("data-json/de-districts/de-district_timeseries-*.json")
+assert len(l) > 400
+for f in l:
     count += 1
-    lk_id = int(re.search(r"^.*de-district_timeseries\-(\d+)\.json$", f).group(1))
+    my_match = re.search(r"^.*de-district_timeseries\-(\d+)\.json$", f)
+    assert my_match
+    lk_id = int(my_match.group(1))
     l = helper.read_json_file(f)
     for d in l:
         date = d["Date"]
@@ -131,7 +139,7 @@ for f in glob.glob("data-json/de-districts/de-district_timeseries-*.json"):
             d_all_date_data[d["Date"]] = {}
         # del d['Timestamp'], d['Date'], d['Days_Past'], d['Days_Since_2nd_Death']
         d_all_date_data[date][lk_id] = d
-del f, d, l, count
+del f, d, l, count, my_match
 
 # check if last date has as many values as the 2nd last, of not drop it
 dates = sorted(d_all_date_data.keys())
@@ -153,99 +161,26 @@ for property_to_plot in (
 ):
     print(f"=== start {property_to_plot}")
 
-    # # fmpeg -i animated.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" video.mp4
-    # command = ['ffmpeg', '-y', '-i', f'maps/de-districts-{property_to_plot}.gif', '-movflags', 'faststart', '-pix_fmt', 'yuv420p', '-vf',
-    #            'scale=trunc(iw/2)*2:trunc(ih/2)*2', f'maps/de-districts-{property_to_plot}.mp4']
-    # process = subprocess.Popen(command,
-    #                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    #                            universal_newlines=True)
-    # # wait_for_finish
-    # stdout, stderr = process.communicate()
-    # if stdout != '':
-    #     print(f'Out: {stdout}')
-    # if stderr != '':
-    #     print(f'ERROR: {stderr}')
-
-    if property_to_plot == "Cases_Last_Week_Per_100000":
-        meta = {"colour": d_color_scales["blue"]}
-    elif property_to_plot == "Cases_Per_Million":
-        meta = {"colour": d_color_scales["red"]}
-    elif property_to_plot == "DIVI_Intensivstationen_Covid_Prozent":
-        meta = {"colour": d_color_scales["purple"]}
-    elif property_to_plot == "Deaths_Per_Million":
-        meta = {"colour": d_color_scales["green"]}
-    else:
-        assert 1 == 2, f"Error: color for {property_to_plot} is undefined"
-
-    # values = []
-    # # collect all values for autoscaling
-    # # TODO filter here on selected month as well?
-    # for date_str, l_districts in d_all_date_data.items():
-    #     for lk_id, d in l_districts.items():
-    #         if property_to_plot in d and d[property_to_plot] is not None and d[property_to_plot] > 0:
-    #             values.append(d[property_to_plot])
-    # del d, l_districts, lk_id
-
-    # # generate color scale range
-    # threshold = [0, 0, 0, 0, 0, 0, 0]
-    # print(f"{property_to_plot} min={min(values)} max={max(values)}")
-    # V1 taken from template
-    # q = statistics.quantiles(values, n=100, method="inclusive")
-    # step = math.sqrt(statistics.mean(values) - q[0]) / 3
-    # for i in range(1, 7):
-    #     threshold[i] = math.pow(i * step, 2) + q[0]
-    # del q, step, i
-
-    # V2
-    # threshold = statistics.quantiles(values, n=7+1, method="exclusive")
-
-    # V3: linear distribution: very simple, but nice for % values
-    # data_min = min(values)
-    # data_max = max(values)
-    # span = data_max-data_min
-    # if property_to_plot == 'Cases_Per_Million':
-    #     step = span ** (1.0/8)
-    #     for i in range(7):
-    #         threshold[i] = data_min + step**(1+i)
-    #     # rounding of thresholds
-    #     for i in range(7):
-    #         if threshold[i] > 1000000:
-    #             threshold[i] = int(round(threshold[i], -5))
-    #         elif threshold[i] > 100000:
-    #             threshold[i] = int(round(threshold[i], -4))
-    #         elif threshold[i] > 10000:
-    #             threshold[i] = int(round(threshold[i], -3))
-    #         elif threshold[i] > 1000:
-    #             threshold[i] = int(round(threshold[i], -2))
-    #         elif threshold[i] > 100:
-    #             threshold[i] = int(round(threshold[i], -1))
-    #         elif threshold[i] > 10:
-    #             threshold[i] = int(round(threshold[i], 0))
-    #         elif threshold[i] > 1:
-    #             threshold[i] = int(round(threshold[i], 1))
-
-    # if property_to_plot in ('DIVI_Intensivstationen_Covid_Prozent', 'DIVI_Intensivstationen_Betten_belegt_Prozent'):
-    #     step = span / 8
-    #     for i in range(7):
-    #         threshold[i] = data_min+(1+i)*step
-    # # V4: exponential distribution: step to the power of i
-    # else:
-    #     # if property_to_plot in ('Cases_Last_Week_Per_100000', 'Cases_Per_Million'):
-    #     step = span ** (1.0/8)
-    #     for i in range(7):
-    #         threshold[i] = data_min + step**(1+i)
-
-    # manual setting of color scale
+    meta = {}
+    # set color and manual setting of color scale
     if property_to_plot == "Cases_Per_Million":
+        meta["colour"] = d_color_scales["red"]
         threshold = [1, 10, 100, 1000, 10000, 50000, 100000]
     elif property_to_plot == "Deaths_Per_Million":
+        meta["colour"] = d_color_scales["green"]
         threshold = [100, 200, 500, 1000, 2000, 5000, 10000]
     elif property_to_plot == "Cases_Last_Week_Per_100000":
+        meta["colour"] = d_color_scales["blue"]
         threshold = [1, 10, 35, 50, 100, 200, 500]
     elif property_to_plot == "DIVI_Intensivstationen_Covid_Prozent":
+        meta["colour"] = d_color_scales["purple"]
         threshold = [1, 10, 20, 30, 40, 50, 75]
     elif property_to_plot == "DIVI_Intensivstationen_Betten_belegt_Prozent":
+        # not in use
+        meta["colour"] = d_color_scales["purple"]
         threshold = [30, 40, 50, 60, 70, 80, 90]
+    else:
+        raise Exception(f"unknown property_to_plot '{property_to_plot}'")
 
     # read template and generate image per day
     with open(
