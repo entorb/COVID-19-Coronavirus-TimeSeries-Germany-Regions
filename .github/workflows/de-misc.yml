@@ -5,8 +5,8 @@ name: DE Misc
 on:
   workflow_dispatch:
   schedule:
-  # UTC ! -> 8:59 DE (Wintertime)
-    - cron: "59 7 * * *"
+  # UTC ! -> 9:59 DE (Wintertime)
+    - cron: "59 8 * * *"
 # TODO
 #  push:
 #    branches: [ main ]
