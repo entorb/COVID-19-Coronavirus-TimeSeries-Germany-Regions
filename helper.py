@@ -10,8 +10,8 @@ import json
 import math
 import os
 import time
-from typing import Optional
 import urllib.request
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -60,8 +60,8 @@ def download_from_url_if_old(
     url: str,
     file_local: str,
     max_age: int = 3600,
-    verbose=False,
-):
+    verbose: bool = False,
+) -> None:
     if not check_cache_file_available_and_recent(
         fname=file_local,
         max_age=max_age,
@@ -80,7 +80,7 @@ def read_url_or_cachefile(
     url: str,
     file_cache: str,
     request_type: str = "get",
-    payload: Optional[dict] = None,
+    payload: Optional[dict[str, str]] = None,
     cache_max_age: int = 1800,
     verbose: bool = True,
 ) -> str:
@@ -110,7 +110,7 @@ def read_url_or_cachefile(
     return cont
 
 
-def read_json_file(filename: str) -> dict:
+def read_json_file(filename: str) -> dict[str, str | int | float]:
     """
     returns list or dict
     """
@@ -118,12 +118,19 @@ def read_json_file(filename: str) -> dict:
         return json.load(fh)
 
 
-def write_json(filename: str, d: dict, sort_keys: bool = True, indent: int = 2):
+def write_json(
+    filename: str,
+    d: dict,
+    sort_keys: bool = True,
+    indent: int = 2,
+) -> None:
     with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
         json.dump(d, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
 
 
-def write_json_list(filename: str, l: list, sort_keys: bool = True, indent: int = 2):
+def write_json_list(
+    filename: str, l: list, sort_keys: bool = True, indent: int = 2
+) -> None:
     with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
         json.dump(l, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
 
@@ -279,7 +286,7 @@ d_lk_name_from_lk_id = read_json_file(
 )
 
 
-def prepare_time_series(l_time_series: list) -> list:
+def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
     """
     assumes items in l_time_series are dicts having the following keys: Date, Cases, Deaths
     sorts l_time_series by Date

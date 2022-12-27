@@ -11,7 +11,7 @@ import re
 import helper
 
 
-def extractLinkList(cont: str) -> list:
+def extractLinkList(cont: str) -> list[str]:
     # myPattern = '<a href="(/divi-intensivregister-tagesreport-archiv-csv/divi-intensivregister-[^"]+/download)"'
     myPattern = r'<a href="(/divi-intensivregister-tagesreport-archiv-csv/viewdocument/\d+?/divi-intensivregister-[^"]*)"'
     #    /divi-intensivregister-tagesreport-archiv-csv/viewdocument/5330/divi-intensivregister-2020-12-21-12-15
@@ -75,12 +75,11 @@ def fetch_latest_csv():
 
     url = "https://diviexchange.blob.core.windows.net/%24web/zeitreihe-tagesdaten.csv"
 
-    # cont =
-    helper.read_url_or_cachefile(
+    _ = helper.read_url_or_cachefile(
         url=url,
         file_cache=file,
         request_type="get",
-        payload={},
+        # payload={},
         cache_max_age=0,  # 0s because the git pull created files are "new"
         verbose=True,
     )
@@ -150,7 +149,7 @@ def fetch_latest_csv():
 def generate_database() -> dict:
     # TODO: use Pandas instead of manuall CVS stuff
     """from 2021-10-29 on Divi publisheds all data in the latest file"""
-    d_database = {}
+    d_database: dict[str, list[dict]] = {}
     # d_database_states = {}  # Bundesländer
     d_database_states = {
         "01": {},
@@ -197,7 +196,7 @@ def generate_database() -> dict:
             date = row["date"]
             bl_id = row["bundesland"]
             lk_id = row["gemeindeschluessel"]
-            d = {
+            d: dict = {
                 # "bl_id": row["bundesland"],
                 # "lk_id": row["gemeindeschluessel"],
                 "Date": date,
@@ -451,7 +450,7 @@ def generate_database() -> dict:
 #     return d_database
 
 
-def export_tsv(d_database):
+def export_tsv(d_database) -> None:
     for lk_id, l_time_series in d_database.items():
         fileOut = f"data/de-divi/tsv/{lk_id}"
         with open(fileOut + ".tsv", mode="w", encoding="utf-8", newline="\n") as fh:
