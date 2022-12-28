@@ -11,7 +11,7 @@ import math
 import os
 import time
 import urllib.request
-from typing import Optional
+from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -96,14 +96,14 @@ def read_url_or_cachefile(
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0 ",
         }
         if request_type == "get":
-            cont = requests.get(url, headers=headers).content
+            cont_raw = requests.get(url, headers=headers).content
         elif request_type == "post":
-            cont = requests.post(url, headers=headers, data=payload).content
+            cont_raw = requests.post(url, headers=headers, data=payload).content
         else:
             raise Exception("unknown request type " + request_type)
         with open(file_cache, mode="wb") as fh:
-            fh.write(cont)
-        cont = cont.decode("utf-8")
+            fh.write(cont_raw)
+        cont = cont_raw.decode("utf-8")
     else:
         with open(file_cache, encoding="utf-8") as fh:
             cont = fh.read()
@@ -120,7 +120,7 @@ def read_json_file(filename: str) -> dict[str, str | int | float]:
 
 def write_json(
     filename: str,
-    d: dict,
+    d: dict[str, Any],
     sort_keys: bool = True,
     indent: int = 2,
 ) -> None:
@@ -129,7 +129,7 @@ def write_json(
 
 
 def write_json_list(
-    filename: str, l: list, sort_keys: bool = True, indent: int = 2
+    filename: str, l: list[Any], sort_keys: bool = True, indent: int = 2
 ) -> None:
     with open(filename, mode="w", encoding="utf-8", newline="\n") as fh:
         json.dump(l, fh, ensure_ascii=False, sort_keys=sort_keys, indent=indent)
@@ -156,7 +156,9 @@ def date_format(y: int, m: int, d: int) -> str:
 #
 
 
-def pandas_set_date_index(df: pd.DataFrame, date_column: str = "Date") -> pd.DataFrame:
+def pandas_set_date_index(
+    df: pd.DataFrame, date_column: str | dt.date = "Date"
+) -> pd.DataFrame:
     """
     use date as index
     source format: str of yyyy-mm-dd or dt.date
@@ -181,6 +183,7 @@ def pandas_calc_roll_av(
 ) -> pd.DataFrame:
     """calc rolling average over column"""
     assert type(days) == int
+    # assert type(df[column]) in (int, float)
     df[column + "_roll_av"] = (
         df[column].rolling(window=days, min_periods=1).mean().round(digits)
     )
@@ -192,9 +195,10 @@ def pandas_calc_roll_av(
 #
 
 
-def mpl_add_text_source(source: str = "RKI and DIVI", date: Optional[dt.date] = None):
-    if date is None:
-        dt.date.today()
+def mpl_add_text_source(
+    source: str = "RKI and DIVI", date: Optional[dt.date] = None
+) -> None:
+    date = date or dt.date.today()
     plt.gcf().text(
         1.0,
         0.0,
@@ -286,7 +290,9 @@ d_lk_name_from_lk_id = read_json_file(
 )
 
 
-def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
+def prepare_time_series(
+    l_time_series: list[dict[str, int | float | str]]
+) -> list[dict[str, int | float | str]]:
     """
     assumes items in l_time_series are dicts having the following keys: Date, Cases, Deaths
     sorts l_time_series by Date
@@ -307,6 +313,7 @@ def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
     assert isinstance(d["Date"], str)
     assert isinstance(d["Cases"], int)
     assert isinstance(d["Deaths"], int)
+    assert isinstance(l_time_series[-1]["Date"], str)
     last_date = dt.datetime.strptime(l_time_series[-1]["Date"], "%Y-%m-%d")
 
     # ensure sorting by date
@@ -318,7 +325,7 @@ def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
     #     l_time_series.pop()
 
     # to ensure that each date is unique
-    l_dates_processed = []
+    l_dates_processed: list[str] = []
 
     last_cases = 0
     last_deaths = 0
@@ -329,6 +336,9 @@ def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
 
         # ensure that each date is unique
         assert d["Date"] not in l_dates_processed
+        assert isinstance(d["Date"], str)
+        assert isinstance(d["Cases"], int)
+        assert isinstance(d["Deaths"], int)
         l_dates_processed.append(d["Date"])
 
         this_date = dt.datetime.strptime(d["Date"], "%Y-%m-%d")
@@ -343,6 +353,9 @@ def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
         # _New since yesterday
         d["Cases_New"] = d["Cases"] - last_cases
         d["Deaths_New"] = d["Deaths"] - last_deaths
+        assert isinstance(d["Cases_New"], int)
+        assert isinstance(d["Deaths_New"], int)
+
         # sometimes values are corrected, leading to negative values, which I replace by 0
         if d["Cases_New"] < 0:
             d["Cases_New"] = 0
@@ -408,7 +421,9 @@ def prepare_time_series(l_time_series: list[dict]) -> list[dict]:
     return l_time_series
 
 
-def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
+def timeseries_export_drop_irrelevant_columns(
+    l_time_series: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
     keys_to_drop = ("Days_Past",)
     for i in range(len(l_time_series)):
         d = l_time_series[i]
@@ -419,7 +434,9 @@ def timeseries_export_drop_irrelevant_columns(l_time_series: list) -> list:
     return l_time_series
 
 
-def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
+def extract_latest_data(
+    d_ref_data: dict[str, Any], d_data_all: dict[str, Any]
+) -> dict[str, Any]:
     d_data_latest = dict(d_ref_data)
     for code, l_time_series in d_data_all.items():
         assert code in d_data_latest
@@ -452,12 +469,14 @@ def extract_latest_data(d_ref_data: dict, d_data_all: dict) -> dict:
     return d_data_latest
 
 
-def add_per_million_via_lookup(d: dict, d_ref: dict, code: str) -> dict:
+def add_per_million_via_lookup(
+    d: dict[str, Any], d_ref: dict[str, Any], code: str
+) -> dict[str, Any]:
     pop_in_million = d_ref[code]["Population"] / 1000000
     return add_per_million(d=d, pop_in_million=pop_in_million)
 
 
-def add_per_million(d: dict, pop_in_million: float) -> dict:
+def add_per_million(d: dict[str, Any], pop_in_million: float) -> dict[str, Any]:
     for key in (
         "Cases",
         "Deaths",
@@ -499,7 +518,7 @@ def check_cache_file_available_and_recent(
     return b_cache_good
 
 
-def fetch_json_as_dict_from_url(url: str) -> dict:
+def fetch_json_as_dict_from_url(url: str) -> dict[str, Any]:
     if not url.lower().startswith("http"):
         raise ValueError from None
     filedata = urllib.request.urlopen(url)  # noqa: S310
@@ -516,15 +535,19 @@ def fetch_json_as_dict_from_url(url: str) -> dict:
     return d_json
 
 
-def extract_x_and_y_data(data: list) -> tuple:
+def extract_x_and_y_data(data: tuple[float, float]) -> tuple[float, float]:
     """
     data of (x,y) -> data_x, data_y
     """
-    data_x = []
-    data_y = []
-    for pair in data:
-        data_x.append(pair[0])
-        data_y.append(pair[1])
+    # V1: manual
+    # data_x = []
+    # data_y = []
+    # for pair in data:
+    #     data_x.append(pair[0])
+    #     data_y.append(pair[1])
+
+    # V2: via unzip
+    data_x, data_y = zip(*data)
     return data_x, data_y
 
 
@@ -560,7 +583,7 @@ def extract_data_according_to_fit_ranges(
     return (data_x_for_fit, data_y_for_fit)
 
 
-def fit_slopes(l_time_series: list) -> dict:
+def fit_slopes(l_time_series: list[dict[str, Any]]) -> dict[str, float]:
     """
     fit data of !only! last 7 days via linear regression: y=m*x+b , b = last value
     returns dict with 2 keys: "Slope_Cases_New_Per_Million" and "Slope_Deaths_New_Per_Million"
@@ -824,11 +847,11 @@ def series_of_fits(
     return fit_series_res
 
 
-def read_ref_data_de_states() -> dict:
+def read_ref_data_de_states() -> dict[str, Any]:
     """
     read pop etc from ref table and returns it as dict of dict
     """
-    d_states_ref = {}
+    d_states_ref: dict[str, Any] = {}
     with open("data/ref_de-states.tsv", encoding="utf-8") as f:
         csv_reader = csv.DictReader(f, delimiter="\t")
         for row in csv_reader:
