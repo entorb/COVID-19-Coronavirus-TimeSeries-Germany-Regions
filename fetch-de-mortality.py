@@ -108,7 +108,7 @@ def prepare_covid_data() -> pd.DataFrame:
 
 def convert2date(year: int, ddmm: str) -> dt.date:
     # test: print(convert2date(year=2016, ddmm="01.01"))
-    d, m, empty = ddmm.split(".")
+    d, m, _ = ddmm.split(".")
     date = dt.date(int(year), int(m), int(d))
     return date
 
@@ -141,15 +141,19 @@ def fetch_and_prepare_mortality_data_timeseries() -> pd.DataFrame:
     #         f.write(datatowrite)
 
     # data_only : read values instead of formulas
-    workbookIn = openpyxl.load_workbook(excelFile, data_only=True)
-    sheetIn = workbookIn["D_2016_2022_Tage"]
+    workbookIn = openpyxl.load_workbook(
+        excelFile,
+        data_only=True,
+        # read_only=True,  # suppresses: UserWarning: wmf image format is not supported so the image is being dropped, but results in endless runtime
+    )
+    sheetIn = workbookIn["D_2016_2023_Tage"]
 
     # 1. time series for correct rolling av calc
 
     # 1.1 read from Excel
     l_timeseries = []
     col = 1
-    for row in range(16, 10 - 1, -1):
+    for row in range(17, 10 - 1, -1):
         year = int(sheetIn.cell(column=col, row=row).value)
         assert year >= 2016
         assert year <= 2028
