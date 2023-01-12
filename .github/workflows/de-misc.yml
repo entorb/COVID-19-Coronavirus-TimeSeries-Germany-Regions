@@ -93,15 +93,7 @@ jobs:
     - name: Gnuplot install
       run: |
         sudo apt-get update > /dev/null
-    #     sudo apt-get install gnuplot > /dev/null
-
-    - name: Gnuplot install using cache
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        # packages: gnuplot
-        packages: ghostscript gsfonts ffmpeg
-        version: 1.0
-        # execute_install_scripts: true
+        sudo apt-get install gnuplot > /dev/null
 
     - name: Gnuplot plotting
       run: |

@@ -49,17 +49,10 @@ jobs:
     - name: Python install requirements
       run: pip install -r py-requirements.txt
 
-#     - name: install Ubuntu packages
-#       run: |
-# #        sudo apt-get update > /dev/null
-#         sudo apt-get install ghostscript gsfonts ffmpeg > /dev/null
-
-    - name: Install install Ubuntu packages via cache
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: ghostscript gsfonts ffmpeg
-        version: 1.0
-        # execute_install_scripts: true
+    - name: install Ubuntu packages
+      run: |
+        sudo apt-get update > /dev/null
+        sudo apt-get install ghostscript gsfonts ffmpeg > /dev/null
 
     - name: Generate + zip maps
       run: |
