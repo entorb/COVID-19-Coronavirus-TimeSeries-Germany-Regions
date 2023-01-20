@@ -100,8 +100,21 @@ def prepare_covid_data() -> pd.DataFrame:
     )
     df_covid_2022.set_index("Day", inplace=True)
 
+    df_covid_2023 = (
+        df[df.index.year == 2023][["Day", "Deaths_Covid", "Deaths_Covid_roll_av"]]
+        .reset_index(drop=True)
+        .rename(
+            columns={
+                "Deaths_Covid": "Deaths_Covid_2023",
+                "Deaths_Covid_roll_av": "Deaths_Covid_2023_roll_av",
+            },
+            errors="raise",
+        )
+    )
+    df_covid_2023.set_index("Day", inplace=True)
+
     # join in index = Day
-    df_covid = df_covid_2020.join(df_covid_2021).join(df_covid_2022)
+    df_covid = df_covid_2020.join(df_covid_2021).join(df_covid_2022).join(df_covid_2023)
 
     return df_covid
 
