@@ -223,7 +223,7 @@ def merge_mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
     # (index=l_days, data={})
 
     # add full year data of columns Deaths and Deaths_roll_av
-    for year in range(2016, 2021 + 1, 1):
+    for year in range(2016, 2022 + 1, 1):
         df2[str(year)] = df[df.index.year == year]["Deaths"].tolist()
         df2[str(year) + "_roll_av"] = df[df.index.year == year][
             "Deaths_roll_av"
@@ -231,9 +231,9 @@ def merge_mortality_data_per_day(df: pd.DataFrame) -> pd.DataFrame:
     del year
 
     # add current year
-    df2["2022"] = pd.Series(df[df.index.year == 2022]["Deaths"].tolist())
-    df2["2022_roll_av"] = pd.Series(
-        df[df.index.year == 2022]["Deaths_roll_av"].tolist(),
+    df2["2023"] = pd.Series(df[df.index.year == 2023]["Deaths"].tolist())
+    df2["2023_roll_av"] = pd.Series(
+        df[df.index.year == 2023]["Deaths_roll_av"].tolist(),
     )
 
     # setting the index to the Day
