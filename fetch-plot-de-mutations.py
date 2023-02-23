@@ -84,7 +84,7 @@ def read_data() -> pd.DataFrame:
     # join dfs on ID column IMS_ID
     df = df1.join(df2)
     del df1, df2
-    print(df.head)
+    # print(df.head)
 
     df.rename(columns={"RECEIVE_DATE": "Date"}, inplace=True)
 
@@ -99,6 +99,7 @@ def read_data() -> pd.DataFrame:
 
 
 df_all_data = read_data()
+print("data read")
 
 # max_date = df_all_data["PROCESSING_DATE"].max()
 # print(max_date)
@@ -303,10 +304,10 @@ def plot_format(fig, axes, date_last, filename) -> None:
     fig.savefig(fname=filename, format="png")
 
     # remove all lines
-    while len(axes[0].lines) > 0:
-        axes[0].get_lines().remove(axes[0].lines[0])
-    # plt.cla()
-    # plt.clf()
+    # while len(axes[0].lines) > 0:
+    #     axes[0].get_lines().remove(axes[0].lines[0])
+    plt.cla()
+    plt.clf()
     plt.close()
 
 
@@ -317,6 +318,7 @@ def plotit() -> None:
 
 
 def plotit1() -> None:
+    print("plot1")
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
@@ -340,6 +342,7 @@ def plotit1() -> None:
 
 
 def plotit2() -> None:
+    print("plot2")
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
@@ -366,6 +369,7 @@ def plotit2() -> None:
 
 
 def plotit3() -> None:
+    print("plot3")
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
@@ -392,4 +396,5 @@ def plotit3() -> None:
 
 
 if __name__ == "__main__":
+    print("plotting")
     plotit()
