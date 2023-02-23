@@ -375,7 +375,7 @@ def plot_it(
     l_prognosen_prozente: tuple,
     filepath: str,
     landkreis_name: str,
-):
+) -> None:
     fig, axes = plt.subplots(figsize=(8, 6))
 
     # drop some data from the plot
@@ -384,8 +384,9 @@ def plot_it(
     date_today = str(pd.to_datetime(df_divi.index[-1]).date())
     df_divi = df_divi.loc[date_min:]
 
-    max_value = df_divi["betten_covid"].max()
+    max_value = int(df_divi["betten_covid"].max())
     max_value_date = df_divi["betten_covid"].idxmax()
+    max_value_date_str = str(max_value_date.date())  # datetime to date
 
     myPlot = df_divi.iloc[:]["betten_covid"].plot(  # noqa: F841
         linewidth=1.0,
@@ -393,13 +394,16 @@ def plot_it(
         label="_nolegend_",
     )
 
-    axes.hlines(
-        y=max_value,
-        xmin=max_value_date,
-        xmax=date_max,
-        color="grey",
-        linestyles="--",
-    )
+    # FIXME:
+    # "Exception has occurred: ConversionError"
+    # "Failed to convert value(s) to axis units: array"
+    # axes.hlines(
+    #     y=max_value,
+    #     xmin=max_value_date_str,
+    #     xmax=date_max,
+    #     color="grey",
+    #     linestyles="--",
+    # )
 
     l_df_prognosen[0]["betten_covid_calc"].plot(
         linewidth=2.0,
