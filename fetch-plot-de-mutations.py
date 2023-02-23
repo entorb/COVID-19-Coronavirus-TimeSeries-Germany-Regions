@@ -23,7 +23,7 @@ locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
 
 
 # TODO. replace by helper.download_from_url_if_old(
-def fetch():
+def fetch() -> None:
     """
     Download data from rki github account.
     """
@@ -290,7 +290,7 @@ df_sum_alltime_roll_av.to_csv(
 )
 
 
-def plot_format(fig, axes, date_last, filename):
+def plot_format(fig, axes, date_last, filename) -> None:
     # Labels
     plt.legend(loc="upper left", bbox_to_anchor=(1.0, 1.0))
     axes[0].set_xlabel("")
@@ -304,19 +304,19 @@ def plot_format(fig, axes, date_last, filename):
 
     # remove all lines
     while len(axes[0].lines) > 0:
-        axes[0].lines.remove(axes[0].lines[0])
+        axes[0].get_lines().remove(axes[0].lines[0])
     # plt.cla()
     # plt.clf()
     plt.close()
 
 
-def plotit():
+def plotit() -> None:
     plotit1()
     plotit2()
     plotit3()
 
 
-def plotit1():
+def plotit1() -> None:
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
@@ -339,7 +339,7 @@ def plotit1():
     plot_format(fig, axes, date_last, filename="plots-python/mutations-de-all.png")
 
 
-def plotit2():
+def plotit2() -> None:
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
@@ -365,7 +365,7 @@ def plotit2():
     )
 
 
-def plotit3():
+def plotit3() -> None:
     # initialize plot
     axes = [None]
     fig, axes[0] = plt.subplots(nrows=1, ncols=1, sharex=True, dpi=100, figsize=(8, 6))
