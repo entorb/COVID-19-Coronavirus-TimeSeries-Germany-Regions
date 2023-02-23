@@ -330,7 +330,9 @@ def forecast(df_data: pd.DataFrame, l_prognosen_prozente: tuple, quote: float):
 #
 
 
-def plot_2_its_per_21day_cases(df: pd.DataFrame, filename: str, landkreis_name: str):
+def plot_2_its_per_21day_cases(
+    df: pd.DataFrame, filename: str, landkreis_name: str
+) -> None:
     """
     plot 2.png
     """
@@ -473,7 +475,7 @@ def plot_it(
     plt.close()
 
 
-def doit_de_district(lk_id: int, df_divi_all: pd.DataFrame):
+def doit_de_district(lk_id: int, df_divi_all: pd.DataFrame) -> None:
     """
     for multiprocessing
     """
@@ -481,7 +483,7 @@ def doit_de_district(lk_id: int, df_divi_all: pd.DataFrame):
     doit(mode="de-district", df_divi_all=df_divi_all, l_lk_ids=(lk_id,))
 
 
-def doit_de_state(bl_id: int, df_divi_all: pd.DataFrame):
+def doit_de_state(bl_id: int, df_divi_all: pd.DataFrame) -> None:
     """
     for multiprocessing
     """
@@ -496,7 +498,7 @@ def doit(
     l_lk_ids: tuple = (),
     bl_id: int = -1,
     filename="",
-):
+) -> None:
     """
     mode:
     de-district: 1 Landkreis
@@ -593,7 +595,7 @@ def doit(
     )
 
 
-def main():
+def main() -> None:
     # now via multiprocessing
     pool = mp.Pool(processes=mp.cpu_count())
 
