@@ -50,7 +50,7 @@ plot \
     , data using (column("Day")):(column("2020_roll_av"))   title "2020" axis x1y1  with lines ls 2 lw 4 \
     , data using (column("Day")):(column("2021_roll_av"))   title "2021" axis x1y1  with lines ls 6 lw 4 \
     , data using (column("Day")):(column("2022_roll_av"))   title "2022" axis x1y1  with lines ls 8 lw 4 \
-    , data using (column("Day")):(column("2023_roll_av"))   title "2022" axis x1y1  with lines ls 10 lw 4
+    , data using (column("Day")):(column("2023_roll_av"))   title "2023" axis x1y1  with lines ls 10 lw 4
 unset output
 
 set terminal pngcairo size 640,800 font 'Verdana,9'
