@@ -5,12 +5,11 @@ name: DE Bundesländer und Landkreise
 on:
   workflow_dispatch:
   schedule:
-  # UTC ! -> 7:59 DE (Wintertime)
-    - cron: "59 6 * * *"
+    # in UTC -> 7:59 DE time
+    - cron: "59 5 * * *"
 # TODO
 #  push:
 #    branches: [ main ]
-
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,137 +17,135 @@ jobs:
     # runs-on: ubuntu-latest
     runs-on: ubuntu-22.04
     steps:
+      # Initialize
+      - name: print start date
+        run: |
+          date +%Y-%m-%d_%H:%M
 
-# Initialize
-    - name: print start date
-      run: |
-        date +%Y-%m-%d_%H:%M
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Setup environment
+        run: |
+          cd /usr/share/locales
+          sudo ./install-language-pack de_DE.UTF-8
 
-    - name: Setup environment
-      run: |
-        cd /usr/share/locales
-        sudo ./install-language-pack de_DE.UTF-8
+      - name: Python setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Python setup
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Python cache setup
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-py-cache
 
-    - name: Python cache setup
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-py-cache
+      - name: Python install requirements
+        run: pip install -r py-requirements.txt
 
-    - name: Python install requirements
-      run: pip install -r py-requirements.txt
+      # Update data
+      # divi is needed for states
+      - name: Data fetch-de-divi
+        run: python3 fetch-de-divi-V3.py
 
-# Update data
-# divi is needed for states
-    - name: Data fetch-de-divi
-      run: python3 fetch-de-divi-V3.py
+      - name: Data fetch-de-states
+        run: python3 fetch-de-states-V2.py
 
-    - name: Data fetch-de-states
-      run: python3 fetch-de-states-V2.py
+      # this is now extrated to an action of its own
+      #    - name: data fetch-int-country-data
+      #      run: python3 fetch-int-country-data.py
 
-# this is now extrated to an action of its own
-#    - name: data fetch-int-country-data
-#      run: python3 fetch-int-country-data.py
+      - name: Data fetch-de-districts
+        run: python3 fetch-de-districts.py
 
-    - name: Data fetch-de-districts
-      run: python3 fetch-de-districts.py
+      #    - name: Data+Plot fetch-mortality-de
+      #      run: python3 fetch-de-mortality.py
 
-#    - name: Data+Plot fetch-mortality-de
-#      run: python3 fetch-de-mortality.py
+      #    - name: Data+Plot fetch-de-vaccination
+      #      run: python3 fetch-plot-de-vaccination.py
 
-#    - name: Data+Plot fetch-de-vaccination
-#      run: python3 fetch-plot-de-vaccination.py
+      #    - name: Data+Plot fetch-plot-de-age-percent
+      #      run: python3 fetch-plot-de-age-percent.py
 
-#    - name: Data+Plot fetch-plot-de-age-percent
-#      run: python3 fetch-plot-de-age-percent.py
+      #    - name: Data+Plot fetch-plot-de-mutations
+      #      run: python3 fetch-plot-de-mutations.py
 
-#    - name: Data+Plot fetch-plot-de-mutations
-#      run: python3 fetch-plot-de-mutations.py
+      - name: Data show dates
+        run: bash show_data_dates.sh
 
-    - name: Data show dates
-      run: bash show_data_dates.sh
+      - name: Data commit new files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/*
+          git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
 
-    - name: Data commit new files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add data/*
-        git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
+      - name: Data push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          #        force: true
+          directory: data
 
-    - name: Data push
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        force: true
-        directory: data
+      - name: Data zipping data/
+        run: |
+          cd data
+          tar cfz ../cache/data.tgz *
+          cd ..
 
-    - name: Data zipping data/
-      run: |
-        cd data
-        tar cfz ../cache/data.tgz *
-        cd ..
+      - name: Data zipping data-json/
+        run: |
+          cd data-json/
+          tar cfz ../cache/data-json-de.tgz *
+          cd ..
 
-    - name: Data zipping data-json/
-      run: |
-        cd data-json/
-        tar cfz ../cache/data-json-de.tgz *
-        cd ..
+      # Update Charts
+      - name: Gnuplot install
+        run: |
+          sudo apt-get update > /dev/null
+          sudo apt-get install gnuplot > /dev/null
 
-# Update Charts
-    - name: Gnuplot install
-      run: |
-        sudo apt-get update > /dev/null
-        sudo apt-get install gnuplot > /dev/null
+      - name: Gnuplot plotting
+        run: |
+          cd scripts-gnuplot
+          gnuplot all.gp
+          cd ..
 
-    - name: Gnuplot plotting
-      run: |
-        cd scripts-gnuplot
-        gnuplot all.gp
-        cd ..
+      - name: Plot Python de-stats and de-districts
+        run: python3 plot-de-states-districts.py
 
-    - name: Plot Python de-stats and de-districts
-      run: python3 plot-de-states-districts.py
+      - name: Plot Python calc-increase-histogram
+        run: python3 plot-de-districts-increase-histogram.py
 
-    - name: Plot Python calc-increase-histogram
-      run: python3 plot-de-districts-increase-histogram.py
+      - name: Plotting plot-icu-forecast.py
+        run: python3 plot-icu-forecast.py
 
-    - name: Plotting plot-icu-forecast.py
-      run: python3 plot-icu-forecast.py
+      # Zipping Charts
+      - name: Gnuplot zipping plots-gnuplot/
+        run: |
+          cd plots-gnuplot
+          tar cfz ../cache/plots-gnuplot.tgz *
+          cd ..
 
-# Zipping Charts
-    - name: Gnuplot zipping plots-gnuplot/
-      run: |
-        cd plots-gnuplot
-        tar cfz ../cache/plots-gnuplot.tgz *
-        cd ..
+      - name: Matplotlib zipping plots-python/
+        run: |
+          cd plots-python
+          tar cfz ../cache/plots-python.tgz *
+          cd ..
 
-    - name: Matplotlib zipping plots-python/
-      run: |
-        cd plots-python
-        tar cfz ../cache/plots-python.tgz *
-        cd ..
+      # Publish to release
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: data-for-entorb.net
+          prerelease: true
+          files: cache/*.tgz
 
-# Publish to release
-    - name: Upload to release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: data-for-entorb.net
-        prerelease: true
-        files:
-          cache/*.tgz
-
-    - name: print end date and last data of HH
-      run: |
-        date +%Y-%m-%d_%H:%M
-        tail -n 1 data/de-districts/de-district_timeseries-02000.tsv
+      - name: print end date and last data of HH
+        run: |
+          date +%Y-%m-%d_%H:%M
+          tail -n 1 data/de-districts/de-district_timeseries-02000.tsv

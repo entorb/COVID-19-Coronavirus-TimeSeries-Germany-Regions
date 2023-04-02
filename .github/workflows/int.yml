@@ -5,8 +5,8 @@ name: International
 on:
   workflow_dispatch:
   schedule:
-  # UTC ! -> 3:59 DE (Wintertime)
-    - cron: "59 2 * * *"
+    # in UTC -> 3:59 DE time
+    - cron: "59 1 * * *"
 # TODO
 #  push:
 #    branches: [ main ]
@@ -17,76 +17,74 @@ jobs:
     # runs-on: ubuntu-latest
     runs-on: ubuntu-22.04
     steps:
+      # Initialize
+      - name: print start date
+        run: |
+          date +%Y-%m-%d_%H:%M
 
-# Initialize
-    - name: print start date
-      run: |
-        date +%Y-%m-%d_%H:%M
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Setup environment
+        run: |
+          cd /usr/share/locales
+          sudo ./install-language-pack de_DE.UTF-8
 
-    - name: Setup environment
-      run: |
-        cd /usr/share/locales
-        sudo ./install-language-pack de_DE.UTF-8
+      - name: Python setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Python setup
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Python cache setup
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-py-cache
 
-    - name: Python cache setup
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-py-cache
+      - name: Python install requirements
+        run: pip install -r py-requirements.txt
 
-    - name: Python install requirements
-      run: pip install -r py-requirements.txt
+      # Update data
+      - name: Data fetch-int-country-data
+        run: python3 fetch-int-country-data.py
 
-# Update data
-    - name: Data fetch-int-country-data
-      run: python3 fetch-int-country-data.py
+      - name: Data commit new files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/*
+          git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
 
-    - name: Data commit new files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add data/*
-        git diff-index --quiet HEAD || git commit -m "auto update"  | grep -v rewrite
+      - name: Data push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          #        force: true
+          directory: data
 
-    - name: Data push
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        force: true
-        directory: data
+      - name: Data zipping data/
+        run: |
+          cd data
+          tar cfz ../cache/data.tgz *
+          cd ..
 
-    - name: Data zipping data/
-      run: |
-        cd data
-        tar cfz ../cache/data.tgz *
-        cd ..
+      - name: Data zipping data-json/
+        run: |
+          cd data-json/
+          tar cfz ../cache/data-json-int.tgz *
+          cd ..
 
-    - name: Data zipping data-json/
-      run: |
-        cd data-json/
-        tar cfz ../cache/data-json-int.tgz *
-        cd ..
+      # Publish to release
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: data-for-entorb.net
+          prerelease: true
+          files: cache/*.tgz
 
-# Publish to release
-    - name: Upload to release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: data-for-entorb.net
-        prerelease: true
-        files:
-          cache/*.tgz
-
-    - name: print end date
-      run: |
-        date +%Y-%m-%d_%H:%M
+      - name: print end date
+        run: |
+          date +%Y-%m-%d_%H:%M
