@@ -75,8 +75,7 @@ def sendmail(
     body: str,
     subject: str = "[COVID-19 Landkreis Benachrichtigung]",
     sender: str = "no-reply@entorb.net",
-):
-
+) -> None:
     if checkRunningOnServer():
         # V1: via SENDMAIL
         # SENDMAIL = "/usr/sbin/sendmail"
@@ -99,7 +98,7 @@ def insertNewEMail(
     send_from: str = "no-reply@entorb.net",
     send_cc: str = "",
     send_bcc: str = "",
-):
+) -> None:
     # This is a copy from mailer-daemon/insert.py
     # import sqlite3
     # PATH = "/var/www/virtual/entorb/mail-daemon/outbox.db"
@@ -206,13 +205,14 @@ d_data_DeDistricts = {}
 with open(pathToDataDeDistricts, encoding="utf-8") as fh:
     d_data_DeDistricts = json.load(fh)
 
-s_date_data_hh = d_data_DeDistricts["02000"]["Date_Latest"]
-date_data_hh = date.fromisoformat(s_date_data_hh)
+# s_date_data_hh = d_data_DeDistricts["02000"]["Date_Latest"]
+s_date_data_er = d_data_DeDistricts["09562"]["Date_Latest"]
+date_data_er = date.fromisoformat(s_date_data_er)
 date_yesterday = date.today() - timedelta(days=1)
 assert (
-    date_data_hh == date_yesterday
-), f"date data hh: {date_data_hh} != date yesterday {date_yesterday}"
-del date_data_hh, date_yesterday
+    date_data_er == date_yesterday
+), f"date data ER: {date_data_er} != date yesterday {date_yesterday}"
+del date_data_er, date_yesterday
 
 d_data_DeStates = {}
 with open(pathToDataDeStates, encoding="utf-8") as fh:
@@ -423,7 +423,7 @@ for row in db_newsletter_cursor.execute(
 
         mailBody += "\nTop 10 Landkreise\n" + s_worst_lk
 
-        mailBody += f"Datenstand Landkreisdaten: {s_date_data_hh}\n"
+        mailBody += f"Datenstand Landkreisdaten: {s_date_data_er}\n"
 
         mailBody += "Hinweis: Die Landkreisdaten stammen vom RKI und werden dort um 0:00 Uhr veröffentlicht. Die Gesundheitsämter sind teilweise schneller in der Aktualisierung ihrer Zahlen, daher findet man unterschiedliche Zahlen in unterschiedlichen Quellen.\n"
 
