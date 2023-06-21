@@ -270,7 +270,7 @@ def fetch_landkreis_time_series(lk_id: str, readFromCache: bool = True) -> list:
     # %2C+AnzahlFall%2C+AnzahlTodesfall
 
     # example
-    # https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=html&where=(IdLandkreis='14612')&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall%2C+AnzahlFall%2C+AnzahlTodesfall&orderByFields=Meldedatum&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token=
+    # https://services7.arcgis.com/mOBPykOjAyBO2ZKk/ArcGIS/rest/services/Covid19_RKI_Sums/FeatureServer/0/query?f=json&where=(IdLandkreis='01001')&outFields=Meldedatum%2CSummeFall%2C+SummeTodesfall&orderByFields=Meldedatum&resultRecordCount=2000&objectIds=&time=&resultType=none&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&sqlFormat=none&token=
     # f=json
     # &outFields=*
 
