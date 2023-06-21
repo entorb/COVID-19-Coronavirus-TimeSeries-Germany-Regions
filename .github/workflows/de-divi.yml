@@ -4,9 +4,10 @@ name: DE DIVI
 # events but only for the main branch
 on:
   workflow_dispatch:
-  schedule:
+    # deactivated 2023-06-21
     # in UTC -> 13:59 DE time
-    - cron: "59 11 * * *"
+    # schedule:
+    # - cron: "59 11 * * *"
 # TODO
 #  push:
 #    branches: [ main ]

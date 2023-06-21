@@ -4,9 +4,10 @@ name: International
 # events but only for the main branch
 on:
   workflow_dispatch:
-  schedule:
+    # deactivated 2023-06-21
     # in UTC -> 3:59 DE time
-    - cron: "59 1 * * *"
+    # schedule:
+    # - cron: "59 1 * * *"
 # TODO
 #  push:
 #    branches: [ main ]
