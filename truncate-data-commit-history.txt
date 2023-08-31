@@ -8,41 +8,39 @@ exit 0
 #
 
 #
-# 1. Backup data to new repo
+# 1. Backup as new GitHub repo
 #
 
 # create new repo at GitHub.com
-https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-221203
+https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-230831
 
-# clone orig repo in a new dir
+# clone orig repo into a new dir
 f:
 mkdir covid
-wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
+cd covid
+
+wget https://raw.githubusercontent.com/newren/git-filter-repo/main/git-filter-repo
 
 git clone git@github.com:entorb/COVID-19-Coronavirus-German-Regions.git
-cp -r COVID-19-Coronavirus-German-Regions COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-221203
-cd COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-221203
+cp -r COVID-19-Coronavirus-German-Regions COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-230831
+
+cp COVID-19-Coronavirus-German-Regions/.git/config config
+
+cd COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-230831
+
+# removing git workflows using git-filter-repo
+python3 ../git-filter-repo --prune-empty always --invert-paths --path .github --path maps/out
 
 # modify files
-sed -i -e 's/COVID-19-Coronavirus-German-Regions/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-221203/g' .git/config
+cp ../config .git/config
+sed -i -e 's/COVID-19-Coronavirus-German-Regions/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-230831/g' .git/config
 
-# removing git workflows V1
-# rm -r .github/workflows
-# # commit changes
-# git add .
-# git commit -m "deactivating workflows"
-# # remove .github/workflow files from git history, since otherwise pushing will fail
-# java -jar ../bfg-1.14.0.jar --delete-folders .github
-# java -jar ../bfg-1.14.0.jar --delete-folders maps/out
-# # cleanup git
-# git reflog expire --expire=now --all && git gc --prune=now --aggressive
-# fix warning: symbolic ref is dangling: refs/remotes/origin/HEAD
-# rm .git/refs/remotes/origin/HEAD
+git push -f
 
-# # removing git workflows V2 using git-filter-repo from https://github.com/newren/git-filter-repo
-python3 ../git-filter-repo.py --prune-empty always --invert-paths --path .github --path maps/out
+#
+# 1.2 in case the repo update is > 2GB, the commits need to be pushed in smaller chunks
+#
 
-# in case the repo update is > 2GB, the commits need to be pushed in smaller chunks
 # remote: fatal: pack exceeds maximum allowed size (2.00 GiB)
 
 # get id of inital commit
@@ -64,7 +62,7 @@ git push
 ggf .git/config von orig Repo kopieren (und pfad anpassen, siehe oben), wenn push target fehlt
 
 # check new Repo (files are up to date?)
-https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-221203
+https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-230831
 
 # done
 
@@ -75,53 +73,57 @@ https://github.com/entorb/COVID-19-Coronavirus-German-Regions-OLD-DATA-BACKUP-22
 # clone orig repo in a new dir
 # or use copy from above
 cd ..
+
+mkdir data-cleanup-backup-dirs
+
 git clone git@github.com:entorb/COVID-19-Coronavirus-German-Regions.git
 # not using --bare, since I want to remove the current files
 
-mkdir bfg-backup-dirs
-
 cd COVID-19-Coronavirus-German-Regions
 
-move cache ..\bfg-backup-dirs\
-move data ..\bfg-backup-dirs\
-move draft ..\bfg-backup-dirs\
-move maps ..\bfg-backup-dirs\
-move old ..\bfg-backup-dirs\
-move plots-gnuplot ..\bfg-backup-dirs\
-move plots-python ..\bfg-backup-dirs\
-move plots-Excel ..\bfg-backup-dirs\
+move cache ..\data-cleanup-backup-dirs\
+move data ..\data-cleanup-backup-dirs\
+move draft ..\data-cleanup-backup-dirs\
+move maps ..\data-cleanup-backup-dirs\
+move old ..\data-cleanup-backup-dirs\
+move plots-gnuplot ..\data-cleanup-backup-dirs\
+move plots-python ..\data-cleanup-backup-dirs\
+move plots-Excel ..\data-cleanup-backup-dirs\
 
 git add .
 git commit -m "remove data files before cleanup of git history"
 
-python3 ../git-filter-repo.py --prune-empty always --invert-paths --path cache --path data --path draft --path maps --path old --path plots-gnuplot --path plots-python --path plots-Excel
+python3 ../git-filter-repo --force --prune-empty always --invert-paths --path cache --path data --path draft --path maps --path old --path plots-gnuplot --path plots-python --path plots-Excel
 
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders cache
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders data
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders draft
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders maps
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders old
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders plots-gnuplot
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders plots-python
-# java -jar ../bfg-1.14.0.jar --no-blob-protection --delete-folders plots-Excel
-# git reflog expire --expire=now --all && git gc --prune=now --aggressive
 
 # restore dirs and files
-move ..\bfg-backup-dirs\cache .\
-move ..\bfg-backup-dirs\data .\
-move ..\bfg-backup-dirs\draft .\
-move ..\bfg-backup-dirs\maps .\
-move ..\bfg-backup-dirs\old .\
-move ..\bfg-backup-dirs\plots-gnuplot .\
-move ..\bfg-backup-dirs\plots-python .\
-move ..\bfg-backup-dirs\plots-Excel .\
+move ..\data-cleanup-backup-dirs\cache .\
+move ..\data-cleanup-backup-dirs\data .\
+move ..\data-cleanup-backup-dirs\draft .\
+move ..\data-cleanup-backup-dirs\maps .\
+move ..\data-cleanup-backup-dirs\old .\
+move ..\data-cleanup-backup-dirs\plots-gnuplot .\
+move ..\data-cleanup-backup-dirs\plots-python .\
+move ..\data-cleanup-backup-dirs\plots-Excel .\
+
+
 
 git add .
+git update-index --chmod=+x */*.sh
 git commit -m "restoring data files after cleanup"
 
-# overwrite GitHub repo
-# git push --set-upstream origin master -f
-
-ggf .git/config von orig Repo kopieren, wenn push target fehlt
+copy ../config .git/config
 
 git push -f
+
+
+# 3. sync real source file to this repo
+D:
+cd \GitHub\COVID-19-Coronavirus-German-Regions
+
+git fetch origin
+git reset --hard origin/main
+
+# cleanup via git garbage collector
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
