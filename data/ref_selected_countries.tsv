@@ -1,0 +1,23 @@
+Country	Code	Population	Pop_Density	GDP_mon_capita	Source
+Austria	AT	8902600	106	53764	https://en.wikipedia.org/wiki/Austria
+Belgium	BE	11515793	376	46724	https://en.wikipedia.org/wiki/Belgium
+Canada	CA	37894799	4	46213	https://en.wikipedia.org/wiki/Canada
+Czechia	CZ	10649800	134	24569	https://en.wikipedia.org/wiki/Czech_Republic
+Denmark	DK	5822763	135	63829	https://en.wikipedia.org/wiki/Denmark
+Finland	FI	5521158	16	50068	https://en.wikipedia.org/wiki/Finland
+France	FR	67022000	116	42643	https://en.wikipedia.org/wiki/France
+Germany	DE	83149300	232	46653	https://en.wikipedia.org/wiki/Germany
+Greece	GR	10768477	82	31616	https://en.wikipedia.org/wiki/Greece
+Hungary	HU	9772756	105	18535	https://en.wikipedia.org/wiki/Hungary
+Iran	IR	83183741	48	5506	https://en.wikipedia.org/wiki/Iran
+Italy	IT	60317546	201	32947	https://en.wikipedia.org/wiki/Italy
+Japan	JP	126150000	334	43043	https://en.wikipedia.org/wiki/Japan
+South Korea	KR	51709098	507	31246	https://en.wikipedia.org/wiki/South_Korea
+Netherlands	NL	17424978	521	53016	https://en.wikipedia.org/wiki/Netherlands
+Portugal	PT	10276617	115	23731	https://en.wikipedia.org/wiki/Portugal
+Spain	ES	46733038	92	30734	https://en.wikipedia.org/wiki/Spain
+Sweden	SE	10333456	23	51242	https://en.wikipedia.org/wiki/Sweden
+Switzerland	CH	8570146	207	82950	https://en.wikipedia.org/wiki/Switzerland
+Turkey	TR	83154997	105	9683	https://en.wikipedia.org/wiki/Turkey
+United Kingdom	UK	67545757	271	41030	https://en.wikipedia.org/wiki/United_Kingdom
+United States	US	328239523	34	65112	https://en.wikipedia.org/wiki/United_States

@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "lk_ids": [
+      "09563",
+      "09573"
+    ],
+    "title": "Fürth und Umland"
+  },
+  {
+    "id": 2,
+    "lk_ids": [
+      "09562",
+      "09572",
+      "09474"
+    ],
+    "title": "Erlangen und Umland"
+  },
+  {
+    "id": 3,
+    "lk_ids": [
+      "09564",
+      "09574",
+      "09576",
+      "09571"
+    ],
+    "title": "Nürnberg und Umland"
+  },
+  {
+    "id": 4,
+    "lk_ids": [
+      "03353",
+      "03355"
+    ],
+    "title": "Harburg und Lüneburg"
+  },
+  {
+    "id": 5,
+    "lk_ids": [
+      "14612",
+      "14628",
+      "14625",
+      "14627",
+      "14626"
+    ],
+    "title": "Dresden Krankenhauscluster"
+  },
+  {
+    "id": 6,
+    "lk_ids": [
+      "14713",
+      "14729",
+      "14730",
+      "14627",
+      "14626"
+    ],
+    "title": "Leipzig Krankenhauscluster"
+  },
+  {
+    "id": 7,
+    "lk_ids": [
+      "14511",
+      "14522",
+      "14524",
+      "14521",
+      "14523"
+    ],
+    "title": "Chemnitz Krankenhauscluster"
+  }
+]
